@@ -423,8 +423,8 @@ public class Hero extends Char {
 		int curHT = HT;
 
 		HT = (Dungeon.isChallenged(Challenges.SUPERMAN)) ? 10 : 20 + 5 * (lvl-1) + HTBoost;
-		if (this.hasTalent(Talent.MAX_HEALTH)) {
-			HT += 5*this.pointsInTalent(Talent.MAX_HEALTH);
+		if (this.hasTalent(Talent.MAX_HEALTH, Talent.EXTRA_BULK)) {
+			HT += 5*this.pointsInTalent(Talent.MAX_HEALTH, Talent.EXTRA_BULK);
 		}
 		float multiplier = RingOfMight.HTMultiplier(this);
 		HT = Math.round(multiplier * HT);
@@ -974,7 +974,7 @@ public class Hero extends Char {
 			evasion *= Math.pow(1.2f, belongings.getItem(KnightsShield.class).buffedLvl()) * RingOfArcana.enchantPowerMultiplier(this);
 		}
 
-		if (hero.hasTalent(Talent.BREAKTHROUGH)) {
+		if (hero.hasTalent(Talent.BREAKTHROUGH, Talent.EXTRA_BULK)) {
 			int debuffs = 0;
 			for (Buff b : hero.buffs()) {
 				if (Buff.isDebuff(b)) {
@@ -982,7 +982,7 @@ public class Hero extends Char {
 				}
 			}
 			if (debuffs > 0) {
-				evasion += defenseSkill * (0.9f+0.3f*hero.pointsInTalent(Talent.BREAKTHROUGH));
+				evasion += defenseSkill * (0.9f+0.3f*hero.pointsInTalent(Talent.BREAKTHROUGH, Talent.EXTRA_BULK));
 			}
 		}
 

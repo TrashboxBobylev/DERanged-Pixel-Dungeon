@@ -247,9 +247,9 @@ public abstract class Wand extends Item {
 		}
 
 		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
-				&& Dungeon.hero.hasTalent(Talent.WARDING_LIGHT)
+				&& Dungeon.hero.hasTalent(Talent.WARDING_LIGHT, Talent.EXTRA_BULK)
 				&& Dungeon.hero.buff(Talent.WardingLightCooldown.class) == null){
-			Buff.affect(Dungeon.hero, Barrier.class).setShield(1+2*Dungeon.hero.pointsInTalent(Talent.WARDING_LIGHT));
+			Buff.affect(Dungeon.hero, Barrier.class).setShield(1+2*Dungeon.hero.pointsInTalent(Talent.WARDING_LIGHT, Talent.EXTRA_BULK));
 			Buff.affect(Dungeon.hero, Talent.WardingLightCooldown.class, 20f);
 		}
 
@@ -512,7 +512,7 @@ public abstract class Wand extends Item {
 			}
 		}
 
-		if ((Dungeon.hero.hasTalent(Talent.CHARGE_PRESERVE) && Random.Int(20) < Dungeon.hero.pointsInTalent(Talent.CHARGE_PRESERVE))
+		if ((Dungeon.hero.hasTalent(Talent.CHARGE_PRESERVE, Talent.EXTRA_BULK) && Random.Int(20) < Dungeon.hero.pointsInTalent(Talent.CHARGE_PRESERVE, Talent.EXTRA_BULK))
 				|| (Dungeon.hero.pointsInTalent(Talent.MAGICAL_CIRCLE) > 1 && Dungeon.hero.buff(MagicalCircle.class) != null && Random.Int(2) == 0)) {
 			//charge preserves
 		} else {

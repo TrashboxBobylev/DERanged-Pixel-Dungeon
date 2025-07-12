@@ -787,6 +787,8 @@ public enum Talent {
 	AMBUSH(2, 14), // first strike talents
 	NOBLE_CAUSE(3, 13), // other ones. uses iron will
 	WELL_PROTECTED(3, 14), // protective ones
+	EXTRA_POWER(4, 13),
+	EXTRA_BULK(4, 14),
 	ROYAL_MEAL(5, 13), /// all on-eat talents for tier 2
 	RESTORATION(6, 13), // all upgrade/potion of healing talents
 	POWER_WITHIN(7, 13), // runic (3), wand preservation (3), rogue's foresight (5), rejuvenating steps (3)
@@ -1566,7 +1568,7 @@ public enum Talent {
 			}
 		}
 
-		if (talent == MAX_HEALTH) {
+		if (talent == MAX_HEALTH || talent == EXTRA_BULK) {
 			hero.updateHT(true);
 		}
 
@@ -2225,19 +2227,19 @@ public enum Talent {
 			Buff.affect(enemy, Talent.DrawEnhanceMetaTracker.class);
 		}
 
-		if (hero.hasTalent(Talent.WATER_FRIENDLY) && Dungeon.level.map[hero.pos] == Terrain.WATER) {
-			damage += Hero.heroDamageIntRange(1, hero.pointsInTalent(Talent.WATER_FRIENDLY));
+		if (hero.hasTalent(Talent.WATER_FRIENDLY, EXTRA_POWER) && Dungeon.level.map[hero.pos] == Terrain.WATER) {
+			damage += Hero.heroDamageIntRange(1, hero.pointsInTalent(Talent.WATER_FRIENDLY, EXTRA_POWER));
 			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 		}
 
 		if (hero.buff(Talent.SkilledHandTracker.class) != null) {
-			damage += 1+hero.pointsInTalent(Talent.SKILLED_HAND);
+			damage += 1+hero.pointsInTalent(Talent.SKILLED_HAND, EXTRA_POWER);
 			hero.buff(Talent.SkilledHandTracker.class).detach();
 			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 		}
 
-		if (hero.hasTalent(Talent.SKILLED_HAND) && !hero.heroClass.is(HeroClass.DUELIST)) {
-			damage += Random.NormalIntRange(0, 1+hero.pointsInTalent(Talent.SKILLED_HAND));
+		if (hero.hasTalent(Talent.SKILLED_HAND, EXTRA_POWER) && !hero.heroClass.is(HeroClass.DUELIST)) {
+			damage += Random.NormalIntRange(0, 1+hero.pointsInTalent(Talent.SKILLED_HAND, EXTRA_POWER));
 		}
 
 
@@ -2706,7 +2708,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, FORCE_SAVING, ARCHERS_INTUITION, SURPRISE_PANIC, SURVIVAL_TECHNIQUE, DEXTERITY);
 				break;
 			case RAT_KING:
-				Collections.addAll(tierTalents, ROYAL_PRIVILEGE, ROYAL_INTUITION, KINGS_WISDOM, NOBLE_CAUSE, ROYAL_FOCUS, ROYAL_PERCEPTIVITY, AMBUSH, WELL_PROTECTED);
+				Collections.addAll(tierTalents, ROYAL_PRIVILEGE, ROYAL_INTUITION, KINGS_WISDOM, NOBLE_CAUSE, EXTRA_BULK, ROYAL_FOCUS, ROYAL_PERCEPTIVITY, AMBUSH, WELL_PROTECTED, EXTRA_POWER);
 				break;
 		}
 		for (Talent talent : tierTalents){

@@ -511,8 +511,8 @@ public abstract class Char extends Actor {
 				if (this == Dungeon.hero && Dungeon.hero.hasTalent(Talent.SEARING_LIGHT, Talent.KINGS_WISDOM)){
 					dmg += 2 + 2*Dungeon.hero.pointsInTalent(Talent.SEARING_LIGHT, Talent.KINGS_WISDOM);
 				}
-				if (this == Dungeon.hero && Dungeon.hero.hasTalent(Talent.WARDING_LIGHT)){
-					Buff.affect(Dungeon.hero, Barrier.class).setShield(1+2*Dungeon.hero.pointsInTalent(Talent.WARDING_LIGHT));
+				if (this == Dungeon.hero && Dungeon.hero.hasTalent(Talent.WARDING_LIGHT, Talent.EXTRA_BULK)){
+					Buff.affect(Dungeon.hero, Barrier.class).setShield(1+2*Dungeon.hero.pointsInTalent(Talent.WARDING_LIGHT, Talent.EXTRA_BULK));
 				}
 				if (this != Dungeon.hero && Dungeon.hero.subClass.is(HeroSubClass.PRIEST)){
 					enemy.damage(5+Dungeon.hero.lvl, GuidingLight.INSTANCE);

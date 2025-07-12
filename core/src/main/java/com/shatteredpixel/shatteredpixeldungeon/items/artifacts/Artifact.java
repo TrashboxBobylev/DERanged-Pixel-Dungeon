@@ -163,9 +163,9 @@ public class Artifact extends KindofMisc {
 		}
 
 		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
-				&& Dungeon.hero.hasTalent(Talent.WARDING_LIGHT)
+				&& Dungeon.hero.hasTalent(Talent.WARDING_LIGHT, Talent.EXTRA_BULK)
 				&& Dungeon.hero.buff(Talent.WardingLightCooldown.class) == null){
-			Buff.affect(Dungeon.hero, Barrier.class).setShield(1+2*Dungeon.hero.pointsInTalent(Talent.WARDING_LIGHT));
+			Buff.affect(Dungeon.hero, Barrier.class).setShield(1+2*Dungeon.hero.pointsInTalent(Talent.WARDING_LIGHT, Talent.EXTRA_BULK));
 			Buff.affect(Dungeon.hero, Talent.WardingLightCooldown.class, 20f);
 		}
 

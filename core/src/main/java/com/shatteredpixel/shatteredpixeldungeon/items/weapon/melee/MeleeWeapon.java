@@ -272,7 +272,7 @@ public class MeleeWeapon extends Weapon {
 			hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldAmt), FloatingText.SHIELDING);
 		}
 
-		if (hero.hasTalent(Talent.SKILLED_HAND)) {
+		if (hero.hasTalent(Talent.SKILLED_HAND, Talent.EXTRA_POWER)) {
 			Buff.affect(hero, Talent.SkilledHandTracker.class);
 		}
 
