@@ -4,7 +4,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
@@ -128,14 +127,14 @@ public class Machete extends MeleeWeapon {
                 }
 
                 //berries try to drop on floors 2/3/4/6/7/8, to a max of 4/6
-                if (hero.hasTalent(Talent.HARVEST_BERRY)){
-                    int berriesAvailable = 2 + 2*hero.pointsInTalent(Talent.HARVEST_BERRY);
+                if (hero.hasTalent(Talent.HARVEST_BERRY, Talent.ROYAL_FOCUS)){
+                    int berriesAvailable = 2 + 2*hero.pointsInTalent(Talent.HARVEST_BERRY, Talent.ROYAL_FOCUS);
 
                     Talent.HarvestBerriesDropped dropped = Buff.affect(hero, Talent.HarvestBerriesDropped.class);
                     berriesAvailable -= dropped.count();
 
                     if (berriesAvailable > 0) {
-                        int targetFloor = 2 + 2 * hero.pointsInTalent(Talent.HARVEST_BERRY);
+                        int targetFloor = 2 + 2 * hero.pointsInTalent(Talent.HARVEST_BERRY, Talent.ROYAL_FOCUS);
                         targetFloor -= berriesAvailable;
                         targetFloor += (targetFloor >= 5) ? 3 : 2;
 

@@ -780,6 +780,7 @@ public enum Talent {
 	BETTER_CHOICE				(3, 12, 3),
 
 	ROYAL_PRIVILEGE(0, 13), // food related talents
+	ROYAL_FOCUS(0, 14),  // food-ish related talents (arranged)
 	ROYAL_INTUITION(1, 13), // intuition-related talents, uses survivalist's icon
 	KINGS_WISDOM(2, 13), // on-id + combat talents
 	NOBLE_CAUSE(3, 13), // other ones. uses iron will
@@ -1227,7 +1228,7 @@ public enum Talent {
 
 		@Override
 		public float iconFadePercent() {
-			float max = 1 + Dungeon.hero.pointsInTalent(Talent.TOUGH_MEAL);
+			float max = 1 + Dungeon.hero.pointsInTalent(Talent.TOUGH_MEAL, ROYAL_FOCUS);
 			return Math.max(0, (max-left) / max);
 		}
 
@@ -1785,14 +1786,6 @@ public enum Talent {
 			SpellSprite.show(hero, SpellSprite.CHARGE, 0, 1, 1);
 		}
 
-		if (hero.hasTalent(Talent.RELOADING_MEAL)) {
-			if (hero.belongings.weapon instanceof Gun) {
-				((Gun)hero.belongings.weapon).quickReload();
-				if (hero.pointsInTalent(Talent.RELOADING_MEAL) > 1) {
-					((Gun)hero.belongings.weapon).manualReload(1, true);
-				}
-			}
-		}
 		if (hero.hasTalent(Talent.INFINITE_BULLET_MEAL)) {
 			Buff.affect(hero, InfiniteBullet.class, 1+hero.pointsInTalent(Talent.INFINITE_BULLET_MEAL));
 		}
@@ -1822,8 +1815,8 @@ public enum Talent {
 				}
 			}
 		}
-		if (hero.hasTalent(Talent.TOUGH_MEAL)) {
-			Buff.affect(hero, ArmorEmpower.class).set(3, 1+hero.pointsInTalent(Talent.TOUGH_MEAL));
+		if (hero.hasTalent(Talent.TOUGH_MEAL, ROYAL_FOCUS)) {
+			Buff.affect(hero, ArmorEmpower.class).set(3, 1+hero.pointsInTalent(Talent.TOUGH_MEAL, ROYAL_FOCUS));
 		}
 		if (hero.hasTalent(Talent.IMPREGNABLE_MEAL)) {
 			Buff.affect(hero, ArmorEnhance.class).set(hero.pointsInTalent(Talent.IMPREGNABLE_MEAL), 3);
@@ -1837,10 +1830,10 @@ public enum Talent {
 				}
 			}
 		}
-		if (hero.hasTalent(Talent.RELOADING_MEAL)) {
+		if (hero.hasTalent(Talent.RELOADING_MEAL, ROYAL_FOCUS)) {
 			if (hero.belongings.weapon instanceof Gun) {
 				((Gun)hero.belongings.weapon).quickReload();
-				if (hero.pointsInTalent(Talent.RELOADING_MEAL) > 1) {
+				if (hero.pointsInTalent(Talent.RELOADING_MEAL, ROYAL_FOCUS) > 1) {
 					((Gun)hero.belongings.weapon).manualReload(1, true);
 				}
 			}
@@ -1873,9 +1866,6 @@ public enum Talent {
 					}
 				}
 			}
-		}
-		if (hero.hasTalent(Talent.TOUGH_MEAL)) {
-			Buff.affect(hero, ArmorEmpower.class).set(3, 1+hero.pointsInTalent(Talent.TOUGH_MEAL));
 		}
 		if (hero.hasTalent(Talent.IMPREGNABLE_MEAL)) {
 			Buff.affect(hero, ArmorEnhance.class).set(hero.pointsInTalent(Talent.IMPREGNABLE_MEAL), 3);
@@ -2323,10 +2313,10 @@ public enum Talent {
 
 		}
 
-		if (hero.hasTalent(Talent.SCAR_ATTACK)) {
+		if (hero.hasTalent(Talent.SCAR_ATTACK, ROYAL_FOCUS)) {
 			int debuffs = enemy.buffs().size();
 			if (debuffs > 0) {
-				damage += debuffs * Random.NormalIntRange(1, hero.pointsInTalent(Talent.SCAR_ATTACK));
+				damage += debuffs * Random.NormalIntRange(1, hero.pointsInTalent(Talent.SCAR_ATTACK, ROYAL_FOCUS));
 			}
 		}
 
@@ -2700,7 +2690,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, FORCE_SAVING, ARCHERS_INTUITION, SURPRISE_PANIC, SURVIVAL_TECHNIQUE, DEXTERITY);
 				break;
 			case RAT_KING:
-				Collections.addAll(tierTalents, ROYAL_PRIVILEGE, ROYAL_INTUITION, KINGS_WISDOM, NOBLE_CAUSE);
+				Collections.addAll(tierTalents, ROYAL_PRIVILEGE, ROYAL_INTUITION, KINGS_WISDOM, NOBLE_CAUSE, ROYAL_FOCUS);
 				break;
 		}
 		for (Talent talent : tierTalents){

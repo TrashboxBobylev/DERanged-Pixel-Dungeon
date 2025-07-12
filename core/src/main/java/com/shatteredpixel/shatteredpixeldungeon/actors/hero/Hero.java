@@ -2042,8 +2042,8 @@ public class Hero extends Char {
 			chance += 1f;
 		}
 
-		if (hasTalent(Talent.BASIC_PRACTICE)) {
-			chance += 0.02f * pointsInTalent(Talent.BASIC_PRACTICE);
+		if (hasTalent(Talent.BASIC_PRACTICE, Talent.ROYAL_FOCUS)) {
+			chance += 0.02f * pointsInTalent(Talent.BASIC_PRACTICE, Talent.ROYAL_FOCUS);
 		}
 
 		if (wep instanceof MissileWeapon && hasTalent(Talent.CRITICAL_THROW)) {
