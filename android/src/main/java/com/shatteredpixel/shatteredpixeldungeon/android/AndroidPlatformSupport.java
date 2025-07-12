@@ -30,7 +30,6 @@ import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.view.View;
 import android.view.WindowManager;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidGraphics;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -40,13 +39,41 @@ import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.Game;
 import com.watabou.utils.PlatformSupport;
+import com.zrp200.scrollofdebug.PackageTrie;
+import dalvik.system.DexFile;
 
+import java.io.IOException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AndroidPlatformSupport extends PlatformSupport {
-	
+
+	@Override
+	public PackageTrie findClasses(String pkgName) throws ClassNotFoundException {
+		return new PackageTrie() {
+			{
+				try {
+					Enumeration<String> entries = new DexFile(AndroidLauncher.instance
+							.getContext()
+							.getPackageCodePath()
+					).entries();
+					String n; while(entries.hasMoreElements()) {
+						n = entries.nextElement();
+						if(n.contains(pkgName)) try {
+							addClass(Class.forName(n), pkgName);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				} catch (IOException e) {
+					//e.printStackTrace();
+				}
+			}
+		};
+	}
+
 	public void updateDisplaySize(){
 		if (SPDSettings.landscape() != null) {
 			AndroidLauncher.instance.setRequestedOrientation( SPDSettings.landscape() ?

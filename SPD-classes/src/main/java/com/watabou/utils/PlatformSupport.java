@@ -28,10 +28,14 @@ import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.watabou.input.ControllerHandler;
 import com.watabou.noosa.Game;
+import com.zrp200.scrollofdebug.PackageTrie;
 
 import java.util.HashMap;
 
 public abstract class PlatformSupport {
+	public PackageTrie findClasses(String pckgname) throws ClassNotFoundException {
+		return PackageTrie.getClassesForPackage(pckgname);
+	}
 	
 	public abstract void updateDisplaySize();
 	
