@@ -143,7 +143,7 @@ public enum HeroClass {
 	KNIGHT( HeroSubClass.DEATHKNIGHT, HeroSubClass.HORSEMAN, HeroSubClass.CRUSADER),
 	MEDIC( HeroSubClass.SAVIOR, HeroSubClass.THERAPIST, HeroSubClass.MEDICALOFFICER ),
 	ARCHER( HeroSubClass.BOWMASTER, HeroSubClass.JUGGLER, HeroSubClass.SHARPSHOOTER ),
-	RAT_KING();
+	RAT_KING(HeroSubClass.KING);
 
 	private HeroSubClass[] subClasses;
 

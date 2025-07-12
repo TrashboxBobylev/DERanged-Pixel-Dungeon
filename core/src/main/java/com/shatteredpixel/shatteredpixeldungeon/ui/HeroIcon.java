@@ -162,6 +162,7 @@ public class HeroIcon extends Image {
 //	public static final int 				= 95;
 
 	public static final int RATMOGRIFY      = 96;
+	public static final int KING            = 97;
 
 	//action indicator visuals
 	public static final int BERSERK         = 104;

@@ -78,7 +78,9 @@ public enum HeroSubClass {
 
 	BOWMASTER(HeroIcon.BOWMASTER),
 	JUGGLER(HeroIcon.JUGGLER),
-	SHARPSHOOTER(HeroIcon.SHARPSHOOTER);
+	SHARPSHOOTER(HeroIcon.SHARPSHOOTER),
+
+	KING(HeroIcon.KING);
 
 	int icon;
 

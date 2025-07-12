@@ -21,9 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.level;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
@@ -105,16 +102,16 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.spellbook.SpellBook;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ShardOfOblivion;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.bow.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.bow.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blooming;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Elastic;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Lucky;
@@ -131,13 +128,13 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
@@ -154,6 +151,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.level;
 
 public enum Talent {
 
@@ -777,7 +777,33 @@ public enum Talent {
 	ATK_SPEED_ENHANCE			(0, 12, 4),
 	ACC_ENHANCE					(1, 12, 4),
 	EVA_ENHANCE					(2, 12, 4),
-	BETTER_CHOICE				(3, 12, 3);
+	BETTER_CHOICE				(3, 12, 3),
+
+	ROYAL_PRIVILEGE(0, 13), // food related talents
+	ROYAL_INTUITION(1, 13), // intuition-related talents, uses survivalist's icon
+	KINGS_WISDOM(2, 13), // on-id + combat talents
+	NOBLE_CAUSE(3, 13), // other ones. uses iron will
+	ROYAL_MEAL(5, 13), /// all on-eat talents for tier 2
+	RESTORATION(6, 13), // all upgrade/potion of healing talents
+	POWER_WITHIN(7, 13), // runic (3), wand preservation (3), rogue's foresight (5), rejuvenating steps (3)
+	KINGS_VISION(8, 13), // improvised projectiles (4), arcane vision(4), wide search(3), heightened senses(4)
+	PURSUIT(9, 13), // durable projectiles (5),silent steps(4),lethal momentum (3),shield battery(5)
+	// Rat King T3
+	RK_BERSERKER(11, 13,3), RK_GLADIATOR(12, 13,3), RK_VETERAN(13, 13, 3),
+	RK_BATTLEMAGE(11, 14,3), RK_WARLOCK(12, 14,3), RK_WIZARD(13, 14, 3),
+	RK_ASSASSIN(11, 15,3), RK_FREERUNNER(12, 15,3), RK_CHASER(13, 15, 3),
+	RK_SNIPER(14, 13,3), RK_WARDEN(15, 13,3), RK_FIGHTER(16, 13, 3),
+	RK_CHAMPION(14, 14,3), RK_MONK(15, 14,3), RK_FENCER(16, 14, 3),
+	RK_PRIEST(14, 15,3), RK_PALADIN(15, 15,3), RK_ENCHANTER(16, 15, 3),
+	RK_OUTLAW(17, 13,3), RK_GUNSLINGER(18, 13,3), RK_SPECIALIST(19, 13, 3),
+	RK_SLASHER(17, 14,3), RK_MASTER(18, 14,3), RK_SLAYER(19, 14, 3),
+	RK_ENGINEER(17, 15,3), RK_EXPLORER(18, 15,3), RK_RESEARCHER(19, 15, 3),
+	RK_DEATHKNIGHT(20, 13,3), RK_HORSEMAN(21, 13,3), RK_CRUSADER(22, 13, 3),
+	RK_SAVIOR(20, 14,3), RK_THERAPIST(21, 14,3), RK_MEDICALOFFICER(22, 14, 3),
+
+	// Wrath2
+	AFTERSHOCK(RK_MONK.icon+10,4), RAT_BLAST(AFTERSHOCK.icon+1,4), SMOKE_AND_MIRRORS(AFTERSHOCK.icon+2,4), SEA_OF_BLADES(AFTERSHOCK.icon+3,4),
+	;
 
 
 	public static final int TALENT_NUMBER = 44;

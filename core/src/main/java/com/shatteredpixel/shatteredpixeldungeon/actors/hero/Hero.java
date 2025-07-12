@@ -314,25 +314,14 @@ public class Hero extends Char {
 	public boolean matchSubclass(HeroSubClass sub1, HeroSubClass sub2){
 		if (sub1 == HeroSubClass.KING){
 			switch (sub2){
-				default: return false;
+				default:
+					try {
+						return hasTalent(Talent.valueOf("RK_" + sub2));
+					} catch (IllegalArgumentException e) {
+						return false;
+					}
 				case KING:
 					return true;
-				case BERSERKER:
-					return hasTalent(Talent.RK_BERSERKER);
-				case GLADIATOR:
-					return hasTalent(Talent.RK_GLADIATOR);
-				case BATTLEMAGE:
-					return hasTalent(Talent.RK_BATTLEMAGE);
-				case WARLOCK:
-					return hasTalent(Talent.RK_WARLOCK);
-				case ASSASSIN:
-					return hasTalent(Talent.RK_ASSASSIN);
-				case FREERUNNER:
-					return hasTalent(Talent.RK_FREERUNNER);
-				case SNIPER:
-					return hasTalent(Talent.RK_SNIPER);
-				case WARDEN:
-					return hasTalent(Talent.RK_WARDEN);
 			}
 		} else {
 			return sub1 == sub2;
@@ -377,7 +366,7 @@ public class Hero extends Char {
 
 	public boolean matchClass(HeroClass class1, HeroClass class2){
 		if (class1 == HeroClass.RAT_KING){
-			return class2 != HeroClass.DUELIST && class2 != HeroClass.CLERIC;
+			return true;
 		} else {
 			return class1 == class2;
 		}
