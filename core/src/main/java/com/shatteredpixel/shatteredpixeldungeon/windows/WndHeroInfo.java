@@ -95,6 +95,8 @@ public class WndHeroInfo extends WndTabbed {
 			case ARCHER:
 				tabIcon = new ItemSprite(ItemSpriteSheet.LONGBOW, null);
 				break;
+			case RAT_KING:
+				tabIcon = new ItemSprite(ItemSpriteSheet.ARMOR_RAT_KING); // placeholder
 		}
 
 		int finalHeight = MIN_HEIGHT;
@@ -263,6 +265,10 @@ public class WndHeroInfo extends WndTabbed {
 							new ItemSprite(ItemSpriteSheet.WORN_SHORTBOW),
 							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
 					break;
+				case RAT_KING:
+					// placeholder, even if it is funny.
+					icons = new Image[info.length];
+					for(int i=0; i < icons.length; i++) icons[i] = new ItemSprite(ItemSpriteSheet.ARMOR_RAT_KING);
 			}
 			for (Image im : icons) {
 				add(im);
