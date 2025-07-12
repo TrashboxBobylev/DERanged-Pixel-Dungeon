@@ -508,8 +508,8 @@ public abstract class Char extends Actor {
 
 			if (enemy.buff(GuidingLight.Illuminated.class) != null){
 				enemy.buff(GuidingLight.Illuminated.class).detach();
-				if (this == Dungeon.hero && Dungeon.hero.hasTalent(Talent.SEARING_LIGHT)){
-					dmg += 2 + 2*Dungeon.hero.pointsInTalent(Talent.SEARING_LIGHT);
+				if (this == Dungeon.hero && Dungeon.hero.hasTalent(Talent.SEARING_LIGHT, Talent.KINGS_WISDOM)){
+					dmg += 2 + 2*Dungeon.hero.pointsInTalent(Talent.SEARING_LIGHT, Talent.KINGS_WISDOM);
 				}
 				if (this == Dungeon.hero && Dungeon.hero.hasTalent(Talent.WARDING_LIGHT)){
 					Buff.affect(Dungeon.hero, Barrier.class).setShield(1+2*Dungeon.hero.pointsInTalent(Talent.WARDING_LIGHT));

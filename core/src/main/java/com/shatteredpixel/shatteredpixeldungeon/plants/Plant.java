@@ -76,9 +76,9 @@ public abstract class Plant implements Bundlable {
 			Buff.affect(ch, Vulnerable.class, 1f+2*Dungeon.hero.pointsInTalent(Talent.WEAKENING_POISON));
 		}
 
-		if (Dungeon.level.heroFOV[pos] && Dungeon.hero.hasTalent(Talent.NATURES_AID)){
+		if (Dungeon.level.heroFOV[pos] && Dungeon.hero.hasTalent(Talent.NATURES_AID, Talent.NOBLE_CAUSE)){
 			// 3/5 turns based on talent points spent
-			Barkskin.conditionallyAppend(Dungeon.hero, 2, 1 + 2*(Dungeon.hero.pointsInTalent(Talent.NATURES_AID)));
+			Barkskin.conditionallyAppend(Dungeon.hero, 2, 1 + 2*(Dungeon.hero.pointsInTalent(Talent.NATURES_AID, Talent.NOBLE_CAUSE)));
 		}
 
 		wither();

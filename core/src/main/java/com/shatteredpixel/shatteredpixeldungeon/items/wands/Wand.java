@@ -240,7 +240,7 @@ public abstract class Wand extends Item {
 
 		if (target.alignment != Char.Alignment.ALLY
 				&& !Dungeon.hero.heroClass.is(HeroClass.CLERIC)
-				&& Dungeon.hero.hasTalent(Talent.SEARING_LIGHT)
+				&& Dungeon.hero.hasTalent(Talent.SEARING_LIGHT, Talent.KINGS_WISDOM)
 				&& Dungeon.hero.buff(Talent.SearingLightCooldown.class) == null){
 			Buff.affect(target, GuidingLight.Illuminated.class);
 			Buff.affect(Dungeon.hero, Talent.SearingLightCooldown.class, 20f);
@@ -486,7 +486,7 @@ public abstract class Wand extends Item {
 			float uses = Math.min( availableUsesToID, Talent.itemIDSpeedFactor(Dungeon.hero, this) );
 			availableUsesToID -= uses;
 			usesLeftToID -= uses;
-			if (usesLeftToID <= 0 || Dungeon.hero.pointsInTalent(Talent.SCHOLARS_INTUITION) == 2) {
+			if (usesLeftToID <= 0 || Dungeon.hero.pointsInTalent(Talent.SCHOLARS_INTUITION, Talent.ROYAL_INTUITION) == 2) {
 				if (ShardOfOblivion.passiveIDDisabled()){
 					if (usesLeftToID > -1){
 						GLog.p(Messages.get(ShardOfOblivion.class, "identify_ready"), name());
@@ -762,14 +762,14 @@ public abstract class Wand extends Item {
 
 					//backup barrier logic
 					//This triggers before the wand zap, mostly so the barrier helps vs skeletons
-					if (curUser.hasTalent(Talent.BACKUP_BARRIER)
+					if (curUser.hasTalent(Talent.BACKUP_BARRIER, Talent.NOBLE_CAUSE)
 							&& curWand.curCharges == curWand.chargesPerCast()
 							&& curWand.charger != null && curWand.charger.target == curUser){
 
 						//regular. If hero owns wand but it isn't in belongings it must be in the staff
 						if (curUser.heroClass.is(HeroClass.MAGE) && !curUser.belongings.contains(curWand)){
 							//grants 3/5 shielding
-							int shieldToGive = 1 + 2 * Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER);
+							int shieldToGive = 1 + 2 * Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER, Talent.NOBLE_CAUSE);
 							Buff.affect(Dungeon.hero, Barrier.class).setShield(shieldToGive);
 							Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldToGive), FloatingText.SHIELDING);
 
@@ -783,7 +783,7 @@ public abstract class Wand extends Item {
 							}
 							if (highest){
 								//grants 3/5 shielding
-								int shieldToGive = 1 + 2 * Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER);
+								int shieldToGive = 1 + 2 * Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER, Talent.NOBLE_CAUSE);
 								Buff.affect(Dungeon.hero, Barrier.class).setShield(shieldToGive);
 								Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldToGive), FloatingText.SHIELDING);
 							}

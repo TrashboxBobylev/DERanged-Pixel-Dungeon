@@ -125,7 +125,7 @@ public abstract class ShieldBuff extends Buff {
 				if (buff.shielding() <= 0) continue;
 				damage = buff.absorbDamage(damage);
 				if (buff.shielding() <= 0){
-					if (target instanceof Hero && ((Hero) target).hasTalent(Talent.PROVOKED_ANGER)){
+					if (target instanceof Hero && ((Hero) target).hasTalent(Talent.PROVOKED_ANGER, Talent.KINGS_WISDOM)){
 						Buff.affect(target, Talent.ProvokedAngerTracker.class, 5f);
 					}
 				}

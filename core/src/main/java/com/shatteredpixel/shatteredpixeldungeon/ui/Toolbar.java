@@ -258,7 +258,7 @@ public class Toolbar extends Component {
 						if (Dungeon.hero.hasTalent(Talent.HOLD_FAST)){
 							Buff.affect(Dungeon.hero, HoldFast.class).pos = Dungeon.hero.pos;
 						}
-						if (Dungeon.hero.hasTalent(Talent.PATIENT_STRIKE)){
+						if (Dungeon.hero.hasTalent(Talent.PATIENT_STRIKE, Talent.KINGS_WISDOM)){
 							Buff.affect(Dungeon.hero, Talent.PatientStrikeTracker.class).pos = Dungeon.hero.pos;
 						}
 						Dungeon.hero.next();

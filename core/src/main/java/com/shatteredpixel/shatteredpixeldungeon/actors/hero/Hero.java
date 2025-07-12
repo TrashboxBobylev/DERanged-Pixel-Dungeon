@@ -1936,10 +1936,10 @@ public class Hero extends Char {
 		if (attackTarget.isAlive() && canAttack(attackTarget) && attackTarget.invisible == 0) {
 
 			if (!heroClass.is(HeroClass.DUELIST)
-					&& hasTalent(Talent.AGGRESSIVE_BARRIER)
+					&& hasTalent(Talent.AGGRESSIVE_BARRIER, Talent.NOBLE_CAUSE)
 					&& buff(Talent.AggressiveBarrierCooldown.class) == null
 					&& (HP / (float)HT) <= 0.5f){
-				int shieldAmt = 1 + 2*pointsInTalent(Talent.AGGRESSIVE_BARRIER);
+				int shieldAmt = 1 + 2*pointsInTalent(Talent.AGGRESSIVE_BARRIER, Talent.NOBLE_CAUSE);
 				Buff.affect(this, Barrier.class).setShield(shieldAmt);
 				sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldAmt), FloatingText.SHIELDING);
 				Buff.affect(this, Talent.AggressiveBarrierCooldown.class, 50f);
@@ -1975,7 +1975,7 @@ public class Hero extends Char {
 		if (hasTalent(Talent.HOLD_FAST)){
 			Buff.affect(this, HoldFast.class).pos = pos;
 		}
-		if (hasTalent(Talent.PATIENT_STRIKE)){
+		if (hasTalent(Talent.PATIENT_STRIKE, Talent.KINGS_WISDOM)){
 			Buff.affect(Dungeon.hero, Talent.PatientStrikeTracker.class).pos = Dungeon.hero.pos;
 		}
 		if (!fullRest) {

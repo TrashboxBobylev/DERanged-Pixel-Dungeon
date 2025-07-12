@@ -46,7 +46,7 @@ public class PhysicalEmpower extends Buff {
 
 	@Override
 	public float iconFadePercent() {
-		float max = 1 + Dungeon.hero.pointsInTalent(Talent.STRENGTHENING_MEAL);
+		float max = 1 + Dungeon.hero.pointsInTalent(Talent.STRENGTHENING_MEAL, Talent.ROYAL_PRIVILEGE);
 		return Math.max(0, (max-left) / max);
 	}
 

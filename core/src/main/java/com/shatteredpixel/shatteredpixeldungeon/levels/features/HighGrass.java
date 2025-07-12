@@ -91,14 +91,14 @@ public class HighGrass {
 				}
 
 				//berries try to drop on floors 2/3/4/6/7/8, to a max of 4/6
-				if (ch instanceof Hero && ((Hero) ch).hasTalent(Talent.NATURES_BOUNTY)){
-					int berriesAvailable = 2 + 2*((Hero) ch).pointsInTalent(Talent.NATURES_BOUNTY);
+				if (ch instanceof Hero && ((Hero) ch).hasTalent(Talent.NATURES_BOUNTY, Talent.ROYAL_PRIVILEGE)){
+					int berriesAvailable = 2 + 2*((Hero) ch).pointsInTalent(Talent.NATURES_BOUNTY, Talent.ROYAL_PRIVILEGE);
 
 					Talent.NatureBerriesDropped dropped = Buff.affect(ch, Talent.NatureBerriesDropped.class);
 					berriesAvailable -= dropped.count();
 
 					if (berriesAvailable > 0) {
-						int targetFloor = 2 + 2 * ((Hero) ch).pointsInTalent(Talent.NATURES_BOUNTY);
+						int targetFloor = 2 + 2 * ((Hero) ch).pointsInTalent(Talent.NATURES_BOUNTY, Talent.ROYAL_PRIVILEGE);
 						targetFloor -= berriesAvailable;
 						targetFloor += (targetFloor >= 5) ? 3 : 2;
 

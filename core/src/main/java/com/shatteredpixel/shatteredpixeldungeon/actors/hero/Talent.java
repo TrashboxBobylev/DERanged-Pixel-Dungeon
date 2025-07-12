@@ -849,10 +849,10 @@ public enum Talent {
 		@Override
 		public boolean act() {
 			//barrier every 2/1 turns, to a max of 3/5
-			if (((Hero)target).hasTalent(Talent.PROTECTIVE_SHADOWS) && target.invisible > 0){
+			if (((Hero)target).hasTalent(Talent.PROTECTIVE_SHADOWS, NOBLE_CAUSE) && target.invisible > 0){
 				Barrier barrier = Buff.affect(target, Barrier.class);
-				if (barrier.shielding() < 1 + 2*((Hero)target).pointsInTalent(Talent.PROTECTIVE_SHADOWS)) {
-					barrierInc += 0.5f * ((Hero) target).pointsInTalent(Talent.PROTECTIVE_SHADOWS);
+				if (barrier.shielding() < 1 + 2*((Hero)target).pointsInTalent(Talent.PROTECTIVE_SHADOWS, NOBLE_CAUSE)) {
+					barrierInc += 0.5f * ((Hero) target).pointsInTalent(Talent.PROTECTIVE_SHADOWS, NOBLE_CAUSE);
 				}
 				if (barrierInc >= 1){
 					barrierInc = 0;
@@ -1552,11 +1552,11 @@ public enum Talent {
 
 		//warrior
 		//for metamorphosis
-		if (talent == IRON_WILL && !hero.heroClass.is(HeroClass.WARRIOR)){
+		if ((talent == IRON_WILL || talent == NOBLE_CAUSE) && !hero.heroClass.is(HeroClass.WARRIOR)){
 			Buff.affect(hero, BrokenSeal.WarriorShield.class);
 		}
 
-		if (talent == VETERANS_INTUITION && hero.pointsInTalent(VETERANS_INTUITION) == 2){
+		if ((talent == VETERANS_INTUITION || talent == ROYAL_INTUITION) && hero.pointsInTalent(VETERANS_INTUITION, ROYAL_INTUITION) == 2){
 			if (hero.belongings.armor() != null && !ShardOfOblivion.passiveIDDisabled())  {
 				hero.belongings.armor.identify();
 			}
@@ -1573,7 +1573,7 @@ public enum Talent {
 
 
 		//rouge
-		if (talent == THIEFS_INTUITION && hero.pointsInTalent(THIEFS_INTUITION) == 2){
+		if ((talent == THIEFS_INTUITION || talent == ROYAL_INTUITION) && hero.pointsInTalent(THIEFS_INTUITION, ROYAL_INTUITION) == 2){
 			if (hero.belongings.ring instanceof Ring && !ShardOfOblivion.passiveIDDisabled()) {
 				hero.belongings.ring.identify();
 			}
@@ -1586,18 +1586,18 @@ public enum Talent {
 				}
 			}
 		}
-		if (talent == THIEFS_INTUITION && hero.pointsInTalent(THIEFS_INTUITION) == 1){
+		if ((talent == THIEFS_INTUITION || talent == ROYAL_INTUITION) && hero.pointsInTalent(THIEFS_INTUITION, ROYAL_INTUITION) == 1){
 			if (hero.belongings.ring instanceof Ring) hero.belongings.ring.setKnown();
 			if (hero.belongings.misc instanceof Ring) ((Ring) hero.belongings.misc).setKnown();
 		}
 
-		if (talent == ADVENTURERS_INTUITION && hero.pointsInTalent(ADVENTURERS_INTUITION) == 2){
+		if ((talent == ADVENTURERS_INTUITION || talent == ROYAL_INTUITION) && hero.pointsInTalent(ADVENTURERS_INTUITION, ROYAL_INTUITION) == 2){
 			if (hero.belongings.weapon() != null && !ShardOfOblivion.passiveIDDisabled()){
 				hero.belongings.weapon().identify();
 			}
 		}
 
-		if (talent == PROTECTIVE_SHADOWS && hero.invisible > 0){
+		if ((talent == PROTECTIVE_SHADOWS || talent == NOBLE_CAUSE) && hero.invisible > 0){
 			Buff.affect(hero, Talent.ProtectiveShadowsTracker.class);
 		}
 
@@ -1695,10 +1695,10 @@ public enum Talent {
 	public static class HarvestBerriesDropped extends CounterBuff{{revivePersists = true;}};
 
 	public static void onFoodEaten( Hero hero, float foodVal, Item foodSource ){
-		if (hero.hasTalent(HEARTY_MEAL)){
+		if (hero.hasTalent(HEARTY_MEAL, ROYAL_PRIVILEGE)){
 			//4/6 HP healed, when hero is below 33% health (with a little rounding up)
 			if (hero.HP/(float)hero.HT < 0.334f) {
-				int healing = 2 + 2 * hero.pointsInTalent(HEARTY_MEAL);
+				int healing = 2 + 2 * hero.pointsInTalent(HEARTY_MEAL, ROYAL_PRIVILEGE);
 				hero.HP = Math.min(hero.HP + healing, hero.HT);
 				hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(healing), FloatingText.HEALING);
 
@@ -1709,9 +1709,9 @@ public enum Talent {
 				Buff.affect(hero, WarriorFoodImmunity.class, hero.cooldown());
 			}
 		}
-		if (hero.hasTalent(EMPOWERING_MEAL)){
+		if (hero.hasTalent(EMPOWERING_MEAL, ROYAL_PRIVILEGE)){
 			//2/3 bonus wand damage for next 3 zaps
-			Buff.affect( hero, WandEmpower.class).set(1 + hero.pointsInTalent(EMPOWERING_MEAL), 3);
+			Buff.affect( hero, WandEmpower.class).set(1 + hero.pointsInTalent(EMPOWERING_MEAL, ROYAL_PRIVILEGE), 3);
 			ScrollOfRecharging.charge( hero );
 		}
 		int wandChargeTurns = 0;
@@ -1728,9 +1728,9 @@ public enum Talent {
 			//effectively 1/2 turns of haste
 			Buff.prolong( hero, Haste.class, 0.67f+hero.pointsInTalent(INVIGORATING_MEAL));
 		}
-		if (hero.hasTalent(STRENGTHENING_MEAL)){
+		if (hero.hasTalent(STRENGTHENING_MEAL, ROYAL_PRIVILEGE)){
 			//3 bonus physical damage for next 2/3 attacks
-			Buff.affect( hero, PhysicalEmpower.class).set(3, 1 + hero.pointsInTalent(STRENGTHENING_MEAL));
+			Buff.affect( hero, PhysicalEmpower.class).set(3, 1 + hero.pointsInTalent(STRENGTHENING_MEAL, ROYAL_PRIVILEGE));
 		}
 		if (hero.hasTalent(FOCUSED_MEAL)){
 			if (hero.heroClass.is(HeroClass.DUELIST)){
@@ -1742,12 +1742,12 @@ public enum Talent {
 				Buff.affect( hero, PhysicalEmpower.class).set(Math.round(hero.lvl / (4f - hero.pointsInTalent(FOCUSED_MEAL))), 1);
 			}
 		}
-		if (hero.hasTalent(SATIATED_SPELLS)){
+		if (hero.hasTalent(SATIATED_SPELLS, Talent.ROYAL_PRIVILEGE)){
 			if (hero.heroClass.is(HeroClass.CLERIC)) {
 				Buff.affect(hero, SatiatedSpellsTracker.class);
 			} else {
 				//3/5 shielding, delayed up to 10 turns
-				int amount = 1 + 2*hero.pointsInTalent(SATIATED_SPELLS);
+				int amount = 1 + 2*hero.pointsInTalent(SATIATED_SPELLS, Talent.ROYAL_PRIVILEGE);
 				Barrier b = Buff.affect(hero, Barrier.class);
 				if (b.shielding() <= amount){
 					b.setShield(amount);
@@ -1897,7 +1897,16 @@ public enum Talent {
 
 	public static float itemIDSpeedFactor( Hero hero, Item item ){
 		// 1.75x/2.5x speed with Huntress talent
-		float factor = 1f + 0.75f*hero.pointsInTalent(SURVIVALISTS_INTUITION);
+		float factor = 1f;
+
+		factor = 1f + 0.75f*hero.pointsInTalent(SURVIVALISTS_INTUITION);
+
+		// all royal intuition is now handled here.
+		factor *= 1 + hero.pointsInTalent(ROYAL_INTUITION) * (0.75f + (
+				item instanceof MeleeWeapon || item instanceof Armor ? 2 // armsmaster
+						: item instanceof Ring ? 2 // thief's intuition
+						: item instanceof Wand ? 3 // scholar's intuition
+						: 0));
 
 		// Affected by both Warrior(1.75x/2.5x) and Duelist(2.5x/inst.) talents
 		if (item instanceof MeleeWeapon){
@@ -2097,6 +2106,9 @@ public enum Talent {
 		if (hero.pointsInTalent(ADVENTURERS_INTUITION) == 2 && item instanceof Weapon){
 			identify = true;
 		}
+		if (hero.pointsInTalent(ROYAL_INTUITION) == 2) {
+			identify = true;
+		}
 
 		if (identify && !ShardOfOblivion.passiveIDDisabled()){
 			item.identify();
@@ -2113,7 +2125,7 @@ public enum Talent {
 	}
 
 	public static void onItemCollected( Hero hero, Item item ){
-		if (hero.pointsInTalent(THIEFS_INTUITION) == 2){
+		if (hero.pointsInTalent(THIEFS_INTUITION, ROYAL_INTUITION) == 2){
 			if (item instanceof Ring) ((Ring) item).setKnown();
 		}
 		if (hero.pointsInTalent(GUNNERS_INTUITION) == 2 && item instanceof Gun) {
@@ -2140,31 +2152,31 @@ public enum Talent {
 			hero.buff(MeleeWeapon.DashAttack.class).detach();
 		}
 
-		if (hero.hasTalent(Talent.PROVOKED_ANGER)
+		if (hero.hasTalent(Talent.PROVOKED_ANGER, KINGS_WISDOM)
 			&& hero.buff(ProvokedAngerTracker.class) != null){
-			damage += 1 + hero.pointsInTalent(Talent.PROVOKED_ANGER);
+			damage += 1 + hero.pointsInTalent(Talent.PROVOKED_ANGER, KINGS_WISDOM);
 			hero.buff(ProvokedAngerTracker.class).detach();
 		}
 
-		if (hero.hasTalent(Talent.LINGERING_MAGIC)
+		if (hero.hasTalent(Talent.LINGERING_MAGIC, KINGS_WISDOM)
 				&& hero.buff(LingeringMagicTracker.class) != null){
-			damage += Random.IntRange(hero.pointsInTalent(Talent.LINGERING_MAGIC) , 2);
+			damage += Random.IntRange(hero.pointsInTalent(Talent.LINGERING_MAGIC, KINGS_WISDOM) , 2);
 			hero.buff(LingeringMagicTracker.class).detach();
 		}
 
-		if (hero.hasTalent(Talent.SUCKER_PUNCH)
+		if (hero.hasTalent(Talent.SUCKER_PUNCH, KINGS_WISDOM)
 				&& enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)
 				&& enemy.buff(SuckerPunchTracker.class) == null){
-			damage += Random.IntRange(hero.pointsInTalent(Talent.SUCKER_PUNCH) , 2);
+			damage += Random.IntRange(hero.pointsInTalent(Talent.SUCKER_PUNCH, KINGS_WISDOM) , 2);
 			Buff.affect(enemy, SuckerPunchTracker.class);
 		}
 
-		if (hero.hasTalent(Talent.FOLLOWUP_STRIKE) && enemy.isAlive() && enemy.alignment == Char.Alignment.ENEMY) {
+		if (hero.hasTalent(Talent.FOLLOWUP_STRIKE, KINGS_WISDOM) && enemy.isAlive() && enemy.alignment == Char.Alignment.ENEMY) {
 			if (hero.belongings.attackingWeapon() instanceof MissileWeapon) {
 				Buff.prolong(hero, FollowupStrikeTracker.class, 5f).object = enemy.id();
 			} else if (hero.buff(FollowupStrikeTracker.class) != null
 					&& hero.buff(FollowupStrikeTracker.class).object == enemy.id()){
-				damage += 1 + hero.pointsInTalent(FOLLOWUP_STRIKE);
+				damage += 1 + hero.pointsInTalent(FOLLOWUP_STRIKE, KINGS_WISDOM);
 				if (hero.belongings.weapon == null && hero.subClass.is(HeroSubClass.FIGHTER)) {
 					Buff.affect( enemy, Paralysis.class, 1f );
 				}
@@ -2179,11 +2191,11 @@ public enum Talent {
 			hero.buff(Talent.SpiritBladesTracker.class).detach();
 		}
 
-		if (hero.hasTalent(PATIENT_STRIKE)){
+		if (hero.hasTalent(PATIENT_STRIKE, KINGS_WISDOM)){
 			if (hero.buff(PatientStrikeTracker.class) != null
 					&& !(hero.belongings.attackingWeapon() instanceof MissileWeapon)){
 				hero.buff(PatientStrikeTracker.class).detach();
-				damage += Random.IntRange(hero.pointsInTalent(Talent.PATIENT_STRIKE), 2);
+				damage += Random.IntRange(hero.pointsInTalent(Talent.PATIENT_STRIKE, KINGS_WISDOM), 2);
 			}
 		}
 
@@ -2686,6 +2698,9 @@ public enum Talent {
 				break;
 			case ARCHER:
 				Collections.addAll(tierTalents, FORCE_SAVING, ARCHERS_INTUITION, SURPRISE_PANIC, SURVIVAL_TECHNIQUE, DEXTERITY);
+				break;
+			case RAT_KING:
+				Collections.addAll(tierTalents, ROYAL_PRIVILEGE, ROYAL_INTUITION, KINGS_WISDOM, NOBLE_CAUSE);
 				break;
 		}
 		for (Talent talent : tierTalents){

@@ -533,11 +533,11 @@ public abstract class RegularLevel extends Level {
 		//cached rations try to drop in a special room on floors 2/4/7, to a max of 2/3
 		//we incremented dropped by 2 for compatibility with pre-v2.4 saves (when the talent dropped 4/6 items)
 		Random.pushGenerator( Random.Long() );
-			if (Dungeon.hero.hasTalent(Talent.CACHED_RATIONS)){
+			if (Dungeon.hero.hasTalent(Talent.CACHED_RATIONS, Talent.ROYAL_PRIVILEGE)){
 				Talent.CachedRationsDropped dropped = Buff.affect(Dungeon.hero, Talent.CachedRationsDropped.class);
 				int targetFloor = (int)(2 + dropped.count());
 				if (dropped.count() > 4) targetFloor++;
-				if (Dungeon.depth >= targetFloor && dropped.count() < 2 + 2*Dungeon.hero.pointsInTalent(Talent.CACHED_RATIONS)){
+				if (Dungeon.depth >= targetFloor && dropped.count() < 2 + 2*Dungeon.hero.pointsInTalent(Talent.CACHED_RATIONS, Talent.ROYAL_PRIVILEGE)){
 					int cell;
 					int tries = 100;
 					boolean valid;

@@ -265,9 +265,9 @@ public class MeleeWeapon extends Weapon {
 		}
 
 		if (hero.heroClass.is(HeroClass.DUELIST)
-				&& hero.hasTalent(Talent.AGGRESSIVE_BARRIER)
+				&& hero.hasTalent(Talent.AGGRESSIVE_BARRIER, Talent.NOBLE_CAUSE)
 				&& (hero.HP / (float)hero.HT) <= 0.5f){
-			int shieldAmt = 1 + 2*hero.pointsInTalent(Talent.AGGRESSIVE_BARRIER);
+			int shieldAmt = 1 + 2*hero.pointsInTalent(Talent.AGGRESSIVE_BARRIER, Talent.NOBLE_CAUSE);
 			Buff.affect(hero, Barrier.class).setShield(shieldAmt);
 			hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldAmt), FloatingText.SHIELDING);
 		}

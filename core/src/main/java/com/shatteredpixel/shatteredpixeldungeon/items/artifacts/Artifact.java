@@ -156,7 +156,7 @@ public class Artifact extends KindofMisc {
 
 		if (target.alignment != Char.Alignment.ALLY
 				&& !Dungeon.hero.heroClass.is(HeroClass.CLERIC)
-				&& Dungeon.hero.hasTalent(Talent.SEARING_LIGHT)
+				&& Dungeon.hero.hasTalent(Talent.SEARING_LIGHT, Talent.KINGS_WISDOM)
 				&& Dungeon.hero.buff(Talent.SearingLightCooldown.class) == null){
 			Buff.affect(target, GuidingLight.Illuminated.class);
 			Buff.affect(Dungeon.hero, Talent.SearingLightCooldown.class, 20f);
