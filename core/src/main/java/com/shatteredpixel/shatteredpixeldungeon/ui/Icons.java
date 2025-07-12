@@ -486,7 +486,7 @@ public enum Icons {
 	
 	public static Image get( HeroClass cl ) {
 		switch (cl) {
-			case WARRIOR:
+			case WARRIOR: default:
 				return new ItemSprite(ItemSpriteSheet.SEAL);
 			case MAGE:
 				//mage's staff normally has 2 pixels extra at the top for particle effects, we chop that off here
@@ -515,8 +515,6 @@ public enum Icons {
 				return new ItemSprite(ItemSpriteSheet.GAMMA_RAY_GUN);
 			case ARCHER:
 				return new ItemSprite(ItemSpriteSheet.LONGBOW);
-			default:
-				return null;
 		}
 	}
 

@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Button;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
@@ -217,7 +218,7 @@ public class StartScene extends PixelScene {
 				}
 				
 				if (hero == null){
-					hero = new Image(info.heroClass.spritesheet(), 0, 15*info.armorTier, 12, 15);
+					hero = HeroSprite.avatar(info.heroClass,info.armorTier);
 					add(hero);
 					
 					steps = new Image(Icons.get(Icons.STAIRS));

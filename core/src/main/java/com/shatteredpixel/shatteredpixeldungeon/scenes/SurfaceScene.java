@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.EarthGuardianSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RatSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.WardSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
@@ -412,8 +413,15 @@ public class SurfaceScene extends PixelScene {
 		private static final int HEIGHT	= 32;
 		
 		public Avatar( HeroClass cl ) {
-			super( Assets.Sprites.AVATARS );
-			frame( new TextureFilm( texture, WIDTH, HEIGHT ).get( cl.ordinal() ) );
+			if (cl == HeroClass.RAT_KING) {
+				// FIXME do I want this animated?
+				copy(HeroSprite.avatar(cl, 6));
+				scale.set(WIDTH/width(),HEIGHT/height());
+			}
+			else {
+				texture(Assets.Sprites.AVATARS);
+				frame( new TextureFilm( texture, WIDTH, HEIGHT ).get( cl.ordinal() ) );
+			}
 		}
 	}
 	

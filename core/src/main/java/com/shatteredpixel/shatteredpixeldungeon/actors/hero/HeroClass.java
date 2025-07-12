@@ -152,7 +152,8 @@ public enum HeroClass {
 	ADVENTURER( HeroSubClass.ENGINEER, HeroSubClass.EXPLORER, HeroSubClass.RESEARCHER ),
 	KNIGHT( HeroSubClass.DEATHKNIGHT, HeroSubClass.HORSEMAN, HeroSubClass.CRUSADER),
 	MEDIC( HeroSubClass.SAVIOR, HeroSubClass.THERAPIST, HeroSubClass.MEDICALOFFICER ),
-	ARCHER( HeroSubClass.BOWMASTER, HeroSubClass.JUGGLER, HeroSubClass.SHARPSHOOTER );
+	ARCHER( HeroSubClass.BOWMASTER, HeroSubClass.JUGGLER, HeroSubClass.SHARPSHOOTER ),
+	RAT_KING();
 
 	private HeroSubClass[] subClasses;
 
@@ -557,6 +558,8 @@ public enum HeroClass {
 				return Assets.Sprites.MEDIC;
 			case ARCHER:
 				return Assets.Sprites.ARCHER;
+			case RAT_KING:
+				return Assets.Sprites.RAT_KING_HERO;
 		}
 	}
 
@@ -586,6 +589,8 @@ public enum HeroClass {
 				return Assets.Splashes.MEDIC;
 			case ARCHER:
 				return Assets.Splashes.ARCHER;
+			case RAT_KING:
+				return Assets.Splashes.RAT_KING;
 		}
 	}
 	

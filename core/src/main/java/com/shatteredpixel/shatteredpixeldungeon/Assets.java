@@ -296,6 +296,7 @@ public class Assets {
 		public static final String KNIGHT	= "splashes/knight.jpg";
 		public static final String MEDIC	= "splashes/medic.jpg";
 		public static final String ARCHER	= "splashes/archer.jpg";
+		public static final String RAT_KING = "splashes/ratking.jpg";
 
 		public static final String SEWERS   = "splashes/sewers.jpg";
 		public static final String PRISON   = "splashes/prison.jpg";
@@ -320,6 +321,7 @@ public class Assets {
 		public static final String KNIGHT	= "sprites/knight.png";
 		public static final String MEDIC	= "sprites/medic.png";
 		public static final String ARCHER	= "sprites/archer.png";
+		public static final String RAT_KING_HERO = "sprites/ratkinghero.png";
 		public static final String AVATARS  = "sprites/avatars.png";
 		public static final String PET      = "sprites/pet.png";
 		public static final String AMULET   = "sprites/amulet.png";

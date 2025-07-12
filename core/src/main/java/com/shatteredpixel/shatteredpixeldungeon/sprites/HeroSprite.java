@@ -39,15 +39,18 @@ import com.watabou.utils.RectF;
 
 public class HeroSprite extends CharSprite {
 	
-	private static final int FRAME_WIDTH	= 12;
-	private static final int FRAME_HEIGHT	= 15;
+	public static final int FRAME_WIDTH	= 12;
+	public static final int FRAME_HEIGHT	= 15;
 	
 	private static final int RUN_FRAMERATE	= 20;
+
+	public int frameWidth() { return FRAME_WIDTH; }
+	public int frameHeight() { return FRAME_HEIGHT; }
 	
-	private static TextureFilm tiers;
+	protected static TextureFilm tiers;
 	
-	private Animation fly;
-	private Animation read;
+	protected Animation fly;
+	protected Animation read;
 
 	public HeroSprite() {
 		super();
@@ -164,14 +167,22 @@ public class HeroSprite extends CharSprite {
 	public void sprint( float speed ) {
 		run.delay = 1f / speed / RUN_FRAMERATE;
 	}
-	
-	public static TextureFilm tiers() {
+
+	public static TextureFilm defaultTiers() {
+		return tiers(Assets.Sprites.ROGUE, FRAME_HEIGHT);
+	}
+
+	public TextureFilm tiers() {
 		if (tiers == null) {
-			SmartTexture texture = TextureCache.get( Assets.Sprites.ROGUE );
-			tiers = new TextureFilm( texture, texture.width, FRAME_HEIGHT );
+			tiers = defaultTiers();
 		}
-		
+
 		return tiers;
+	}
+
+	public static TextureFilm tiers(String spritesheet, int frameHeight) {
+		SmartTexture texture = TextureCache.get( spritesheet );
+		return new TextureFilm( texture, texture.width, frameHeight );
 	}
 
 	public static Image avatar( Hero hero ){
@@ -181,15 +192,21 @@ public class HeroSprite extends CharSprite {
 			return avatar(hero.heroClass, hero.tier());
 		}
 	}
-	
+
 	public static Image avatar( HeroClass cl, int armorTier ) {
-		
-		RectF patch = tiers().get( armorTier );
+		int frameHeight = FRAME_HEIGHT;
+		int frameWidth = FRAME_WIDTH;
+		if(cl == HeroClass.RAT_KING) {
+			frameHeight = 17;
+			frameWidth = 16;
+			armorTier = 0;
+		};
+		RectF patch = tiers(cl.spritesheet(), frameHeight).get( armorTier );
 		Image avatar = new Image( cl.spritesheet() );
-		RectF frame = avatar.texture.uvRect( 1, 0, FRAME_WIDTH, FRAME_HEIGHT );
+		RectF frame = avatar.texture.uvRect( 1, 0, frameWidth, frameHeight );
 		frame.shift( patch.left, patch.top );
 		avatar.frame( frame );
-		
+
 		return avatar;
 	}
 }
