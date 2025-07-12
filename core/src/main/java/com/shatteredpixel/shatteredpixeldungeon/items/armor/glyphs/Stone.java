@@ -56,7 +56,7 @@ public class Stone extends Armor.Glyph {
 			accuracy *= buff.evasionAndAccuracyFactor();
 		}
 		accuracy *= AscensionChallenge.statModifier(attacker);
-		if (Dungeon.hero.heroClass != HeroClass.CLERIC
+		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
 				&& Dungeon.hero.hasTalent(Talent.BLESS)
 				&& attacker.alignment == Char.Alignment.ALLY){
 			// + 3%/5%
@@ -70,7 +70,7 @@ public class Stone extends Armor.Glyph {
 			evasion *= buff.evasionAndAccuracyFactor();
 		}
 		evasion *= AscensionChallenge.statModifier(defender);
-		if (Dungeon.hero.heroClass != HeroClass.CLERIC
+		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
 				&& Dungeon.hero.hasTalent(Talent.BLESS)
 				&& defender.alignment == Char.Alignment.ALLY){
 			// + 3%/5%

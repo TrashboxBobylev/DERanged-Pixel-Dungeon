@@ -1,7 +1,5 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -26,12 +24,10 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SmokeParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.GunSmithingTool;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.bow.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.DisposableMissileWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -43,6 +39,8 @@ import com.watabou.utils.Random;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 
 public class Gun extends MeleeWeapon {
 	public static final String AC_SHOOT		= "SHOOT";
@@ -250,7 +248,7 @@ public class Gun extends MeleeWeapon {
 		}
 		if (action.equals(AC_RELOAD)) {
 			if (isAllLoaded()){
-				if (hero.heroClass == HeroClass.DUELIST) {
+				if (hero.heroClass.is(HeroClass.DUELIST)) {
 					execute(hero, AC_ABILITY);
 				} else {
 					GLog.w(Messages.get(this, "already_loaded"));
@@ -295,7 +293,7 @@ public class Gun extends MeleeWeapon {
 		onReload();
 
 		if (Dungeon.bullet < shotPerShoot()) {
-			if (hero.heroClass == HeroClass.DUELIST) {
+			if (hero.heroClass.is(HeroClass.DUELIST)) {
 				execute(hero, AC_ABILITY);
 				return;
 			}
@@ -414,7 +412,7 @@ public class Gun extends MeleeWeapon {
 
 		if (hero != null && user == hero) {
 			amount -= hero.pointsInTalent(Talent.FAST_RELOAD);
-			if (((Hero)user).heroClass == HeroClass.GUNNER) {
+			if (((Hero)user).heroClass.is(HeroClass.GUNNER)) {
 				amount -= 1;
 			}
 		}

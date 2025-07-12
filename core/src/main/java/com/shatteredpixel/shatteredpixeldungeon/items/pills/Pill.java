@@ -8,8 +8,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.InventoryStone;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -61,7 +59,7 @@ public class Pill extends Item {
 
     @Override
     public String defaultAction() {
-        if (Dungeon.hero.heroClass == HeroClass.MEDIC && dangerousPills.contains(this.getClass())){
+        if (Dungeon.hero.heroClass.is(HeroClass.MEDIC) && dangerousPills.contains(this.getClass())){
             return AC_CHOOSE;
         } else {
             return AC_USE;
@@ -100,7 +98,7 @@ public class Pill extends Item {
     public void apply( Hero hero ) {
         detach( hero.belongings.backpack );
 
-        if (curUser.heroClass == HeroClass.MEDIC) {
+        if (curUser.heroClass.is(HeroClass.MEDIC)) {
             hero.spendAndNext( 0 );
         } else {
             hero.spendAndNext( TIME_TO_USE );
@@ -115,7 +113,7 @@ public class Pill extends Item {
 
     @Override
     protected void onThrow(int cell) {
-        if (curUser.heroClass == HeroClass.MEDIC) {
+        if (curUser.heroClass.is(HeroClass.MEDIC)) {
             if (Dungeon.level.pit[cell] || Actor.findChar(cell) == null || cell == curUser.pos){
                 super.onThrow( cell );
             } else {

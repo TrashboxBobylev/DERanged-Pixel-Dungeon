@@ -23,9 +23,9 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.SpiritForm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.SpiritForm;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MedicKit;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
@@ -81,7 +81,7 @@ public class Regeneration extends Buff {
 				if (((Hero)target).hasTalent(Talent.STRONG_HEALPOWER)) {
 					delay /= 1f+0.1f*((Hero)target).pointsInTalent(Talent.STRONG_HEALPOWER);
 				}
-				if (((Hero)target).hasTalent(Talent.ACCUMULATION) && ((Hero) target).heroClass != HeroClass.DUELIST) {
+				if (((Hero)target).hasTalent(Talent.ACCUMULATION) && !((Hero) target).heroClass.is(HeroClass.DUELIST)) {
 					delay /= 1f+0.1f*((Hero)target).pointsInTalent(Talent.ACCUMULATION);
 				}
 

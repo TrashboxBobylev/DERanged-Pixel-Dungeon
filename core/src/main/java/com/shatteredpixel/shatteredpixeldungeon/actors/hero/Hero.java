@@ -694,7 +694,7 @@ public class Hero extends Char {
 			Buff.affect( this, Combo.class ).hit( enemy );
 		}
 
-		if (hit && heroClass == HeroClass.DUELIST && wasEnemy){
+		if (hit && heroClass.is(HeroClass.DUELIST) && wasEnemy){
 			Buff.affect( this, Sai.ComboStrikeTracker.class).addHit();
 		}
 
@@ -720,7 +720,7 @@ public class Hero extends Char {
 					&& belongings.abilityWeapon != wep && buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) == null){
 
 				//non-duelist benefit for precise assault, can stack with liquid agility
-				if (heroClass != HeroClass.DUELIST) {
+				if (!heroClass.is(HeroClass.DUELIST)) {
 					//persistent +10%/20%/30% ACC for other heroes
 					accuracy *= 1f + 0.1f * pointsInTalent(Talent.PRECISE_ASSAULT);
 				}
@@ -969,7 +969,7 @@ public class Hero extends Char {
 			if (shieldDr > 0) dr += shieldDr;
 		}
 
-		if (hero.heroClass != HeroClass.KNIGHT && hero.hasTalent(Talent.HARD_SHIELD)) {
+		if (!hero.heroClass.is(HeroClass.KNIGHT) && hero.hasTalent(Talent.HARD_SHIELD)) {
 			dr += Random.NormalIntRange(0, 2*hero.pointsInTalent(Talent.HARD_SHIELD));
 		}
 
@@ -1013,7 +1013,7 @@ public class Hero extends Char {
 			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG, 0.75f, 1.2f);
 		}
 
-		if (heroClass != HeroClass.DUELIST
+		if (!heroClass.is(HeroClass.DUELIST)
 				&& hasTalent(Talent.WEAPON_RECHARGING)
 				&& (buff(Recharging.class) != null || buff(ArtifactRecharge.class) != null)){
 			dmg = Math.round(dmg * 1.025f + (.025f*pointsInTalent(Talent.WEAPON_RECHARGING)));
@@ -1398,7 +1398,7 @@ public class Hero extends Char {
 				//standing in high grass
 				(Dungeon.level.map[pos] == Terrain.HIGH_GRASS ||
 				//standing in furrowed grass and not huntress
-				((heroClass != HeroClass.HUNTRESS && hero.subClass != HeroSubClass.SPECIALIST) && Dungeon.level.map[pos] == Terrain.FURROWED_GRASS) ||
+				((!heroClass.is(HeroClass.HUNTRESS) && !hero.subClass.is(HeroSubClass.SPECIALIST)) && Dungeon.level.map[pos] == Terrain.FURROWED_GRASS) ||
 				//standing on a plant
 				Dungeon.level.plants.get(pos) != null);
 	}
@@ -1835,7 +1835,7 @@ public class Hero extends Char {
 
 		if (attackTarget.isAlive() && canAttack(attackTarget) && attackTarget.invisible == 0) {
 
-			if (heroClass != HeroClass.DUELIST
+			if (!heroClass.is(HeroClass.DUELIST)
 					&& hasTalent(Talent.AGGRESSIVE_BARRIER)
 					&& buff(Talent.AggressiveBarrierCooldown.class) == null
 					&& (HP / (float)HT) <= 0.5f){
@@ -1932,7 +1932,7 @@ public class Hero extends Char {
 	public float critChance(final Char enemy, final Weapon wep) {
 		float chance = 0;
 
-		if (heroClass == HeroClass.SAMURAI) {
+		if (heroClass.is(HeroClass.SAMURAI)) {
 			chance = 0.01f;
 			chance += 0.01f * (lvl - 1);
 			chance += Math.max(0, (0.02f + 0.005f*pointsInTalent(Talent.WEAPON_MASTERY)) * (STR() - wep.STRReq()));
@@ -3392,7 +3392,7 @@ public class Hero extends Char {
 			}
 		}
 
-		if (hit && heroClass == HeroClass.DUELIST && wasEnemy){
+		if (hit && heroClass.is(HeroClass.DUELIST) && wasEnemy){
 			Buff.affect( this, Sai.ComboStrikeTracker.class).addHit();
 		}
 
@@ -3497,7 +3497,7 @@ public class Hero extends Char {
 		boolean smthFound = false;
 
 		boolean circular = pointsInTalent(Talent.WIDE_SEARCH) == 1;
-		int distance = heroClass == HeroClass.ROGUE ? 2 : 1;
+		int distance = heroClass.is(HeroClass.ROGUE) ? 2 : 1;
 		if (hasTalent(Talent.WIDE_SEARCH)) distance++;
 		
 		boolean foresight = buff(Foresight.class) != null;
@@ -3700,5 +3700,9 @@ public class Hero extends Char {
 			}
 		}
 		return false;
+	}
+
+	public boolean canFurrowGrass(){
+		return isClassed(HeroClass.HUNTRESS) || isClassed(HeroClass.ADVENTURER) || isSubclassed(HeroSubClass.SPECIALIST);
 	}
 }

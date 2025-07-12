@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
@@ -364,7 +363,7 @@ public class BrokenSeal extends Item {
 
 		public synchronized int maxShield() {
 			//metamorphed iron will logic
-			if (((Hero)target).heroClass != HeroClass.WARRIOR && ((Hero) target).hasTalent(Talent.IRON_WILL)){
+			if (!((Hero)target).heroClass.is(HeroClass.WARRIOR) && ((Hero) target).hasTalent(Talent.IRON_WILL)){
 				return ((Hero) target).pointsInTalent(Talent.IRON_WILL);
 			}
 

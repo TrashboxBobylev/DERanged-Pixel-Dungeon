@@ -306,7 +306,7 @@ public class BowWeapon extends MeleeWeapon {
         public void onSelect( Integer target ) {
             if (target != null) {
                 if (target == curUser.pos) {
-                    if (Dungeon.hero.heroClass == HeroClass.DUELIST && Dungeon.hero.buff(Charger.class) != null) {
+                    if (Dungeon.hero.heroClass.is(HeroClass.DUELIST) && Dungeon.hero.buff(Charger.class) != null) {
                         Charger charger = Dungeon.hero.buff(Charger.class);
                         if (charger.charges >= 1) {
                             duelistAbility(Dungeon.hero, target);

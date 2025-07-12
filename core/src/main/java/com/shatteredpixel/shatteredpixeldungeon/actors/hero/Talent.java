@@ -1529,7 +1529,7 @@ public enum Talent {
 
 		//warrior
 		//for metamorphosis
-		if (talent == IRON_WILL && hero.heroClass != HeroClass.WARRIOR){
+		if (talent == IRON_WILL && !hero.heroClass.is(HeroClass.WARRIOR)){
 			Buff.affect(hero, BrokenSeal.WarriorShield.class);
 		}
 
@@ -1578,7 +1578,7 @@ public enum Talent {
 			Buff.affect(hero, Talent.ProtectiveShadowsTracker.class);
 		}
 
-		if (talent == LIGHT_CLOAK && hero.heroClass == HeroClass.ROGUE){
+		if (talent == LIGHT_CLOAK && hero.heroClass.is(HeroClass.ROGUE)){
 			for (Item item : Dungeon.hero.belongings.backpack){
 				if (item instanceof CloakOfShadows){
 					if (!hero.belongings.lostInventory() || item.keptThroughLostInventory()) {
@@ -1609,7 +1609,7 @@ public enum Talent {
 			}
 		}
 
-		if (talent == LIGHT_READING && hero.heroClass == HeroClass.CLERIC){
+		if (talent == LIGHT_READING && hero.heroClass.is(HeroClass.CLERIC)){
 			for (Item item : Dungeon.hero.belongings.backpack){
 				if (item instanceof HolyTome){
 					if (!hero.belongings.lostInventory() || item.keptThroughLostInventory()) {
@@ -1710,7 +1710,7 @@ public enum Talent {
 			Buff.affect( hero, PhysicalEmpower.class).set(3, 1 + hero.pointsInTalent(STRENGTHENING_MEAL));
 		}
 		if (hero.hasTalent(FOCUSED_MEAL)){
-			if (hero.heroClass == HeroClass.DUELIST){
+			if (hero.heroClass.is(HeroClass.DUELIST)){
 				//0.67/1 charge for the duelist
 				Buff.affect( hero, MeleeWeapon.Charger.class ).gainCharge((hero.pointsInTalent(FOCUSED_MEAL)+1)/3f);
 				ScrollOfRecharging.charge( hero );
@@ -1720,7 +1720,7 @@ public enum Talent {
 			}
 		}
 		if (hero.hasTalent(SATIATED_SPELLS)){
-			if (hero.heroClass == HeroClass.CLERIC) {
+			if (hero.heroClass.is(HeroClass.CLERIC)) {
 				Buff.affect(hero, SatiatedSpellsTracker.class);
 			} else {
 				//3/5 shielding, delayed up to 10 turns
@@ -1733,7 +1733,7 @@ public enum Talent {
 			}
 		}
 		if (hero.hasTalent(ENLIGHTENING_MEAL)){
-			if (hero.heroClass == HeroClass.CLERIC) {
+			if (hero.heroClass.is(HeroClass.CLERIC)) {
 				HolyTome tome = hero.belongings.getItem(HolyTome.class);
 				if (tome != null) {
 					// 2/3 of a charge at +1, 1 full charge at +2
@@ -2001,7 +2001,7 @@ public enum Talent {
 			Buff.affect(hero, ArmorEnhance.class).set(hero.pointsInTalent(Talent.SMITHING_SPELL), Math.round(10*factor));
 		}
 		if (hero.hasTalent(RECALL_INSCRIPTION) && Scroll.class.isAssignableFrom(cls) && cls != ScrollOfUpgrade.class){
-			if (hero.heroClass == HeroClass.CLERIC){
+			if (hero.heroClass.is(HeroClass.CLERIC)){
 				Buff.prolong(hero, RecallInscription.UsedItemTracker.class, hero.pointsInTalent(RECALL_INSCRIPTION) == 2 ? 300 : 10).item = cls;
 			} else {
 				// 10/15%
@@ -2015,7 +2015,7 @@ public enum Talent {
 
 	public static void onRunestoneUsed( Hero hero, int pos, Class<?extends Item> cls ){
 		if (hero.hasTalent(RECALL_INSCRIPTION) && Runestone.class.isAssignableFrom(cls)){
-			if (hero.heroClass == HeroClass.CLERIC){
+			if (hero.heroClass.is(HeroClass.CLERIC)){
 				Buff.prolong(hero, RecallInscription.UsedItemTracker.class, hero.pointsInTalent(RECALL_INSCRIPTION) == 2 ? 300 : 10).item = cls;
 			} else {
 
@@ -2037,13 +2037,13 @@ public enum Talent {
 			Buff.prolong(hero, EnhancedRings.class, 3f*hero.pointsInTalent(ENHANCED_RINGS));
 		}
 
-		if (Dungeon.hero.heroClass != HeroClass.CLERIC
+		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
 				&& Dungeon.hero.hasTalent(Talent.DIVINE_SENSE)){
 			Buff.prolong(Dungeon.hero, DivineSense.DivineSenseTracker.class, Dungeon.hero.cooldown()+1);
 		}
 
 		// 10/20/30%
-		if (Dungeon.hero.heroClass != HeroClass.CLERIC
+		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
 				&& Dungeon.hero.hasTalent(Talent.CLEANSE)
 				&& Random.Int(10) < Dungeon.hero.pointsInTalent(Talent.CLEANSE)){
 			boolean removed = false;
@@ -2179,7 +2179,7 @@ public enum Talent {
 			damage += 1+hero.pointsInTalent(DRAWING_ENHANCE);
 		}
 
-		if (hero.heroClass != HeroClass.SAMURAI && hero.hasTalent(DRAWING_ENHANCE) && enemy.buff(Talent.DrawEnhanceMetaTracker.class) == null ) {
+		if (!hero.heroClass.is(HeroClass.SAMURAI) && hero.hasTalent(DRAWING_ENHANCE) && enemy.buff(Talent.DrawEnhanceMetaTracker.class) == null ) {
 			damage += Hero.heroDamageIntRange(hero.pointsInTalent(Talent.DRAWING_ENHANCE), 2);
 			Buff.affect(enemy, Talent.DrawEnhanceMetaTracker.class);
 		}
@@ -2195,7 +2195,7 @@ public enum Talent {
 			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 		}
 
-		if (hero.hasTalent(Talent.SKILLED_HAND) && hero.heroClass != HeroClass.DUELIST) {
+		if (hero.hasTalent(Talent.SKILLED_HAND) && !hero.heroClass.is(HeroClass.DUELIST)) {
 			damage += Random.NormalIntRange(0, 1+hero.pointsInTalent(Talent.SKILLED_HAND));
 		}
 
@@ -2317,7 +2317,7 @@ public enum Talent {
 			Buff.prolong(enemy, StoneOfAggression.Aggression.class, duration);
 		}
 
-		if (hero.hasTalent(Talent.RADIATION) && hero.heroClass != HeroClass.MEDIC && enemy.buff(RadioactiveMutation.class) == null) {
+		if (hero.hasTalent(Talent.RADIATION) && !hero.heroClass.is(HeroClass.MEDIC) && enemy.buff(RadioactiveMutation.class) == null) {
 			if (Random.Float() < 0.03f) {
 				Buff.affect(enemy, RadioactiveMutation.class).set(6-hero.pointsInTalent(Talent.RADIATION));
 			}
@@ -2380,7 +2380,7 @@ public enum Talent {
 			}
 		}
 
-		if (hero.belongings.attackingWeapon() instanceof MeleeWeapon && hero.heroClass != HeroClass.ADVENTURER && hero.hasTalent(Talent.LONG_MACHETE)) {
+		if (hero.belongings.attackingWeapon() instanceof MeleeWeapon && !hero.heroClass.is(HeroClass.ADVENTURER) && hero.hasTalent(Talent.LONG_MACHETE)) {
 			int dist = level.distance(hero.pos, enemy.pos)-1;
 			dist = Math.min(dist, hero.pointsInTalent(Talent.LONG_MACHETE));
 			damage = (int)Math.round(damage * Math.pow(0.8f, dist));
@@ -2469,7 +2469,7 @@ public enum Talent {
 		}
 
 		if (enemy.alignment != Char.Alignment.ALLY
-				&& hero.heroClass != HeroClass.CLERIC
+				&& !hero.heroClass.is(HeroClass.CLERIC)
 				&& hero.hasTalent(Talent.DIVINE_BLAST)
 				&& Random.Float() < 0.2f * hero.pointsInTalent(Talent.DIVINE_BLAST)){
 			Elastic.pushEnemy(wep, hero, enemy, 1);

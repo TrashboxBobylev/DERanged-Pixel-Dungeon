@@ -59,7 +59,7 @@ public class BulletBelt extends Item {
 
 			BulletItem bulletItem = new BulletItem();
 			int quantity = Random.IntRange(50, 70);
-			if (hero.heroClass == HeroClass.GUNNER) {
+			if (hero.heroClass.is(HeroClass.GUNNER)) {
 				quantity += Random.IntRange(0, 20);
 			}
 			bulletItem.quantity(quantity);
