@@ -1482,13 +1482,16 @@ public enum Talent {
 	}
 
 	public String desc(boolean metamorphed){
+		String desc = Messages.get(this, name() + ".desc");
 		if (metamorphed){
 			String metaDesc = Messages.get(this, name() + ".meta_desc");
 			if (!metaDesc.equals(Messages.NO_TEXT_FOUND)){
-				return Messages.get(this, name() + ".desc") + "\n\n" + metaDesc;
+				desc += "\n\n" + metaDesc;
 			}
 		}
-		return Messages.get(this, name() + ".desc");
+		String comment = Messages.get(this, name() + ".comment");
+		//noinspection StringEquality
+		return comment == Messages.NO_TEXT_FOUND ? desc : desc + "\n\n" + comment;
 	}
 
 	public static void onTalentUpgraded( Hero hero, Talent talent ){
