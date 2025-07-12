@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.CheesyCheest;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
@@ -255,7 +256,7 @@ public class InventoryPane extends Component {
 		bullet.y = bulletTxt.y;
 
 		for (BagButton b : bags){
-			b.setRect(left, y + 14, SLOT_WIDTH, 14);
+			b.setRect(left, y + 14, SLOT_WIDTH-3, 14);
 			left = b.right()+1;
 		}
 
@@ -503,6 +504,8 @@ public class InventoryPane extends Component {
 			return Icons.get( Icons.WAND_HOLSTER );
 		} else if (bag instanceof PotionBandolier) {
 			return Icons.get( Icons.POTION_BANDOLIER );
+		} else if (bag instanceof CheesyCheest) {
+			return Icons.get( Icons.CHEESY_CHEEST);
 		} else {
 			return Icons.get( Icons.BACKPACK );
 		}
@@ -706,6 +709,8 @@ public class InventoryPane extends Component {
 					return SPDAction.BAG_4;
 				case 5:
 					return SPDAction.BAG_5;
+				case 6:
+					return SPDAction.BAG_6;
 			}
 		}
 
