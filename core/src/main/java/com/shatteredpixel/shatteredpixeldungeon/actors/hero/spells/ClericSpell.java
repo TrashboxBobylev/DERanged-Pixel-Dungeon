@@ -114,7 +114,7 @@ public abstract class ClericSpell {
 				spells.add(HolyIntuition.INSTANCE);
 			}
 
-			if (cleric.hasTalent(Talent.SHIELD_OF_LIGHT)) {
+			if (cleric.hasTalent(Talent.SHIELD_OF_LIGHT, Talent.NOBLE_CAUSE)) {
 				spells.add(ShieldOfLight.INSTANCE);
 			}
 

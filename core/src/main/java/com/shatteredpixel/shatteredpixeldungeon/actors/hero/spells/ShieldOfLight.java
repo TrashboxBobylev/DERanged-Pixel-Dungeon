@@ -57,7 +57,7 @@ public class ShieldOfLight extends TargetedClericSpell {
 
 	@Override
 	public boolean canCast(Hero hero) {
-		return super.canCast(hero) && hero.hasTalent(Talent.SHIELD_OF_LIGHT);
+		return super.canCast(hero) && hero.hasTalent(Talent.SHIELD_OF_LIGHT, Talent.NOBLE_CAUSE);
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class ShieldOfLight extends TargetedClericSpell {
 
 	@Override
 	public String desc() {
-		int min = 1 + Dungeon.hero.pointsInTalent(Talent.SHIELD_OF_LIGHT);
+		int min = 1 + Dungeon.hero.pointsInTalent(Talent.SHIELD_OF_LIGHT, Talent.NOBLE_CAUSE);
 		int max = 2*min;
 		return Messages.get(this, "desc", min, max) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
 	}

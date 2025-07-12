@@ -885,15 +885,15 @@ public abstract class Char extends Actor {
 
 		ShieldOfLight.ShieldOfLightTracker shield = buff( ShieldOfLight.ShieldOfLightTracker.class);
 		if (shield != null && shield.object == enemy.id()){
-			int min = 1 + Dungeon.hero.pointsInTalent(Talent.SHIELD_OF_LIGHT);
+			int min = 1 + Dungeon.hero.pointsInTalent(Talent.SHIELD_OF_LIGHT, Talent.NOBLE_CAUSE);
 			damage -= Random.NormalIntRange(min, 2*min);
 			damage = Math.max(damage, 0);
 		} else if (this == Dungeon.hero
 				&& Dungeon.hero.heroClass != HeroClass.CLERIC
-				&& Dungeon.hero.hasTalent(Talent.SHIELD_OF_LIGHT)
+				&& Dungeon.hero.hasTalent(Talent.SHIELD_OF_LIGHT, Talent.NOBLE_CAUSE)
 				&& TargetHealthIndicator.instance.target() == enemy){
 			//33/50%
-			if (Random.Int(6) < 1+Dungeon.hero.pointsInTalent(Talent.SHIELD_OF_LIGHT)){
+			if (Random.Int(6) < 1+Dungeon.hero.pointsInTalent(Talent.SHIELD_OF_LIGHT, Talent.NOBLE_CAUSE)){
 				damage -= 1;
 			}
 		}
