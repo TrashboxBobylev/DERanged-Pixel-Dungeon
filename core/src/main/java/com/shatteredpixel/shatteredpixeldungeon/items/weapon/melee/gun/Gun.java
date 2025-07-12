@@ -324,8 +324,8 @@ public class Gun extends MeleeWeapon {
 		Buff.detach(hero, FireBullet.class);
 		Buff.detach(hero, ElectroBullet.class);
 
-		if (hero.hasTalent(Talent.SAFE_RELOAD)) {
-			Buff.affect(hero, Barrier.class).setShield( 1 + 2 * hero.pointsInTalent(Talent.SAFE_RELOAD));
+		if (hero.hasTalent(Talent.SAFE_RELOAD, Talent.WELL_PROTECTED)) {
+			Buff.affect(hero, Barrier.class).setShield( 1 + 2 * hero.pointsInTalent(Talent.SAFE_RELOAD, Talent.WELL_PROTECTED));
 		}
 
 		if (hero.hasTalent(Talent.ELEMENTAL_BULLET) && round == 0) {

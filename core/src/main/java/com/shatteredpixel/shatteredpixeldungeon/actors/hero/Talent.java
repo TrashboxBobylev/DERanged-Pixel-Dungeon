@@ -786,6 +786,7 @@ public enum Talent {
 	KINGS_WISDOM(2, 13), // on-id + combat talents
 	AMBUSH(2, 14), // first strike talents
 	NOBLE_CAUSE(3, 13), // other ones. uses iron will
+	WELL_PROTECTED(3, 14), // protective ones
 	ROYAL_MEAL(5, 13), /// all on-eat talents for tier 2
 	RESTORATION(6, 13), // all upgrade/potion of healing talents
 	POWER_WITHIN(7, 13), // runic (3), wand preservation (3), rogue's foresight (5), rejuvenating steps (3)
@@ -2495,10 +2496,10 @@ public enum Talent {
 			hero.buff(PowerOfLife.PowerOfLifeBarrier.class).proc(damage);
 		}
 
-		if (hero.hasTalent(Talent.PROTECTIVE_SLASH)
+		if (hero.hasTalent(Talent.PROTECTIVE_SLASH, WELL_PROTECTED)
 				&& hero.buff(Talent.ProtectiveSlashCooldown.class) == null
 				&& !Dungeon.level.adjacent(hero.pos, enemy.pos)) {
-			Buff.affect(hero, Barrier.class).setShield(1+2*Dungeon.hero.pointsInTalent(Talent.PROTECTIVE_SLASH));
+			Buff.affect(hero, Barrier.class).setShield(1+2*Dungeon.hero.pointsInTalent(Talent.PROTECTIVE_SLASH, WELL_PROTECTED));
 			Buff.affect(hero, Talent.ProtectiveSlashCooldown.class, 10);
 		}
 
@@ -2519,7 +2520,7 @@ public enum Talent {
 	}
 
 	public static int onDefenseProc(Hero hero, Char enemy, int damage) {
-		if (hero.hasTalent(Talent.FIRST_AID_TREAT) && hero.buff(FirstAidTreatCooldown.class) == null && damage > (11-3*hero.pointsInTalent(Talent.FIRST_AID_TREAT))) {
+		if (hero.hasTalent(Talent.FIRST_AID_TREAT, WELL_PROTECTED) && hero.buff(FirstAidTreatCooldown.class) == null && damage > (11-3*hero.pointsInTalent(Talent.FIRST_AID_TREAT))) {
 			hero.heal(3);
 			Buff.affect(hero, FirstAidTreatCooldown.class, 50f);
 		}
@@ -2705,7 +2706,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, FORCE_SAVING, ARCHERS_INTUITION, SURPRISE_PANIC, SURVIVAL_TECHNIQUE, DEXTERITY);
 				break;
 			case RAT_KING:
-				Collections.addAll(tierTalents, ROYAL_PRIVILEGE, ROYAL_INTUITION, KINGS_WISDOM, NOBLE_CAUSE, ROYAL_FOCUS, ROYAL_PERCEPTIVITY, AMBUSH);
+				Collections.addAll(tierTalents, ROYAL_PRIVILEGE, ROYAL_INTUITION, KINGS_WISDOM, NOBLE_CAUSE, ROYAL_FOCUS, ROYAL_PERCEPTIVITY, AMBUSH, WELL_PROTECTED);
 				break;
 		}
 		for (Talent talent : tierTalents){

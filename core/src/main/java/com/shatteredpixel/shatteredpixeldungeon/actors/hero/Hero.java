@@ -1069,16 +1069,16 @@ public class Hero extends Char {
 			if (shieldDr > 0) dr += shieldDr;
 		}
 
-		if (!hero.heroClass.is(HeroClass.KNIGHT) && hero.hasTalent(Talent.HARD_SHIELD)) {
-			dr += Random.NormalIntRange(0, 2*hero.pointsInTalent(Talent.HARD_SHIELD));
+		if (!hero.heroClass.is(HeroClass.KNIGHT) && hero.hasTalent(Talent.HARD_SHIELD, Talent.WELL_PROTECTED)) {
+			dr += Random.NormalIntRange(0, 2*hero.pointsInTalent(Talent.HARD_SHIELD, Talent.WELL_PROTECTED));
 		}
 
 		if (buff(HoldFast.class) != null){
 			dr += buff(HoldFast.class).armorBonus();
 		}
 
-		if (hero.hasTalent(Talent.PARRING)) {
-			dr += Random.NormalIntRange(0, 1+hero.pointsInTalent(Talent.PARRING));
+		if (hero.hasTalent(Talent.PARRING, Talent.WELL_PROTECTED)) {
+			dr += Random.NormalIntRange(0, 1+hero.pointsInTalent(Talent.PARRING, Talent.WELL_PROTECTED));
 		}
 
 		ReinforcedArmor.ReinforcedArmorTracker reArmor = hero.buff(ReinforcedArmor.ReinforcedArmorTracker.class);
