@@ -21,10 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.level;
-import static com.shatteredpixel.shatteredpixeldungeon.items.Item.updateQuickslot;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
@@ -256,6 +252,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.level;
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.updateQuickslot;
+
 public class Hero extends Char {
 
 	{
@@ -271,9 +271,118 @@ public class Hero extends Char {
 	private static final float TIME_TO_REST		    = 1f;
 	private static final float TIME_TO_SEARCH	    = 2f;
 	private static final float HUNGER_FOR_SEARCH	= 6f;
-	
+
 	public HeroClass heroClass = HeroClass.ROGUE;
+	public HeroClass heroClass2 = null;
 	public HeroSubClass subClass = HeroSubClass.NONE;
+	public HeroSubClass subClass2 = HeroSubClass.NONE;
+
+	public boolean isSubclassedLoosely(HeroSubClass sub){
+		return isSubclassedLoosely(this, sub);
+	}
+
+	public static boolean isSubclassedLoosely(Hero hero, HeroSubClass sub){
+		//TODO: uncomment when porting special seed content
+		/*if ((Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE) || Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_SUBS)) & hero.subClass != HeroSubClass.NONE){
+			return true;
+		} else {*/
+			if (hero.subClass2 == HeroSubClass.NONE) {
+				return hero.matchSubclass(hero.subClass, sub);
+			} else {
+				return hero.matchSubclass(hero.subClass, sub) || hero.matchSubclass(hero.subClass2, sub);
+			}
+		/*}*/
+	}
+
+	public boolean isSubclassed(HeroSubClass sub){
+		return isSubclassed(this, sub);
+	}
+
+	public static boolean isSubclassed(Hero hero, HeroSubClass sub){
+		//TODO: uncomment when porting special seed content
+		/*if ((Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE) || Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_SUBS)) & hero.subClass != HeroSubClass.NONE){
+			return true;
+		} else {*/
+			if (hero.subClass2 == HeroSubClass.NONE) {
+				return hero.subClass == sub;
+			} else {
+				return hero.subClass == sub || hero.subClass2 == sub;
+			}
+		/*}*/
+	}
+
+	public boolean matchSubclass(HeroSubClass sub1, HeroSubClass sub2){
+		if (sub1 == HeroSubClass.KING){
+			switch (sub2){
+				default: return false;
+				case KING:
+					return true;
+				case BERSERKER:
+					return hasTalent(Talent.RK_BERSERKER);
+				case GLADIATOR:
+					return hasTalent(Talent.RK_GLADIATOR);
+				case BATTLEMAGE:
+					return hasTalent(Talent.RK_BATTLEMAGE);
+				case WARLOCK:
+					return hasTalent(Talent.RK_WARLOCK);
+				case ASSASSIN:
+					return hasTalent(Talent.RK_ASSASSIN);
+				case FREERUNNER:
+					return hasTalent(Talent.RK_FREERUNNER);
+				case SNIPER:
+					return hasTalent(Talent.RK_SNIPER);
+				case WARDEN:
+					return hasTalent(Talent.RK_WARDEN);
+			}
+		} else {
+			return sub1 == sub2;
+		}
+	}
+
+	public boolean isClassedLoosely(HeroClass sub){
+		return isClassedLoosely(this, sub);
+	}
+
+	public static boolean isClassedLoosely(Hero hero, HeroClass sub){
+		//TODO: uncomment when porting special seed content
+		/*if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CLERIC) && sub == HeroClass.CLERIC){
+			return true;
+		}
+		if ((Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE) || Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_CLASSES))){
+			return true;
+		} else {*/
+			if (hero.heroClass2 == null) {
+				return hero.matchClass(hero.heroClass, sub);
+			} else {
+				return hero.matchClass(hero.heroClass, sub) || hero.matchClass(hero.heroClass2, sub);
+			}
+		/*}*/
+	}
+
+	public boolean isClassed(HeroClass sub){
+		return isClassed(this, sub);
+	}
+
+	public boolean isClassed(Hero hero, HeroClass sub){
+		/*if ((Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE) || Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_CLASSES))){
+			return true;
+		} else {*/
+			if (hero.heroClass2 == null) {
+				return hero.heroClass == sub;
+			} else {
+				return hero.heroClass == sub || hero.heroClass2 == sub;
+			}
+		/*}*/
+	}
+
+	public boolean matchClass(HeroClass class1, HeroClass class2){
+		if (class1 == HeroClass.RAT_KING){
+			return class2 != HeroClass.DUELIST && class2 != HeroClass.CLERIC;
+		} else {
+			return class1 == class2;
+		}
+	}
+
 	public ArmorAbility armorAbility = null;
 	public ArrayList<LinkedHashMap<Talent, Integer>> talents = new ArrayList<>();
 	public LinkedHashMap<Talent, Talent> metamorphedTalents = new LinkedHashMap<>();
@@ -376,7 +485,9 @@ public class Hero extends Char {
 	}
 
 	private static final String CLASS       = "class";
+	private static final String CLASS2      = "class2";
 	private static final String SUBCLASS    = "subClass";
+	private static final String SUBCLASS2   = "subClass2";
 	private static final String ABILITY     = "armorAbility";
 
 	private static final String ATTACK		= "attackSkill";
@@ -393,7 +504,9 @@ public class Hero extends Char {
 		super.storeInBundle( bundle );
 
 		bundle.put( CLASS, heroClass );
+		bundle.put( CLASS2, heroClass2);
 		bundle.put( SUBCLASS, subClass );
+		bundle.put( SUBCLASS2, subClass2 );
 		bundle.put( ABILITY, armorAbility );
 		Talent.storeTalentsInBundle( bundle, this );
 		
@@ -431,6 +544,8 @@ public class Hero extends Char {
 
 		heroClass = bundle.getEnum( CLASS, HeroClass.class );
 		subClass = bundle.getEnum( SUBCLASS, HeroSubClass.class );
+		heroClass2 = bundle.getEnum( CLASS2, HeroClass.class );
+		subClass2 = bundle.getEnum( SUBCLASS2, HeroSubClass.class );
 		armorAbility = (ArmorAbility)bundle.get( ABILITY );
 		Talent.restoreTalentsFromBundle( bundle, this );
 		
