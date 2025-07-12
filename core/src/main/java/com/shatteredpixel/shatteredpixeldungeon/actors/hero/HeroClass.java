@@ -78,9 +78,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MedicKit;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.CheesyCheest;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.changer.OldAmulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
@@ -263,6 +265,10 @@ public enum HeroClass {
 
 			case ARCHER:
 				initArcher( hero );
+				break;
+
+			case RAT_KING:
+				initRatKing( hero );
 				break;
 		}
 
@@ -495,6 +501,68 @@ public enum HeroClass {
 
 		new ScrollOfMagicMapping().identify();
 		new PotionOfHaste().identify();
+	}
+
+	// TODO: reenable special seed content when needed
+	private static void initRatKing( Hero hero ) {
+		// warrior
+		if (hero.belongings.armor != null){
+			hero.belongings.armor.affixSeal(new BrokenSeal());
+		}
+		/*if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.WARRIOR)){
+			Buff.affect(hero, WarriorParry.class);
+		}*/
+		// mage
+		MagesStaff staff;
+
+		/*if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.MAGE)){
+			do {
+				staff = new MagesStaff((Wand) Reflection.newInstance(Random.element(Generator.Category.WAND.classes)));
+			} while (staff.wandClass() == WandOfMagicMissile.class);
+		} else {*/
+			staff = new MagesStaff(new WandOfMagicMissile());
+		/*}*/
+		(hero.belongings.weapon = staff).identify();
+		hero.belongings.weapon.activate(hero);
+		// rogue
+		Artifact cloak;
+		/*if (!Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ROGUE)) {*/
+			cloak = new CloakOfShadows();
+			(hero.belongings.artifact = cloak).identify();
+			hero.belongings.artifact.activate(hero);
+			Dungeon.quickslot.setSlot(0, cloak);
+		/*} else {
+			Random.pushGenerator();
+			cloak = Generator.randomArtifact();
+			(hero.belongings.artifact = cloak).identify();
+			hero.belongings.artifact.activate(hero);
+			Random.popGenerator();
+			Dungeon.quickslot.setSlot(0, cloak);
+		}*/
+		// huntress
+		SpiritBow bow = new SpiritBow();
+		bow.identify().collect();
+		// cleric
+		HolyTome tome = new HolyTome();
+		(hero.belongings.misc = tome).identify();
+		hero.belongings.misc.activate( hero );
+		// rearranged heroes
+		CheesyCheest chest = new CheesyCheest();
+		chest.collect();
+		BulletBelt bulletBelt = new BulletBelt();
+		bulletBelt.quantity(5).collect();
+		new Sheath().collect();
+		new Machete().identify().collect();
+		new Shovel().identify().collect();
+		new KnightsShield().collect();
+		new GammaRayGun().collect();
+		new MedicKit().identify().collect();
+		// allocating slots
+		Dungeon.quickslot.setSlot(0, bow);
+		Dungeon.quickslot.setSlot(1, cloak);
+		Dungeon.quickslot.setSlot(2, staff);
+		Dungeon.quickslot.setSlot(3, tome);
+		Dungeon.quickslot.setSlot(4, chest);
 	}
 
 	public String title() {
