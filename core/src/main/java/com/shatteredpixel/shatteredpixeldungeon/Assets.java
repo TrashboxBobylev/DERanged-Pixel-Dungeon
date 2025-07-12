@@ -123,6 +123,13 @@ public class Assets {
 					BOSSHP = "interfaces/alternative/bluearchive/boss_hp.png";
 					TALENT_BUTTON = "interfaces/alternative/bluearchive/talent_button.png";
 					break;
+				case 3: //bobylev core ui
+					CHROME = "interfaces/alternative/rka/chrome.png";
+					TOOLBAR = "interfaces/alternative/rka/toolbar.png";
+					STATUS = "interfaces/alternative/rka/status_pane.png";
+					MENU = "interfaces/alternative/rka/menu_pane.png";
+					MENU_BTN = "interfaces/alternative/rka/menu_button.png";
+					break;
 
 			}
 		}

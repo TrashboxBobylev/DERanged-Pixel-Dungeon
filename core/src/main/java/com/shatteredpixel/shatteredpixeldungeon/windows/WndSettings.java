@@ -710,6 +710,7 @@ public class WndSettings extends WndTabbed {
 						RedButton original;
 						RedButton shattered;
 						RedButton blueArchive;
+						RedButton rka;
 
 						RenderedTextBlock uiDesc;
 
@@ -724,6 +725,9 @@ public class WndSettings extends WndTabbed {
 									break;
 								case 2:
 									uiString = Messages.get(WndSettings.UITab.this, "ui_blue_archive");
+									break;
+								case 3:
+									uiString = Messages.get(WndSettings.UITab.this, "ui_rka");
 									break;
 							}
 							uiDesc = PixelScene.renderTextBlock(Messages.get(WndSettings.UITab.this, "ui_current") + " " + uiString, 6);
@@ -754,6 +758,14 @@ public class WndSettings extends WndTabbed {
 								}
 							};
 							add(blueArchive);
+							rka = new RedButton(Messages.get(WndSettings.UITab.this, "ui_rka")) {
+								@Override
+								protected void onClick() {
+									SPDSettings.uiType(3);
+									showConfirmWindow();
+								}
+							};
+							add(rka);
 
 							//layout
 							resize(WIDTH_P, 0);
@@ -766,8 +778,9 @@ public class WndSettings extends WndTabbed {
 							original.setRect(0, uiDesc.bottom()+2*GAP, btnWidth, BTN_HEIGHT);
 							shattered.setRect(0, original.bottom()+GAP, btnWidth, BTN_HEIGHT);
 							blueArchive.setRect(0, shattered.bottom()+GAP, btnWidth, BTN_HEIGHT);
+							rka.setRect(0, blueArchive.bottom()+GAP, btnWidth, BTN_HEIGHT);
 
-							resize(WIDTH_P, (int)blueArchive.bottom());
+							resize(WIDTH_P, (int)rka.bottom());
 						}
 					});
 				}
