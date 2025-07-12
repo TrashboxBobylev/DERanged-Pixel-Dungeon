@@ -784,6 +784,7 @@ public enum Talent {
 	ROYAL_INTUITION(1, 13), // intuition-related talents, uses survivalist's icon
 	ROYAL_PERCEPTIVITY(1, 14), // stronger intuition based talents
 	KINGS_WISDOM(2, 13), // on-id + combat talents
+	AMBUSH(2, 14), // first strike talents
 	NOBLE_CAUSE(3, 13), // other ones. uses iron will
 	ROYAL_MEAL(5, 13), /// all on-eat talents for tier 2
 	RESTORATION(6, 13), // all upgrade/potion of healing talents
@@ -2214,12 +2215,12 @@ public enum Talent {
 			}
 		}
 
-		if (hero.hasTalent(DRAWING_ENHANCE) && hero.buff(Sheath.Sheathing.class) != null) {
-			damage += 1+hero.pointsInTalent(DRAWING_ENHANCE);
+		if (hero.hasTalent(DRAWING_ENHANCE, AMBUSH) && hero.buff(Sheath.Sheathing.class) != null) {
+			damage += 1+hero.pointsInTalent(DRAWING_ENHANCE, AMBUSH);
 		}
 
-		if (!hero.heroClass.is(HeroClass.SAMURAI) && hero.hasTalent(DRAWING_ENHANCE) && enemy.buff(Talent.DrawEnhanceMetaTracker.class) == null ) {
-			damage += Hero.heroDamageIntRange(hero.pointsInTalent(Talent.DRAWING_ENHANCE), 2);
+		if (!hero.heroClass.is(HeroClass.SAMURAI) && hero.hasTalent(DRAWING_ENHANCE, AMBUSH) && enemy.buff(Talent.DrawEnhanceMetaTracker.class) == null ) {
+			damage += Hero.heroDamageIntRange(hero.pointsInTalent(Talent.DRAWING_ENHANCE, AMBUSH), 2);
 			Buff.affect(enemy, Talent.DrawEnhanceMetaTracker.class);
 		}
 
@@ -2249,9 +2250,9 @@ public enum Talent {
 		}
 
 		//attacking procs
-		if (hero.hasTalent(SPEEDY_MOVE) && enemy instanceof Mob && enemy.buff(SpeedyMoveTracker.class) == null){
+		if (hero.hasTalent(SPEEDY_MOVE, AMBUSH) && enemy instanceof Mob && enemy.buff(SpeedyMoveTracker.class) == null){
 			Buff.affect(enemy, SpeedyMoveTracker.class);
-			Buff.affect(hero, GreaterHaste.class).set(2 + hero.pointsInTalent(SPEEDY_MOVE));
+			Buff.affect(hero, GreaterHaste.class).set(2 + hero.pointsInTalent(SPEEDY_MOVE, AMBUSH));
 		}
 
 		if (enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)) {
@@ -2284,9 +2285,9 @@ public enum Talent {
 			}
 		}
 
-		if (hero.hasTalent(Talent.WAR_CRY) && enemy.buff(WarCryTracker.class) == null) {
+		if (hero.hasTalent(Talent.WAR_CRY, AMBUSH) && enemy.buff(WarCryTracker.class) == null) {
 			Buff.affect(enemy, WarCryTracker.class);
-			Buff.prolong(hero, Adrenaline.class, hero.pointsInTalent(Talent.WAR_CRY));
+			Buff.prolong(hero, Adrenaline.class, hero.pointsInTalent(Talent.WAR_CRY, AMBUSH));
 		}
 
 		if (hero.hasTalent(Talent.BLOOMING_WEAPON)
@@ -2334,8 +2335,8 @@ public enum Talent {
 			}
 		}
 
-		if (hero.hasTalent(Talent.FINISH_ATTACK) && enemy.HP <= enemy.HT*0.25f) {
-			damage += 1+hero.pointsInTalent(Talent.FINISH_ATTACK);
+		if (hero.hasTalent(Talent.FINISH_ATTACK, AMBUSH) && enemy.HP <= enemy.HT*0.25f) {
+			damage += 1+hero.pointsInTalent(Talent.FINISH_ATTACK, AMBUSH);
 			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 		}
 
@@ -2704,7 +2705,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, FORCE_SAVING, ARCHERS_INTUITION, SURPRISE_PANIC, SURVIVAL_TECHNIQUE, DEXTERITY);
 				break;
 			case RAT_KING:
-				Collections.addAll(tierTalents, ROYAL_PRIVILEGE, ROYAL_INTUITION, KINGS_WISDOM, NOBLE_CAUSE, ROYAL_FOCUS, ROYAL_PERCEPTIVITY);
+				Collections.addAll(tierTalents, ROYAL_PRIVILEGE, ROYAL_INTUITION, KINGS_WISDOM, NOBLE_CAUSE, ROYAL_FOCUS, ROYAL_PERCEPTIVITY, AMBUSH);
 				break;
 		}
 		for (Talent talent : tierTalents){

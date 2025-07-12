@@ -128,6 +128,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.AMBUSH;
+
 public abstract class Level implements Bundlable {
 	
 	public static enum Feeling {
@@ -1084,9 +1086,9 @@ public abstract class Level implements Bundlable {
 		GameScene.plantSeed( pos );
 
 		Char enemy = Actor.findChar(pos);
-		if (Dungeon.hero.hasTalent(Talent.ROOT) && enemy != null) {
+		if (Dungeon.hero.hasTalent(Talent.ROOT, AMBUSH) && enemy != null) {
 			if (enemy.alignment == Char.Alignment.ENEMY) {
-				Buff.affect(enemy, Roots.class, 1+Dungeon.hero.pointsInTalent(Talent.ROOT));
+				Buff.affect(enemy, Roots.class, 1+Dungeon.hero.pointsInTalent(Talent.ROOT, AMBUSH));
 			}
 		}
 
