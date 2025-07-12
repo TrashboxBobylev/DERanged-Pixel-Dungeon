@@ -428,6 +428,9 @@ public class Hero extends Char {
 		}
 		float multiplier = RingOfMight.HTMultiplier(this);
 		HT = Math.round(multiplier * HT);
+		if (heroClass == HeroClass.RAT_KING){
+			HT = (int) (HT * 0.4f);
+		}
 		
 		if (buff(ElixirOfMight.HTBoost.class) != null){
 			HT += buff(ElixirOfMight.HTBoost.class).boost();
