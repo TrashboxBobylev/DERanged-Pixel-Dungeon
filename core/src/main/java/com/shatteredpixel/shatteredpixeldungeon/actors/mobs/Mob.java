@@ -885,7 +885,7 @@ public abstract class Mob extends Char {
 				}
 				Dungeon.hero.earnExp(exp, getClass());
 
-				if (Dungeon.hero.subClass == HeroSubClass.MONK){
+				if (Dungeon.hero.subClass.is(HeroSubClass.MONK)){
 					Buff.affect(Dungeon.hero, MonkEnergy.class).gainEnergy(this);
 				}
 			}
@@ -978,18 +978,18 @@ public abstract class Mob extends Char {
 				Buff.affect(hero, Talent.KineticBattle.class).set();
 			}
 
-			if (hero.subClass == HeroSubClass.MEDICALOFFICER) {
+			if (hero.subClass.is(HeroSubClass.MEDICALOFFICER)) {
 				Buff.affect(hero, Command.class).kill();
 			}
 
-			if (Dungeon.hero.subClass == HeroSubClass.DEATHKNIGHT){
+			if (Dungeon.hero.subClass.is(HeroSubClass.DEATHKNIGHT)){
 				Buff.affect(Dungeon.hero, SoulCollect.class).killMob(this);
 			}
 
 			Saddle.kill(this);
 		}
 
-		if (cause instanceof Command.CASBomb && hero.subClass == HeroSubClass.MEDICALOFFICER) { //직접적인 데미지를 입히는 군의관의 영웅 능력으로 적을 처치해도 명령권을 얻으며, 이 경우 최대치를 넘을 수 있음
+		if (cause instanceof Command.CASBomb && hero.subClass.is(HeroSubClass.MEDICALOFFICER)) { //직접적인 데미지를 입히는 군의관의 영웅 능력으로 적을 처치해도 명령권을 얻으며, 이 경우 최대치를 넘을 수 있음
 			Buff.affect(hero, Command.class).kill(true);
 		}
 

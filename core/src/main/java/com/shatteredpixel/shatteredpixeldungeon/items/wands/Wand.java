@@ -227,13 +227,13 @@ public abstract class Wand extends Item {
 			wandLevel += Dungeon.hero.pointsInTalent(Talent.ENHANCED_MARK);
 		}
 		if (target != Dungeon.hero &&
-				Dungeon.hero.subClass == HeroSubClass.WARLOCK &&
+				Dungeon.hero.subClass.is(HeroSubClass.WARLOCK) &&
 				//standard 1 - 0.92^x chance, plus 7%. Starts at 15%
 				Random.Float() > (Math.pow(0.92f, (wandLevel*chargesUsed)+1) - 0.07f)){
 			SoulMark.prolong(target, SoulMark.class, SoulMark.DURATION + wandLevel);
 		}
 
-		if (Dungeon.hero.subClass == HeroSubClass.PRIEST && target.buff(GuidingLight.Illuminated.class) != null) {
+		if (Dungeon.hero.subClass.is(HeroSubClass.PRIEST) && target.buff(GuidingLight.Illuminated.class) != null) {
 			target.buff(GuidingLight.Illuminated.class).detach();
 			target.damage(Dungeon.hero.lvl+5, GuidingLight.INSTANCE);
 		}
@@ -328,7 +328,7 @@ public abstract class Wand extends Item {
 			desc += "\n\n" + Messages.get(Wand.class, "not_cursed");
 		}
 
-		if (Dungeon.hero != null && Dungeon.hero.subClass == HeroSubClass.BATTLEMAGE){
+		if (Dungeon.hero != null && Dungeon.hero.subClass.is(HeroSubClass.BATTLEMAGE)){
 			desc += "\n\n" + Messages.get(this, "bmage_desc");
 		}
 
@@ -731,7 +731,7 @@ public abstract class Wand extends Item {
 						if (curUser.pointsInTalent(Talent.SHIELD_BATTERY) == 2) shield *= 1.5f;
 						Buff.affect(curUser, Barrier.class).setShield(Math.round(shield));
 
-						if (Dungeon.hero.subClass == HeroSubClass.BATTLEMAGE && Dungeon.hero.hasTalent(Talent.MAGICAL_CIRCLE)) {
+						if (Dungeon.hero.subClass.is(HeroSubClass.BATTLEMAGE) && Dungeon.hero.hasTalent(Talent.MAGICAL_CIRCLE)) {
 							Buff.affect(curUser, MagicalCircle.class).setup(curUser.pos, curWand.curCharges*3+1);
 						}
 
@@ -895,7 +895,7 @@ public abstract class Wand extends Item {
 					multi += 1;
 				}
 				partialCharge += (1f/turnsToCharge) * multi;
-				if (Dungeon.hero.subClass == HeroSubClass.WIZARD) {
+				if (Dungeon.hero.subClass.is(HeroSubClass.WIZARD)) {
 					partialCharge *= (float) Math.pow(1.05f, Math.max(10, Dungeon.hero.belongings.getAllItems(SpellBook.class).size()));
 				}
 			}

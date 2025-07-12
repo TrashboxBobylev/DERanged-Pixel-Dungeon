@@ -51,7 +51,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 	
 	@Override
 	public void execute(Hero hero, String action) {
-		if (hero.subClass == HeroSubClass.CHAMPION && action.equals(AC_EQUIP)){
+		if (hero.subClass.is(HeroSubClass.CHAMPION) && action.equals(AC_EQUIP)){
 			usesTargeting = false;
 			String primaryName = Messages.titleCase(hero.belongings.weapon != null ? hero.belongings.weapon.trueName() : Messages.get(KindOfWeapon.class, "empty"));
 			String secondaryName = Messages.titleCase(hero.belongings.secondWep != null ? hero.belongings.secondWep.trueName() : Messages.get(KindOfWeapon.class, "empty"));
@@ -268,7 +268,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 	public boolean canReach( Char owner, int target){
 		int reach = reachFactor(owner);
 		if (owner instanceof Hero) {
-			if (hero.subClass == HeroSubClass.EXPLORER && hero.belongings.getItem(Rope.class) != null) {
+			if (hero.subClass.is(HeroSubClass.EXPLORER) && hero.belongings.getItem(Rope.class) != null) {
 				reach += hero.belongings.getItem(Rope.class).quantity();
 			}
 			reach += additionalReach();

@@ -46,7 +46,7 @@ public class Firebloom extends Plant {
 	@Override
 	public void activate( Char ch ) {
 		
-		if (ch instanceof Hero && (((Hero) ch).subClass == HeroSubClass.WARDEN || ((Hero) ch).subClass == HeroSubClass.RESEARCHER)){
+		if (ch instanceof Hero && (((Hero) ch).subClass.is(HeroSubClass.WARDEN) || ((Hero) ch).subClass.is(HeroSubClass.RESEARCHER))){
 			Buff.affect(ch, FireImbue.class).set( FireImbue.DURATION*0.3f );
 		}
 

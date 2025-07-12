@@ -98,8 +98,8 @@ public class GuidingLight extends TargetedClericSpell {
 				hero.next();
 
 				onSpellCast(tome, hero);
-				if (ch != null && hero.subClass == HeroSubClass.ENCHANTER) onEnchanterSpellCast(ch, chargeUse(hero));
-				if (hero.subClass == HeroSubClass.PRIEST && hero.buff(GuidingLightPriestCooldown.class) == null) {
+				if (ch != null && hero.subClass.is(HeroSubClass.ENCHANTER)) onEnchanterSpellCast(ch, chargeUse(hero));
+				if (hero.subClass.is(HeroSubClass.PRIEST) && hero.buff(GuidingLightPriestCooldown.class) == null) {
 					Buff.prolong(hero, GuidingLightPriestCooldown.class, 100f);
 					ActionIndicator.refresh();
 				}
@@ -110,7 +110,7 @@ public class GuidingLight extends TargetedClericSpell {
 
 	@Override
 	public float chargeUse(Hero hero) {
-		if (hero.subClass == HeroSubClass.PRIEST
+		if (hero.subClass.is(HeroSubClass.PRIEST)
 			&& hero.buff(GuidingLightPriestCooldown.class) == null){
 			return 0;
 		} else {
@@ -120,7 +120,7 @@ public class GuidingLight extends TargetedClericSpell {
 
 	public String desc(){
 		String desc = Messages.get(this, "desc");
-		if (Dungeon.hero.subClass == HeroSubClass.PRIEST){
+		if (Dungeon.hero.subClass.is(HeroSubClass.PRIEST)){
 			desc += "\n\n" + Messages.get(this, "desc_priest");
 		}
 		return desc + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
@@ -168,7 +168,7 @@ public class GuidingLight extends TargetedClericSpell {
 		public String desc() {
 			String desc = super.desc();
 
-			if (Dungeon.hero.subClass == HeroSubClass.PRIEST){
+			if (Dungeon.hero.subClass.is(HeroSubClass.PRIEST)){
 				desc += "\n\n" + Messages.get(this, "desc_priest");
 			} else if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)){
 				desc += "\n\n" + Messages.get(this, "desc_generic");

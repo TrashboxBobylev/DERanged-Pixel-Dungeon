@@ -1,7 +1,5 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -35,6 +33,8 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Point;
 
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+
 public class Build extends Buff implements ActionIndicator.Action {
 
     {
@@ -56,7 +56,7 @@ public class Build extends Buff implements ActionIndicator.Action {
     public boolean attachTo(Char target) {
         if (super.attachTo(target)){
             if (hero != null) {
-                if (hero.subClass == HeroSubClass.ENGINEER) {
+                if (hero.subClass.is(HeroSubClass.ENGINEER)) {
                     ActionIndicator.setAction(this);
                 }
             }

@@ -1,7 +1,5 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -23,6 +21,8 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
 import java.util.HashSet;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 
 public class Pray extends Buff implements ActionIndicator.Action {
 
@@ -106,7 +106,7 @@ public class Pray extends Buff implements ActionIndicator.Action {
     public boolean attachTo(Char target) {
         if (super.attachTo(target)){
             if (hero != null) {
-                if (hero.subClass == HeroSubClass.CRUSADER) {
+                if (hero.subClass.is(HeroSubClass.CRUSADER)) {
                     ActionIndicator.setAction(this);
                 }
             }

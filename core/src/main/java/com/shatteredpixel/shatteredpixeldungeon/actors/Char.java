@@ -324,7 +324,7 @@ public abstract class Char extends Actor {
 		c.spend( 1 / c.speed() );
 
 		if (c == Dungeon.hero){
-			if (Dungeon.hero.subClass == HeroSubClass.FREERUNNER){
+			if (Dungeon.hero.subClass.is(HeroSubClass.FREERUNNER)){
 				Buff.affect(Dungeon.hero, Momentum.class).gainStack();
 			}
 			Dungeon.hero.justMoved = true;
@@ -398,7 +398,7 @@ public abstract class Char extends Actor {
 	
 	public boolean attack( Char enemy, float dmgMulti, float dmgBonus, float accMulti ) {
 
-		if (this instanceof Hero && hero.subClass == HeroSubClass.EXPLORER) {
+		if (this instanceof Hero && hero.subClass.is(HeroSubClass.EXPLORER)) {
 			Rope rope = hero.belongings.getItem(Rope.class);
 			KindOfWeapon wep = hero.belongings.attackingWeapon();
 			if (rope != null && wep instanceof MeleeWeapon) {
@@ -458,7 +458,7 @@ public abstract class Char extends Actor {
 			if (this instanceof Hero){
 				Hero h = (Hero)this;
 				if (h.belongings.attackingWeapon() instanceof MissileWeapon
-						&& h.subClass == HeroSubClass.SNIPER
+						&& h.subClass.is(HeroSubClass.SNIPER)
 						&& !Dungeon.level.adjacent(h.pos, enemy.pos)){
 					dr = 0;
 				}
@@ -514,7 +514,7 @@ public abstract class Char extends Actor {
 				if (this == Dungeon.hero && Dungeon.hero.hasTalent(Talent.WARDING_LIGHT)){
 					Buff.affect(Dungeon.hero, Barrier.class).setShield(1+2*Dungeon.hero.pointsInTalent(Talent.WARDING_LIGHT));
 				}
-				if (this != Dungeon.hero && Dungeon.hero.subClass == HeroSubClass.PRIEST){
+				if (this != Dungeon.hero && Dungeon.hero.subClass.is(HeroSubClass.PRIEST)){
 					enemy.damage(5+Dungeon.hero.lvl, GuidingLight.INSTANCE);
 				}
 			}
@@ -1151,7 +1151,7 @@ public abstract class Char extends Actor {
 
 			//special case for sniper when using ranged attacks
 			if (src == Dungeon.hero
-					&& Dungeon.hero.subClass == HeroSubClass.SNIPER
+					&& Dungeon.hero.subClass.is(HeroSubClass.SNIPER)
 					&& !Dungeon.level.adjacent(Dungeon.hero.pos, pos)
 					&& Dungeon.hero.belongings.attackingWeapon() instanceof MissileWeapon){
 				icon = FloatingText.PHYS_DMG_NO_BLOCK;

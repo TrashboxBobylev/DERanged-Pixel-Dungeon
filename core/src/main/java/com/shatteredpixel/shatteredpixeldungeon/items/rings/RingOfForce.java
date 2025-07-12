@@ -96,7 +96,7 @@ public class RingOfForce extends Ring {
 			return dmg;
 		} else {
 			//attack without any ring of force influence
-			if (Dungeon.hero.subClass == HeroSubClass.FIGHTER) {
+			if (Dungeon.hero.subClass.is(HeroSubClass.FIGHTER)) {
 				int damage = Hero.heroDamageIntRange((hero.STR() - 8), (hero.STR() - 8 + hero.lvl));
 				if (hero.pointsInTalent(Talent.RING_KNUCKLE) == 3) {
 					if (hero.belongings.ring != null) {

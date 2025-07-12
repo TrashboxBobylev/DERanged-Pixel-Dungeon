@@ -247,7 +247,7 @@ public class ArrowBag extends Item {
                     && item instanceof Potion
                     && !(item instanceof Elixir)
                     && !((item instanceof ExoticPotion || item instanceof Brew)
-                        && Dungeon.hero.subClass != HeroSubClass.BOWMASTER);
+                        && !Dungeon.hero.subClass.is(HeroSubClass.BOWMASTER));
         }
 
         @Override

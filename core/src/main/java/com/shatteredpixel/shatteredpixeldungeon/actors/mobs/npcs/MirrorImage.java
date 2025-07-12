@@ -190,7 +190,7 @@ public class MirrorImage extends NPC {
 			}
 			if (!wasEnemy || enemy.alignment == Alignment.ENEMY) {
 				if (hero.buff(HolyWeapon.HolyWepBuff.class) != null) {
-					int dmg = hero.subClass == HeroSubClass.PALADIN ? 6 : 2;
+					int dmg = hero.subClass.is(HeroSubClass.PALADIN) ? 6 : 2;
 					enemy.damage(Math.round(dmg * Weapon.Enchantment.genericProcChanceMultiplier(this)), HolyWeapon.INSTANCE);
 				}
 			}

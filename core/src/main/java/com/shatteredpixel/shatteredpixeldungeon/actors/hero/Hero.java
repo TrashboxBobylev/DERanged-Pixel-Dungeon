@@ -690,7 +690,7 @@ public class Hero extends Char {
 		Invisibility.dispel();
 		belongings.thrownWeapon = null;
 
-		if (hit && subClass == HeroSubClass.GLADIATOR && wasEnemy){
+		if (hit && subClass.is(HeroSubClass.GLADIATOR) && wasEnemy){
 			Buff.affect( this, Combo.class ).hit( enemy );
 		}
 
@@ -754,7 +754,7 @@ public class Hero extends Char {
 			}
 		}
 
-		if (hero.subClass == HeroSubClass.GUNSLINGER && hero.justMoved && wep instanceof MissileWeapon) {
+		if (hero.subClass.is(HeroSubClass.GUNSLINGER) && hero.justMoved && wep instanceof MissileWeapon) {
 			accuracy *= 0.25f*(1+0.5f*hero.pointsInTalent(Talent.MOVING_SHOT));
 		}
 
@@ -782,7 +782,7 @@ public class Hero extends Char {
 			accuracy = INFINITE_ACCURACY;
 		}
 
-		if (hero.subClass == HeroSubClass.MASTER &&
+		if (hero.subClass.is(HeroSubClass.MASTER) &&
 				hero.buff(Sheath.Sheathing.class) != null &&
 				hero.buff(Sheath.FlashSlashCooldown.class) == null &&
 				hero.buff(Sheath.DashAttackTracker.class) == null) {
@@ -1064,7 +1064,7 @@ public class Hero extends Char {
 			speed *= 1 + 0.1*hero.pointsInTalent(Talent.MOVESPEED_ENHANCE);
 		}
 
-		if (subClass == HeroSubClass.MONK && buff(MonkEnergy.class) != null && buff(MonkEnergy.class).harmonized(this)) {
+		if (subClass.is(HeroSubClass.MONK) && buff(MonkEnergy.class) != null && buff(MonkEnergy.class).harmonized(this)) {
 			speed *= 1.5f;
 		}
 
@@ -1187,7 +1187,7 @@ public class Hero extends Char {
 				speed *= 1+hero.pointsInTalent(Talent.QUICK_FOLLOWUP)/3f;
 			}
 
-			if (hero.subClass == HeroSubClass.MONK && hero.buff(MonkEnergy.class) != null && hero.buff(MonkEnergy.class).harmonized(hero)) {
+			if (hero.subClass.is(HeroSubClass.MONK) && hero.buff(MonkEnergy.class) != null && hero.buff(MonkEnergy.class).harmonized(hero)) {
 				speed *= 1.5f;
 			}
 
@@ -1346,7 +1346,7 @@ public class Hero extends Char {
 			Buff.affect(this, Talent.ParryTracker.class);
 		}
 
-		if (hero.subClass == HeroSubClass.SLAYER && hero.buff(Awakening.class) == null) {
+		if (hero.subClass.is(HeroSubClass.SLAYER) && hero.buff(Awakening.class) == null) {
 			Buff.affect(hero, Awakening.class).indicate();
 		}
 
@@ -1891,7 +1891,7 @@ public class Hero extends Char {
 				}
 			}
 
-			if (Dungeon.hero.subClass == HeroSubClass.CHASER
+			if (Dungeon.hero.subClass.is(HeroSubClass.CHASER)
 					&& hero.buff(Talent.ChaseCooldown.class) == null
 					&& hero.buff(Invisibility.class) == null
 					&& hero.buff(CloakOfShadows.cloakStealth.class) == null ) {
@@ -1907,7 +1907,7 @@ public class Hero extends Char {
 				}
 			}
 
-			if (Dungeon.level.map[pos] == Terrain.FURROWED_GRASS && hero.subClass == HeroSubClass.SPECIALIST) {
+			if (Dungeon.level.map[pos] == Terrain.FURROWED_GRASS && hero.subClass.is(HeroSubClass.SPECIALIST)) {
 				boolean adjacentMob = false;
 				for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 					if (level.adjacent(hero.pos, mob.pos)) {
@@ -1966,7 +1966,7 @@ public class Hero extends Char {
 		}
 
 		if (buff(Sheath.Sheathing.class) != null) {
-			if (subClass == HeroSubClass.MASTER &&
+			if (subClass.is(HeroSubClass.MASTER) &&
 					buff(Sheath.FlashSlashCooldown.class) == null &&
 					buff(Sheath.DashAttackTracker.class) == null &&
 					this.belongings.attackingWeapon() instanceof MeleeWeapon) {
@@ -2034,7 +2034,7 @@ public class Hero extends Char {
 			}
 			if (!wasEnemy || enemy.alignment == Alignment.ENEMY) {
 				if (buff(HolyWeapon.HolyWepBuff.class) != null) {
-					int dmg = subClass == HeroSubClass.PALADIN ? 6 : 2;
+					int dmg = subClass.is(HeroSubClass.PALADIN) ? 6 : 2;
 					enemy.damage(Math.round(dmg * Weapon.Enchantment.genericProcChanceMultiplier(this)), HolyWeapon.INSTANCE);
 				}
 				if (buff(Smite.SmiteTracker.class) != null) {
@@ -2344,12 +2344,12 @@ public class Hero extends Char {
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
 		
-		if (damage > 0 && subClass == HeroSubClass.BERSERKER){
+		if (damage > 0 && subClass.is(HeroSubClass.BERSERKER)){
 			Berserk berserk = Buff.affect(this, Berserk.class);
 			berserk.damage(damage);
 		}
 
-		if (hero.subClass == HeroSubClass.GLADIATOR && Random.Float() < hero.pointsInTalent(Talent.OFFENSIVE_DEFENSE)/3f) {
+		if (hero.subClass.is(HeroSubClass.GLADIATOR) && Random.Float() < hero.pointsInTalent(Talent.OFFENSIVE_DEFENSE)/3f) {
 			Combo combo = Buff.affect(this, Combo.class);
 			combo.hit(enemy);
 		}
@@ -2362,7 +2362,7 @@ public class Hero extends Char {
 				damage = buff(BodyForm.BodyFormBuff.class).glyph().proc(new ClothArmor(), enemy, this, damage);
 			}
 			if (buff(HolyWard.HolyArmBuff.class) != null){
-				int blocking = subClass == HeroSubClass.PALADIN ? 3 : 1;
+				int blocking = subClass.is(HeroSubClass.PALADIN) ? 3 : 1;
 				damage -= Math.round(blocking * Armor.Glyph.genericProcChanceMultiplier(enemy));
 			}
 		}
@@ -2399,7 +2399,7 @@ public class Hero extends Char {
 			hero.buff(Pray.Praying.class).defenseProc(enemy, damage);
 		}
 
-		if (hero.subClass == HeroSubClass.THERAPIST) {
+		if (hero.subClass.is(HeroSubClass.THERAPIST)) {
 			if (buff(FirstAidBuff.FirstAidBuffCooldown.class) == null) {
 				//방어력 적용 전 데미지 기준
 				Buff.affect(this, FirstAidBuff.class).set(damage);
@@ -2791,7 +2791,7 @@ public class Hero extends Char {
 				buff(GreaterHaste.class).spendMove();
 			}
 
-			if (subClass == HeroSubClass.FREERUNNER){
+			if (subClass.is(HeroSubClass.FREERUNNER)){
 				Buff.affect(this, Momentum.class).gainStack();
 			}
 
@@ -3349,15 +3349,15 @@ public class Hero extends Char {
 		Invisibility.dispel();
 		spend( attackDelay() );
 
-		if (hit && subClass == HeroSubClass.GLADIATOR && wasEnemy){
+		if (hit && subClass.is(HeroSubClass.GLADIATOR) && wasEnemy){
 			Buff.affect( this, Combo.class ).hit(attackTarget);
 		}
 
-		if (hit && subClass == HeroSubClass.BATTLEMAGE && hero.belongings.attackingWeapon() instanceof MagesStaff && hero.hasTalent(Talent.BATTLE_MAGIC) && wasEnemy) {
+		if (hit && subClass.is(HeroSubClass.BATTLEMAGE) && hero.belongings.attackingWeapon() instanceof MagesStaff && hero.hasTalent(Talent.BATTLE_MAGIC) && wasEnemy) {
 			Buff.affect( this, MagicalCombo.class).hit( attackTarget );
 		}
 
-		if (hero.subClass == HeroSubClass.CHASER
+		if (hero.subClass.is(HeroSubClass.CHASER)
 				&& hero.hasTalent(Talent.CHAIN_CLOCK)
 				&& ((Mob) attackTarget).surprisedBy(hero)
 				&& hero.buff(Talent.ChainCooldown.class) == null){
@@ -3367,7 +3367,7 @@ public class Hero extends Char {
 			Sample.INSTANCE.play( Assets.Sounds.MELD );
 		}
 
-		if (hero.subClass == HeroSubClass.CHASER
+		if (hero.subClass.is(HeroSubClass.CHASER)
 				&& hero.hasTalent(Talent.LETHAL_SURPRISE)
 				&& ((Mob) attackTarget).surprisedBy(hero)
 				&& !attackTarget.isAlive()
@@ -3396,7 +3396,7 @@ public class Hero extends Char {
 			Buff.affect( this, Sai.ComboStrikeTracker.class).addHit();
 		}
 
-		if (!hit && hero.belongings.weapon == null && hero.subClass == HeroSubClass.FIGHTER && Random.Int(5) == 0 && hero.pointsInTalent(Talent.SWIFT_MOVEMENT) > 1) {
+		if (!hit && hero.belongings.weapon == null && hero.subClass.is(HeroSubClass.FIGHTER) && Random.Int(5) == 0 && hero.pointsInTalent(Talent.SWIFT_MOVEMENT) > 1) {
 			Buff.prolong(hero, EvasiveMove.class, 0.9999f);
 		}
 

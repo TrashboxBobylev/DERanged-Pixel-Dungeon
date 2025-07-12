@@ -441,7 +441,7 @@ public class MeleeWeapon extends Weapon {
 		}
 
 		if (isEquipped(Dungeon.hero) && !hasCurseEnchant() && Dungeon.hero.buff(HolyWeapon.HolyWepBuff.class) != null
-				&& (Dungeon.hero.subClass != HeroSubClass.PALADIN || enchantment == null)){
+				&& (!(Dungeon.hero.subClass.is(HeroSubClass.PALADIN)) || enchantment == null)){
 			info += "\n\n" + Messages.capitalize(Messages.get(Weapon.class, "enchanted", Messages.get(HolyWeapon.class, "ench_name", Messages.get(Enchantment.class, "enchant"))));
 			info += " " + Messages.get(HolyWeapon.class, "ench_desc");
 		} else if (enchantment != null && (cursedKnown || !enchantment.curse())){
@@ -556,7 +556,7 @@ public class MeleeWeapon extends Weapon {
 					float chargeToGain = 1/(60f-1.5f*(chargeCap()-charges));
 
 					//40 to 30 turns per charge for champion
-					if (Dungeon.hero.subClass == HeroSubClass.CHAMPION){
+					if (Dungeon.hero.subClass.is(HeroSubClass.CHAMPION)){
 						chargeToGain *= 1.5f;
 					}
 
@@ -594,7 +594,7 @@ public class MeleeWeapon extends Weapon {
 				partialCharge = 0;
 			}
 
-			if (ActionIndicator.action != this && Dungeon.hero.subClass == HeroSubClass.CHAMPION || Dungeon.hero.subClass == HeroSubClass.FENCER) {
+			if (ActionIndicator.action != this && Dungeon.hero.subClass.is(HeroSubClass.CHAMPION) || Dungeon.hero.subClass.is(HeroSubClass.FENCER)) {
 				ActionIndicator.setAction(this);
 			}
 
@@ -604,7 +604,7 @@ public class MeleeWeapon extends Weapon {
 
 		@Override
 		public void fx(boolean on) {
-			if (on && (Dungeon.hero.subClass == HeroSubClass.CHAMPION || Dungeon.hero.subClass == HeroSubClass.FENCER)) {
+			if (on && (Dungeon.hero.subClass.is(HeroSubClass.CHAMPION) || Dungeon.hero.subClass.is(HeroSubClass.FENCER))) {
 				ActionIndicator.setAction(this);
 			}
 		}
@@ -618,7 +618,7 @@ public class MeleeWeapon extends Weapon {
 		public int chargeCap(){
 			//caps at level 19 with 8 or 10 charges
 			int charge;
-			if (Dungeon.hero.subClass == HeroSubClass.CHAMPION){
+			if (Dungeon.hero.subClass.is(HeroSubClass.CHAMPION)){
 				charge = Math.min(10, 4 + (Dungeon.hero.lvl - 1) / 3);
 			} else {
 				charge = Math.min(8, 2 + (Dungeon.hero.lvl - 1) / 3);
@@ -661,7 +661,7 @@ public class MeleeWeapon extends Weapon {
 
 		@Override
 		public String actionName() {
-			if (hero.subClass == HeroSubClass.FENCER) {
+			if (hero.subClass.is(HeroSubClass.FENCER)) {
 				return Messages.get(MeleeWeapon.class, "dash");
 			} else {
 				return Messages.get(MeleeWeapon.class, "swap");
@@ -670,7 +670,7 @@ public class MeleeWeapon extends Weapon {
 
 		@Override
 		public int actionIcon() {
-			if (hero.subClass == HeroSubClass.CHAMPION) {
+			if (hero.subClass.is(HeroSubClass.CHAMPION)) {
 				return HeroIcon.WEAPON_SWAP;
 			}
 			else {
@@ -681,7 +681,7 @@ public class MeleeWeapon extends Weapon {
 		@Override
 		public Visual primaryVisual() {
 			Image ico;
-			if (hero.subClass == HeroSubClass.FENCER) {
+			if (hero.subClass.is(HeroSubClass.FENCER)) {
 				ico = new BuffIcon(BuffIndicator.HASTE, true);
 				ico.hardlight(0x5A00B2);
 				return ico;
@@ -699,7 +699,7 @@ public class MeleeWeapon extends Weapon {
 		@Override
 		public Visual secondaryVisual() {
 			Image ico;
-			if (hero.subClass == HeroSubClass.CHAMPION) {
+			if (hero.subClass.is(HeroSubClass.CHAMPION)) {
 				if (Dungeon.hero.belongings.secondWep == null){
 					ico = new HeroIcon(this);
 				} else {
@@ -720,11 +720,11 @@ public class MeleeWeapon extends Weapon {
 
 		@Override
 		public void doAction() {
-			if (Dungeon.hero.subClass != HeroSubClass.CHAMPION && Dungeon.hero.subClass != HeroSubClass.FENCER) {
+			if (!Dungeon.hero.subClass.is(HeroSubClass.CHAMPION) && !Dungeon.hero.subClass.is(HeroSubClass.FENCER)) {
 				return;
 			}
 
-			if (Dungeon.hero.subClass == HeroSubClass.CHAMPION) {
+			if (Dungeon.hero.subClass.is(HeroSubClass.CHAMPION)) {
 				if (Dungeon.hero.belongings.secondWep == null && Dungeon.hero.belongings.backpack.items.size() >= Dungeon.hero.belongings.backpack.capacity()) {
 					GLog.w(Messages.get(MeleeWeapon.class, "swap_full"));
 					return;

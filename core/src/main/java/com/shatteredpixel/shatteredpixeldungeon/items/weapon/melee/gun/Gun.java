@@ -827,7 +827,7 @@ public class Gun extends MeleeWeapon {
 
 			boolean willAggroEnemy = true;
 
-			if (curUser.subClass == HeroSubClass.SPECIALIST && curUser.buff(Invisibility.class) != null ||
+			if (curUser.subClass.is(HeroSubClass.SPECIALIST) && curUser.buff(Invisibility.class) != null ||
 					curUser.hasTalent(Talent.STEALTH_MASTER)) {
 				willAggroEnemy = false;
 			}

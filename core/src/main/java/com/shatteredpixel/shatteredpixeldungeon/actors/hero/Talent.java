@@ -2142,7 +2142,7 @@ public enum Talent {
 			} else if (hero.buff(FollowupStrikeTracker.class) != null
 					&& hero.buff(FollowupStrikeTracker.class).object == enemy.id()){
 				damage += 1 + hero.pointsInTalent(FOLLOWUP_STRIKE);
-				if (hero.belongings.weapon == null && hero.subClass == HeroSubClass.FIGHTER) {
+				if (hero.belongings.weapon == null && hero.subClass.is(HeroSubClass.FIGHTER)) {
 					Buff.affect( enemy, Paralysis.class, 1f );
 				}
 				hero.buff(FollowupStrikeTracker.class).detach();
@@ -2403,12 +2403,12 @@ public enum Talent {
 			}
 		}
 
-		if (hero.subClass == HeroSubClass.SLASHER) {
+		if (hero.subClass.is(HeroSubClass.SLASHER)) {
 			Buff.affect(hero, SwordAura.class).hit(damage);
 		}
 
 
-		if (hero.subClass == HeroSubClass.RESEARCHER && Random.Float() < 0.2f) {
+		if (hero.subClass.is(HeroSubClass.RESEARCHER) && Random.Float() < 0.2f) {
 			Buff.affect(enemy, Ooze.class).set(Ooze.DURATION/4f * (1+0.5f*hero.pointsInTalent(Talent.POWERFUL_ACID)));
 		}
 
@@ -2417,7 +2417,7 @@ public enum Talent {
 			Buff.affect(enemy, Lucky.LuckProc.class);
 		}
 
-		if (hero.subClass == HeroSubClass.CRUSADER && hero.buff(Bless.class) != null) {
+		if (hero.subClass.is(HeroSubClass.CRUSADER) && hero.buff(Bless.class) != null) {
 			int healAmt = Math.round(damage*0.4f);
 			int excessHeal = healAmt - (hero.HT - hero.HP);
 			hero.heal(healAmt);

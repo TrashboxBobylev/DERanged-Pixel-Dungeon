@@ -50,7 +50,7 @@ public class Fadeleaf extends Plant {
 			
 			((Hero)ch).curAction = null;
 			
-			if ((((Hero) ch).subClass == HeroSubClass.WARDEN || ((Hero) ch).subClass == HeroSubClass.RESEARCHER) && Dungeon.interfloorTeleportAllowed()){
+			if ((((Hero) ch).subClass.is(HeroSubClass.WARDEN) || ((Hero) ch).subClass.is(HeroSubClass.RESEARCHER)) && Dungeon.interfloorTeleportAllowed()){
 
 				Level.beforeTransition();
 				InterlevelScene.mode = InterlevelScene.Mode.RETURN;
