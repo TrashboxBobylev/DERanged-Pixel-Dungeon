@@ -1481,6 +1481,10 @@ public enum Talent {
 		return desc(false);
 	}
 
+	public interface TalentCallback {
+		void call(Talent talent, int points);
+	}
+
 	// this is an absurd way to check but it..works.
 	public boolean isClassTalent(HeroClass cls) {
 		ArrayList<LinkedHashMap<Talent, Integer>> talents = new ArrayList<>();

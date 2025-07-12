@@ -566,17 +566,117 @@ public class Hero extends Char {
 		Belongings.preview( info, bundle );
 	}
 
+	public boolean canHaveTalent(Talent talent) {
+		/*if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CLERIC)){
+			for (Talent tal: HolyTome.allSpellTalents){
+				if (tal == talent)
+					return true;
+			}
+			if (talent == Talent.LIGHT_READING)
+				return true;
+		}
+		if (buff(MetaForm.MetaFormBuff.class) != null){
+			Talent metaTalent = buff(MetaForm.MetaFormBuff.class).talent;
+			if (metaTalent == talent){
+				return true;
+			}
+		}
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_TALENTS))
+			return true;*/
+		for(LinkedHashMap<Talent,Integer> tier : talents) if(tier.containsKey(talent)) return true;
+		return /*OmniAbility.findTalent(talent) != null*/false;
+	}
 	public boolean hasTalent( Talent talent ){
 		return pointsInTalent(talent) > 0;
 	}
+	public boolean hasTalent( Talent... talents) {
+		for(Talent talent : talents ) {
+			if(hasTalent(talent)) return true;
+		}
+		return false;
+	}
 
 	public int pointsInTalent( Talent talent ){
+		/*if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CLERIC)){
+			for (Talent tal: HolyTome.allSpellTalents){
+				if (tal == talent)
+					return talent.maxPoints();
+			}
+			if (talent == Talent.LIGHT_READING)
+				return talent.maxPoints();
+		}
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_TALENTS))
+			return talent.maxPoints();*/
 		for (LinkedHashMap<Talent, Integer> tier : talents){
 			for (Talent f : tier.keySet()){
 				if (f == talent) return tier.get(f);
 			}
 		}
 		return 0;
+		/*Integer omniPoints = OmniAbility.findTalent(talent);
+		return omniPoints != null ? omniPoints : 0;*/
+	}
+	// stacks was the legacy behavior.
+	public final int pointsInTalent(Talent... talents) {
+		return pointsInTalent(true, talents);
+	}
+	public int pointsInTalent(boolean stacks, Talent... talents) {
+		int sum = 0;
+		for(Talent talent : talents) {
+			int points = pointsInTalent(talent);
+			sum = stacks ? sum + points : Math.max(sum, points);
+		}
+		return sum;
+	}
+
+	public final float byTalent(Talent t1, float f1, Talent t2, float f2) {
+		return byTalent(false, t1, f1, t2, f2);
+	}
+	public final float byTalent(boolean stacks, Talent t1, float f1, Talent t2, float f2) {
+		return byTalent(stacks, false, t1, f1, t2, f2);
+	}
+	public float byTalent(boolean stacks, boolean shifted, Talent t1, float f1, Talent t2, float f2 ) {
+		float r1 = f1 * (shifted ? shiftedPoints(t1) : pointsInTalent(t1)),
+				r2 = f2 * (shifted ? shiftedPoints(t2) : pointsInTalent(t2));
+		return stacks ? r1 + r2 : Math.max(r1, r2);
+	}
+
+	// I'm... not sure if this is a good idea, but it does make it look a bit better in some situations.
+	public void byTalent(Talent.TalentCallback callback, Talent... talents) {
+		byTalent(callback, false, talents);
+	}
+	public void byTalent(Talent.TalentCallback callback, boolean runIf0, Talent... talents) {
+		for(Talent talent : talents) if( hasTalent(talent) || runIf0 && canHaveTalent(talent) ) {
+			callback.call(talent, pointsInTalent(talent));
+		}
+	}
+
+	/** shifts [shifted] so that +0 becomes +1 */
+	public int shiftedPoints( Talent shifted ) {
+		int points = pointsInTalent(shifted);
+		if(canHaveTalent(shifted)) points++;
+		return points;
+	}
+	/** shifts [shifted] so that +0 becomes +1, or returns the points in standard */
+	public int shiftedPoints( Talent shifted, Talent standard ) {
+		return Math.max(shiftedPoints(shifted), pointsInTalent(standard));
+	}
+
+	/** shifts [shifted[ so that +0 is +1, +1 is +2 +2 is +4, +3 is +6**/
+	public int shiftedPoints2( Talent shifted ) {
+		return hasTalent(shifted) ? 2 * pointsInTalent(shifted) : canHaveTalent(shifted) ? 1 : 0;
+	}
+	/** shifts [shifted[ so that +0 is +1, +1 is +2 +2 is +4, +3 is +6**/
+	public int shiftedPoints2( Talent shifted, Talent standard ) {
+		return Math.max(shiftedPoints2(shifted), pointsInTalent(standard));
+	}
+
+	/** gives a free +1 when the heroclass matches [cls] */
+	public int pointsInTalentWithInnate( HeroClass cls, Talent... talents) {
+		int points = pointsInTalent(talents);
+		if(heroClass == cls) points++;
+		return points;
+
 	}
 
 	public void upgradeTalent( Talent talent ){
