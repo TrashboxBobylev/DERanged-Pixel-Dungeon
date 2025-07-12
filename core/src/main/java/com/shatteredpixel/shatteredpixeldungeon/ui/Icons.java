@@ -519,6 +519,8 @@ public enum Icons {
 				return new ItemSprite(ItemSpriteSheet.GAMMA_RAY_GUN);
 			case ARCHER:
 				return new ItemSprite(ItemSpriteSheet.LONGBOW);
+			case RAT_KING:
+				return new ItemSprite(ItemSpriteSheet.ARMOR_RAT_KING);
 		}
 	}
 
