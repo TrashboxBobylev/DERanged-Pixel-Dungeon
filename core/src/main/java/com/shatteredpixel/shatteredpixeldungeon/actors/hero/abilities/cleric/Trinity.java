@@ -69,6 +69,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Reflection;
@@ -112,6 +113,8 @@ public class Trinity extends ArmorAbility {
 					Messages.get(WndUseTrinity.class, "text"));
 
 			int top = height;
+
+			ArrayList<Component> toAdd = new ArrayList<>();
 
 			if (bodyForm != null){
 				RedButton btnBody = null;
@@ -188,7 +191,7 @@ public class Trinity extends ArmorAbility {
 				btnBody.multiline = true;
 				btnBody.setSize(width, 100); //for text layout
 				btnBody.setRect(0, top + 2, width, btnBody.reqHeight());
-				add(btnBody);
+				toAdd.add(btnBody);
 				top = (int)btnBody.bottom();
 
 				btnBody.enable(Dungeon.hero.buff(MagicImmune.class) == null && armor.charge >= trinityChargeUsePerEffect(bodyForm.getClass()));
@@ -217,7 +220,7 @@ public class Trinity extends ArmorAbility {
 				btnMind.multiline = true;
 				btnMind.setSize(width, 100); //for text layout
 				btnMind.setRect(0, top + 2, width, btnMind.reqHeight());
-				add(btnMind);
+				toAdd.add(btnMind);
 				top = (int)btnMind.bottom();
 
 				btnMind.enable(armor.charge >= trinityChargeUsePerEffect(mindForm.getClass()));
@@ -264,12 +267,13 @@ public class Trinity extends ArmorAbility {
 				btnSpirit.multiline = true;
 				btnSpirit.setSize(width, 100); //for text layout
 				btnSpirit.setRect(0, top + 2, width, btnSpirit.reqHeight());
-				add(btnSpirit);
+				toAdd.add(btnSpirit);
 				top = (int)btnSpirit.bottom();
 
 				btnSpirit.enable(Dungeon.hero.buff(MagicImmune.class) == null && armor.charge >= trinityChargeUsePerEffect(spiritForm.getClass()));
 			}
 
+			addToBottom(toAdd.toArray(new Component[0]));
 			resize(width, top);
 
 		}
@@ -461,7 +465,7 @@ public class Trinity extends ArmorAbility {
 				}
 			};
 			btnConfirm.setRect(0, height+2, width, 16);
-			add(btnConfirm);
+			addToBottom(btnConfirm);
 
 			resize(width, (int)btnConfirm.bottom());
 

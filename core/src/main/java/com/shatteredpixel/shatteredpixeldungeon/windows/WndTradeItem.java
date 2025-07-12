@@ -40,6 +40,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CurrencyIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 
+import java.util.ArrayList;
+
 public class WndTradeItem extends WndInfoItem {
 
 	private static final float GAP		= 2;
@@ -81,7 +83,7 @@ public class WndTradeItem extends WndInfoItem {
 			};
 			btnSell.setRect( 0, pos + GAP, width, BTN_HEIGHT );
 			btnSell.icon(new ItemSprite(ItemSpriteSheet.GOLD));
-			add( btnSell );
+			addToBottom( btnSell );
 
 			pos = btnSell.bottom();
 
@@ -107,7 +109,7 @@ public class WndTradeItem extends WndInfoItem {
 			};
 			btnSellAll.setRect( 0, btnSell1.bottom() + 1, width, BTN_HEIGHT );
 			btnSellAll.icon(new ItemSprite(ItemSpriteSheet.GOLD));
-			add( btnSellAll );
+			addToBottom( btnSell1, btnSellAll );
 
 			pos = btnSellAll.bottom();
 
@@ -130,6 +132,8 @@ public class WndTradeItem extends WndInfoItem {
 
 		final int price = Shopkeeper.sellPrice( item );
 
+		ArrayList<RedButton> buttons = new ArrayList();
+
 		RedButton btnBuy = new RedButton( Messages.get(this, "buy", price) ) {
 			@Override
 			protected void onClick() {
@@ -140,7 +144,7 @@ public class WndTradeItem extends WndInfoItem {
 		btnBuy.setRect( 0, pos + GAP, width, BTN_HEIGHT );
 		btnBuy.icon(new ItemSprite(ItemSpriteSheet.GOLD));
 		btnBuy.enable( price <= Dungeon.gold );
-		add( btnBuy );
+		buttons.add( btnBuy );
 
 		pos = btnBuy.bottom();
 
@@ -196,13 +200,13 @@ public class WndTradeItem extends WndInfoItem {
 			};
 			btnSteal.setRect(0, pos + 1, width, BTN_HEIGHT);
 			btnSteal.icon(new ItemSprite(ItemSpriteSheet.ARTIFACT_ARMBAND));
-			add(btnSteal);
+			buttons.add(btnSteal);
 
 			pos = btnSteal.bottom();
 
 		}
 
-		resize(width, (int) pos);
+		addToBottom( buttons.toArray(new RedButton[0]) );
 	}
 	
 	@Override

@@ -37,6 +37,10 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class WndEnergizeItem extends WndInfoItem {
 
+	public static int energyVal(Item item) {
+		return (int)Math.floor(item.energyVal() * 1f);
+	}
+
 	private static final float GAP		= 2;
 	private static final int BTN_HEIGHT	= 18;
 
@@ -47,53 +51,47 @@ public class WndEnergizeItem extends WndInfoItem {
 
 		this.owner = owner;
 
-		float pos = height;
-
 		if (item.quantity() == 1) {
-
-			RedButton btnEnergize = new RedButton( Messages.get(this, "energize", item.energyVal()) ) {
+			addToBottom(new RedButton( Messages.get(this, "energize", energyVal(item)) ) {
 				@Override
 				protected void onClick() {
 					energizeAll( item );
 					hide();
 				}
-			};
-			btnEnergize.setRect( 0, pos + GAP, width, BTN_HEIGHT );
-			btnEnergize.icon(new ItemSprite(ItemSpriteSheet.ENERGY));
-			add( btnEnergize );
-
-			pos = btnEnergize.bottom();
-
+				{
+					icon(new ItemSprite(ItemSpriteSheet.ENERGY));
+					setSize(WndEnergizeItem.this.width, BTN_HEIGHT);
+				}
+			});
 		} else {
 
-			int energyAll = item.energyVal();
-			RedButton btnEnergize1 = new RedButton( Messages.get(this, "energize_1", energyAll / item.quantity()) ) {
-				@Override
-				protected void onClick() {
-					energizeOne( item );
-					hide();
-				}
-			};
-			btnEnergize1.setRect( 0, pos + GAP, width, BTN_HEIGHT );
-			btnEnergize1.icon(new ItemSprite(ItemSpriteSheet.ENERGY));
-			add( btnEnergize1 );
-			RedButton btnEnergizeAll = new RedButton( Messages.get(this, "energize_all", energyAll ) ) {
-				@Override
-				protected void onClick() {
-					energizeAll( item );
-					hide();
-				}
-			};
-			btnEnergizeAll.setRect( 0, btnEnergize1.bottom() + 1, width, BTN_HEIGHT );
-			btnEnergizeAll.icon(new ItemSprite(ItemSpriteSheet.ENERGY));
-			add( btnEnergizeAll );
-
-			pos = btnEnergizeAll.bottom();
-
+			int energyAll = energyVal(item);
+			RedButton first;
+			addToBottom(
+					first = new RedButton( Messages.get(this, "energize_1", energyAll / item.quantity()) ) {
+						@Override
+						protected void onClick() {
+							energizeOne( item );
+							hide();
+						}
+						{
+							setSize(WndEnergizeItem.this.width, BTN_HEIGHT);
+							icon(new ItemSprite(ItemSpriteSheet.ENERGY));
+						}
+					},
+					new RedButton( Messages.get(this, "energize_all", energyAll ) ) {
+						@Override
+						protected void onClick() {
+							energizeAll( item );
+							hide();
+						}
+						{
+							icon(new ItemSprite(ItemSpriteSheet.ENERGY));
+							setRect(0, first.bottom() + GAP, first.width(), BTN_HEIGHT);
+						}
+					}
+			);
 		}
-
-		resize( width, (int)pos );
-
 	}
 
 	@Override

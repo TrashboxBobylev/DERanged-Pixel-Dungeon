@@ -154,7 +154,7 @@ public class WndSadGhost extends Window {
 			btnCancel.setRect(btnConfirm.right()+2, height+2, btnConfirm.width(), 16);
 			add(btnCancel);
 
-			resize(width, (int)btnCancel.bottom());
+			addToBottom(btnConfirm, btnCancel);
 		}
 	}
 }

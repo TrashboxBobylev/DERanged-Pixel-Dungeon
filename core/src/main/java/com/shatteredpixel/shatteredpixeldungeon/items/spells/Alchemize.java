@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndEnergizeItem;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoItem;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -144,6 +145,7 @@ public class Alchemize extends Spell {
 			this.owner = owner;
 
 			float pos = height;
+			ArrayList<Component> buttons = new ArrayList<>();
 
 			if (Shopkeeper.canSell(item)) {
 				if (item.quantity() == 1) {
@@ -158,7 +160,7 @@ public class Alchemize extends Spell {
 					};
 					btnSell.setRect(0, pos + GAP, width, BTN_HEIGHT);
 					btnSell.icon(new ItemSprite(ItemSpriteSheet.GOLD));
-					add(btnSell);
+					buttons.add(btnSell);
 
 					pos = btnSell.bottom();
 
@@ -175,7 +177,7 @@ public class Alchemize extends Spell {
 					};
 					btnSell1.setRect(0, pos + GAP, width, BTN_HEIGHT);
 					btnSell1.icon(new ItemSprite(ItemSpriteSheet.GOLD));
-					add(btnSell1);
+					buttons.add(btnSell1);
 					RedButton btnSellAll = new RedButton(Messages.get(this, "sell_all", priceAll)) {
 						@Override
 						protected void onClick() {
@@ -186,7 +188,7 @@ public class Alchemize extends Spell {
 					};
 					btnSellAll.setRect(0, btnSell1.bottom() + 1, width, BTN_HEIGHT);
 					btnSellAll.icon(new ItemSprite(ItemSpriteSheet.GOLD));
-					add(btnSellAll);
+					buttons.add(btnSellAll);
 
 					pos = btnSellAll.bottom();
 
@@ -206,7 +208,7 @@ public class Alchemize extends Spell {
 					};
 					btnEnergize.setRect(0, pos + GAP, width, BTN_HEIGHT);
 					btnEnergize.icon(new ItemSprite(ItemSpriteSheet.ENERGY));
-					add(btnEnergize);
+					buttons.add(btnEnergize);
 
 					pos = btnEnergize.bottom();
 
@@ -234,12 +236,14 @@ public class Alchemize extends Spell {
 					};
 					btnEnergizeAll.setRect(0, btnEnergize1.bottom() + 1, width, BTN_HEIGHT);
 					btnEnergizeAll.icon(new ItemSprite(ItemSpriteSheet.ENERGY));
-					add(btnEnergizeAll);
+					buttons.add(btnEnergizeAll);
 
 					pos = btnEnergizeAll.bottom();
 
 				}
 			}
+
+			addToBottom(buttons.toArray(new Component[0]));
 
 			resize( width, (int)pos );
 

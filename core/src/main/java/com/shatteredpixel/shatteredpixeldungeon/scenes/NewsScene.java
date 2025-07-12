@@ -314,8 +314,7 @@ public class NewsScene extends PixelScene {
 				}
 			};
 			link.setRect(0, height + 2, width, BTN_HEIGHT);
-			add(link);
-			resize(width, (int) link.bottom());
+			addToBottom(link);
 		}
 
 

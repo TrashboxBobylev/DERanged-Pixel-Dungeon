@@ -1481,6 +1481,22 @@ public enum Talent {
 		return desc(false);
 	}
 
+	// this is an absurd way to check but it..works.
+	public boolean isClassTalent(HeroClass cls) {
+		ArrayList<LinkedHashMap<Talent, Integer>> talents = new ArrayList<>();
+		initClassTalents(cls, talents);
+		for (LinkedHashMap<Talent, Integer> tier : talents) if (tier.containsKey(this)) return true;
+		return false;
+	}
+
+	// returns the corresponding class for a talent
+	public HeroClass getHeroClass() {
+		for (HeroClass cls : HeroClass.values()) {
+			if (isClassTalent(cls)) return cls;
+		}
+		return null;
+	}
+
 	public String desc(boolean metamorphed){
 		String desc = Messages.get(this, name() + ".desc");
 		if (metamorphed){

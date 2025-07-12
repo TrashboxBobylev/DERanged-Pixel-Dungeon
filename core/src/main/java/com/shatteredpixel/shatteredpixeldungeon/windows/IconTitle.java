@@ -55,13 +55,22 @@ public class IconTitle extends Component {
 		icon.view( item );
 		layout();
 	}
-	
+
 	public IconTitle( Heap heap ){
 		ItemSprite icon = new ItemSprite();
 		icon( icon );
 		label( Messages.titleCase( heap.title() ) );
 		icon.view( heap );
 		layout();
+	}
+
+	public IconTitle( Item item, int color) {
+		this(item);
+		color(color);
+	}
+	public IconTitle( Heap heap, int color) {
+		this(heap);
+		color(color);
 	}
 
 	public IconTitle( Image icon, String label ) {

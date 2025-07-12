@@ -42,6 +42,8 @@ public class Component extends Group {
 		
 		return this;
 	}
+	public final Component setX( float x ) { return setPos(x, y); }
+	public final Component setY( float y ) { return setPos(x, y); }
 	
 	public Component setSize( float width, float height ) {
 		this.width = width;
@@ -60,6 +62,9 @@ public class Component extends Group {
 		
 		return this;
 	}
+
+	public final Component setHeight( float height ) { return setSize(width, height); }
+	public final Component setWidth( float width ) 	 { return setSize(width, height); }
 	
 	public boolean inside( float x, float y ) {
 		return x >= this.x && y >= this.y && x < this.x + width && y < this.y + height;
