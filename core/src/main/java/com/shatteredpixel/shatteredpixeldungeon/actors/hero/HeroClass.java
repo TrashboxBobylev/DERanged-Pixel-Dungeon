@@ -129,6 +129,8 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.DeviceCompat;
 
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+
 public enum HeroClass {
 
 	WARRIOR( HeroSubClass.BERSERKER, HeroSubClass.GLADIATOR, HeroSubClass.VETERAN ),
@@ -149,6 +151,24 @@ public enum HeroClass {
 
 	HeroClass( HeroSubClass...subClasses ) {
 		this.subClasses = subClasses;
+	}
+
+	/** useful for sharing attributes with Rat King **/
+	public boolean is(HeroClass cls) {
+		return hero.isClassedLoosely(cls);
+	}
+
+	public boolean is(HeroClass cls, Hero hero){
+		return hero.isClassedLoosely(cls);
+	}
+
+	// TODO: this is used much more frequently than is(cls) due to heroes *not* sharing traits with rat king
+	public boolean isExact(HeroClass cls) {
+		return hero.isClassed(cls);
+	}
+
+	public boolean isExact(HeroClass cls, Hero hero){
+		return hero.isClassed(cls);
 	}
 
 	public void initHero( Hero hero ) {
