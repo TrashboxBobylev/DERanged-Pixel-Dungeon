@@ -782,6 +782,7 @@ public enum Talent {
 	ROYAL_PRIVILEGE(0, 13), // food related talents
 	ROYAL_FOCUS(0, 14),  // food-ish related talents (arranged)
 	ROYAL_INTUITION(1, 13), // intuition-related talents, uses survivalist's icon
+	ROYAL_PERCEPTIVITY(1, 14), // stronger intuition based talents
 	KINGS_WISDOM(2, 13), // on-id + combat talents
 	NOBLE_CAUSE(3, 13), // other ones. uses iron will
 	ROYAL_MEAL(5, 13), /// all on-eat talents for tier 2
@@ -1672,6 +1673,13 @@ public enum Talent {
 			}
 		}
 
+		if (talent == ROYAL_PERCEPTIVITY && !ShardOfOblivion.passiveIDDisabled()){
+			if (hero.belongings.weapon != null)
+				hero.belongings.weapon.identify();
+			if (hero.belongings.armor != null)
+				hero.belongings.armor.identify();
+		}
+
 		if (talent == STORED_POWER) {
 			BuffIndicator.refreshHero();
 		}
@@ -1686,7 +1694,7 @@ public enum Talent {
 		}
 
 		//medic
-		if (talent == DOCTORS_INTUITION) {
+		if (talent == DOCTORS_INTUITION || talent == ROYAL_INTUITION) {
 			identifyPotions(1+2*hero.pointsInTalent(talent));
 		}
 	}
@@ -2112,6 +2120,9 @@ public enum Talent {
 		if (hero.hasTalent(KNIGHTS_INTUITION) && item instanceof Armor) {
 			item.identify();
 		}
+		if (hero.hasTalent(ROYAL_PERCEPTIVITY) && (item instanceof MeleeWeapon || item instanceof Armor)){
+			item.identify();
+		}
 	}
 
 	public static void onItemCollected( Hero hero, Item item ){
@@ -2125,6 +2136,9 @@ public enum Talent {
 			item.cursedKnown = true;
 		}
 		if (hero.pointsInTalent(KNIGHTS_INTUITION) == 2 && item instanceof Armor) {
+			item.cursedKnown = true;
+		}
+		if (hero.pointsInTalent(ROYAL_PERCEPTIVITY) == 2 && (item instanceof MeleeWeapon || item instanceof Armor)){
 			item.cursedKnown = true;
 		}
 	}
@@ -2690,7 +2704,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, FORCE_SAVING, ARCHERS_INTUITION, SURPRISE_PANIC, SURVIVAL_TECHNIQUE, DEXTERITY);
 				break;
 			case RAT_KING:
-				Collections.addAll(tierTalents, ROYAL_PRIVILEGE, ROYAL_INTUITION, KINGS_WISDOM, NOBLE_CAUSE, ROYAL_FOCUS);
+				Collections.addAll(tierTalents, ROYAL_PRIVILEGE, ROYAL_INTUITION, KINGS_WISDOM, NOBLE_CAUSE, ROYAL_FOCUS, ROYAL_PERCEPTIVITY);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -3048,7 +3062,7 @@ public enum Talent {
 		}
 
 		if (left == 0) {
-			GameScene.show(new WndIdentify(IDed, Talent.DOCTORS_INTUITION));
+			GameScene.show(new WndIdentify(IDed, hero.hasTalent(ROYAL_PERCEPTIVITY) ? ROYAL_PERCEPTIVITY : DOCTORS_INTUITION));
 		}
 	}
 
