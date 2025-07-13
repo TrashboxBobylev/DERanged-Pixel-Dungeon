@@ -922,7 +922,7 @@ public enum Talent {
 	public static class RejuvenatingStepsCooldown extends FlavourBuff{
 		public int icon() { return BuffIndicator.TIME; }
 		public void tintIcon(Image icon) { icon.hardlight(0f, 0.35f, 0.15f); }
-		public float iconFadePercent() { return GameMath.gate(0, visualcooldown() / (15 - 5*Dungeon.hero.pointsInTalent(REJUVENATING_STEPS)), 1); }
+		public float iconFadePercent() { return GameMath.gate(0, visualcooldown() / (15 - 5*Dungeon.hero.pointsInTalent(REJUVENATING_STEPS, POWER_WITHIN)), 1); }
 	};
 	public static class RejuvenatingStepsFurrow extends CounterBuff{{revivePersists = true;}};
 	//3-2
@@ -1618,12 +1618,12 @@ public enum Talent {
 		}
 
 		//huntress
-		if (talent == HEIGHTENED_SENSES || talent == FARSIGHT || talent == DIVINE_SENSE || talent == TELESCOPE || talent == DRAGONS_EYE){
+		if (talent == HEIGHTENED_SENSES || talent == FARSIGHT || talent == DIVINE_SENSE || talent == TELESCOPE || talent == DRAGONS_EYE || talent == KINGS_VISION){
 			Dungeon.observe();
 		}
 
 		if (talent == TWIN_UPGRADES || talent == DESPERATE_POWER
-				|| talent == STRONGMAN || talent == DURABLE_PROJECTILES || talent == ACCUMULATION){
+				|| talent == STRONGMAN || talent == DURABLE_PROJECTILES || talent == ACCUMULATION || talent == PURSUIT){
 			Item.updateQuickslot();
 		}
 
@@ -1717,7 +1717,7 @@ public enum Talent {
 
 			}
 		}
-		if (hero.hasTalent(IRON_STOMACH)){
+		if (hero.hasTalent(IRON_STOMACH, ROYAL_MEAL)){
 			if (hero.cooldown() > 0) {
 				Buff.affect(hero, WarriorFoodImmunity.class, hero.cooldown());
 			}
@@ -1728,24 +1728,24 @@ public enum Talent {
 			ScrollOfRecharging.charge( hero );
 		}
 		int wandChargeTurns = 0;
-		if (hero.hasTalent(ENERGIZING_MEAL)){
+		if (hero.hasTalent(ENERGIZING_MEAL, ROYAL_MEAL)){
 			//5/8 turns of recharging
-			wandChargeTurns += 2 + 3*hero.pointsInTalent(ENERGIZING_MEAL);
+			wandChargeTurns += 2 + 3*hero.pointsInTalent(ENERGIZING_MEAL, ROYAL_MEAL);
 		}
 		int artifactChargeTurns = 0;
-		if (hero.hasTalent(MYSTICAL_MEAL)){
+		if (hero.hasTalent(MYSTICAL_MEAL, ROYAL_MEAL)){
 			//3/5 turns of recharging
-			artifactChargeTurns += 1 + 2*hero.pointsInTalent(MYSTICAL_MEAL);
+			artifactChargeTurns += 1 + 2*hero.pointsInTalent(MYSTICAL_MEAL, ROYAL_MEAL);
 		}
-		if (hero.hasTalent(INVIGORATING_MEAL)){
+		if (hero.hasTalent(INVIGORATING_MEAL, ROYAL_MEAL)){
 			//effectively 1/2 turns of haste
-			Buff.prolong( hero, Haste.class, 0.67f+hero.pointsInTalent(INVIGORATING_MEAL));
+			Buff.prolong( hero, Haste.class, 0.67f+hero.pointsInTalent(INVIGORATING_MEAL, ROYAL_MEAL));
 		}
 		if (hero.hasTalent(STRENGTHENING_MEAL, ROYAL_PRIVILEGE)){
 			//3 bonus physical damage for next 2/3 attacks
 			Buff.affect( hero, PhysicalEmpower.class).set(3, 1 + hero.pointsInTalent(STRENGTHENING_MEAL, ROYAL_PRIVILEGE));
 		}
-		if (hero.hasTalent(FOCUSED_MEAL)){
+		if (hero.hasTalent(FOCUSED_MEAL, ROYAL_MEAL)){
 			if (hero.heroClass.is(HeroClass.DUELIST)){
 				//0.67/1 charge for the duelist
 				Buff.affect( hero, MeleeWeapon.Charger.class ).gainCharge((hero.pointsInTalent(FOCUSED_MEAL)+1)/3f);
@@ -1768,7 +1768,7 @@ public enum Talent {
 				}
 			}
 		}
-		if (hero.hasTalent(ENLIGHTENING_MEAL)){
+		if (hero.hasTalent(ENLIGHTENING_MEAL, ROYAL_MEAL)){
 			if (hero.heroClass.is(HeroClass.CLERIC)) {
 				HolyTome tome = hero.belongings.getItem(HolyTome.class);
 				if (tome != null) {
@@ -1951,13 +1951,13 @@ public enum Talent {
 	}
 
 	public static void onPotionUsed( Hero hero, int cell, float factor ){
-		if (hero.hasTalent(LIQUID_WILLPOWER)){
+		if (hero.hasTalent(LIQUID_WILLPOWER, RESTORATION)){
 			// 6.5/10% of max HP
 			int shieldToGive = Math.round( factor * hero.HT * (0.030f + 0.035f*hero.pointsInTalent(LIQUID_WILLPOWER)));
 			hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldToGive), FloatingText.SHIELDING);
 			Buff.affect(hero, Barrier.class).setShield(shieldToGive);
 		}
-		if (hero.hasTalent(LIQUID_NATURE)){
+		if (hero.hasTalent(LIQUID_NATURE, RESTORATION)){
 			ArrayList<Integer> grassCells = new ArrayList<>();
 			for (int i : PathFinder.NEIGHBOURS9){
 				grassCells.add(cell+i);
@@ -1993,7 +1993,7 @@ public enum Talent {
 			}
 			Dungeon.observe();
 		}
-		if (hero.hasTalent(LIQUID_AGILITY)){
+		if (hero.hasTalent(LIQUID_AGILITY, RESTORATION)){
 			Buff.prolong(hero, LiquidAgilEVATracker.class, hero.cooldown() + Math.max(0, factor-1));
 			if (factor >= 0.5f){
 				Buff.prolong(hero, LiquidAgilACCTracker.class, 5f).uses = Math.round(factor);
@@ -2005,13 +2005,13 @@ public enum Talent {
 	}
 
 	public static void onScrollUsed( Hero hero, int pos, float factor, Class<?extends Item> cls ){
-		if (hero.hasTalent(INSCRIBED_POWER)){
+		if (hero.hasTalent(INSCRIBED_POWER, RESTORATION)){
 			// 2/3 empowered wand zaps
-			Buff.affect(hero, ScrollEmpower.class).reset((int) (factor * (1 + hero.pointsInTalent(INSCRIBED_POWER))));
+			Buff.affect(hero, ScrollEmpower.class).reset((int) (factor * (1 + hero.pointsInTalent(INSCRIBED_POWER, RESTORATION))));
 		}
-		if (hero.hasTalent(INSCRIBED_STEALTH)){
+		if (hero.hasTalent(INSCRIBED_STEALTH, RESTORATION)){
 			// 3/5 turns of stealth
-			Buff.affect(hero, Invisibility.class, factor * (1 + 2*hero.pointsInTalent(INSCRIBED_STEALTH)));
+			Buff.affect(hero, Invisibility.class, factor * (1 + 2*hero.pointsInTalent(INSCRIBED_STEALTH, RESTORATION)));
 			Sample.INSTANCE.play( Assets.Sounds.MELD );
 		}
 		if (hero.hasTalent(Talent.MAGIC_RUSH)) {
@@ -2034,12 +2034,12 @@ public enum Talent {
 			Buff.affect(hero, WeaponEnhance.class).set(hero.pointsInTalent(Talent.SMITHING_SPELL), Math.round(10*factor));
 			Buff.affect(hero, ArmorEnhance.class).set(hero.pointsInTalent(Talent.SMITHING_SPELL), Math.round(10*factor));
 		}
-		if (hero.hasTalent(RECALL_INSCRIPTION) && Scroll.class.isAssignableFrom(cls) && cls != ScrollOfUpgrade.class){
+		if (hero.hasTalent(RECALL_INSCRIPTION, RESTORATION) && Scroll.class.isAssignableFrom(cls) && cls != ScrollOfUpgrade.class){
 			if (hero.heroClass.is(HeroClass.CLERIC)){
-				Buff.prolong(hero, RecallInscription.UsedItemTracker.class, hero.pointsInTalent(RECALL_INSCRIPTION) == 2 ? 300 : 10).item = cls;
+				Buff.prolong(hero, RecallInscription.UsedItemTracker.class, hero.pointsInTalent(RECALL_INSCRIPTION, RESTORATION) == 2 ? 300 : 10).item = cls;
 			} else {
 				// 10/15%
-				if (Random.Int(20) < 1 + hero.pointsInTalent(RECALL_INSCRIPTION)){
+				if (Random.Int(20) < 1 + hero.pointsInTalent(RECALL_INSCRIPTION, RESTORATION)){
 					Reflection.newInstance(cls).collect();
 					GLog.p("refunded!");
 				}
@@ -2048,9 +2048,9 @@ public enum Talent {
 	}
 
 	public static void onRunestoneUsed( Hero hero, int pos, Class<?extends Item> cls ){
-		if (hero.hasTalent(RECALL_INSCRIPTION) && Runestone.class.isAssignableFrom(cls)){
+		if (hero.hasTalent(RECALL_INSCRIPTION, RESTORATION) && Runestone.class.isAssignableFrom(cls)){
 			if (hero.heroClass.is(HeroClass.CLERIC)){
-				Buff.prolong(hero, RecallInscription.UsedItemTracker.class, hero.pointsInTalent(RECALL_INSCRIPTION) == 2 ? 300 : 10).item = cls;
+				Buff.prolong(hero, RecallInscription.UsedItemTracker.class, hero.pointsInTalent(RECALL_INSCRIPTION, RESTORATION) == 2 ? 300 : 10).item = cls;
 			} else {
 
 				//don't trigger on 1st intuition use
@@ -2058,7 +2058,7 @@ public enum Talent {
 					return;
 				}
 				// 10/15%
-				if (Random.Int(20) < 1 + hero.pointsInTalent(RECALL_INSCRIPTION)){
+				if (Random.Int(20) < 1 + hero.pointsInTalent(RECALL_INSCRIPTION, RESTORATION)){
 					Reflection.newInstance(cls).collect();
 					GLog.p("refunded!");
 				}
@@ -2072,7 +2072,7 @@ public enum Talent {
 		}
 
 		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
-				&& Dungeon.hero.hasTalent(Talent.DIVINE_SENSE)){
+				&& Dungeon.hero.hasTalent(Talent.DIVINE_SENSE, KINGS_VISION)){
 			Buff.prolong(Dungeon.hero, DivineSense.DivineSenseTracker.class, Dungeon.hero.cooldown()+1);
 		}
 
@@ -2756,6 +2756,9 @@ public enum Talent {
 				break;
 			case ARCHER:
 				Collections.addAll(tierTalents, FIGHTING_MEAL, FULLY_POTION, NATURE_FRIENDLY, PUSHBACK, SPECIALISTS_INTUITION, ROOTS_ENTWINE);
+				break;
+			case RAT_KING:
+				Collections.addAll(tierTalents, ROYAL_MEAL, RESTORATION, POWER_WITHIN, KINGS_VISION, PURSUIT);
 				break;
 		}
 		for (Talent talent : tierTalents){

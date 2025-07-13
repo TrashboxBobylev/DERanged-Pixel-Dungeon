@@ -910,15 +910,15 @@ public abstract class Mob extends Char {
 			rollToDropLoot();
 
 			if (cause == Dungeon.hero || cause instanceof Weapon || cause instanceof Weapon.Enchantment){
-				if (Dungeon.hero.hasTalent(Talent.LETHAL_MOMENTUM)
-						&& Random.Float() < 0.34f + 0.33f* Dungeon.hero.pointsInTalent(Talent.LETHAL_MOMENTUM)){
+				if (Dungeon.hero.hasTalent(Talent.LETHAL_MOMENTUM, Talent.PURSUIT)
+						&& Random.Float() < 0.34f + 0.33f* Dungeon.hero.pointsInTalent(Talent.LETHAL_MOMENTUM, Talent.PURSUIT)){
 					Buff.affect(Dungeon.hero, Talent.LethalMomentumTracker.class, 0f);
 				}
 				if (!Dungeon.hero.heroClass.is(HeroClass.DUELIST)
-						&& Dungeon.hero.hasTalent(Talent.LETHAL_HASTE)
+						&& Dungeon.hero.hasTalent(Talent.LETHAL_HASTE, Talent.PURSUIT)
 						&& Dungeon.hero.buff(Talent.LethalHasteCooldown.class) == null){
 					Buff.affect(Dungeon.hero, Talent.LethalHasteCooldown.class, 100f);
-					Buff.affect(Dungeon.hero, GreaterHaste.class).set(2 + 2*Dungeon.hero.pointsInTalent(Talent.LETHAL_HASTE));
+					Buff.affect(Dungeon.hero, GreaterHaste.class).set(2 + 2*Dungeon.hero.pointsInTalent(Talent.LETHAL_HASTE, Talent.PURSUIT));
 				}
 			}
 
@@ -1204,8 +1204,8 @@ public abstract class Mob extends Char {
 						float chDist = ch.stealth() + distance(ch);
 						//silent steps rogue talent, which also applies to rogue's shadow clone
 						if ((ch instanceof Hero || ch instanceof ShadowClone.ShadowAlly)
-								&& Dungeon.hero.hasTalent(Talent.SILENT_STEPS)){
-							if (distance(ch) >= 4 - Dungeon.hero.pointsInTalent(Talent.SILENT_STEPS)) {
+								&& Dungeon.hero.hasTalent(Talent.SILENT_STEPS, Talent.PURSUIT)){
+							if (distance(ch) >= 4 - Dungeon.hero.pointsInTalent(Talent.SILENT_STEPS, Talent.PURSUIT)) {
 								chDist = Float.POSITIVE_INFINITY;
 							}
 						}

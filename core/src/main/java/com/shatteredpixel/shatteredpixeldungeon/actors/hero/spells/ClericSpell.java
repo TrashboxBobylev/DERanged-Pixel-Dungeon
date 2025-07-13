@@ -120,19 +120,19 @@ public abstract class ClericSpell {
 
 		} else if (tier == 2) {
 
-			if (cleric.hasTalent(Talent.RECALL_INSCRIPTION)){
+			if (cleric.hasTalent(Talent.RECALL_INSCRIPTION, Talent.RESTORATION)){
 				spells.add(RecallInscription.INSTANCE);
 			}
 
-			if (cleric.hasTalent(Talent.SUNRAY)){
+			if (cleric.hasTalent(Talent.SUNRAY, Talent.PURSUIT)){
 				spells.add(Sunray.INSTANCE);
 			}
 
-			if (cleric.hasTalent(Talent.DIVINE_SENSE)) {
+			if (cleric.hasTalent(Talent.DIVINE_SENSE, Talent.KINGS_VISION)) {
 				spells.add(DivineSense.INSTANCE);
 			}
 
-			if (cleric.hasTalent(Talent.BLESS)){
+			if (cleric.hasTalent(Talent.BLESS, Talent.POWER_WITHIN)){
 				spells.add(BlessSpell.INSTANCE);
 			}
 

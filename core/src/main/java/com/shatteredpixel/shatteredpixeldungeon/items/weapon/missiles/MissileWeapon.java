@@ -367,8 +367,8 @@ abstract public class MissileWeapon extends Weapon {
 		float usages = baseUses * (float)(Math.pow(3, level()));
 
 		//+50%/75% durability
-		if (Dungeon.hero != null && Dungeon.hero.hasTalent(Talent.DURABLE_PROJECTILES)){
-			usages *= 1.25f + (0.25f*Dungeon.hero.pointsInTalent(Talent.DURABLE_PROJECTILES));
+		if (Dungeon.hero != null && Dungeon.hero.hasTalent(Talent.DURABLE_PROJECTILES, Talent.PURSUIT)){
+			usages *= 1.25f + (0.25f*Dungeon.hero.pointsInTalent(Talent.DURABLE_PROJECTILES, Talent.PURSUIT));
 		}
 		if (holster) {
 			usages *= MagicalHolster.HOLSTER_DURABILITY_FACTOR;

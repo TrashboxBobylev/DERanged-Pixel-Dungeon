@@ -171,9 +171,9 @@ public class Artifact extends KindofMisc {
 
 		if (target.alignment != Char.Alignment.ALLY
 				&& !Dungeon.hero.heroClass.is(HeroClass.CLERIC)
-				&& Dungeon.hero.hasTalent(Talent.SUNRAY)){
+				&& Dungeon.hero.hasTalent(Talent.SUNRAY, Talent.PURSUIT)){
 			// 15/25% chance
-			if (Random.Int(20) < 1 + 2*Dungeon.hero.pointsInTalent(Talent.SUNRAY)){
+			if (Random.Int(20) < 1 + 2*Dungeon.hero.pointsInTalent(Talent.SUNRAY, Talent.PURSUIT)){
 				Buff.prolong(target, Blindness.class, 4f);
 			}
 		}

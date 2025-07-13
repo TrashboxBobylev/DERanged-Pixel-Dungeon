@@ -128,7 +128,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.AMBUSH;
+import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.*;
 
 public abstract class Level implements Bundlable {
 	
@@ -1197,7 +1197,7 @@ public abstract class Level implements Bundlable {
 			}
 
 			if ( (map[ch.pos] == Terrain.GRASS || map[ch.pos] == Terrain.EMBERS)
-					&& ch == Dungeon.hero && Dungeon.hero.hasTalent(Talent.REJUVENATING_STEPS)
+					&& ch == Dungeon.hero && Dungeon.hero.hasTalent(Talent.REJUVENATING_STEPS, POWER_WITHIN)
 					&& ch.buff(Talent.RejuvenatingStepsCooldown.class) == null){
 
 				if (!Regeneration.regenOn()){
@@ -1206,10 +1206,10 @@ public abstract class Level implements Bundlable {
 					set(ch.pos, Terrain.FURROWED_GRASS);
 				} else {
 					set(ch.pos, Terrain.HIGH_GRASS);
-					Buff.count(ch, Talent.RejuvenatingStepsFurrow.class, 3 - Dungeon.hero.pointsInTalent(Talent.REJUVENATING_STEPS));
+					Buff.count(ch, Talent.RejuvenatingStepsFurrow.class, 3 - Dungeon.hero.pointsInTalent(Talent.REJUVENATING_STEPS, POWER_WITHIN));
 				}
 				GameScene.updateMap(ch.pos);
-				Buff.affect(ch, Talent.RejuvenatingStepsCooldown.class, 15f - 5f*Dungeon.hero.pointsInTalent(Talent.REJUVENATING_STEPS));
+				Buff.affect(ch, Talent.RejuvenatingStepsCooldown.class, 15f - 5f*Dungeon.hero.pointsInTalent(Talent.REJUVENATING_STEPS, POWER_WITHIN));
 			}
 			
 			if (pit[ch.pos]){
@@ -1459,14 +1459,14 @@ public abstract class Level implements Bundlable {
 				}
 			} else {
 				int mindVisRange = 0;
-				if (((Hero) c).hasTalent(Talent.HEIGHTENED_SENSES)){
-					mindVisRange = 1+((Hero) c).pointsInTalent(Talent.HEIGHTENED_SENSES);
+				if (((Hero) c).hasTalent(Talent.HEIGHTENED_SENSES, KINGS_VISION)){
+					mindVisRange = 1+((Hero) c).pointsInTalent(Talent.HEIGHTENED_SENSES, KINGS_VISION);
 				}
 				if (c.buff(DivineSense.DivineSenseTracker.class) != null){
 					if (((Hero) c).heroClass.is(HeroClass.CLERIC)){
-						mindVisRange = 4+4*((Hero) c).pointsInTalent(Talent.DIVINE_SENSE);
+						mindVisRange = 4+4*((Hero) c).pointsInTalent(Talent.DIVINE_SENSE, KINGS_VISION);
 					} else {
-						mindVisRange = 1+2*((Hero) c).pointsInTalent(Talent.DIVINE_SENSE);
+						mindVisRange = 1+2*((Hero) c).pointsInTalent(Talent.DIVINE_SENSE, KINGS_VISION);
 					}
 				}
 				if (((Hero) c).hasTalent(Talent.DRAGONS_EYE) && !((Hero) c).heroClass.is(HeroClass.SAMURAI)){

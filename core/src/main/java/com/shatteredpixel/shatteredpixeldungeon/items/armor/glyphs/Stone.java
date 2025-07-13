@@ -57,10 +57,10 @@ public class Stone extends Armor.Glyph {
 		}
 		accuracy *= AscensionChallenge.statModifier(attacker);
 		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
-				&& Dungeon.hero.hasTalent(Talent.BLESS)
+				&& Dungeon.hero.hasTalent(Talent.BLESS, Talent.POWER_WITHIN)
 				&& attacker.alignment == Char.Alignment.ALLY){
 			// + 3%/5%
-			accuracy *= 1.01f + 0.02f*Dungeon.hero.pointsInTalent(Talent.BLESS);
+			accuracy *= 1.01f + 0.02f*Dungeon.hero.pointsInTalent(Talent.BLESS, Talent.POWER_WITHIN);
 		}
 
 		if (defender.buff(Bless.class) != null) evasion *= 1.25f;
@@ -71,10 +71,10 @@ public class Stone extends Armor.Glyph {
 		}
 		evasion *= AscensionChallenge.statModifier(defender);
 		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
-				&& Dungeon.hero.hasTalent(Talent.BLESS)
+				&& Dungeon.hero.hasTalent(Talent.BLESS, Talent.POWER_WITHIN)
 				&& defender.alignment == Char.Alignment.ALLY){
 			// + 3%/5%
-			evasion *= 1.01f + 0.02f*Dungeon.hero.pointsInTalent(Talent.BLESS);
+			evasion *= 1.01f + 0.02f*Dungeon.hero.pointsInTalent(Talent.BLESS, Talent.POWER_WITHIN);
 		}
 		evasion *= FerretTuft.evasionMultiplier();
 

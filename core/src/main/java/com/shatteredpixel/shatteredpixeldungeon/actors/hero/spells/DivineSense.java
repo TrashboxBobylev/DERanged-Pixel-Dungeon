@@ -53,7 +53,7 @@ public class DivineSense extends ClericSpell {
 
 	@Override
 	public boolean canCast(Hero hero) {
-		return super.canCast(hero) && hero.hasTalent(Talent.DIVINE_SENSE);
+		return super.canCast(hero) && hero.hasTalent(Talent.DIVINE_SENSE, Talent.KINGS_VISION);
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class DivineSense extends ClericSpell {
 	}
 
 	public String desc(){
-		return Messages.get(this, "desc", 4+4*Dungeon.hero.pointsInTalent(Talent.DIVINE_SENSE)) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
+		return Messages.get(this, "desc", 4+4*Dungeon.hero.pointsInTalent(Talent.DIVINE_SENSE, Talent.KINGS_VISION)) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
 	}
 
 	public static class DivineSenseTracker extends FlavourBuff {

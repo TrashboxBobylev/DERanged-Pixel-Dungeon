@@ -109,7 +109,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 	public boolean doEquip( Hero hero ) {
 
 		isSwiftEquipping = false;
-		if (hero.belongings.contains(this) && hero.hasTalent(Talent.SWIFT_EQUIP)){
+		if (hero.belongings.contains(this) && hero.hasTalent(Talent.SWIFT_EQUIP, Talent.POWER_WITHIN)){
 			if (hero.buff(Talent.SwiftEquipCooldown.class) == null
 					|| hero.buff(Talent.SwiftEquipCooldown.class).hasSecondUse()){
 				isSwiftEquipping = true;
@@ -146,7 +146,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 				GLog.i(Messages.get(this, "swift_equip"));
 				if (hero.buff(Talent.SwiftEquipCooldown.class) == null){
 					Buff.affect(hero, Talent.SwiftEquipCooldown.class, 19f)
-							.secondUse = hero.pointsInTalent(Talent.SWIFT_EQUIP) == 2;
+							.secondUse = hero.pointsInTalent(Talent.SWIFT_EQUIP, Talent.POWER_WITHIN) == 2;
 				} else if (hero.buff(Talent.SwiftEquipCooldown.class).hasSecondUse()) {
 					hero.buff(Talent.SwiftEquipCooldown.class).secondUse = false;
 				}
@@ -164,7 +164,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 	public boolean equipSecondary( Hero hero ){
 
 		isSwiftEquipping = false;
-		if (hero.belongings.contains(this) && hero.hasTalent(Talent.SWIFT_EQUIP)){
+		if (hero.belongings.contains(this) && hero.hasTalent(Talent.SWIFT_EQUIP, Talent.POWER_WITHIN)){
 			if (hero.buff(Talent.SwiftEquipCooldown.class) == null
 					|| hero.buff(Talent.SwiftEquipCooldown.class).hasSecondUse()){
 				isSwiftEquipping = true;
@@ -193,7 +193,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 				GLog.i(Messages.get(this, "swift_equip"));
 				if (hero.buff(Talent.SwiftEquipCooldown.class) == null){
 					Buff.affect(hero, Talent.SwiftEquipCooldown.class, 19f)
-							.secondUse = hero.pointsInTalent(Talent.SWIFT_EQUIP) == 2;
+							.secondUse = hero.pointsInTalent(Talent.SWIFT_EQUIP, Talent.POWER_WITHIN) == 2;
 				} else if (hero.buff(Talent.SwiftEquipCooldown.class).hasSecondUse()) {
 					hero.buff(Talent.SwiftEquipCooldown.class).secondUse = false;
 				}

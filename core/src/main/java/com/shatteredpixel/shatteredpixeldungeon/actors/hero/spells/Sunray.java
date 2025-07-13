@@ -54,15 +54,15 @@ public class Sunray extends TargetedClericSpell {
 
 	@Override
 	public String desc() {
-		int min = Dungeon.hero.pointsInTalent(Talent.SUNRAY) == 2 ? 6 : 4;
-		int max = Dungeon.hero.pointsInTalent(Talent.SUNRAY) == 2 ? 12 : 8;
-		int dur = Dungeon.hero.pointsInTalent(Talent.SUNRAY) == 2 ? 6 : 4;
+		int min = Dungeon.hero.pointsInTalent(Talent.SUNRAY, Talent.PURSUIT) == 2 ? 6 : 4;
+		int max = Dungeon.hero.pointsInTalent(Talent.SUNRAY, Talent.PURSUIT) == 2 ? 12 : 8;
+		int dur = Dungeon.hero.pointsInTalent(Talent.SUNRAY, Talent.PURSUIT) == 2 ? 6 : 4;
 		return Messages.get(this, "desc", min, max, dur) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
 	}
 
 	@Override
 	public boolean canCast(Hero hero) {
-		return super.canCast(hero) && hero.hasTalent(Talent.SUNRAY);
+		return super.canCast(hero) && hero.hasTalent(Talent.SUNRAY, Talent.PURSUIT);
 	}
 
 	@Override
@@ -96,13 +96,13 @@ public class Sunray extends TargetedClericSpell {
 			ch.sprite.burst(0xFFFFFF44, 5);
 
 			if (Char.hasProp(ch, Char.Property.UNDEAD) || Char.hasProp(ch, Char.Property.DEMONIC)){
-				if (hero.pointsInTalent(Talent.SUNRAY) == 2) {
+				if (hero.pointsInTalent(Talent.SUNRAY, Talent.PURSUIT) == 2) {
 					ch.damage(12, Sunray.this);
 				} else {
 					ch.damage(8, Sunray.this);
 				}
 			} else {
-				if (hero.pointsInTalent(Talent.SUNRAY) == 2) {
+				if (hero.pointsInTalent(Talent.SUNRAY, Talent.PURSUIT) == 2) {
 					ch.damage(Random.NormalIntRange(6, 12), Sunray.this);
 				} else {
 					ch.damage(Random.NormalIntRange(4, 8), Sunray.this);
@@ -111,11 +111,11 @@ public class Sunray extends TargetedClericSpell {
 
 			if (ch.isAlive()) {
 				if (ch.buff(Blindness.class) != null && ch.buff(SunRayRecentlyBlindedTracker.class) != null) {
-					Buff.prolong(ch, Paralysis.class, 2f + 2f*hero.pointsInTalent(Talent.SUNRAY));
+					Buff.prolong(ch, Paralysis.class, 2f + 2f*hero.pointsInTalent(Talent.SUNRAY, Talent.PURSUIT));
 					ch.buff(SunRayRecentlyBlindedTracker.class).detach();
 				} else if (ch.buff(SunRayUsedTracker.class) == null) {
-					Buff.prolong(ch, Blindness.class, 2f + 2f*hero.pointsInTalent(Talent.SUNRAY));
-					Buff.prolong(ch, SunRayRecentlyBlindedTracker.class, 2f + 2f*hero.pointsInTalent(Talent.SUNRAY));
+					Buff.prolong(ch, Blindness.class, 2f + 2f*hero.pointsInTalent(Talent.SUNRAY, Talent.PURSUIT));
+					Buff.prolong(ch, SunRayRecentlyBlindedTracker.class, 2f + 2f*hero.pointsInTalent(Talent.SUNRAY, Talent.PURSUIT));
 					Buff.affect(ch, SunRayUsedTracker.class);
 				}
 			}

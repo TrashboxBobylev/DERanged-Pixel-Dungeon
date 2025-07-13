@@ -807,10 +807,10 @@ public abstract class Char extends Actor {
 		}
 		acuRoll *= AscensionChallenge.statModifier(attacker);
 		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
-				&& Dungeon.hero.hasTalent(Talent.BLESS)
+				&& Dungeon.hero.hasTalent(Talent.BLESS, Talent.POWER_WITHIN)
 				&& attacker.alignment == Alignment.ALLY){
 			// + 3%/5%
-			acuRoll *= 1.01f + 0.02f*Dungeon.hero.pointsInTalent(Talent.BLESS);
+			acuRoll *= 1.01f + 0.02f*Dungeon.hero.pointsInTalent(Talent.BLESS, Talent.POWER_WITHIN);
 		}
 		acuRoll *= accMulti;
 
@@ -823,10 +823,10 @@ public abstract class Char extends Actor {
 		}
 		defRoll *= AscensionChallenge.statModifier(defender);
 		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
-				&& Dungeon.hero.hasTalent(Talent.BLESS)
+				&& Dungeon.hero.hasTalent(Talent.BLESS, Talent.POWER_WITHIN)
 				&& defender.alignment == Alignment.ALLY){
 			// + 3%/5%
-			defRoll *= 1.01f + 0.02f*Dungeon.hero.pointsInTalent(Talent.BLESS);
+			defRoll *= 1.01f + 0.02f*Dungeon.hero.pointsInTalent(Talent.BLESS, Talent.POWER_WITHIN);
 		}
 
 		if (defRoll < acuRoll && (defRoll*FerretTuft.evasionMultiplier()) >= acuRoll){

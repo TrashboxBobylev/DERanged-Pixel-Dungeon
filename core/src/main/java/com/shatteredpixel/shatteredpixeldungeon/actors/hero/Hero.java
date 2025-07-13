@@ -1117,9 +1117,9 @@ public class Hero extends Char {
 		}
 
 		if (!heroClass.is(HeroClass.DUELIST)
-				&& hasTalent(Talent.WEAPON_RECHARGING)
+				&& hasTalent(Talent.WEAPON_RECHARGING, Talent.POWER_WITHIN)
 				&& (buff(Recharging.class) != null || buff(ArtifactRecharge.class) != null)){
-			dmg = Math.round(dmg * 1.025f + (.025f*pointsInTalent(Talent.WEAPON_RECHARGING)));
+			dmg = Math.round(dmg * 1.025f + (.025f*pointsInTalent(Talent.WEAPON_RECHARGING, Talent.POWER_WITHIN)));
 		}
 
 		if (dmg < 0) dmg = 0;
@@ -2592,8 +2592,8 @@ public class Hero extends Char {
 		}
 
 		if (buff(Talent.WarriorFoodImmunity.class) != null){
-			if (pointsInTalent(Talent.IRON_STOMACH) == 1)       damage /= 4f;
-			else if (pointsInTalent(Talent.IRON_STOMACH) == 2)  damage = 0;
+			if (pointsInTalent(Talent.IRON_STOMACH, Talent.ROYAL_MEAL) == 1)       damage /= 4f;
+			else if (pointsInTalent(Talent.IRON_STOMACH, Talent.ROYAL_MEAL) == 2)  damage = 0;
 		}
 
 		dmg = Math.round(damage);
@@ -3079,7 +3079,7 @@ public class Hero extends Char {
 			this.exp -= maxExp();
 
 			if (buff(Talent.WandPreservationCounter.class) != null
-				&& pointsInTalent(Talent.WAND_PRESERVATION) == 2){
+				&& pointsInTalent(Talent.WAND_PRESERVATION, Talent.POWER_WITHIN) == 2){
 				buff(Talent.WandPreservationCounter.class).detach();
 			}
 
@@ -3599,9 +3599,9 @@ public class Hero extends Char {
 		
 		boolean smthFound = false;
 
-		boolean circular = pointsInTalent(Talent.WIDE_SEARCH) == 1;
+		boolean circular = pointsInTalent(Talent.WIDE_SEARCH, Talent.KINGS_VISION) == 1;
 		int distance = heroClass.is(HeroClass.ROGUE) ? 2 : 1;
-		if (hasTalent(Talent.WIDE_SEARCH)) distance++;
+		if (hasTalent(Talent.WIDE_SEARCH, Talent.KINGS_VISION)) distance++;
 		
 		boolean foresight = buff(Foresight.class) != null;
 		boolean foresightScan = foresight && !Dungeon.level.mapped[pos];

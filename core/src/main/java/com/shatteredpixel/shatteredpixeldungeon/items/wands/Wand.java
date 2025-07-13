@@ -218,8 +218,8 @@ public abstract class Wand extends Item {
 
 	//TODO Consider externalizing char awareness buff
 	protected static void wandProc(Char target, int wandLevel, int chargesUsed){
-		if (Dungeon.hero.hasTalent(Talent.ARCANE_VISION)) {
-			int dur = 5 + 5*Dungeon.hero.pointsInTalent(Talent.ARCANE_VISION);
+		if (Dungeon.hero.hasTalent(Talent.ARCANE_VISION, Talent.KINGS_VISION)) {
+			int dur = 5 + 5*Dungeon.hero.pointsInTalent(Talent.ARCANE_VISION, Talent.KINGS_VISION);
 			Buff.append(Dungeon.hero, TalismanOfForesight.CharAwareness.class, dur).charID = target.id();
 		}
 
@@ -255,9 +255,9 @@ public abstract class Wand extends Item {
 
 		if (target.alignment != Char.Alignment.ALLY
 				&& !Dungeon.hero.heroClass.is(HeroClass.CLERIC)
-				&& Dungeon.hero.hasTalent(Talent.SUNRAY)){
+				&& Dungeon.hero.hasTalent(Talent.SUNRAY, Talent.PURSUIT)){
 			// 15/25% chance
-			if (Random.Int(20) < 1 + 2*Dungeon.hero.pointsInTalent(Talent.SUNRAY)){
+			if (Random.Int(20) < 1 + 2*Dungeon.hero.pointsInTalent(Talent.SUNRAY, Talent.PURSUIT)){
 				Buff.prolong(target, Blindness.class, 4f);
 			}
 		}
@@ -553,7 +553,7 @@ public abstract class Wand extends Item {
 		}
 
 		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
-				&& Dungeon.hero.hasTalent(Talent.DIVINE_SENSE)){
+				&& Dungeon.hero.hasTalent(Talent.DIVINE_SENSE, Talent.KINGS_VISION)){
 			Buff.prolong(Dungeon.hero, DivineSense.DivineSenseTracker.class, Dungeon.hero.cooldown()+1);
 		}
 
@@ -715,7 +715,7 @@ public abstract class Wand extends Item {
 				int cell = shot.collisionPos;
 				
 				if (target == curUser.pos || cell == curUser.pos) {
-					if (target == curUser.pos && curUser.hasTalent(Talent.SHIELD_BATTERY)){
+					if (target == curUser.pos && curUser.hasTalent(Talent.SHIELD_BATTERY, Talent.RESTORATION)){
 
 						if (curUser.buff(MagicImmune.class) != null){
 							GLog.w( Messages.get(Wand.class, "no_magic") );
@@ -728,7 +728,7 @@ public abstract class Wand extends Item {
 						}
 
 						float shield = curUser.HT * (0.04f*curWand.curCharges);
-						if (curUser.pointsInTalent(Talent.SHIELD_BATTERY) == 2) shield *= 1.5f;
+						if (curUser.pointsInTalent(Talent.SHIELD_BATTERY, Talent.RESTORATION) == 2) shield *= 1.5f;
 						Buff.affect(curUser, Barrier.class).setShield(Math.round(shield));
 
 						if (Dungeon.hero.subClass.is(HeroSubClass.BATTLEMAGE) && Dungeon.hero.hasTalent(Talent.MAGICAL_CIRCLE)) {

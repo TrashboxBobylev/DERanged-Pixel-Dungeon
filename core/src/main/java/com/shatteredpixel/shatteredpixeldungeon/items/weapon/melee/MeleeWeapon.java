@@ -100,7 +100,7 @@ public class MeleeWeapon extends Weapon {
 	@Override
 	public String defaultAction() {
 		if (Dungeon.hero != null && (Dungeon.hero.heroClass.is(HeroClass.DUELIST)
-				|| Dungeon.hero.hasTalent(Talent.SWIFT_EQUIP)) && !(this instanceof Gun) && !(this instanceof BowWeapon)){
+				|| Dungeon.hero.hasTalent(Talent.SWIFT_EQUIP, Talent.POWER_WITHIN)) && !(this instanceof Gun) && !(this instanceof BowWeapon)){
 			return AC_ABILITY;
 		} else {
 			return super.defaultAction();
@@ -138,7 +138,7 @@ public class MeleeWeapon extends Weapon {
 		if (action.equals(AC_ABILITY)){
 			usesTargeting = false;
 			if (!isEquipped(hero)) {
-				if (hero.hasTalent(Talent.SWIFT_EQUIP)){
+				if (hero.hasTalent(Talent.SWIFT_EQUIP, Talent.POWER_WITHIN)){
 					if (hero.buff(Talent.SwiftEquipCooldown.class) == null
 						|| hero.buff(Talent.SwiftEquipCooldown.class).hasSecondUse()){
 						execute(hero, AC_EQUIP);
@@ -579,7 +579,7 @@ public class MeleeWeapon extends Weapon {
 					partialCharge += chargeToGain;
 				}
 
-				int points = ((Hero)target).pointsInTalent(Talent.WEAPON_RECHARGING);
+				int points = ((Hero)target).pointsInTalent(Talent.WEAPON_RECHARGING, Talent.POWER_WITHIN);
 				if (points > 0 && target.buff(Recharging.class) != null || target.buff(ArtifactRecharge.class) != null){
 					//1 every 15 turns at +1, 10 turns at +2
 					partialCharge += 1/(20f - 5f*points);
