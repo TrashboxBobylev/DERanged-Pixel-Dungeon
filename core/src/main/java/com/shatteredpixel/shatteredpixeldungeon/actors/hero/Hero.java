@@ -1169,8 +1169,8 @@ public class Hero extends Char {
 			speed *= (2f + 0.25f*pointsInTalent(Talent.GROWING_POWER));
 		}
 
-		if (hero.hasTalent(Talent.MOVESPEED_ENHANCE)) {
-			speed *= 1 + 0.1*hero.pointsInTalent(Talent.MOVESPEED_ENHANCE);
+		if (hero.hasTalent(Talent.MOVESPEED_ENHANCE, Talent.ENERGY_SURGE)) {
+			speed *= 1 + 0.1f*hero.pointsInTalent(Talent.MOVESPEED_ENHANCE, Talent.ENERGY_SURGE);
 		}
 
 		if (subClass.is(HeroSubClass.MONK) && buff(MonkEnergy.class) != null && buff(MonkEnergy.class).harmonized(this)) {

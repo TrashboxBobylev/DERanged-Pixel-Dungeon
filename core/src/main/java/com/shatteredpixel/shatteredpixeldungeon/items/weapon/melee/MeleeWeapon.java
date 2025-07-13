@@ -623,7 +623,7 @@ public class MeleeWeapon extends Weapon {
 			} else {
 				charge = Math.min(8, 2 + (Dungeon.hero.lvl - 1) / 3);
 			}
-			charge += Dungeon.hero.pointsInTalent(Talent.ACCUMULATION);
+			charge += Dungeon.hero.pointsInTalent(Talent.ACCUMULATION, Talent.ENERGY_SURGE);
 			return charge;
 		}
 

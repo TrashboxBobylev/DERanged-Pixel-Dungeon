@@ -890,7 +890,7 @@ public abstract class Wand extends Item {
 
 			if (Regeneration.regenOn()) {
 				float multi = RingOfEnergy.wandChargeMultiplier(target);
-				multi *= (1f + 0.1f * Dungeon.hero.pointsInTalent(Talent.FASTER_CHARGER));
+				multi *= (1f + 0.1f * Dungeon.hero.pointsInTalent(Talent.FASTER_CHARGER, Talent.ENERGY_SURGE));
 				if (Dungeon.hero.hasTalent(Talent.MAGICAL_CIRCLE) && Dungeon.hero.buff(MagicalCircle.class) != null) {
 					multi += 1;
 				}
