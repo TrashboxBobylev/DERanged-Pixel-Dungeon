@@ -21,8 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AdrenalineSurge;
@@ -41,9 +39,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ToxicImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.VialOfBlood;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.VialOfBlood;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed;
@@ -69,6 +67,8 @@ import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 
 public class Waterskin extends Item {
 
@@ -121,7 +121,7 @@ public class Waterskin extends Item {
 		if (action.equals( AC_DRINK )) {
 
 			if (volume > 0) {
-				if (hero.hasTalent(Talent.HERB_EXTRACTION)) {
+				if (hero.hasTalent(Talent.HERB_EXTRACTION, Talent.TEMPORARY_DRAUGHT)) {
 					GameScene.selectItem(itemSelector);
 				} else {
 					drink();
@@ -255,7 +255,7 @@ public class Waterskin extends Item {
 
 		@Override
 		public void onSelect( Item item ) {
-			boolean isMastered = hero.pointsInTalent(Talent.HERB_EXTRACTION) == 2;
+			boolean isMastered = hero.pointsInTalent(Talent.HERB_EXTRACTION, Talent.TEMPORARY_DRAUGHT) == 2;
 			if (item instanceof Plant.Seed) {
 				if (item instanceof Blindweed.Seed) {
 					Buff.affect(curUser, Invisibility.class, volume*2);

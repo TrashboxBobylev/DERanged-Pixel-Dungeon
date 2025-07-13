@@ -792,6 +792,7 @@ public enum Talent {
 	ROYAL_MEAL(5, 13), /// all on-eat talents for tier 2
 	ROYAL_FEAST(5, 14), /// other on-eat talents for tier 2
 	RESTORATION(6, 13), // all upgrade/potion of healing talents
+	TEMPORARY_DRAUGHT(6, 14),
 	POWER_WITHIN(7, 13), // runic (3), wand preservation (3), rogue's foresight (5), rejuvenating steps (3)
 	KINGS_VISION(8, 13), // improvised projectiles (4), arcane vision(4), wide search(3), heightened senses(4)
 	PURSUIT(9, 13), // durable projectiles (5),silent steps(4),lethal momentum (3),shield battery(5)
@@ -1894,11 +1895,11 @@ public enum Talent {
 	public static void onPotionUsed( Hero hero, int cell, float factor, Potion potion ){
 		onPotionUsed(hero, cell, factor);
 
-		if (hero.hasTalent(Talent.RECYCLING) && !(potion instanceof PotionOfStrength || potion instanceof ExoticPotion || potion instanceof Elixir)) {
+		if (hero.hasTalent(Talent.RECYCLING, TEMPORARY_DRAUGHT) && !(potion instanceof PotionOfStrength || potion instanceof ExoticPotion || potion instanceof Elixir)) {
 			Class<?extends Pill> potionClass = Potion.PotionToPill.pills.get(potion.getClass());
 			Pill pill = Reflection.newInstance(potionClass);
 			if (pill != null) {
-				int amount = Random.IntRange(hero.pointsInTalent(Talent.RECYCLING)-1, hero.pointsInTalent(Talent.RECYCLING)); // +1: 0-1, +2: 1-2
+				int amount = Random.IntRange(hero.pointsInTalent(Talent.RECYCLING, TEMPORARY_DRAUGHT)-1, hero.pointsInTalent(Talent.RECYCLING, TEMPORARY_DRAUGHT)); // +1: 0-1, +2: 1-2
 				pill.quantity(amount);
 				if (pill.doPickUp( Dungeon.hero )) {
 					GLog.i( Messages.get(Dungeon.hero, "you_now_have", pill.name() ));
@@ -1959,8 +1960,8 @@ public enum Talent {
 				Buff.prolong(hero, LiquidAgilACCTracker.class, 5f).uses = Math.round(factor);
 			}
 		}
-		if (hero.hasTalent(PHARMACEUTICS)) {
-			hero.heal(Math.round(factor*(2+3*hero.pointsInTalent(PHARMACEUTICS))));
+		if (hero.hasTalent(PHARMACEUTICS, TEMPORARY_DRAUGHT)) {
+			hero.heal(Math.round(factor*(2+3*hero.pointsInTalent(PHARMACEUTICS, TEMPORARY_DRAUGHT))));
 		}
 	}
 
@@ -1981,18 +1982,18 @@ public enum Talent {
 				ScrollOfRecharging.charge(hero);
 			}
 		}
-		if (hero.hasTalent(Talent.INSCRIBED_BULLET)) {
+		if (hero.hasTalent(Talent.INSCRIBED_BULLET, TEMPORARY_DRAUGHT)) {
 			//collects 5/10 bullet
 			BulletItem bulletItem = new BulletItem();
-			bulletItem.quantity((int)(factor * 5 * hero.pointsInTalent(Talent.INSCRIBED_BULLET)));
+			bulletItem.quantity((int)(factor * 5 * hero.pointsInTalent(Talent.INSCRIBED_BULLET, TEMPORARY_DRAUGHT)));
 			bulletItem.doPickUp(hero);
 		}
-		if (hero.hasTalent(Talent.INSCRIBED_LETHALITY)) {
-			Buff.affect(hero, Sheath.CertainCrit.class).set((int)(factor * hero.pointsInTalent(Talent.INSCRIBED_LETHALITY)));
+		if (hero.hasTalent(Talent.INSCRIBED_LETHALITY, TEMPORARY_DRAUGHT)) {
+			Buff.affect(hero, Sheath.CertainCrit.class).set((int)(factor * hero.pointsInTalent(Talent.INSCRIBED_LETHALITY, TEMPORARY_DRAUGHT)));
 		}
-		if (hero.hasTalent(Talent.SMITHING_SPELL)) {
-			Buff.affect(hero, WeaponEnhance.class).set(hero.pointsInTalent(Talent.SMITHING_SPELL), Math.round(10*factor));
-			Buff.affect(hero, ArmorEnhance.class).set(hero.pointsInTalent(Talent.SMITHING_SPELL), Math.round(10*factor));
+		if (hero.hasTalent(Talent.SMITHING_SPELL, TEMPORARY_DRAUGHT)) {
+			Buff.affect(hero, WeaponEnhance.class).set(hero.pointsInTalent(Talent.SMITHING_SPELL, TEMPORARY_DRAUGHT), Math.round(10*factor));
+			Buff.affect(hero, ArmorEnhance.class).set(hero.pointsInTalent(Talent.SMITHING_SPELL, TEMPORARY_DRAUGHT), Math.round(10*factor));
 		}
 		if (hero.hasTalent(RECALL_INSCRIPTION, RESTORATION) && Scroll.class.isAssignableFrom(cls) && cls != ScrollOfUpgrade.class){
 			if (hero.heroClass.is(HeroClass.CLERIC)){
@@ -2718,7 +2719,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, FIGHTING_MEAL, FULLY_POTION, NATURE_FRIENDLY, PUSHBACK, SPECIALISTS_INTUITION, ROOTS_ENTWINE);
 				break;
 			case RAT_KING:
-				Collections.addAll(tierTalents, ROYAL_MEAL, RESTORATION, POWER_WITHIN, KINGS_VISION, PURSUIT, ROYAL_FEAST);
+				Collections.addAll(tierTalents, ROYAL_MEAL, RESTORATION, POWER_WITHIN, KINGS_VISION, PURSUIT, ROYAL_FEAST, TEMPORARY_DRAUGHT);
 				break;
 		}
 		for (Talent talent : tierTalents){
