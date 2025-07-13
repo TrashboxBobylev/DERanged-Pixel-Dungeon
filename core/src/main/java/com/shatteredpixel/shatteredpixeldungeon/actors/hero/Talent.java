@@ -790,6 +790,7 @@ public enum Talent {
 	EXTRA_POWER(4, 13),
 	EXTRA_BULK(4, 14),
 	ROYAL_MEAL(5, 13), /// all on-eat talents for tier 2
+	ROYAL_FEAST(5, 14), /// other on-eat talents for tier 2
 	RESTORATION(6, 13), // all upgrade/potion of healing talents
 	POWER_WITHIN(7, 13), // runic (3), wand preservation (3), rogue's foresight (5), rejuvenating steps (3)
 	KINGS_VISION(8, 13), // improvised projectiles (4), arcane vision(4), wide search(3), heightened senses(4)
@@ -1798,14 +1799,14 @@ public enum Talent {
 			SpellSprite.show(hero, SpellSprite.CHARGE, 0, 1, 1);
 		}
 
-		if (hero.hasTalent(Talent.INFINITE_BULLET_MEAL)) {
-			Buff.affect(hero, InfiniteBullet.class, 1+hero.pointsInTalent(Talent.INFINITE_BULLET_MEAL));
+		if (hero.hasTalent(Talent.INFINITE_BULLET_MEAL, ROYAL_FEAST)) {
+			Buff.affect(hero, InfiniteBullet.class, 1+hero.pointsInTalent(Talent.INFINITE_BULLET_MEAL, ROYAL_FEAST));
 		}
-		if (hero.hasTalent(Talent.CRITICAL_MEAL)) {
-			Buff.affect(hero, Sheath.CertainCrit.class).set(hero.pointsInTalent(Talent.CRITICAL_MEAL));
+		if (hero.hasTalent(Talent.CRITICAL_MEAL, ROYAL_FEAST)) {
+			Buff.affect(hero, Sheath.CertainCrit.class).set(hero.pointsInTalent(Talent.CRITICAL_MEAL, ROYAL_FEAST));
 		}
-		if (hero.hasTalent(Talent.NATURES_MEAL)) {
-			if (hero.pointsInTalent(Talent.NATURES_MEAL) == 1) {
+		if (hero.hasTalent(Talent.NATURES_MEAL, ROYAL_FEAST)) {
+			if (hero.pointsInTalent(Talent.NATURES_MEAL, ROYAL_FEAST) == 1) {
 				for (int i : PathFinder.NEIGHBOURS4) {
 					int c = Dungeon.level.map[hero.pos + i];
 					if (c == Terrain.EMPTY || c == Terrain.EMPTY_DECO
@@ -1830,14 +1831,14 @@ public enum Talent {
 		if (hero.hasTalent(Talent.TOUGH_MEAL, ROYAL_FOCUS)) {
 			Buff.affect(hero, ArmorEmpower.class).set(3, 1+hero.pointsInTalent(Talent.TOUGH_MEAL, ROYAL_FOCUS));
 		}
-		if (hero.hasTalent(Talent.IMPREGNABLE_MEAL)) {
+		if (hero.hasTalent(Talent.IMPREGNABLE_MEAL, ROYAL_FEAST)) {
 			Buff.affect(hero, ArmorEnhance.class).set(hero.pointsInTalent(Talent.IMPREGNABLE_MEAL), 3);
 		}
-		if (hero.hasTalent(Talent.HEALING_MEAL)) { // 식사 시 디버프 제거 / 디버프가 없을 경우 3의 체력을 회복
+		if (hero.hasTalent(Talent.HEALING_MEAL, ROYAL_FEAST)) { // 식사 시 디버프 제거 / 디버프가 없을 경우 3의 체력을 회복
 			if (hero.isHeroDebuffed()) {
 				PotionOfCleansing.cleanse(hero);
 			} else {
-				if (hero.pointsInTalent(Talent.HEALING_MEAL) > 1) {
+				if (hero.pointsInTalent(Talent.HEALING_MEAL, ROYAL_FEAST) > 1) {
 					hero.heal(3);
 				}
 			}
@@ -1847,47 +1848,6 @@ public enum Talent {
 				((Gun)hero.belongings.weapon).quickReload();
 				if (hero.pointsInTalent(Talent.RELOADING_MEAL, ROYAL_FOCUS) > 1) {
 					((Gun)hero.belongings.weapon).manualReload(1, true);
-				}
-			}
-		}
-		if (hero.hasTalent(Talent.INFINITE_BULLET_MEAL)) {
-			Buff.affect(hero, InfiniteBullet.class, 1+hero.pointsInTalent(Talent.INFINITE_BULLET_MEAL));
-		}
-		if (hero.hasTalent(Talent.CRITICAL_MEAL)) {
-			Buff.affect(hero, Sheath.CertainCrit.class).set(hero.pointsInTalent(Talent.CRITICAL_MEAL));
-		}
-		if (hero.hasTalent(Talent.NATURES_MEAL)) {
-			if (hero.pointsInTalent(Talent.NATURES_MEAL) == 1) {
-				for (int i : PathFinder.NEIGHBOURS4) {
-					int c = Dungeon.level.map[hero.pos + i];
-					if (c == Terrain.EMPTY || c == Terrain.EMPTY_DECO
-							|| c == Terrain.EMBERS || c == Terrain.GRASS) {
-						Level.set(hero.pos + i, Terrain.HIGH_GRASS);
-						GameScene.updateMap(hero.pos + i);
-						CellEmitter.get(hero.pos + i).burst(LeafParticle.LEVEL_SPECIFIC, 4);
-					}
-				}
-			} else {
-				for (int i : PathFinder.NEIGHBOURS8) {
-					int c = Dungeon.level.map[hero.pos + i];
-					if (c == Terrain.EMPTY || c == Terrain.EMPTY_DECO
-							|| c == Terrain.EMBERS || c == Terrain.GRASS) {
-						Level.set(hero.pos + i, Terrain.HIGH_GRASS);
-						GameScene.updateMap(hero.pos + i);
-						CellEmitter.get(hero.pos + i).burst(LeafParticle.LEVEL_SPECIFIC, 4);
-					}
-				}
-			}
-		}
-		if (hero.hasTalent(Talent.IMPREGNABLE_MEAL)) {
-			Buff.affect(hero, ArmorEnhance.class).set(hero.pointsInTalent(Talent.IMPREGNABLE_MEAL), 3);
-		}
-		if (hero.hasTalent(Talent.HEALING_MEAL)) { // 식사 시 디버프 제거 / 디버프가 없을 경우 3의 체력을 회복
-			if (hero.isHeroDebuffed()) {
-				PotionOfCleansing.cleanse(hero);
-			} else {
-				if (hero.pointsInTalent(Talent.HEALING_MEAL) > 1) {
-					hero.heal(3);
 				}
 			}
 		}
@@ -2758,7 +2718,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, FIGHTING_MEAL, FULLY_POTION, NATURE_FRIENDLY, PUSHBACK, SPECIALISTS_INTUITION, ROOTS_ENTWINE);
 				break;
 			case RAT_KING:
-				Collections.addAll(tierTalents, ROYAL_MEAL, RESTORATION, POWER_WITHIN, KINGS_VISION, PURSUIT);
+				Collections.addAll(tierTalents, ROYAL_MEAL, RESTORATION, POWER_WITHIN, KINGS_VISION, PURSUIT, ROYAL_FEAST);
 				break;
 		}
 		for (Talent talent : tierTalents){
