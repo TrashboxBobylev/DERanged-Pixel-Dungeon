@@ -2768,6 +2768,8 @@ public enum Talent {
 			case ARCHER:
 				Collections.addAll(tierTalents, MAKESHIFT_BOW, FOLLOWUP_SHOOT);
 				break;
+			case RAT_KING:
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -2794,7 +2796,8 @@ public enum Talent {
 
 		ArrayList<Talent> tierTalents = new ArrayList<>();
 
-		Collections.addAll(tierTalents, ATK_SPEED_ENHANCE, ACC_ENHANCE, EVA_ENHANCE, BETTER_CHOICE );
+		if (cls != HeroSubClass.KING)
+			Collections.addAll(tierTalents, ATK_SPEED_ENHANCE, ACC_ENHANCE, EVA_ENHANCE, BETTER_CHOICE );
 		//tier 3
 		switch (cls){
 			case BERSERKER: default:
