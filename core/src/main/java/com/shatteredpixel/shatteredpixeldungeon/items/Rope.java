@@ -257,7 +257,7 @@ public class Rope extends Item {
             Buff.affect(hero, Haste.class, 1+hero.pointsInTalent(Talent.ROPE_REBOUND));
         }
 
-        if (hero.hasTalent(Talent.KINETIC_ATTACK)) {
+        if (hero.hasTalent(Talent.KINETIC_ATTACK, Talent.EXTRA_POWER)) {
             Buff.affect(hero, Talent.KineticAttackTracker.class, 5f);
         }
     }

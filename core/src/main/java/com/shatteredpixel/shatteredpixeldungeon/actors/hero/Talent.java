@@ -2480,7 +2480,7 @@ public enum Talent {
 		}
 
 		if (hero.buff(KineticAttackTracker.class) != null) {
-			damage += Random.IntRange(hero.pointsInTalent(Talent.KINETIC_ATTACK), 2); //1~2 at +1, 2 at +2
+			damage += Random.IntRange(hero.pointsInTalent(Talent.KINETIC_ATTACK, EXTRA_POWER), 2); //1~2 at +1, 2 at +2
 			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 			hero.buff(KineticAttackTracker.class).detach();
 		}
