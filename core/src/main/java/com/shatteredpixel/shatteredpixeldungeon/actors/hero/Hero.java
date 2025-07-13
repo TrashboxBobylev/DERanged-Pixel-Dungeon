@@ -699,15 +699,21 @@ public class Hero extends Char {
 		return total;
 	}
 
+	public boolean hasTier(int tier) {
+		return !(tier >= Talent.tierLevelThresholds.length);
+//		if (lvl < (Talent.tierLevelThresholds[tier] - 1)
+//				|| (tier == 3 && subClass == HeroSubClass.NONE)
+//				|| (tier == 4 && armorAbility == null));
+	}
+
 	public int talentPointsAvailable(int tier){
-		if (lvl < (Talent.tierLevelThresholds[tier] - 1)
-			|| (tier == 3 && subClass == HeroSubClass.NONE)
-			|| (tier == 4 && armorAbility == null)) {
+		if (tier == 999)
+			return 999;
+		if (!hasTier(tier)) {
 			return 0;
-		} else if (lvl >= Talent.tierLevelThresholds[tier+1]){
-			return Talent.tierLevelThresholds[tier+1] - Talent.tierLevelThresholds[tier] - talentPointsSpent(tier) + bonusTalentPoints(tier);
 		} else {
-			return 1 + lvl - Talent.tierLevelThresholds[tier] - talentPointsSpent(tier) + bonusTalentPoints(tier);
+			return Math.min(1 + lvl - Talent.tierLevelThresholds[tier], Talent.getMaxPoints(tier))
+					- talentPointsSpent(tier) + bonusTalentPoints(tier);
 		}
 	}
 

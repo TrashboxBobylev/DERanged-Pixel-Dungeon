@@ -1413,6 +1413,19 @@ public enum Talent {
 	// tiers 1/2/3/4 start at levels 2/7/13/21
 	public static int[] tierLevelThresholds = new int[]{0, 2, 7, 13, 21, 31};
 
+	public static int talentAmount(HeroClass hCl, int tier){
+		int amount = 5;
+		if (tier == 2) amount++;
+		if (hCl == HeroClass.RAT_KING) amount--;
+		return amount;
+	}
+
+	public static int getMaxPoints(int tier) {
+		if (tier >= 5) return 0;
+		int max = tierLevelThresholds[tier+1] - tierLevelThresholds[tier];
+		return max;
+	}
+
 	Talent( int x, int y ){
 		this(x, y, 2);
 	}

@@ -200,7 +200,7 @@ public class TalentsPane extends ScrollPane {
 				stars.clear();
 			}
 
-			int totStars = Talent.tierLevelThresholds[tier+1] - Talent.tierLevelThresholds[tier] + Dungeon.hero.bonusTalentPoints(tier);
+			int totStars = Talent.getMaxPoints(tier) + Dungeon.hero.bonusTalentPoints(tier);
 			int openStars = Dungeon.hero.talentPointsAvailable(tier);
 			int usedStars = Dungeon.hero.talentPointsSpent(tier);
 			for (int i = 0; i < totStars; i++){
@@ -219,7 +219,7 @@ public class TalentsPane extends ScrollPane {
 		protected void layout() {
 			super.layout();
 
-			int regStars = Talent.tierLevelThresholds[tier+1] - Talent.tierLevelThresholds[tier];
+			int regStars = Talent.getMaxPoints(tier);
 
 			float titleWidth = title.width();
 			titleWidth += 2 + Math.min(stars.size(), regStars)*6;
@@ -241,39 +241,33 @@ public class TalentsPane extends ScrollPane {
 					left = title.right() + 2;
 				}
 			}
-			if (buttons.size() >= 7) {
-				int arrayedTalentNumber = 0;
-				int halfTalentNumber = Math.round(buttons.size() / 2f);
-				boolean numberOfTalents = (buttons.size() % 2 == 1);
-				//  float gap = (특성창 가로길이 - 특성 개수*특성 버튼의 가로길이)/(특성 개수       +1);
-				float gap = (width - halfTalentNumber * TalentButton.WIDTH) / (halfTalentNumber + 1); //각 버튼 간의 간격, .size = buttons 안에 있는 객체의 수, 즉 buttons.size() = 특성의 개수
-				left = x + gap;
-				float firstLeft = (numberOfTalents) ? x + 1.5f * gap + TalentButton.WIDTH / 2f : x + gap;
-				for (TalentButton btn : buttons) {
-					if (arrayedTalentNumber < halfTalentNumber) {
-						btn.setPos(left, title.bottom() + 4);
-						PixelScene.align(btn);
-						left += btn.width() + gap;
-					} else {
-						btn.setPos(firstLeft, title.bottom() + 4 + TalentButton.HEIGHT + 4);
-						PixelScene.align(btn);
-						firstLeft += btn.width() + gap;
+			// Use as few rows as possible, but at least use them well. every 6 adds another row.
+			final int MAX_TALENTS_PER_ROW = 6;
+			int rows = 1+(buttons.size()-1)/MAX_TALENTS_PER_ROW;
+			int buttonsPerRow = buttons.size() / rows;
+			int extra = buttons.size() % rows;  // amount of rows that need an extra button to fit properly
+			if (extra > 0) buttonsPerRow++;
+			float gap = (width - buttonsPerRow*TalentButton.WIDTH)/(buttonsPerRow+1);
+			float bottom = title.bottom();
+			int placed = 0;
+			left = x + gap;
+			for (TalentButton btn : buttons){
+				btn.setPos(left, bottom + 4);
+				PixelScene.align(btn);
+				left += btn.width() + gap;
+				if(++placed == buttonsPerRow && --rows >= 0) {
+					if (--extra == 0) {
+						buttonsPerRow--;
+						// copy-pasted from above
+						gap = (width - buttonsPerRow*TalentButton.WIDTH)/(buttonsPerRow+1);
 					}
-					arrayedTalentNumber++;
+					left = x + gap;
+					bottom = btn.bottom();
+					placed = 0;
 				}
-
-				height = buttons.get(0).bottom() - y + 30; //각 등급 간의 세로 거리
-			} else {
-				float gap = (width - buttons.size() * TalentButton.WIDTH) / (buttons.size() + 1); //각 버튼 간의 간격, .size = buttons 안에 있는 객체의 수, 즉 buttons.size() = 특성의 개수
-				left = x + gap;
-				for (TalentButton btn : buttons) {
-					btn.setPos(left, title.bottom() + 4);
-					PixelScene.align(btn);
-					left += btn.width() + gap;
-				}
-				height = buttons.get(0).bottom() - y; //각 등급 간의 세로 거리
-
 			}
+
+			height = bottom - y;
 
 		}
 
