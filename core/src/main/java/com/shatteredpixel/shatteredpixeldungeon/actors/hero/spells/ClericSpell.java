@@ -136,7 +136,7 @@ public abstract class ClericSpell {
 				spells.add(BlessSpell.INSTANCE);
 			}
 
-			if (cleric.hasTalent(Talent.DIVINE_BLAST)){
+			if (cleric.hasTalent(Talent.DIVINE_BLAST, Talent.NOBLE_CALL)){
 				spells.add(DivineBlast.INSTANCE);
 			}
 

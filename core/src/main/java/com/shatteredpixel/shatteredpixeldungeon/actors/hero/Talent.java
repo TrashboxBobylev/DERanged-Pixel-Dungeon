@@ -799,6 +799,7 @@ public enum Talent {
 	PURSUIT(9, 13), // durable projectiles (5),silent steps(4),lethal momentum (3),shield battery(5)
 	THE_PROTECTOR(9, 14),
 	ENERGY_SURGE(10, 13),
+	NOBLE_CALL(10, 14),
 	// Rat King T3
 	RK_BERSERKER(11, 13,3), RK_GLADIATOR(12, 13,3), RK_VETERAN(13, 13, 3),
 	RK_BATTLEMAGE(11, 14,3), RK_WARLOCK(12, 14,3), RK_WIZARD(13, 14, 3),
@@ -1590,7 +1591,7 @@ public enum Talent {
 			hero.updateHT(true);
 		}
 
-		if (talent == PARRY) {
+		if (talent == PARRY || talent == NOBLE_CALL) {
 			Buff.affect(hero, ParryTracker.class);
 		}
 
@@ -2490,8 +2491,8 @@ public enum Talent {
 
 		if (enemy.alignment != Char.Alignment.ALLY
 				&& !hero.heroClass.is(HeroClass.CLERIC)
-				&& hero.hasTalent(Talent.DIVINE_BLAST)
-				&& Random.Float() < 0.2f * hero.pointsInTalent(Talent.DIVINE_BLAST)){
+				&& hero.hasTalent(Talent.DIVINE_BLAST, NOBLE_CALL)
+				&& Random.Float() < 0.2f * hero.pointsInTalent(Talent.DIVINE_BLAST, NOBLE_CALL)){
 			Elastic.pushEnemy(wep, hero, enemy, 1);
 		}
 
@@ -2508,16 +2509,16 @@ public enum Talent {
 	}
 
 	public static void onLevelUp() {
-		if (hero.hasTalent(Talent.FLAG_OF_CONQUEST)) { //deals 50/75% of enemies' maximum health who are in hero's sight
+		if (hero.hasTalent(Talent.FLAG_OF_CONQUEST, NOBLE_CALL)) { //deals 50/75% of enemies' maximum health who are in hero's sight
 			for (Char ch : Actor.chars()) {
 				if (level.heroFOV[ch.pos] && ch.alignment == Char.Alignment.ENEMY && !ch.properties().contains(Char.Property.BOSS) && !ch.properties().contains(Char.Property.MINIBOSS)){
 					ch.sprite.emitter().burst(ShadowParticle.UP, 10);
-					ch.damage(Math.round(0.25f*(1+hero.pointsInTalent(Talent.FLAG_OF_CONQUEST))*ch.HT), hero);
+					ch.damage(Math.round(0.25f*(1+hero.pointsInTalent(Talent.FLAG_OF_CONQUEST, NOBLE_CALL))*ch.HT), hero);
 					GameScene.flash(0x30FFFF40);
 					Sample.INSTANCE.play(Assets.Sounds.BLAST);
 				}
 			}
-			TalentSprite.show(hero, FLAG_OF_CONQUEST);
+			TalentSprite.show(hero, hero.hasTalent(NOBLE_CALL) ? NOBLE_CALL : FLAG_OF_CONQUEST);
 		}
 
 		if (hero.buff(HorseRiding.class) != null) {
@@ -2528,7 +2529,7 @@ public enum Talent {
 	public static class ParryCooldown extends Buff{
 		float cooldown;
 		public void set() {
-			cooldown = 90-20*hero.pointsInTalent(Talent.PARRY)+1;
+			cooldown = 90-20*hero.pointsInTalent(Talent.PARRY, NOBLE_CALL)+1;
 		}
 		@Override
 		public boolean act() {
@@ -2537,7 +2538,7 @@ public enum Talent {
 				Buff.affect(target, ParryTracker.class);
 				detach();
 			}
-			if (!hero.hasTalent(Talent.PARRY)) {
+			if (!hero.hasTalent(Talent.PARRY, NOBLE_CALL)) {
 				detach();
 			}
 			spend(Actor.TICK);
@@ -2560,7 +2561,7 @@ public enum Talent {
 
 		@Override
 		public boolean act() {
-			if (!hero.hasTalent(Talent.PARRY)) {
+			if (!hero.hasTalent(Talent.PARRY, NOBLE_CALL)) {
 				detach();
 			}
 			spend(Actor.TICK);
@@ -2736,7 +2737,7 @@ public enum Talent {
 				break;
 			case RAT_KING:
 				Collections.addAll(tierTalents, ROYAL_MEAL, RESTORATION, POWER_WITHIN, KINGS_VISION, PURSUIT, ENERGY_SURGE,
-						ROYAL_FEAST, TEMPORARY_DRAUGHT, PERFECT_COLLECTION, THE_PROTECTOR);
+						ROYAL_FEAST, TEMPORARY_DRAUGHT, PERFECT_COLLECTION, THE_PROTECTOR, NOBLE_CALL);
 				break;
 		}
 		for (Talent talent : tierTalents){

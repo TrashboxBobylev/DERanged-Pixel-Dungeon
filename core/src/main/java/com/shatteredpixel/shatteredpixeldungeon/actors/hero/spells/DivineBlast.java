@@ -40,7 +40,7 @@ public class DivineBlast extends TargetedClericSpell {
 
     @Override
     public String desc() {
-        return Messages.get(this, "desc", Math.max(1, Dungeon.hero.pointsInTalent(Talent.DIVINE_BLAST))) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
+        return Messages.get(this, "desc", Math.max(1, Dungeon.hero.pointsInTalent(Talent.DIVINE_BLAST, Talent.NOBLE_CALL))) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
     }
 
     @Override
@@ -76,7 +76,7 @@ public class DivineBlast extends TargetedClericSpell {
                         if ((ch.isAlive() || ch.flying || !Dungeon.level.pit[ch.pos])
                                 && ch.pos == target + i) {
                             Ballistica trajectory = new Ballistica(ch.pos, ch.pos + i, Ballistica.MAGIC_BOLT);
-                            int strength = hero.pointsInTalent(Talent.DIVINE_BLAST);
+                            int strength = hero.pointsInTalent(Talent.DIVINE_BLAST, Talent.NOBLE_CALL);
                             WandOfBlastWave.throwChar(ch, trajectory, strength, false, true, this);
                         }
                     }

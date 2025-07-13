@@ -1025,7 +1025,7 @@ public class Hero extends Char {
 		}
 
 		Talent.ParryTracker parryTracker = buff(Talent.ParryTracker.class);
-		if (hasTalent(Talent.PARRY)) {
+		if (hasTalent(Talent.PARRY, Talent.NOBLE_CALL)) {
 			if (parryTracker != null) {
 				parryTracker.detach();
 				return Messages.get(Monk.class, "parried");
@@ -1451,7 +1451,7 @@ public class Hero extends Char {
 			Barkskin.conditionallyAppend(this, (lvl*pointsInTalent(Talent.BARKSKIN))/2, 1 );
 		}
 
-		if (hasTalent(Talent.PARRY) && buff(Talent.ParryCooldown.class) == null){
+		if (hasTalent(Talent.PARRY, Talent.NOBLE_CALL) && buff(Talent.ParryCooldown.class) == null){
 			Buff.affect(this, Talent.ParryTracker.class);
 		}
 
@@ -2055,8 +2055,8 @@ public class Hero extends Char {
 			chance += 0.02f * pointsInTalent(Talent.BASIC_PRACTICE, Talent.ROYAL_FOCUS);
 		}
 
-		if (wep instanceof MissileWeapon && hasTalent(Talent.CRITICAL_THROW)) {
-			chance += 0.125f * pointsInTalent(Talent.CRITICAL_THROW);
+		if (wep instanceof MissileWeapon && hasTalent(Talent.CRITICAL_THROW, Talent.NOBLE_CALL)) {
+			chance += 0.125f * pointsInTalent(Talent.CRITICAL_THROW, Talent.NOBLE_CALL);
 		}
 
 		Awakening awakening = buff(Awakening.class);
