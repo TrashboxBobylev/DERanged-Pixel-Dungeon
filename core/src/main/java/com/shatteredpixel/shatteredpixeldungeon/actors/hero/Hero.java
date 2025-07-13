@@ -2044,7 +2044,7 @@ public class Hero extends Char {
 		if (heroClass.is(HeroClass.SAMURAI)) {
 			chance = 0.01f;
 			chance += 0.01f * (lvl - 1);
-			chance += Math.max(0, (0.02f + 0.005f*pointsInTalent(Talent.WEAPON_MASTERY)) * (STR() - wep.STRReq()));
+			chance += Math.max(0, (0.02f + 0.005f*pointsInTalent(Talent.WEAPON_MASTERY, Talent.KINGS_WRATH)) * (STR() - wep.STRReq()));
 		}
 
 		if (buff(Sheath.CertainCrit.class) != null) {
@@ -2068,8 +2068,8 @@ public class Hero extends Char {
 		}
 
 		if (enemy != null) {
-			if (hasTalent(Talent.UNEXPECTED_SLASH) && enemy.buff(Talent.UnexpectedSlashTracker.class) == null) {
-				chance += 0.1f*pointsInTalent(Talent.UNEXPECTED_SLASH);
+			if (hasTalent(Talent.UNEXPECTED_SLASH, Talent.KINGS_WRATH) && enemy.buff(Talent.UnexpectedSlashTracker.class) == null) {
+				chance += 0.1f*pointsInTalent(Talent.UNEXPECTED_SLASH, Talent.KINGS_WRATH);
 				Buff.affect(enemy, Talent.UnexpectedSlashTracker.class);
 			}
 		}

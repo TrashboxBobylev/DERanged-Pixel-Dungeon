@@ -71,9 +71,9 @@ public abstract class Plant implements Bundlable {
 			((Hero) ch).interrupt();
 		}
 
-		if (ch instanceof Mob && Dungeon.hero.hasTalent(Talent.WEAKENING_POISON)) {
-			Buff.affect(ch, Weakness.class, 1f+2*Dungeon.hero.pointsInTalent(Talent.WEAKENING_POISON));
-			Buff.affect(ch, Vulnerable.class, 1f+2*Dungeon.hero.pointsInTalent(Talent.WEAKENING_POISON));
+		if (ch instanceof Mob && Dungeon.hero.hasTalent(Talent.WEAKENING_POISON, Talent.KINGS_WRATH)) {
+			Buff.affect(ch, Weakness.class, 1f+2*Dungeon.hero.pointsInTalent(Talent.WEAKENING_POISON, Talent.KINGS_WRATH));
+			Buff.affect(ch, Vulnerable.class, 1f+2*Dungeon.hero.pointsInTalent(Talent.WEAKENING_POISON, Talent.KINGS_WRATH));
 		}
 
 		if (Dungeon.level.heroFOV[pos] && Dungeon.hero.hasTalent(Talent.NATURES_AID, Talent.NOBLE_CAUSE)){

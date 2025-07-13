@@ -796,6 +796,7 @@ public enum Talent {
 	POWER_WITHIN(7, 13), // runic (3), wand preservation (3), rogue's foresight (5), rejuvenating steps (3)
 	PERFECT_COLLECTION(7, 14),
 	KINGS_VISION(8, 13), // improvised projectiles (4), arcane vision(4), wide search(3), heightened senses(4)
+	KINGS_WRATH(8, 14),
 	PURSUIT(9, 13), // durable projectiles (5),silent steps(4),lethal momentum (3),shield battery(5)
 	THE_PROTECTOR(9, 14),
 	ENERGY_SURGE(10, 13),
@@ -2737,7 +2738,7 @@ public enum Talent {
 				break;
 			case RAT_KING:
 				Collections.addAll(tierTalents, ROYAL_MEAL, RESTORATION, POWER_WITHIN, KINGS_VISION, PURSUIT, ENERGY_SURGE,
-						ROYAL_FEAST, TEMPORARY_DRAUGHT, PERFECT_COLLECTION, THE_PROTECTOR, NOBLE_CALL);
+						ROYAL_FEAST, TEMPORARY_DRAUGHT, PERFECT_COLLECTION, KINGS_WRATH, THE_PROTECTOR, NOBLE_CALL);
 				break;
 		}
 		for (Talent talent : tierTalents){

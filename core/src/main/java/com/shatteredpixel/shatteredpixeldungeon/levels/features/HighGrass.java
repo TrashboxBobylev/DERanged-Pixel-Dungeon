@@ -156,8 +156,8 @@ public class HighGrass {
 				Camouflage.activate(ch, ch.glyphLevel(Camouflage.class));
 			}
 
-			if (ch instanceof Hero && Dungeon.hero.hasTalent(Talent.CAMOUFLAGE)) {
-				Buff.prolong(Dungeon.hero, Invisibility.class, 1+Dungeon.hero.pointsInTalent(Talent.CAMOUFLAGE));
+			if (ch instanceof Hero && Dungeon.hero.hasTalent(Talent.CAMOUFLAGE, Talent.KINGS_WRATH)) {
+				Buff.prolong(Dungeon.hero, Invisibility.class, 1+Dungeon.hero.pointsInTalent(Talent.CAMOUFLAGE, Talent.KINGS_WRATH));
 				Sample.INSTANCE.play( Assets.Sounds.MELD );
 			}
 
