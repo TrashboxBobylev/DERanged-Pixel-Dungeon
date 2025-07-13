@@ -57,8 +57,8 @@ public class GammaRayGun extends Item {
 
     private float powerMulti() {
         float multi = 1f;
-        if (hero.hasTalent(Talent.HIGH_POWER)) {
-            multi += 0.25f * hero.pointsInTalent(Talent.HIGH_POWER);
+        if (hero.hasTalent(Talent.HIGH_POWER, Talent.PERFECT_COLLECTION)) {
+            multi += 0.25f * hero.pointsInTalent(Talent.HIGH_POWER, Talent.PERFECT_COLLECTION);
         }
         if (hero.hasTalent(Talent.HEALING_WING) && hero.buff(AngelWing.AngelWingBuff.class) != null) {
             multi += hero.pointsInTalent(Talent.HEALING_WING);
@@ -91,7 +91,7 @@ public class GammaRayGun extends Item {
         if (hero != null) {
             GammaRayWarning buff = hero.buff(GammaRayWarning.class);
             if (buff != null) {
-                if (buff.getDuration() > 7+hero.pointsInTalent(Talent.HIGH_POWER)) {
+                if (buff.getDuration() > 7+hero.pointsInTalent(Talent.HIGH_POWER, Talent.PERFECT_COLLECTION)) {
                     return WHITE_FAST;
                 } else {
                     return WHITE_SLOW;
@@ -112,7 +112,7 @@ public class GammaRayGun extends Item {
             GammaRayWarning buff = hero.buff(GammaRayWarning.class);
 
             if (buff != null) {
-                if (buff.getDuration() > 7 + hero.pointsInTalent(Talent.HIGH_POWER)) {
+                if (buff.getDuration() > 7 + hero.pointsInTalent(Talent.HIGH_POWER, Talent.PERFECT_COLLECTION)) {
                     info += "\n\n" + Messages.get(this, "warning_high");
                 } else {
                     info += "\n\n" + Messages.get(this, "warning_low");
@@ -141,8 +141,8 @@ public class GammaRayGun extends Item {
                             if (Dungeon.level.heroFOV[ch.pos]) {
                                 CellEmitter.center( ch.pos ).burst( PoisonParticle.SPLASH, 3 );
                             }
-                            if (curUser.hasTalent(Talent.RADIATION)) {
-                                Buff.affect(ch, RadioactiveMutation.class).set(6-curUser.pointsInTalent(Talent.RADIATION));
+                            if (curUser.hasTalent(Talent.RADIATION, Talent.PERFECT_COLLECTION)) {
+                                Buff.affect(ch, RadioactiveMutation.class).set(6-curUser.pointsInTalent(Talent.RADIATION, Talent.PERFECT_COLLECTION));
                             }
                             if (curUser.subClass.is(HeroSubClass.SAVIOR)) {
                                 int allyNumber = 0;
@@ -208,11 +208,11 @@ public class GammaRayGun extends Item {
                     BuffIndicator.refreshHero();
                     CellEmitter.center( curUser.pos ).burst( PoisonParticle.SPLASH, 3 );
                 }
-                int duration = Random.NormalIntRange(3, 5) + hero.pointsInTalent(Talent.HIGH_POWER);
+                int duration = Random.NormalIntRange(3, 5) + hero.pointsInTalent(Talent.HIGH_POWER, Talent.PERFECT_COLLECTION);
                 if (Random.Float() < 0.5f) {
                     Buff.affect(hero, GammaRayCooldown.class).set(duration);
                 }
-                Buff.affect(hero, GammaRayWarning.class).set(10+hero.pointsInTalent(Talent.HIGH_POWER));
+                Buff.affect(hero, GammaRayWarning.class).set(10+hero.pointsInTalent(Talent.HIGH_POWER, Talent.PERFECT_COLLECTION));
                 hero.spendAndNext(Actor.TICK);
             }
         }

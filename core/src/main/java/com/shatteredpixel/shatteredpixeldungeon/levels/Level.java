@@ -1469,11 +1469,11 @@ public abstract class Level implements Bundlable {
 						mindVisRange = 1+2*((Hero) c).pointsInTalent(Talent.DIVINE_SENSE, KINGS_VISION);
 					}
 				}
-				if (((Hero) c).hasTalent(Talent.DRAGONS_EYE) && !((Hero) c).heroClass.is(HeroClass.SAMURAI)){
-					mindVisRange = 1+((Hero) c).pointsInTalent(Talent.DRAGONS_EYE);
+				if (((Hero) c).hasTalent(Talent.DRAGONS_EYE, PERFECT_COLLECTION) && !((Hero) c).heroClass.is(HeroClass.SAMURAI)){
+					mindVisRange = 1+((Hero) c).pointsInTalent(Talent.DRAGONS_EYE, PERFECT_COLLECTION);
 				}
-				if (((Hero) c).hasTalent(Talent.DRAGONS_EYE) && ((Hero) c).buff(Sheath.Sheathing.class) != null) {
-					mindVisRange += 2+((Hero) c).pointsInTalent(Talent.DRAGONS_EYE);
+				if (((Hero) c).hasTalent(Talent.DRAGONS_EYE, PERFECT_COLLECTION) && ((Hero) c).buff(Sheath.Sheathing.class) != null) {
+					mindVisRange += 2+((Hero) c).pointsInTalent(Talent.DRAGONS_EYE, PERFECT_COLLECTION);
 				}
 				if (((Hero) c).hasTalent(Talent.TACTICAL_SIGHT) && ((Hero) c).buff(ReinforcedArmor.ReinforcedArmorTracker.class) != null) {
 					mindVisRange += 1+((Hero) c).pointsInTalent(Talent.TACTICAL_SIGHT);

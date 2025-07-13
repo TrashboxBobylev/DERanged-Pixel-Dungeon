@@ -1,7 +1,5 @@
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
-
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -30,6 +28,8 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 
 import java.util.ArrayList;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 
 public class Rope extends Item {
 
@@ -253,7 +253,7 @@ public class Rope extends Item {
     }
 
     public void onUse() {
-        if (hero.hasTalent(Talent.ROPE_REBOUND)) {
+        if (hero.hasTalent(Talent.ROPE_REBOUND, Talent.PERFECT_COLLECTION)) {
             Buff.affect(hero, Haste.class, 1+hero.pointsInTalent(Talent.ROPE_REBOUND));
         }
 

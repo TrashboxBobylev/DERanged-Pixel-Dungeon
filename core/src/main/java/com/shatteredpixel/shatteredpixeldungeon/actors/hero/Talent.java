@@ -794,6 +794,7 @@ public enum Talent {
 	RESTORATION(6, 13), // all upgrade/potion of healing talents
 	TEMPORARY_DRAUGHT(6, 14),
 	POWER_WITHIN(7, 13), // runic (3), wand preservation (3), rogue's foresight (5), rejuvenating steps (3)
+	PERFECT_COLLECTION(7, 14),
 	KINGS_VISION(8, 13), // improvised projectiles (4), arcane vision(4), wide search(3), heightened senses(4)
 	PURSUIT(9, 13), // durable projectiles (5),silent steps(4),lethal momentum (3),shield battery(5)
 	// Rat King T3
@@ -1633,7 +1634,7 @@ public enum Talent {
 		}
 
 		//huntress
-		if (talent == HEIGHTENED_SENSES || talent == FARSIGHT || talent == DIVINE_SENSE || talent == TELESCOPE || talent == DRAGONS_EYE || talent == KINGS_VISION){
+		if (talent == HEIGHTENED_SENSES || talent == FARSIGHT || talent == DIVINE_SENSE || talent == TELESCOPE || talent == DRAGONS_EYE || talent == KINGS_VISION || talent == PERFECT_COLLECTION){
 			Dungeon.observe();
 		}
 
@@ -1674,7 +1675,7 @@ public enum Talent {
 			hero.belongings.weapon.identify();
 		}
 
-		if (talent == LARGER_MAGAZINE) {
+		if (talent == LARGER_MAGAZINE || talent == PERFECT_COLLECTION) {
 			Item.updateQuickslot();
 		}
 
@@ -2334,9 +2335,9 @@ public enum Talent {
 			Buff.prolong(enemy, StoneOfAggression.Aggression.class, duration);
 		}
 
-		if (hero.hasTalent(Talent.RADIATION) && !hero.heroClass.is(HeroClass.MEDIC) && enemy.buff(RadioactiveMutation.class) == null) {
+		if (hero.hasTalent(Talent.RADIATION, PERFECT_COLLECTION) && !hero.heroClass.is(HeroClass.MEDIC) && enemy.buff(RadioactiveMutation.class) == null) {
 			if (Random.Float() < 0.03f) {
-				Buff.affect(enemy, RadioactiveMutation.class).set(6-hero.pointsInTalent(Talent.RADIATION));
+				Buff.affect(enemy, RadioactiveMutation.class).set(6-hero.pointsInTalent(Talent.RADIATION, PERFECT_COLLECTION));
 			}
 		}
 
@@ -2458,8 +2459,8 @@ public enum Talent {
 			hero.buff(Pray.Punishment.class).hit(enemy, damage);
 		}
 
-		if (wep instanceof Gun && hero.hasTalent(Talent.BULLET_COLLECT)) {
-			if (Random.Float() < 0.05f * hero.pointsInTalent(Talent.BULLET_COLLECT)) {
+		if (wep instanceof Gun && hero.hasTalent(Talent.BULLET_COLLECT, PERFECT_COLLECTION)) {
+			if (Random.Float() < 0.05f * hero.pointsInTalent(Talent.BULLET_COLLECT, PERFECT_COLLECTION)) {
 				((Gun)wep).manualReload(1, true);
 			}
 		}
@@ -2732,7 +2733,8 @@ public enum Talent {
 				Collections.addAll(tierTalents, FIGHTING_MEAL, FULLY_POTION, NATURE_FRIENDLY, PUSHBACK, SPECIALISTS_INTUITION, ROOTS_ENTWINE);
 				break;
 			case RAT_KING:
-				Collections.addAll(tierTalents, ROYAL_MEAL, RESTORATION, POWER_WITHIN, KINGS_VISION, PURSUIT, ROYAL_FEAST, TEMPORARY_DRAUGHT);
+				Collections.addAll(tierTalents, ROYAL_MEAL, RESTORATION, POWER_WITHIN, KINGS_VISION, PURSUIT,
+						ROYAL_FEAST, TEMPORARY_DRAUGHT, PERFECT_COLLECTION);
 				break;
 		}
 		for (Talent talent : tierTalents){
