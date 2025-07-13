@@ -448,7 +448,7 @@ public abstract class Char extends Actor {
 
 		} else if (hit( this, enemy, accMulti, false )) {
 			boolean isDirectedToHero = false;
-			if (enemy != hero && enemy.alignment == Alignment.ALLY && Dungeon.level.heroFOV[enemy.pos] && hero.hasTalent(Talent.CHIVALRY)) {
+			if (enemy != hero && enemy.alignment == Alignment.ALLY && Dungeon.level.heroFOV[enemy.pos] && hero.hasTalent(Talent.CHIVALRY, Talent.THE_PROTECTOR)) {
 				enemy = hero;
 				isDirectedToHero = true;
 			}
@@ -573,7 +573,7 @@ public abstract class Char extends Actor {
 				dmg *= 0.67f;
 			}
 
-			if (isDirectedToHero && hero.pointsInTalent(Talent.CHIVALRY) > 1) {
+			if (isDirectedToHero && hero.pointsInTalent(Talent.CHIVALRY, Talent.THE_PROTECTOR) > 1) {
 				dmg *= 0.5f;
 			}
 

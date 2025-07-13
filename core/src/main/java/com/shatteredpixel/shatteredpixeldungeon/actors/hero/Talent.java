@@ -797,6 +797,7 @@ public enum Talent {
 	PERFECT_COLLECTION(7, 14),
 	KINGS_VISION(8, 13), // improvised projectiles (4), arcane vision(4), wide search(3), heightened senses(4)
 	PURSUIT(9, 13), // durable projectiles (5),silent steps(4),lethal momentum (3),shield battery(5)
+	THE_PROTECTOR(9, 14),
 	// Rat King T3
 	RK_BERSERKER(11, 13,3), RK_GLADIATOR(12, 13,3), RK_VETERAN(13, 13, 3),
 	RK_BATTLEMAGE(11, 14,3), RK_WARLOCK(12, 14,3), RK_WIZARD(13, 14, 3),
@@ -2734,7 +2735,7 @@ public enum Talent {
 				break;
 			case RAT_KING:
 				Collections.addAll(tierTalents, ROYAL_MEAL, RESTORATION, POWER_WITHIN, KINGS_VISION, PURSUIT,
-						ROYAL_FEAST, TEMPORARY_DRAUGHT, PERFECT_COLLECTION);
+						ROYAL_FEAST, TEMPORARY_DRAUGHT, PERFECT_COLLECTION, THE_PROTECTOR);
 				break;
 		}
 		for (Talent talent : tierTalents){

@@ -78,8 +78,8 @@ public class Regeneration extends Buff {
 						delay /= RingOfEnergy.artifactChargeMultiplier(target);
 					}
 				}
-				if (((Hero)target).hasTalent(Talent.STRONG_HEALPOWER)) {
-					delay /= 1f+0.1f*((Hero)target).pointsInTalent(Talent.STRONG_HEALPOWER);
+				if (((Hero)target).hasTalent(Talent.STRONG_HEALPOWER, Talent.THE_PROTECTOR)) {
+					delay /= 1f+0.1f*((Hero)target).pointsInTalent(Talent.STRONG_HEALPOWER, Talent.THE_PROTECTOR);
 				}
 				if (((Hero)target).hasTalent(Talent.ACCUMULATION) && !((Hero) target).heroClass.is(HeroClass.DUELIST)) {
 					delay /= 1f+0.1f*((Hero)target).pointsInTalent(Talent.ACCUMULATION);

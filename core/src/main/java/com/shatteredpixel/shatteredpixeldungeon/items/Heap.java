@@ -221,10 +221,10 @@ public class Heap implements Bundlable {
 		boolean evaporated = false;
 		
 		for (Item item : items.toArray( new Item[0] )) {
-			if (item instanceof Scroll && !item.unique && Dungeon.hero.pointsInTalent(Talent.FIREWATCH) < 2) {
+			if (item instanceof Scroll && !item.unique && Dungeon.hero.pointsInTalent(Talent.FIREWATCH, Talent.THE_PROTECTOR) < 2) {
 				items.remove( item );
 				burnt = true;
-			} else if (item instanceof Dewdrop && !Dungeon.hero.hasTalent(Talent.FIREWATCH)) {
+			} else if (item instanceof Dewdrop && !Dungeon.hero.hasTalent(Talent.FIREWATCH, Talent.THE_PROTECTOR)) {
 				items.remove( item );
 				evaporated = true;
 			} else if (item instanceof MysteryMeat || item instanceof FrozenCarpaccio) {

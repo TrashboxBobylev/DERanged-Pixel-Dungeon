@@ -2605,8 +2605,8 @@ public class Hero extends Char {
 		dmg = Math.round(damage);
 
 		//~17%/~33% damage reduction, proportional to hero's lost health
-		if (hero.hasTalent(Talent.PROTECTION)) {
-			dmg = (int)Math.ceil(dmg * (1 - hero.pointsInTalent(Talent.PROTECTION)/6f * ((float)(this.HT - this.HP)/this.HT)));
+		if (hero.hasTalent(Talent.PROTECTION, Talent.THE_PROTECTOR)) {
+			dmg = (int)Math.ceil(dmg * (1 - hero.pointsInTalent(Talent.PROTECTION, Talent.THE_PROTECTOR)/6f * ((float)(this.HT - this.HP)/this.HT)));
 		}
 
 		LargeSword.LargeSwordBuff largeSwordBuff = hero.buff(LargeSword.LargeSwordBuff.class);
@@ -2919,7 +2919,7 @@ public class Hero extends Char {
 				((Gun)hero.belongings.weapon).manualReload();
 			}
 
-			if (hero.hasTalent(Talent.MIND_VISION) && Random.Float() < 0.01f*hero.pointsInTalent(Talent.MIND_VISION)) {
+			if (hero.hasTalent(Talent.MIND_VISION, Talent.THE_PROTECTOR) && Random.Float() < 0.01f*hero.pointsInTalent(Talent.MIND_VISION, Talent.THE_PROTECTOR)) {
 				Buff.affect(this, MindVision.class, 1f);
 			}
 			

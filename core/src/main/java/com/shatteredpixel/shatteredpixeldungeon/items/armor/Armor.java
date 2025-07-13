@@ -469,8 +469,8 @@ public class Armor extends EquipableItem {
 		int max;
 		max = (upgradefactor) * (2 + lvl) + augment.defenseFactor(lvl);
 		if (hero != null) {
-			if (hero.hasTalent(Talent.ARMOR_ADAPTION) && this.STRReq() < hero.STR()) {
-				max += Math.round((hero.STR() - this.STRReq())*(0.5f+0.5f*hero.pointsInTalent(Talent.ARMOR_ADAPTION)));
+			if (hero.hasTalent(Talent.ARMOR_ADAPTION, Talent.THE_PROTECTOR) && this.STRReq() < hero.STR()) {
+				max += Math.round((hero.STR() - this.STRReq())*(0.5f+0.5f*hero.pointsInTalent(Talent.ARMOR_ADAPTION, Talent.THE_PROTECTOR)));
 			}
 		}
 		if (lvl > max) {
