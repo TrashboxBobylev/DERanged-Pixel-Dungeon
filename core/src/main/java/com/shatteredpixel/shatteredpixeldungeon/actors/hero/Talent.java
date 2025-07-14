@@ -1993,10 +1993,10 @@ public enum Talent {
 			Buff.affect(hero, Invisibility.class, factor * (1 + 2*hero.pointsInTalent(INSCRIBED_STEALTH, RESTORATION)));
 			Sample.INSTANCE.play( Assets.Sounds.MELD );
 		}
-		if (hero.hasTalent(Talent.MAGIC_RUSH)) {
+		if (hero.hasTalent(Talent.MAGIC_RUSH, RK_BATTLEMAGE)) {
 			MagesStaff staff = hero.belongings.getItem(MagesStaff.class);
 			if (staff != null) {
-				staff.gainCharge(factor * hero.pointsInTalent(Talent.MAGIC_RUSH), false);
+				staff.gainCharge(factor * hero.pointsInTalent(Talent.MAGIC_RUSH, RK_BATTLEMAGE), false);
 				ScrollOfRecharging.charge(hero);
 			}
 		}

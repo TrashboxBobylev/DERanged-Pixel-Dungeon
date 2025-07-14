@@ -62,7 +62,7 @@ public class MagicalCircle extends Buff {
     public void setup(int pos, int duration){
         int dist;
         dist = 0;
-        if (Dungeon.hero.pointsInTalent(Talent.MAGICAL_CIRCLE) == 3) {
+        if (Dungeon.hero.pointsInTalent(Talent.MAGICAL_CIRCLE, Talent.RK_BATTLEMAGE) == 3) {
             dist += 1;
         }
 

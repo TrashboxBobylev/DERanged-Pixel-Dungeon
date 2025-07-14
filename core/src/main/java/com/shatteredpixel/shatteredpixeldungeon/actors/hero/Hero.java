@@ -3462,7 +3462,7 @@ public class Hero extends Char {
 			Buff.affect( this, Combo.class ).hit(attackTarget);
 		}
 
-		if (hit && subClass.is(HeroSubClass.BATTLEMAGE) && hero.belongings.attackingWeapon() instanceof MagesStaff && hero.hasTalent(Talent.BATTLE_MAGIC) && wasEnemy) {
+		if (hit && subClass.is(HeroSubClass.BATTLEMAGE) && hero.belongings.attackingWeapon() instanceof MagesStaff && hero.hasTalent(Talent.BATTLE_MAGIC, Talent.RK_BATTLEMAGE) && wasEnemy) {
 			Buff.affect( this, MagicalCombo.class).hit( attackTarget );
 		}
 

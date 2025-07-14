@@ -145,7 +145,7 @@ public abstract class Wand extends Item {
 	//not affected by enchantment proc chance changers
 	public static float procChanceMultiplier( Char attacker ){
 		if (attacker.buff(Talent.EmpoweredStrikeTracker.class) != null){
-			return 1f + ((Hero)attacker).pointsInTalent(Talent.EMPOWERED_STRIKE)/2f;
+			return 1f + ((Hero)attacker).pointsInTalent(Talent.EMPOWERED_STRIKE, Talent.RK_BATTLEMAGE)/2f;
 		}
 		return 1f;
 	}
@@ -505,15 +505,15 @@ public abstract class Wand extends Item {
 
 		//inside staff
 		if (charger != null && charger.target == Dungeon.hero && !Dungeon.hero.belongings.contains(this)){
-			if (Dungeon.hero.hasTalent(Talent.EXCESS_CHARGE) && curCharges >= maxCharges){
-				int shieldToGive = Math.round(buffedLvl()*0.67f*Dungeon.hero.pointsInTalent(Talent.EXCESS_CHARGE));
+			if (Dungeon.hero.hasTalent(Talent.EXCESS_CHARGE, Talent.RK_BATTLEMAGE) && curCharges >= maxCharges){
+				int shieldToGive = Math.round(buffedLvl()*0.67f*Dungeon.hero.pointsInTalent(Talent.EXCESS_CHARGE, Talent.RK_BATTLEMAGE));
 				Buff.affect(Dungeon.hero, Barrier.class).setShield(shieldToGive);
 				Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldToGive), FloatingText.SHIELDING);
 			}
 		}
 
 		if ((Dungeon.hero.hasTalent(Talent.CHARGE_PRESERVE, Talent.EXTRA_BULK) && Random.Int(20) < Dungeon.hero.pointsInTalent(Talent.CHARGE_PRESERVE, Talent.EXTRA_BULK))
-				|| (Dungeon.hero.pointsInTalent(Talent.MAGICAL_CIRCLE) > 1 && Dungeon.hero.buff(MagicalCircle.class) != null && Random.Int(2) == 0)) {
+				|| (Dungeon.hero.pointsInTalent(Talent.MAGICAL_CIRCLE, Talent.RK_BATTLEMAGE) > 1 && Dungeon.hero.buff(MagicalCircle.class) != null && Random.Int(2) == 0)) {
 			//charge preserves
 		} else {
 			curCharges -= cursed ? 1 : chargesPerCast();
@@ -539,7 +539,7 @@ public abstract class Wand extends Item {
 		}
 
 		//If hero owns wand but it isn't in belongings it must be in the staff
-		if (Dungeon.hero.hasTalent(Talent.EMPOWERED_STRIKE)
+		if (Dungeon.hero.hasTalent(Talent.EMPOWERED_STRIKE, Talent.RK_BATTLEMAGE)
 				&& charger != null && charger.target == Dungeon.hero
 				&& !Dungeon.hero.belongings.contains(this)){
 
@@ -731,7 +731,7 @@ public abstract class Wand extends Item {
 						if (curUser.pointsInTalent(Talent.SHIELD_BATTERY, Talent.RESTORATION) == 2) shield *= 1.5f;
 						Buff.affect(curUser, Barrier.class).setShield(Math.round(shield));
 
-						if (Dungeon.hero.subClass.is(HeroSubClass.BATTLEMAGE) && Dungeon.hero.hasTalent(Talent.MAGICAL_CIRCLE)) {
+						if (Dungeon.hero.subClass.is(HeroSubClass.BATTLEMAGE) && Dungeon.hero.hasTalent(Talent.MAGICAL_CIRCLE, Talent.RK_BATTLEMAGE)) {
 							Buff.affect(curUser, MagicalCircle.class).setup(curUser.pos, curWand.curCharges*3+1);
 						}
 
@@ -891,7 +891,7 @@ public abstract class Wand extends Item {
 			if (Regeneration.regenOn()) {
 				float multi = RingOfEnergy.wandChargeMultiplier(target);
 				multi *= (1f + 0.1f * Dungeon.hero.pointsInTalent(Talent.FASTER_CHARGER, Talent.ENERGY_SURGE));
-				if (Dungeon.hero.hasTalent(Talent.MAGICAL_CIRCLE) && Dungeon.hero.buff(MagicalCircle.class) != null) {
+				if (Dungeon.hero.hasTalent(Talent.MAGICAL_CIRCLE, Talent.RK_BATTLEMAGE) && Dungeon.hero.buff(MagicalCircle.class) != null) {
 					multi += 1;
 				}
 				partialCharge += (1f/turnsToCharge) * multi;

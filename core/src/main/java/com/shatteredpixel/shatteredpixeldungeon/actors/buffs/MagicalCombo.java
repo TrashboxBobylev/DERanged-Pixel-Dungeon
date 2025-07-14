@@ -21,8 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -78,6 +76,8 @@ import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
 import java.util.HashMap;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 
 public class MagicalCombo extends Buff implements ActionIndicator.Action {
 	
@@ -217,7 +217,7 @@ public class MagicalCombo extends Buff implements ActionIndicator.Action {
 				case STAB:
 					return Messages.get(this, name()+"_desc", count*10);
 				case MANA_AMP:
-					return Messages.get(this, name()+"_desc", Dungeon.hero.pointsInTalent(Talent.BATTLE_MAGIC), Math.min(1+count/2, staff.level()), staff.level());
+					return Messages.get(this, name()+"_desc", Dungeon.hero.pointsInTalent(Talent.BATTLE_MAGIC, Talent.RK_BATTLEMAGE), Math.min(1+count/2, staff.level()), staff.level());
 				case EMMIT:
 					return Messages.get(this, name()+"_desc", count);
 				case UNLEASH:
@@ -233,7 +233,7 @@ public class MagicalCombo extends Buff implements ActionIndicator.Action {
 	}
 
 	public boolean canUseMove(ComboMove move){
-		return move.talentReq <= Dungeon.hero.pointsInTalent(Talent.BATTLE_MAGIC);
+		return move.talentReq <= Dungeon.hero.pointsInTalent(Talent.BATTLE_MAGIC, Talent.RK_BATTLEMAGE);
 	}
 
 	public void useMove(ComboMove move){
@@ -628,7 +628,7 @@ public class MagicalCombo extends Buff implements ActionIndicator.Action {
 					hero.spend(-hero.attackDelay());
 					break;
 				case MANA_AMP:
-					Buff.affect(hero, MagicalEmpower.class).set(hero.pointsInTalent(Talent.BATTLE_MAGIC), Math.min(1+count/2, staff.level()));
+					Buff.affect(hero, MagicalEmpower.class).set(hero.pointsInTalent(Talent.BATTLE_MAGIC, Talent.RK_BATTLEMAGE), Math.min(1+count/2, staff.level()));
 					break;
 				default:
 					//nothing
