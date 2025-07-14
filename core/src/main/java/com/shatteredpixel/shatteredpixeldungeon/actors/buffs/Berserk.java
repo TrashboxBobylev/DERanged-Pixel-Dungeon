@@ -234,12 +234,12 @@ public class Berserk extends ShieldBuff implements ActionIndicator.Action {
 		float maxPower = 1f + 0.1667f*hero.pointsInTalent(Talent.ENDLESS_RAGE);
 		float powerAmt = 100*(damage/(float)target.HT)/3f;
 		System.out.println("powerAmt: " + powerAmt);
-		if (hero.hasTalent(Talent.ENDURANCE) && powerAmt > 0) {
-			Buff.affect(hero, BrokenSeal.WarriorShield.class).spendCooldown(powerAmt * hero.pointsInTalent(Talent.ENDURANCE)/3f);
+		if (hero.hasTalent(Talent.ENDURANCE, Talent.RK_BERSERKER) && powerAmt > 0) {
+			Buff.affect(hero, BrokenSeal.WarriorShield.class).spendCooldown(powerAmt * hero.pointsInTalent(Talent.ENDURANCE, Talent.RK_BERSERKER)/3f);
 		}
 		power = Math.min(maxPower, power + (damage/(float)target.HT)/3f );
-		if (hero.hasTalent(Talent.MAX_RAGE) && power >= maxPower && target.buff(Talent.MaxRageCooldown.class) == null) {
-			Buff.affect(target, Adrenaline.class, 10 * power * hero.pointsInTalent(Talent.MAX_RAGE));
+		if (hero.hasTalent(Talent.MAX_RAGE, Talent.RK_BERSERKER) && power >= maxPower && target.buff(Talent.MaxRageCooldown.class) == null) {
+			Buff.affect(target, Adrenaline.class, 10 * power * hero.pointsInTalent(Talent.MAX_RAGE, Talent.RK_BERSERKER));
 			Buff.affect(target, Talent.MaxRageCooldown.class, 50f);
 		}
 		BuffIndicator.refreshHero(); //show new power immediately
@@ -253,8 +253,8 @@ public class Berserk extends ShieldBuff implements ActionIndicator.Action {
 		if (state != State.NORMAL) return;
 		float maxPower = 1f + 0.1667f*((Hero)target).pointsInTalent(Talent.ENDLESS_RAGE);
 		power = Math.min(maxPower, power + amount);
-		if (((Hero) target).hasTalent(Talent.MAX_RAGE) && power >= maxPower && target.buff(Talent.MaxRageCooldown.class) == null) {
-			Buff.affect(target, Adrenaline.class, 10 * power * ((Hero) target).pointsInTalent(Talent.MAX_RAGE));
+		if (((Hero) target).hasTalent(Talent.MAX_RAGE, Talent.RK_BERSERKER) && power >= maxPower && target.buff(Talent.MaxRageCooldown.class) == null) {
+			Buff.affect(target, Adrenaline.class, 10 * power * ((Hero) target).pointsInTalent(Talent.MAX_RAGE, Talent.RK_BERSERKER));
 			Buff.affect(target, Talent.MaxRageCooldown.class, 50f);
 		}
 		BuffIndicator.refreshHero(); //show new power immediately

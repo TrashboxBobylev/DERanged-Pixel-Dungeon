@@ -1643,7 +1643,7 @@ public enum Talent {
 		}
 
 		if (talent == TWIN_UPGRADES || talent == DESPERATE_POWER
-				|| talent == STRONGMAN || talent == DURABLE_PROJECTILES || talent == ACCUMULATION || talent == PURSUIT || talent == ENERGY_SURGE){
+				|| talent == STRONGMAN || talent == DURABLE_PROJECTILES || talent == ACCUMULATION || talent == PURSUIT || talent == ENERGY_SURGE || talent == RK_BERSERKER){
 			Item.updateQuickslot();
 		}
 

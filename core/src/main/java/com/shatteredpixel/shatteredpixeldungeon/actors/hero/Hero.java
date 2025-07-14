@@ -461,8 +461,8 @@ public class Hero extends Char {
 			strBonus += buff.boost();
 		}
 
-		if (hasTalent(Talent.STRONGMAN)){
-			strBonus += (int)Math.floor(STR * (0.03f + 0.05f*pointsInTalent(Talent.STRONGMAN)));
+		if (hasTalent(Talent.STRONGMAN, Talent.RK_BERSERKER)){
+			strBonus += (int)Math.floor(STR * (0.03f + 0.05f*pointsInTalent(Talent.STRONGMAN, Talent.RK_BERSERKER)));
 		}
 
 		return STR + strBonus;
@@ -1981,7 +1981,7 @@ public class Hero extends Char {
 	
 	public void rest( boolean fullRest ) {
 		spendAndNextConstant( TIME_TO_REST );
-		if (hasTalent(Talent.HOLD_FAST)){
+		if (hasTalent(Talent.HOLD_FAST, Talent.RK_BERSERKER)){
 			Buff.affect(this, HoldFast.class).pos = pos;
 		}
 		if (hasTalent(Talent.PATIENT_STRIKE, Talent.KINGS_WISDOM)){
