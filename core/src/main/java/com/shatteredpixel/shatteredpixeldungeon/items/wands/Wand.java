@@ -223,8 +223,8 @@ public abstract class Wand extends Item {
 			Buff.append(Dungeon.hero, TalismanOfForesight.CharAwareness.class, dur).charID = target.id();
 		}
 
-		if (Dungeon.hero.hasTalent(Talent.ENHANCED_MARK)) {
-			wandLevel += Dungeon.hero.pointsInTalent(Talent.ENHANCED_MARK);
+		if (Dungeon.hero.hasTalent(Talent.ENHANCED_MARK, Talent.RK_WARLOCK)) {
+			wandLevel += Dungeon.hero.pointsInTalent(Talent.ENHANCED_MARK, Talent.RK_WARLOCK);
 		}
 		if (target != Dungeon.hero &&
 				Dungeon.hero.subClass.is(HeroSubClass.WARLOCK) &&

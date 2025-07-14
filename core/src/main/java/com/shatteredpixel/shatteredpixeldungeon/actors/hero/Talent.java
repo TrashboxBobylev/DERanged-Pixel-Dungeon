@@ -2359,7 +2359,7 @@ public enum Talent {
 			hero.buff(Sheath.DashAttackTracker.class).detach();
 		}
 
-		if (Random.Float() < hero.pointsInTalent(Talent.MADNESS)/10f) {
+		if (Random.Float() < hero.pointsInTalent(Talent.MADNESS, RK_WARLOCK)/10f) {
 			Buff.prolong(enemy, Amok.class, 3f);
 		}
 
