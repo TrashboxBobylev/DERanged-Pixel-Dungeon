@@ -136,10 +136,10 @@ public class Tackle extends FlavourBuff implements ActionIndicator.Action {
 			return;
 		}
 
-		if (hero.hasTalent(Talent.SUPER_ARMOR)) {
+		if (hero.hasTalent(Talent.SUPER_ARMOR, Talent.RK_VETERAN)) {
 			Buff.affect(hero, SuperArmorTracker.class, Actor.TICK);
 		}
-		if (hero.hasTalent(Talent.MYSTICAL_TACKLE)) {
+		if (hero.hasTalent(Talent.MYSTICAL_TACKLE, Talent.RK_VETERAN)) {
 			Buff.affect(hero, MysticalTackleTracker.class, Actor.TICK);
 		}
 
@@ -147,7 +147,7 @@ public class Tackle extends FlavourBuff implements ActionIndicator.Action {
 			@Override
 			public void call() {
 				AttackIndicator.target(ch);
-				float damageMulti = 0.4f + 0.2f*hero.pointsInTalent(Talent.POWERFUL_TACKLE);
+				float damageMulti = 0.4f + 0.2f*hero.pointsInTalent(Talent.POWERFUL_TACKLE, Talent.RK_VETERAN);
 				int damage = Math.round(hero.drRoll() * damageMulti); //deals 40%+(20*Talent.POWERFUL_TACKLE level)% of hero's dr
 				Buff.affect(hero, TackleTracker.class);
 
@@ -164,9 +164,9 @@ public class Tackle extends FlavourBuff implements ActionIndicator.Action {
 				Ballistica trajectory = new Ballistica(target.pos, ch.pos, Ballistica.STOP_TARGET);
 				trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
 				int dist = 1;
-				if (hero.pointsInTalent(Talent.IMPROVED_TACKLE) > 1) dist++;
+				if (hero.pointsInTalent(Talent.IMPROVED_TACKLE, Talent.RK_VETERAN) > 1) dist++;
 
-				if (!ch.isAlive() || (!ch.flying && hero.pointsInTalent(Talent.IMPROVED_TACKLE) < 3)) {
+				if (!ch.isAlive() || (!ch.flying && hero.pointsInTalent(Talent.IMPROVED_TACKLE, Talent.RK_VETERAN) < 3)) {
 					while (dist > trajectory.dist ||
 							(dist > 0 && Dungeon.level.pit[trajectory.path.get(dist)])) {
 						dist--;
@@ -186,8 +186,8 @@ public class Tackle extends FlavourBuff implements ActionIndicator.Action {
 					pushedPos = trajectory.path.get(findPos);
 				}
 
-				if (ch.isAlive() && hero.hasTalent(Talent.INCAPACITATION)) {
-					switch (hero.pointsInTalent(Talent.INCAPACITATION)) {
+				if (ch.isAlive() && hero.hasTalent(Talent.INCAPACITATION, Talent.RK_VETERAN)) {
+					switch (hero.pointsInTalent(Talent.INCAPACITATION, Talent.RK_VETERAN)) {
 						case 3:
 							Buff.affect(ch, Vulnerable.class, 2f);
 						case 2:
@@ -201,10 +201,10 @@ public class Tackle extends FlavourBuff implements ActionIndicator.Action {
 				hero.spendAndNext(Actor.TICK);
 				hero.buff(TackleTracker.class).detach();
 
-				if (!ch.isAlive() && hero.hasTalent(Talent.DELAYED_GRENADE)) {
+				if (!ch.isAlive() && hero.hasTalent(Talent.DELAYED_GRENADE, Talent.RK_VETERAN)) {
 					if (pushedPos != -1) {
-						int minDamage = Math.round(2.5f+2.5f*hero.pointsInTalent(Talent.DELAYED_GRENADE));
-						int maxDamage = 10*(1+hero.pointsInTalent(Talent.DELAYED_GRENADE));
+						int minDamage = Math.round(2.5f+2.5f*hero.pointsInTalent(Talent.DELAYED_GRENADE, Talent.RK_VETERAN));
+						int maxDamage = 10*(1+hero.pointsInTalent(Talent.DELAYED_GRENADE, Talent.RK_VETERAN));
 
 						ArrayList<Char> affected = new ArrayList<>();
 

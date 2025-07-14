@@ -2652,7 +2652,7 @@ public class Hero extends Char {
 		}
 
 		if (buff(Tackle.SuperArmorTracker.class) != null) {
-			switch (pointsInTalent(Talent.SUPER_ARMOR)) {
+			switch (pointsInTalent(Talent.SUPER_ARMOR, Talent.RK_VETERAN)) {
 				case 1:
 					dmg = Math.round(dmg*0.67f);
 					break;

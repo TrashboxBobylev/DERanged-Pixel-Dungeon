@@ -641,7 +641,7 @@ abstract public class Weapon extends KindOfWeapon {
 			}
 
 			if (attacker instanceof Hero && attacker.buff(Tackle.MysticalTackleTracker.class) != null) {
-				multi += 0.5f * Dungeon.hero.pointsInTalent(Talent.MYSTICAL_TACKLE);
+				multi += 0.5f * Dungeon.hero.pointsInTalent(Talent.MYSTICAL_TACKLE, Talent.RK_VETERAN);
 			}
 
 			if (hero.hasTalent(Talent.HIGH_POWER, Talent.PERFECT_COLLECTION) && !hero.heroClass.is(HeroClass.MEDIC)) {
