@@ -424,8 +424,8 @@ public abstract class Wand extends Item {
 				lvl += 2;
 			}
 
-			if (curCharges == 1 && charger.target instanceof Hero && ((Hero)charger.target).hasTalent(Talent.DESPERATE_POWER)){
-				lvl += ((Hero)charger.target).pointsInTalent(Talent.DESPERATE_POWER);
+			if (curCharges == 1 && charger.target instanceof Hero && ((Hero)charger.target).hasTalent(Talent.DESPERATE_POWER, Talent.RK_BATTLEMAGE)){
+				lvl += ((Hero)charger.target).pointsInTalent(Talent.DESPERATE_POWER, Talent.RK_BATTLEMAGE);
 			}
 
 			if (charger.target.buff(MagicalEmpower.class) != null){

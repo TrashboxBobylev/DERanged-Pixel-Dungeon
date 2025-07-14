@@ -1642,7 +1642,7 @@ public enum Talent {
 			Dungeon.observe();
 		}
 
-		if (talent == TWIN_UPGRADES || talent == DESPERATE_POWER
+		if (talent == TWIN_UPGRADES || talent == DESPERATE_POWER || talent == RK_BATTLEMAGE
 				|| talent == STRONGMAN || talent == DURABLE_PROJECTILES || talent == ACCUMULATION || talent == PURSUIT || talent == ENERGY_SURGE || talent == RK_BERSERKER){
 			Item.updateQuickslot();
 		}
