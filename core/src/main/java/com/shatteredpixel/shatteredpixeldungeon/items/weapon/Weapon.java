@@ -321,10 +321,10 @@ abstract public class Weapon extends KindOfWeapon {
 	protected float speedMultiplier(Char owner ){
 		float multi = RingOfFuror.attackSpeedMultiplier(owner);
 
-		if (hero.hasTalent(Talent.LIGHT_WEAPON) && hero.belongings.attackingWeapon() instanceof MeleeWeapon) {
+		if (hero.hasTalent(Talent.LIGHT_WEAPON, Talent.RK_GLADIATOR) && hero.belongings.attackingWeapon() instanceof MeleeWeapon) {
 			int aEnc = ((MeleeWeapon)hero.belongings.attackingWeapon()).STRReq() - hero.STR();
 			if (aEnc < 0) {
-				multi *= 1 + 0.05f * hero.pointsInTalent(Talent.LIGHT_WEAPON) * (-aEnc);
+				multi *= 1 + 0.05f * hero.pointsInTalent(Talent.LIGHT_WEAPON, Talent.RK_GLADIATOR) * (-aEnc);
 			}
 		}
 

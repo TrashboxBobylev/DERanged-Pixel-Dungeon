@@ -1003,7 +1003,7 @@ public class Hero extends Char {
 		Combo.ParryTracker parry = buff(Combo.ParryTracker.class);
 		if (parry != null){
 			parry.parried = true;
-			if (buff(Combo.class).getComboCount() < 9 || pointsInTalent(Talent.ENHANCED_COMBO) < 2){
+			if (buff(Combo.class).getComboCount() < 9 || pointsInTalent(Talent.ENHANCED_COMBO, Talent.RK_GLADIATOR) < 2){
 				parry.detach();
 			}
 			return Messages.get(Monk.class, "parried");
@@ -2458,7 +2458,7 @@ public class Hero extends Char {
 			berserk.damage(damage);
 		}
 
-		if (hero.subClass.is(HeroSubClass.GLADIATOR) && Random.Float() < hero.pointsInTalent(Talent.OFFENSIVE_DEFENSE)/3f) {
+		if (hero.subClass.is(HeroSubClass.GLADIATOR) && Random.Float() < hero.pointsInTalent(Talent.OFFENSIVE_DEFENSE, Talent.RK_GLADIATOR)/3f) {
 			Combo combo = Buff.affect(this, Combo.class);
 			combo.hit(enemy);
 		}

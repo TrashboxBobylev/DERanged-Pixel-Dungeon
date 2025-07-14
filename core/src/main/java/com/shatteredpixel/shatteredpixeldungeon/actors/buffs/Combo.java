@@ -93,14 +93,14 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		comboTime = 5f;
 
 		if (!enemy.isAlive() || (enemy.buff(Corruption.class) != null && enemy.HP == enemy.HT)){
-			comboTime = Math.max(comboTime, 15*((Hero)target).pointsInTalent(Talent.CLEAVE));
-			if (Dungeon.hero.hasTalent(Talent.SKILL_REPEAT)) {
-				if (Dungeon.hero.pointsInTalent(Talent.SKILL_REPEAT) == 3) {
+			comboTime = Math.max(comboTime, 15*((Hero)target).pointsInTalent(Talent.CLEAVE, Talent.RK_GLADIATOR));
+			if (Dungeon.hero.hasTalent(Talent.SKILL_REPEAT, Talent.RK_GLADIATOR)) {
+				if (Dungeon.hero.pointsInTalent(Talent.SKILL_REPEAT, Talent.RK_GLADIATOR) == 3) {
 					clobberUsed = false;
 					parryUsed= false;
 				} else {
 					if (moveBeingUsed == ComboMove.CLOBBER) clobberUsed = false;
-					if (moveBeingUsed == ComboMove.PARRY && Dungeon.hero.pointsInTalent(Talent.SKILL_REPEAT) > 1) parryUsed= false;
+					if (moveBeingUsed == ComboMove.PARRY && Dungeon.hero.pointsInTalent(Talent.SKILL_REPEAT, Talent.RK_GLADIATOR) > 1) parryUsed= false;
 				}
 			}
 		}
@@ -236,31 +236,31 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		public String desc(int count){
 			switch (this){
 				case CLOBBER: default:
-					if (count >= 7 && Dungeon.hero.pointsInTalent(Talent.ENHANCED_COMBO) >= 1){
+					if (count >= 7 && Dungeon.hero.pointsInTalent(Talent.ENHANCED_COMBO, Talent.RK_GLADIATOR) >= 1){
 						return Messages.get(this, name() + ".empower_desc");
 					} else {
 						return Messages.get(this, name() + ".desc");
 					}
 				case SLAM:
-					if (count >= 3 && Dungeon.hero.pointsInTalent(Talent.ENHANCED_COMBO) >= 3){
+					if (count >= 3 && Dungeon.hero.pointsInTalent(Talent.ENHANCED_COMBO, Talent.RK_GLADIATOR) >= 3){
 						return Messages.get(this, name() + ".empower_desc", count/3, count*20);
 					} else {
 						return Messages.get(this, name() + ".desc", count*20);
 					}
 				case PARRY:
-					if (count >= 9 && Dungeon.hero.pointsInTalent(Talent.ENHANCED_COMBO) >= 2){
+					if (count >= 9 && Dungeon.hero.pointsInTalent(Talent.ENHANCED_COMBO, Talent.RK_GLADIATOR) >= 2){
 						return Messages.get(this, name() + ".empower_desc");
 					} else {
 						return Messages.get(this, name() + ".desc");
 					}
 				case CRUSH:
-					if (count >= 3 && Dungeon.hero.pointsInTalent(Talent.ENHANCED_COMBO) >= 3){
+					if (count >= 3 && Dungeon.hero.pointsInTalent(Talent.ENHANCED_COMBO, Talent.RK_GLADIATOR) >= 3){
 						return Messages.get(this, name() + ".empower_desc", count/3, count*25);
 					} else {
 						return Messages.get(this,  name() + ".desc", count*25);
 					}
 				case FURY:
-					if (count >= 3 && Dungeon.hero.pointsInTalent(Talent.ENHANCED_COMBO) >= 3){
+					if (count >= 3 && Dungeon.hero.pointsInTalent(Talent.ENHANCED_COMBO, Talent.RK_GLADIATOR) >= 3){
 						return Messages.get(this, name() + ".empower_desc", count/3);
 					} else {
 						return Messages.get(this,  name() + ".desc");
@@ -384,7 +384,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 					trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
 					//knock them back along that ballistica, ensuring they don't fall into a pit
 					int dist = 2;
-					if (enemy.isAlive() && count >= 7 && hero.pointsInTalent(Talent.ENHANCED_COMBO) >= 1) {
+					if (enemy.isAlive() && count >= 7 && hero.pointsInTalent(Talent.ENHANCED_COMBO, Talent.RK_GLADIATOR) >= 1) {
 						dist++;
 						Buff.prolong(enemy, Vertigo.class, 3);
 					} else if (!enemy.flying) {
@@ -419,8 +419,8 @@ public class Combo extends Buff implements ActionIndicator.Action {
 							ch.sprite.bloodBurstA(target.sprite.center(), aoeHit);
 							ch.sprite.flash();
 
-							if (!ch.isAlive() && hero.hasTalent(Talent.LETHAL_DEFENSE)) {
-								Buff.affect(hero, BrokenSeal.WarriorShield.class).reduceCooldown(hero.pointsInTalent(Talent.LETHAL_DEFENSE)/3f);
+							if (!ch.isAlive() && hero.hasTalent(Talent.LETHAL_DEFENSE, Talent.RK_GLADIATOR)) {
+								Buff.affect(hero, BrokenSeal.WarriorShield.class).reduceCooldown(hero.pointsInTalent(Talent.LETHAL_DEFENSE, Talent.RK_GLADIATOR)/3f);
 							}
 						}
 					}
@@ -472,8 +472,8 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		}
 
 		if (!enemy.isAlive() || (!wasAlly && enemy.alignment == target.alignment)) {
-			if (hero.hasTalent(Talent.LETHAL_DEFENSE)){
-				Buff.affect(hero, BrokenSeal.WarriorShield.class).reduceCooldown(hero.pointsInTalent(Talent.LETHAL_DEFENSE)/3f);
+			if (hero.hasTalent(Talent.LETHAL_DEFENSE, Talent.RK_GLADIATOR)){
+				Buff.affect(hero, BrokenSeal.WarriorShield.class).reduceCooldown(hero.pointsInTalent(Talent.LETHAL_DEFENSE, Talent.RK_GLADIATOR)/3f);
 			}
 		}
 
@@ -492,7 +492,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 				GLog.w(Messages.get(Combo.class, "bad_target"));
 
 			} else if (!((Hero)target).canAttack(enemy)){
-				if (((Hero) target).pointsInTalent(Talent.ENHANCED_COMBO) < 3
+				if (((Hero) target).pointsInTalent(Talent.ENHANCED_COMBO, Talent.RK_GLADIATOR) < 3
 					|| Dungeon.level.distance(target.pos, enemy.pos) > 1 + target.buff(Combo.class).count/3){
 					GLog.w(Messages.get(Combo.class, "bad_target"));
 				} else {
