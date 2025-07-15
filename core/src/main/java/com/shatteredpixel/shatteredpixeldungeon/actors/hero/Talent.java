@@ -1638,7 +1638,7 @@ public enum Talent {
 		}
 
 		//huntress
-		if (talent == HEIGHTENED_SENSES || talent == FARSIGHT || talent == DIVINE_SENSE || talent == TELESCOPE || talent == DRAGONS_EYE || talent == KINGS_VISION || talent == PERFECT_COLLECTION){
+		if (talent == HEIGHTENED_SENSES || talent == FARSIGHT || talent == DIVINE_SENSE || talent == TELESCOPE || talent == DRAGONS_EYE || talent == KINGS_VISION || talent == PERFECT_COLLECTION || talent == RK_SNIPER){
 			Dungeon.observe();
 		}
 

@@ -2180,10 +2180,10 @@ public class Hero extends Char {
 						@Override
 						protected boolean act() {
 							if (enemy.isAlive()) {
-								if (hasTalent(Talent.SHARED_UPGRADES)){
+								if (hasTalent(Talent.SHARED_UPGRADES, Talent.RK_SNIPER)){
 								int bonusTurns = wep.buffedLvl();
 								// bonus dmg is 2.5% x talent lvl x weapon level x weapon tier
-								float bonusDmg = wep.buffedLvl() * ((MissileWeapon) wep).tier * pointsInTalent(Talent.SHARED_UPGRADES) * 0.025f;
+								float bonusDmg = wep.buffedLvl() * ((MissileWeapon) wep).tier * pointsInTalent(Talent.SHARED_UPGRADES, Talent.RK_SNIPER) * 0.025f;
 									Buff.prolong(Hero.this, SnipersMark.class, SnipersMark.DURATION + bonusTurns).set(enemy.id(), bonusDmg);
 							} else {
 								Buff.prolong(Hero.this, SnipersMark.class, SnipersMark.DURATION).set(enemy.id(), 0);
@@ -2194,7 +2194,7 @@ public class Hero extends Char {
 						}
 					});
 				}
-				if (hero.hasTalent(Talent.KICK)
+				if (hero.hasTalent(Talent.KICK, Talent.RK_SNIPER)
 						&& enemy.buff(PinCushion.class) != null
 						&& level.adjacent(hero.pos, enemy.pos)
 						&& hero.buff(Talent.KickCooldown.class) == null) {
@@ -2207,23 +2207,23 @@ public class Hero extends Char {
 					}
 					Ballistica trajectory = new Ballistica(hero.pos, enemy.pos, Ballistica.STOP_TARGET);
 					trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
-					int dist = hero.pointsInTalent(Talent.KICK);
+					int dist = hero.pointsInTalent(Talent.KICK, Talent.RK_SNIPER);
 					WandOfBlastWave.throwChar(enemy, trajectory, dist, true, false ,hero.getClass());
 					Buff.affect(hero, Talent.KickCooldown.class, 10f);
 				}
 				if (wep instanceof MissileWeapon
-						&& hero.hasTalent(Talent.SHOOTING_EYES)
+						&& hero.hasTalent(Talent.SHOOTING_EYES, Talent.RK_SNIPER)
 						&& enemy.buff(Talent.ShootingEyesTracker.class) == null) {
-					if (Random.Float() < hero.pointsInTalent(Talent.SHOOTING_EYES)/3f) {
+					if (Random.Float() < hero.pointsInTalent(Talent.SHOOTING_EYES, Talent.RK_SNIPER)/3f) {
 						Buff.affect(enemy, Blindness.class, 2f);
 					}
 					Buff.affect(enemy, Talent.ShootingEyesTracker.class);
 				}
 				if (wep instanceof MissileWeapon
-						&& hero.hasTalent(Talent.TARGET_SPOTTING)
+						&& hero.hasTalent(Talent.TARGET_SPOTTING, Talent.RK_SNIPER)
 						&& hero.buff(SnipersMark.class) != null
 						&& hero.buff(SnipersMark.class).object == enemy.id()) {
-					damage *= 1+0.1f*hero.pointsInTalent(Talent.TARGET_SPOTTING);
+					damage *= 1+0.1f*hero.pointsInTalent(Talent.TARGET_SPOTTING, Talent.RK_SNIPER);
 				}
 				break;
 			case FIGHTER:

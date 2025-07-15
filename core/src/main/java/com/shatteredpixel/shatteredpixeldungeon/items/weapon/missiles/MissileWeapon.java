@@ -184,7 +184,7 @@ abstract public class MissileWeapon extends Weapon {
 	public int throwPos(Hero user, int dst) {
 
 		boolean projecting = hasEnchant(Projecting.class, user);
-		if (!projecting && Random.Int(3) < user.pointsInTalent(Talent.SHARED_ENCHANTMENT)){
+		if (!projecting && Random.Int(3) < user.pointsInTalent(Talent.SHARED_ENCHANTMENT, Talent.RK_SNIPER)){
 			if (this instanceof Dart && ((Dart) this).crossbowHasEnchant(Dungeon.hero)){
 				//do nothing
 			} else {
@@ -236,7 +236,7 @@ abstract public class MissileWeapon extends Weapon {
 	protected float adjacentAccFactor(Char owner, Char target){
 		if (Dungeon.level.adjacent( owner.pos, target.pos )) {
 			if (owner instanceof Hero){
-				return (0.5f + 0.2f*((Hero) owner).pointsInTalent(Talent.POINT_BLANK));
+				return (0.5f + 0.2f*((Hero) owner).pointsInTalent(Talent.POINT_BLANK, Talent.RK_SNIPER));
 			} else {
 				return 0.5f;
 			}
@@ -283,7 +283,7 @@ abstract public class MissileWeapon extends Weapon {
 
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
-		if (attacker == Dungeon.hero && Random.Int(3) < Dungeon.hero.pointsInTalent(Talent.SHARED_ENCHANTMENT)){
+		if (attacker == Dungeon.hero && Random.Int(3) < Dungeon.hero.pointsInTalent(Talent.SHARED_ENCHANTMENT, Talent.RK_SNIPER)){
 			if (this instanceof Dart && ((Dart) this).crossbowHasEnchant(Dungeon.hero)){
 				//do nothing
 			} else {
