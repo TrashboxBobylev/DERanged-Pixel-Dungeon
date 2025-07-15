@@ -995,6 +995,10 @@ public class Hero extends Char {
 			}
 		}
 
+		if (buff(EvasiveMove.class) != null){
+			return INFINITE_EVASION;
+		}
+
 		return Math.round(evasion);
 	}
 
