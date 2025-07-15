@@ -494,7 +494,7 @@ public abstract class Char extends Actor {
 			Preparation prep = buff(Preparation.class);
 			if (prep != null){
 				dmg = prep.damageRoll(this);
-				if (this == Dungeon.hero && Dungeon.hero.hasTalent(Talent.BOUNTY_HUNTER)) {
+				if (this == Dungeon.hero && Dungeon.hero.hasTalent(Talent.BOUNTY_HUNTER, Talent.RK_ASSASSIN)) {
 					Buff.affect(Dungeon.hero, Talent.BountyHunterTracker.class, 0.0f);
 				}
 			} else {
@@ -645,7 +645,7 @@ public abstract class Char extends Actor {
 				if (enemy.sprite != null) {
 					enemy.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Preparation.class, "assassinated"));
 				}
-				if (Random.Float() < hero.pointsInTalent(Talent.ENERGY_DRAW)/3f) {
+				if (Random.Float() < hero.pointsInTalent(Talent.ENERGY_DRAW, Talent.RK_ASSASSIN)/3f) {
 					CloakOfShadows cloak = hero.belongings.getItem(CloakOfShadows.class);
 					if (cloak != null) {
 						cloak.directCharge(1);

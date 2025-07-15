@@ -1041,7 +1041,7 @@ public abstract class Mob extends Char {
 			if (prep != null){
 				// 2/4/8/16% per prep level, multiplied by talent points
 				float bhBonus = 0.02f * (float)Math.pow(2, prep.attackLevel()-1);
-				bhBonus *= Dungeon.hero.pointsInTalent(Talent.BOUNTY_HUNTER);
+				bhBonus *= Dungeon.hero.pointsInTalent(Talent.BOUNTY_HUNTER, Talent.RK_ASSASSIN);
 				dropBonus += bhBonus;
 			}
 		}

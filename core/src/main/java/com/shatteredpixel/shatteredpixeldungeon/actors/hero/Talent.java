@@ -2046,8 +2046,8 @@ public enum Talent {
 	}
 
 	public static void onArtifactUsed( Hero hero ){
-		if (hero.hasTalent(ENHANCED_RINGS)){
-			Buff.prolong(hero, EnhancedRings.class, 3f*hero.pointsInTalent(ENHANCED_RINGS));
+		if (hero.hasTalent(ENHANCED_RINGS, RK_ASSASSIN)){
+			Buff.prolong(hero, EnhancedRings.class, 3f*hero.pointsInTalent(ENHANCED_RINGS, RK_ASSASSIN));
 		}
 
 		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)

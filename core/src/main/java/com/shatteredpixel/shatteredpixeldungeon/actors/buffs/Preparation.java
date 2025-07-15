@@ -38,12 +38,12 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
-import com.watabou.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.BArray;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 
@@ -84,7 +84,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 		};
 
 		public float KOThreshold(){
-			return KOThresholds[ordinal()][Dungeon.hero.pointsInTalent(Talent.ENHANCED_LETHALITY)];
+			return KOThresholds[ordinal()][Dungeon.hero.pointsInTalent(Talent.ENHANCED_LETHALITY, Talent.RK_ASSASSIN)];
 		}
 
 		//1st index is prep level, 2nd is talent level
@@ -96,7 +96,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 		};
 
 		public int blinkDistance(){
-			return blinkRanges[ordinal()][Dungeon.hero.pointsInTalent(Talent.ASSASSINS_REACH)];
+			return blinkRanges[ordinal()][Dungeon.hero.pointsInTalent(Talent.ASSASSINS_REACH, Talent.RK_ASSASSIN)];
 		}
 		
 		public boolean canKO(Char defender){
@@ -115,8 +115,8 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				if (newDmg > dmg) dmg = newDmg;
 			}
 			float dmgMulti = baseDmgBonus;
-			if (Dungeon.hero.hasTalent(Talent.PERFECT_ASSASSIN)) {
-				dmgMulti *= 1f + 0.1f * Dungeon.hero.pointsInTalent(Talent.PERFECT_ASSASSIN);
+			if (Dungeon.hero.hasTalent(Talent.PERFECT_ASSASSIN, Talent.RK_ASSASSIN)) {
+				dmgMulti *= 1f + 0.1f * Dungeon.hero.pointsInTalent(Talent.PERFECT_ASSASSIN, Talent.RK_ASSASSIN);
 			}
 			return Math.round(dmg * (1f + dmgMulti));
 		}
@@ -197,8 +197,8 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 		AttackLevel lvl = AttackLevel.getLvl(turnsInvis);
 
 		float dmgMulti = lvl.baseDmgBonus;
-		if (Dungeon.hero.hasTalent(Talent.PERFECT_ASSASSIN)) {
-			dmgMulti *= 1f + 0.1f * Dungeon.hero.pointsInTalent(Talent.PERFECT_ASSASSIN);
+		if (Dungeon.hero.hasTalent(Talent.PERFECT_ASSASSIN, Talent.RK_ASSASSIN)) {
+			dmgMulti *= 1f + 0.1f * Dungeon.hero.pointsInTalent(Talent.PERFECT_ASSASSIN, Talent.RK_ASSASSIN);
 		}
 
 		desc += "\n\n" + Messages.get(this, "desc_dmg",
