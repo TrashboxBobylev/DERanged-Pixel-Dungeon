@@ -824,14 +824,14 @@ public class Hero extends Char {
 
 		//precise assault and liquid agility
 		if (!(wep instanceof MissileWeapon)) {
-			if ((hasTalent(Talent.PRECISE_ASSAULT) || hasTalent(Talent.LIQUID_AGILITY))
+			if ((hasTalent(Talent.PRECISE_ASSAULT, Talent.RK_CHAMPION) || hasTalent(Talent.LIQUID_AGILITY))
 					//does not trigger on ability attacks
 					&& belongings.abilityWeapon != wep && buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) == null){
 
 				//non-duelist benefit for precise assault, can stack with liquid agility
 				if (!heroClass.is(HeroClass.DUELIST)) {
 					//persistent +10%/20%/30% ACC for other heroes
-					accuracy *= 1f + 0.1f * pointsInTalent(Talent.PRECISE_ASSAULT);
+					accuracy *= 1f + 0.1f * pointsInTalent(Talent.PRECISE_ASSAULT, Talent.RK_CHAMPION);
 				}
 
 				if (wep instanceof Flail && buff(Flail.SpinAbilityTracker.class) != null){
@@ -842,7 +842,7 @@ public class Hero extends Char {
 					//do nothing, this is not a regular attack so don't consume talent fx
 				} else if (buff(Talent.PreciseAssaultTracker.class) != null) {
 					// 2x/5x/inf. ACC for duelist if she just used a weapon ability
-					switch (pointsInTalent(Talent.PRECISE_ASSAULT)){
+					switch (pointsInTalent(Talent.PRECISE_ASSAULT, Talent.RK_CHAMPION)){
 						default: case 1:
 							accuracy *= 2; break;
 						case 2:
@@ -1296,8 +1296,8 @@ public class Hero extends Char {
 				}
 			}
 
-			if (hero.hasTalent(Talent.QUICK_FOLLOWUP) && hero.buff(Talent.QuickFollowupTracker.class) != null) {
-				speed *= 1+hero.pointsInTalent(Talent.QUICK_FOLLOWUP)/3f;
+			if (hero.hasTalent(Talent.QUICK_FOLLOWUP, Talent.RK_CHAMPION) && hero.buff(Talent.QuickFollowupTracker.class) != null) {
+				speed *= 1+hero.pointsInTalent(Talent.QUICK_FOLLOWUP, Talent.RK_CHAMPION)/3f;
 			}
 
 			if (hero.subClass.is(HeroSubClass.MONK) && hero.buff(MonkEnergy.class) != null && hero.buff(MonkEnergy.class).harmonized(hero)) {
@@ -2247,7 +2247,7 @@ public class Hero extends Char {
 
 			case CHAMPION:
 				if (hero.belongings.weapon != null && hero.belongings.secondWep != null
-						&& hero.pointsInTalent(Talent.TWIN_SWORD) > 1
+						&& hero.pointsInTalent(Talent.TWIN_SWORD, Talent.RK_CHAMPION) > 1
 						&& hero.belongings.weapon.getClass() == hero.belongings.secondWep.getClass()) {
 					KindOfWeapon other = hero.belongings.secondWep;
 					if (hero.belongings.secondWep == wep)  {

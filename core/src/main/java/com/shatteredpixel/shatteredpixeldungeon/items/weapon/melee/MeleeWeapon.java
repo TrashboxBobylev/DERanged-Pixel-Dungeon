@@ -281,21 +281,21 @@ public class MeleeWeapon extends Weapon {
 
 	public void afterAbilityUsed( Hero hero ){
 		hero.belongings.abilityWeapon = null;
-		if (hero.hasTalent(Talent.PRECISE_ASSAULT)){
+		if (hero.hasTalent(Talent.PRECISE_ASSAULT, Talent.RK_CHAMPION)){
 			Buff.prolong(hero, Talent.PreciseAssaultTracker.class, hero.cooldown()+4f);
 		}
-		if (hero.hasTalent(Talent.VARIED_CHARGE)){
+		if (hero.hasTalent(Talent.VARIED_CHARGE, Talent.RK_CHAMPION)){
 			Talent.VariedChargeTracker tracker = hero.buff(Talent.VariedChargeTracker.class);
 			if (tracker == null || tracker.weapon == getClass() || tracker.weapon == null){
 				Buff.affect(hero, Talent.VariedChargeTracker.class).weapon = getClass();
 			} else {
 				tracker.detach();
 				Charger charger = Buff.affect(hero, Charger.class);
-				charger.gainCharge(hero.pointsInTalent(Talent.VARIED_CHARGE) / 6f);
+				charger.gainCharge(hero.pointsInTalent(Talent.VARIED_CHARGE, Talent.RK_CHAMPION) / 6f);
 				ScrollOfRecharging.charge(hero);
 			}
 		}
-		if (hero.hasTalent(Talent.COMBINED_LETHALITY)) {
+		if (hero.hasTalent(Talent.COMBINED_LETHALITY, Talent.RK_CHAMPION)) {
 			Talent.CombinedLethalityAbilityTracker tracker = hero.buff(Talent.CombinedLethalityAbilityTracker.class);
 			if (tracker == null || tracker.weapon == this || tracker.weapon == null){
 				Buff.affect(hero, Talent.CombinedLethalityAbilityTracker.class, hero.cooldown()).weapon = this;
@@ -368,7 +368,7 @@ public class MeleeWeapon extends Weapon {
 	private static boolean evaluatingTwinUpgrades = false;
 	@Override
 	public int buffedLvl() {
-		if (!evaluatingTwinUpgrades && Dungeon.hero != null && isEquipped(Dungeon.hero) && Dungeon.hero.hasTalent(Talent.TWIN_UPGRADES)){
+		if (!evaluatingTwinUpgrades && Dungeon.hero != null && isEquipped(Dungeon.hero) && Dungeon.hero.hasTalent(Talent.TWIN_UPGRADES, Talent.RK_CHAMPION)){
 			KindOfWeapon other = null;
 			if (Dungeon.hero.belongings.weapon() != this) other = Dungeon.hero.belongings.weapon();
 			if (Dungeon.hero.belongings.secondWep() != this) other = Dungeon.hero.belongings.secondWep();
@@ -379,7 +379,7 @@ public class MeleeWeapon extends Weapon {
 				evaluatingTwinUpgrades = false;
 
 				//weaker weapon needs to be 2/1/0 tiers lower, based on talent level
-				if ((tier + (3 - Dungeon.hero.pointsInTalent(Talent.TWIN_UPGRADES))) <= ((MeleeWeapon) other).tier
+				if ((tier + (3 - Dungeon.hero.pointsInTalent(Talent.TWIN_UPGRADES, Talent.RK_CHAMPION))) <= ((MeleeWeapon) other).tier
 						&& otherLevel > super.buffedLvl()) {
 					return otherLevel;
 				}
@@ -560,11 +560,11 @@ public class MeleeWeapon extends Weapon {
 						chargeToGain *= 1.5f;
 					}
 
-					if (hero.hasTalent(Talent.FASTER_CHARGE)) {
-						chargeToGain *= 1+hero.pointsInTalent(Talent.FASTER_CHARGE)/12f;
+					if (hero.hasTalent(Talent.FASTER_CHARGE, Talent.RK_CHAMPION)) {
+						chargeToGain *= 1+hero.pointsInTalent(Talent.FASTER_CHARGE, Talent.RK_CHAMPION)/12f;
 					}
 
-					if (hero.hasTalent(Talent.TWIN_SWORD) && hero.belongings.weapon != null && hero.belongings.secondWep != null) {
+					if (hero.hasTalent(Talent.TWIN_SWORD, Talent.RK_CHAMPION) && hero.belongings.weapon != null && hero.belongings.secondWep != null) {
 						if (hero.belongings.weapon.getClass() == hero.belongings.secondWep.getClass()) {
 							chargeToGain *= 1.25f;
 						}
@@ -741,7 +741,7 @@ public class MeleeWeapon extends Weapon {
 					hero.buff(Talent.QuickFollowupTracker.class).detach();
 				}
 
-				if (hero.buff(Talent.QuickFollowupCooldown.class) == null && hero.hasTalent(Talent.QUICK_FOLLOWUP)) {
+				if (hero.buff(Talent.QuickFollowupCooldown.class) == null && hero.hasTalent(Talent.QUICK_FOLLOWUP, Talent.RK_CHAMPION)) {
 					Buff.affect(hero, Talent.QuickFollowupTracker.class);
 					Buff.affect(hero, Talent.QuickFollowupCooldown.class, 10f);
 				}

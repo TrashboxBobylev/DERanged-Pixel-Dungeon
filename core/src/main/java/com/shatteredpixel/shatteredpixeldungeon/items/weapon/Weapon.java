@@ -328,8 +328,8 @@ abstract public class Weapon extends KindOfWeapon {
 			}
 		}
 
-		if (hero.hasTalent(Talent.QUICK_FOLLOWUP) && hero.buff(Talent.QuickFollowupTracker.class) != null) {
-			multi *= 1+hero.pointsInTalent(Talent.QUICK_FOLLOWUP)/3f;
+		if (hero.hasTalent(Talent.QUICK_FOLLOWUP, Talent.RK_CHAMPION) && hero.buff(Talent.QuickFollowupTracker.class) != null) {
+			multi *= 1+hero.pointsInTalent(Talent.QUICK_FOLLOWUP, Talent.RK_CHAMPION)/3f;
 		}
 
 		if (hero.subClass.is(HeroSubClass.MONK) && hero.buff(MonkEnergy.class) != null && hero.buff(MonkEnergy.class).harmonized(hero)) {
@@ -341,7 +341,7 @@ abstract public class Weapon extends KindOfWeapon {
 		}
 
 		if (hero.belongings.weapon != null && hero.belongings.secondWep != null
-				&& hero.pointsInTalent(Talent.TWIN_SWORD) > 2
+				&& hero.pointsInTalent(Talent.TWIN_SWORD, Talent.RK_CHAMPION) > 2
 				&& hero.belongings.weapon.getClass() == hero.belongings.secondWep.getClass()) {
 			multi *= 2;
 		}
