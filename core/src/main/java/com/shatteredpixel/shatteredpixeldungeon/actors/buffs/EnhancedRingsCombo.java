@@ -21,8 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import static com.shatteredpixel.shatteredpixeldungeon.items.Item.updateQuickslot;
-
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -31,6 +29,8 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
+
+import static com.shatteredpixel.shatteredpixeldungeon.items.Item.updateQuickslot;
 
 public class EnhancedRingsCombo extends FlavourBuff{
 
@@ -41,8 +41,8 @@ public class EnhancedRingsCombo extends FlavourBuff{
 	int combo = 0;
 
 	public void hit() {
-		if (combo < Dungeon.hero.pointsInTalent(Talent.RING_KNUCKLE)) combo ++;
-		else combo = Dungeon.hero.pointsInTalent(Talent.RING_KNUCKLE);
+		if (combo < Dungeon.hero.pointsInTalent(Talent.RING_KNUCKLE, Talent.RK_FIGHTER)) combo ++;
+		else combo = Dungeon.hero.pointsInTalent(Talent.RING_KNUCKLE, Talent.RK_FIGHTER);
 		if (target instanceof Hero) ((Hero) target).updateHT(false);
 	}
 
@@ -91,7 +91,7 @@ public class EnhancedRingsCombo extends FlavourBuff{
 
 	@Override
 	public float iconFadePercent() {
-		float max = (Dungeon.hero.pointsInTalent(Talent.RING_KNUCKLE) >= 2) ? 2 : 1;
+		float max = (Dungeon.hero.pointsInTalent(Talent.RING_KNUCKLE, Talent.RK_FIGHTER) >= 2) ? 2 : 1;
 		return Math.max(0, (max-visualcooldown()) / max);
 	}
 

@@ -728,10 +728,10 @@ public abstract class Char extends Actor {
 		} else {
 
 			if (enemy instanceof Hero) {
-				if (hero.pointsInTalent(Talent.SWIFT_MOVEMENT) == 3) {
+				if (hero.pointsInTalent(Talent.SWIFT_MOVEMENT, Talent.RK_FIGHTER) == 3) {
 					Buff.prolong(hero, Invisibility.class, 1.0001f);
 				}
-				if (Random.Int(5) < hero.pointsInTalent(Talent.COUNTER_ATTACK)) {
+				if (Random.Int(5) < hero.pointsInTalent(Talent.COUNTER_ATTACK, Talent.RK_FIGHTER)) {
 					Buff.affect(hero, Talent.CounterAttackTracker.class);
 				}
 				if (hero.hasTalent(Talent.QUICK_PREP, Talent.RK_FREERUNNER)) {

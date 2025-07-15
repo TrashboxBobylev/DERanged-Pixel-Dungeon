@@ -943,7 +943,7 @@ public class Hero extends Char {
 		
 		evasion *= RingOfEvasion.evasionMultiplier( this );
 
-		if (hero.hasTalent(Talent.SWIFT_MOVEMENT)) {
+		if (hero.hasTalent(Talent.SWIFT_MOVEMENT, Talent.RK_FIGHTER)) {
 			evasion += hero.STR()-10;
 		}
 
@@ -1289,10 +1289,10 @@ public class Hero extends Char {
 			//This is for that one guy, you shall get your fists of fury!
 			float speed = RingOfFuror.attackSpeedMultiplier(this);
 
-			if (hero.hasTalent(Talent.LESS_RESIST) && belongings.attackingWeapon() == null) {
+			if (hero.hasTalent(Talent.LESS_RESIST, Talent.RK_FIGHTER) && belongings.attackingWeapon() == null) {
 				int aEnc = hero.belongings.armor.STRReq() - hero.STR();
 				if (aEnc < 0) {
-					speed *= 1 + 0.05f * hero.pointsInTalent(Talent.LESS_RESIST) * (-aEnc);
+					speed *= 1 + 0.05f * hero.pointsInTalent(Talent.LESS_RESIST, Talent.RK_FIGHTER) * (-aEnc);
 				}
 			}
 
@@ -2227,15 +2227,15 @@ public class Hero extends Char {
 				}
 				break;
 			case FIGHTER:
-				if (wep == null && Random.Int(3) < hero.pointsInTalent(Talent.QUICK_STEP)) {
+				if (wep == null && Random.Int(3) < hero.pointsInTalent(Talent.QUICK_STEP, Talent.RK_FIGHTER)) {
 					Buff.prolong(hero, Talent.QuickStep.class, 1.0001f);
 				}
-				if (wep == null && hero.hasTalent(Talent.RING_KNUCKLE) && hero.buff(RingOfForce.Force.class) == null) {
-					Buff.prolong(hero, EnhancedRingsCombo.class, (Dungeon.hero.pointsInTalent(Talent.RING_KNUCKLE) >= 2) ? 2f : 1f).hit();
+				if (wep == null && hero.hasTalent(Talent.RING_KNUCKLE, Talent.RK_FIGHTER) && hero.buff(RingOfForce.Force.class) == null) {
+					Buff.prolong(hero, EnhancedRingsCombo.class, (Dungeon.hero.pointsInTalent(Talent.RING_KNUCKLE, Talent.RK_FIGHTER) >= 2) ? 2f : 1f).hit();
 					hero.updateHT(false);
 					updateQuickslot();
 				}
-				if (wep == null && Random.Float() < hero.pointsInTalent(Talent.MYSTICAL_PUNCH)/3f) {
+				if (wep == null && Random.Float() < hero.pointsInTalent(Talent.MYSTICAL_PUNCH, Talent.RK_FIGHTER)/3f) {
 					if (hero.belongings.ring != null) {
 						damage *= Ring.onHit(hero, enemy, damage, Ring.ringTypes.get(hero.belongings.ring.getClass()));
 					}
@@ -3509,7 +3509,7 @@ public class Hero extends Char {
 			Buff.affect( this, Sai.ComboStrikeTracker.class).addHit();
 		}
 
-		if (!hit && hero.belongings.weapon == null && hero.subClass.is(HeroSubClass.FIGHTER) && Random.Int(5) == 0 && hero.pointsInTalent(Talent.SWIFT_MOVEMENT) > 1) {
+		if (!hit && hero.belongings.weapon == null && hero.subClass.is(HeroSubClass.FIGHTER) && Random.Int(5) == 0 && hero.pointsInTalent(Talent.SWIFT_MOVEMENT, Talent.RK_FIGHTER) > 1) {
 			Buff.prolong(hero, EvasiveMove.class, 0.9999f);
 		}
 
