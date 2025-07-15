@@ -258,11 +258,11 @@ abstract public class MissileWeapon extends Weapon {
 			parent = null;
 
 			//metamorphed seer shot logic
-			if (curUser.hasTalent(Talent.SEER_SHOT)
+			if (curUser.hasTalent(Talent.SEER_SHOT, Talent.RK_WARDEN)
 					&& !(curUser.heroClass.is(HeroClass.HUNTRESS))
 					&& curUser.buff(Talent.SeerShotCooldown.class) == null){
 				if (Actor.findChar(cell) == null) {
-					RevealedArea a = Buff.affect(curUser, RevealedArea.class, 5 * curUser.pointsInTalent(Talent.SEER_SHOT));
+					RevealedArea a = Buff.affect(curUser, RevealedArea.class, 5 * curUser.pointsInTalent(Talent.SEER_SHOT, Talent.RK_WARDEN));
 					a.depth = Dungeon.depth;
 					a.pos = cell;
 					Buff.affect(curUser, Talent.SeerShotCooldown.class, 20f);

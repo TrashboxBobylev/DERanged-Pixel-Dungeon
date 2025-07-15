@@ -177,7 +177,7 @@ public abstract class Plant implements Bundlable {
 						int c = Dungeon.level.map[cell + i];
 						if ( c == Terrain.EMPTY || c == Terrain.EMPTY_DECO
 								|| c == Terrain.EMBERS || c == Terrain.GRASS){
-							if (Random.Float() < Dungeon.hero.pointsInTalent(Talent.LIVING_GRASS)/10f) {
+							if (Random.Float() < Dungeon.hero.pointsInTalent(Talent.LIVING_GRASS, Talent.RK_WARDEN)/10f) {
 								Level.set(cell + i, Terrain.HIGH_GRASS);
 							} else {
 								Level.set(cell + i, Terrain.FURROWED_GRASS);

@@ -371,10 +371,10 @@ public class SpiritBow extends Weapon {
 		@Override
 		protected void onThrow( int cell ) {
 			Char enemy = Actor.findChar( cell );
-			if (Dungeon.hero.hasTalent(Talent.ATTRACTION) && enemy == null) {
+			if (Dungeon.hero.hasTalent(Talent.ATTRACTION, Talent.RK_WARDEN) && enemy == null) {
 				for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 					if (mob.paralysed <= 0
-							&& Dungeon.level.distance(cell, mob.pos) <= Dungeon.hero.pointsInTalent(Talent.ATTRACTION)
+							&& Dungeon.level.distance(cell, mob.pos) <= Dungeon.hero.pointsInTalent(Talent.ATTRACTION, Talent.RK_WARDEN)
 							&& mob.state != mob.HUNTING) {
 						if (mob.sprite != null) {
 							mob.sprite.showStatus(CharSprite.NEUTRAL, "?");
@@ -382,7 +382,7 @@ public class SpiritBow extends Weapon {
 						mob.beckon( cell );
 					}
 				}
-				PathFinder.buildDistanceMap( cell, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null), Dungeon.hero.pointsInTalent(Talent.ATTRACTION) );
+				PathFinder.buildDistanceMap( cell, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null), Dungeon.hero.pointsInTalent(Talent.ATTRACTION, Talent.RK_WARDEN) );
 				for (int i = 0; i < PathFinder.distance.length; i++){
 					if (PathFinder.distance[i] < Integer.MAX_VALUE) {
 						GameScene.effectOverFog( new CheckedCell( i, cell ) );
@@ -492,11 +492,11 @@ public class SpiritBow extends Weapon {
 				
 			} else {
 
-				if (user.hasTalent(Talent.SEER_SHOT)
+				if (user.hasTalent(Talent.SEER_SHOT, Talent.RK_WARDEN)
 						&& user.buff(Talent.SeerShotCooldown.class) == null){
 					int shotPos = throwPos(user, dst);
 					if (Actor.findChar(shotPos) == null) {
-						RevealedArea a = Buff.affect(user, RevealedArea.class, 5 * user.pointsInTalent(Talent.SEER_SHOT));
+						RevealedArea a = Buff.affect(user, RevealedArea.class, 5 * user.pointsInTalent(Talent.SEER_SHOT, Talent.RK_WARDEN));
 						a.depth = Dungeon.depth;
 						a.branch = Dungeon.branch;
 						a.pos = shotPos;

@@ -1451,8 +1451,8 @@ public class Hero extends Char {
 			}
 		}
 		
-		if(hasTalent(Talent.BARKSKIN) && Dungeon.level.map[pos] == Terrain.FURROWED_GRASS){
-			Barkskin.conditionallyAppend(this, (lvl*pointsInTalent(Talent.BARKSKIN))/2, 1 );
+		if(hasTalent(Talent.BARKSKIN, Talent.RK_WARDEN) && Dungeon.level.map[pos] == Terrain.FURROWED_GRASS){
+			Barkskin.conditionallyAppend(this, (lvl*pointsInTalent(Talent.BARKSKIN, Talent.RK_WARDEN))/2, 1 );
 		}
 
 		if (hasTalent(Talent.PARRY, Talent.NOBLE_CALL) && buff(Talent.ParryCooldown.class) == null){
