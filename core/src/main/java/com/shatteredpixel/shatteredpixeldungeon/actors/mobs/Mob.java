@@ -924,9 +924,9 @@ public abstract class Mob extends Char {
 
 		}
 
-		if (Dungeon.level.map[pos] != Terrain.PIT && hero.hasTalent(Talent.ENERGY_REMAINS)) {
+		if (Dungeon.level.map[pos] != Terrain.PIT && hero.hasTalent(Talent.ENERGY_REMAINS, Talent.RK_WIZARD)) {
 			int chance = Random.Int(6);
-			int point = Dungeon.hero.pointsInTalent(Talent.ENERGY_REMAINS);
+			int point = Dungeon.hero.pointsInTalent(Talent.ENERGY_REMAINS, Talent.RK_WIZARD);
 			switch (chance) {
 				default:
 					break;

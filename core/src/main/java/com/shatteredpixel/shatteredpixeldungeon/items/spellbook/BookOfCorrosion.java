@@ -6,11 +6,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FrostImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCleansing;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorrosion;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -39,7 +37,7 @@ public class BookOfCorrosion extends SpellBook {
 
     @Override
     public void readEffect() {
-        GameScene.add( Blob.seed( Dungeon.hero.pos, Math.round(150*(1+0.5f*Dungeon.hero.pointsInTalent(Talent.SPELL_ENHANCE))), CorrosiveGas.class ).setStrength( 2*(2 + Dungeon.scalingDepth()/5)));
+        GameScene.add( Blob.seed( Dungeon.hero.pos, Math.round(150*(1+0.5f*Dungeon.hero.pointsInTalent(Talent.SPELL_ENHANCE, Talent.RK_WIZARD))), CorrosiveGas.class ).setStrength( 2*(2 + Dungeon.scalingDepth()/5)));
         Sample.INSTANCE.play( Assets.Sounds.GAS );
         if (Dungeon.hero.buff(BlobImmunity.class) == null && Dungeon.hero.buff(PotionOfCleansing.Cleanse.class) == null) {
             GLog.w(Messages.get(this, "warning"));

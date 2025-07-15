@@ -1,18 +1,12 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.spellbook;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
-
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -20,13 +14,14 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BArray;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 
 public class BookOfRegrowth extends SpellBook {
 
@@ -50,7 +45,7 @@ public class BookOfRegrowth extends SpellBook {
 
     @Override
     public void readEffect() {
-        if (spawnPlants(hero.pos, (0.1f+0.01f*hero.lvl)*(1+0.5f*hero.pointsInTalent(Talent.SPELL_ENHANCE)), 5)) {
+        if (spawnPlants(hero.pos, (0.1f+0.01f*hero.lvl)*(1+0.5f*hero.pointsInTalent(Talent.SPELL_ENHANCE, Talent.RK_WIZARD)), 5)) {
             GLog.p(Messages.get(this, "plant"));
             Dungeon.observe();
         }
@@ -62,7 +57,7 @@ public class BookOfRegrowth extends SpellBook {
         if (Dungeon.hero != null && Dungeon.hero.buff(SpellBookCoolDown.class) == null) {
             info += "\n\n" + Messages.get(this, "time",
                     5,
-                    new DecimalFormat("#.##").format(100*((0.1f+0.01f*hero.lvl)*(1+0.5f*hero.pointsInTalent(Talent.SPELL_ENHANCE)))));
+                    new DecimalFormat("#.##").format(100*((0.1f+0.01f*hero.lvl)*(1+0.5f*hero.pointsInTalent(Talent.SPELL_ENHANCE, Talent.RK_WIZARD)))));
         }
         return info;
     }

@@ -2364,8 +2364,8 @@ public enum Talent {
 		}
 
 		SpellBook.SpellBookCoolDown spellBookCoolDown = hero.buff(SpellBook.SpellBookCoolDown.class);
-		if (hero.hasTalent(Talent.BRIG_BOOST) && spellBookCoolDown != null) {
-			spellBookCoolDown.hit(hero.pointsInTalent(Talent.BRIG_BOOST));
+		if (hero.hasTalent(Talent.BRIG_BOOST, RK_WIZARD) && spellBookCoolDown != null) {
+			spellBookCoolDown.hit(hero.pointsInTalent(Talent.BRIG_BOOST, RK_WIZARD));
 		}
 
 		if (hero.buff(Bible.Angel.class) != null) {

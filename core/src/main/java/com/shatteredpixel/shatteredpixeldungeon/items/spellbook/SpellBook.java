@@ -126,8 +126,8 @@ public class SpellBook extends Item {
                 ((HeroSprite)curUser.sprite).read();
                 Sample.INSTANCE.play(Assets.Sounds.READ);
                 if (hero.subClass.is(HeroSubClass.WIZARD)) {
-                    Buff.affect(hero, SpellBookEmpower.class).set(5*(1+hero.pointsInTalent(Talent.MAGIC_EMPOWER)));
-                    if (Random.Float() < hero.pointsInTalent(Talent.SECOND_EFFECT) / 3f) {
+                    Buff.affect(hero, SpellBookEmpower.class).set(5*(1+hero.pointsInTalent(Talent.MAGIC_EMPOWER, Talent.RK_WIZARD)));
+                    if (Random.Float() < hero.pointsInTalent(Talent.SECOND_EFFECT, Talent.RK_WIZARD) / 3f) {
                         MagesStaff staff = hero.belongings.getItem(MagesStaff.class);
                         if (staff != null) {
                             SpellBook sideEffect = SpellBook.newSpellBook(spellTypes.get(staff.wandClass()));

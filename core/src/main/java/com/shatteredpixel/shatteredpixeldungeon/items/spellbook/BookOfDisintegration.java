@@ -2,11 +2,8 @@ package com.shatteredpixel.shatteredpixeldungeon.items.spellbook;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FireImbue;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -36,14 +33,14 @@ public class BookOfDisintegration extends SpellBook {
 
     @Override
     public void readEffect() {
-        Buff.affect(Dungeon.hero, ReachBuff.class).set(Math.round(10*(1 + 0.5f*Dungeon.hero.pointsInTalent(Talent.SPELL_ENHANCE))), 1+Dungeon.hero.lvl/6);
+        Buff.affect(Dungeon.hero, ReachBuff.class).set(Math.round(10*(1 + 0.5f*Dungeon.hero.pointsInTalent(Talent.SPELL_ENHANCE, Talent.RK_WIZARD))), 1+Dungeon.hero.lvl/6);
     }
 
     @Override
     public String info() {
         String info = super.info();
         if (Dungeon.hero != null && Dungeon.hero.buff(SpellBookCoolDown.class) == null) {
-            info += "\n\n" + Messages.get(this, "time", Math.round(10*(1 + 0.5f*Dungeon.hero.pointsInTalent(Talent.SPELL_ENHANCE))), 1+Dungeon.hero.lvl/6);
+            info += "\n\n" + Messages.get(this, "time", Math.round(10*(1 + 0.5f*Dungeon.hero.pointsInTalent(Talent.SPELL_ENHANCE, Talent.RK_WIZARD))), 1+Dungeon.hero.lvl/6);
         }
         return info;
     }

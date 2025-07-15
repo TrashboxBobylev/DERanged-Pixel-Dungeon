@@ -261,8 +261,8 @@ public abstract class Wand extends Item {
 				Buff.prolong(target, Blindness.class, 4f);
 			}
 		}
-		if (target != Dungeon.hero && Dungeon.hero.hasTalent(Talent.LIFE_ENERGY)) {
-			curUser.heal(chargesUsed*Dungeon.hero.pointsInTalent(Talent.LIFE_ENERGY));
+		if (target != Dungeon.hero && Dungeon.hero.hasTalent(Talent.LIFE_ENERGY, Talent.RK_WIZARD)) {
+			curUser.heal(chargesUsed*Dungeon.hero.pointsInTalent(Talent.LIFE_ENERGY, Talent.RK_WIZARD));
 		}
 	}
 

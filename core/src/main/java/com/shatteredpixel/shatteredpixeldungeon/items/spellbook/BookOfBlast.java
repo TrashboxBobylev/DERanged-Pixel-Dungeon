@@ -5,12 +5,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.items.BulletItem;
-import com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -52,7 +48,7 @@ public class BookOfBlast extends SpellBook {
                 //trim it to just be the part that goes past them
                 trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
                 //knock them back along that ballistica
-                WandOfBlastWave.throwChar(ch, trajectory, Math.round((2+Dungeon.hero.lvl/5f)*(1+0.5f*Dungeon.hero.pointsInTalent(Talent.SPELL_ENHANCE))), false, true, Dungeon.hero);
+                WandOfBlastWave.throwChar(ch, trajectory, Math.round((2+Dungeon.hero.lvl/5f)*(1+0.5f*Dungeon.hero.pointsInTalent(Talent.SPELL_ENHANCE, Talent.RK_WIZARD))), false, true, Dungeon.hero);
             }
             if (Dungeon.level.map[cell] == Terrain.DOOR) {
                 Level.set(cell, Terrain.OPEN_DOOR);
@@ -68,7 +64,7 @@ public class BookOfBlast extends SpellBook {
         String info = super.info();
         if (Dungeon.hero != null && Dungeon.hero.buff(SpellBookCoolDown.class) == null) {
             info += "\n\n" + Messages.get(this, "time",
-                    Math.round((2+Dungeon.hero.lvl/5f)*(1+0.5f*Dungeon.hero.pointsInTalent(Talent.SPELL_ENHANCE))));
+                    Math.round((2+Dungeon.hero.lvl/5f)*(1+0.5f*Dungeon.hero.pointsInTalent(Talent.SPELL_ENHANCE, Talent.RK_WIZARD))));
         }
         return info;
     }
