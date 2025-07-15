@@ -2499,12 +2499,12 @@ public class Hero extends Char {
 			Buff.prolong(this, Invisibility.class, 3f);
 		}
 
-		if (hero.hasTalent(Talent.OVERCOMING)) {
+		if (hero.hasTalent(Talent.OVERCOMING, Talent.RK_FREERUNNER)) {
 			Momentum momentum = buff(Momentum.class);
 			if (momentum != null && momentum.freerunning()) {
 				Buff.affect(this, Haste.class, 2f);
-				if (hero.pointsInTalent(Talent.OVERCOMING) > 1) Buff.affect(this, Adrenaline.class, 2f);
-				if (hero.pointsInTalent(Talent.OVERCOMING) > 2) Buff.affect(this, EvasiveMove.class, 2f);
+				if (hero.pointsInTalent(Talent.OVERCOMING, Talent.RK_FREERUNNER) > 1) Buff.affect(this, Adrenaline.class, 2f);
+				if (hero.pointsInTalent(Talent.OVERCOMING, Talent.RK_FREERUNNER) > 2) Buff.affect(this, EvasiveMove.class, 2f);
 			}
 		}
 
@@ -3778,7 +3778,7 @@ public class Hero extends Char {
 		for (Item i : belongings){
 			if (i instanceof EquipableItem && i.isEquipped(this)){
 				((EquipableItem) i).activate(this);
-			} else if (i instanceof CloakOfShadows && i.keptThroughLostInventory() && hasTalent(Talent.LIGHT_CLOAK)) {
+			} else if (i instanceof CloakOfShadows && i.keptThroughLostInventory() && hasTalent(Talent.LIGHT_CLOAK, Talent.RK_FREERUNNER)) {
 				((CloakOfShadows) i).activate(this);
 			} else if (i instanceof HolyTome  && i.keptThroughLostInventory() && hasTalent(Talent.LIGHT_READING)) {
 				((HolyTome) i).activate(this);

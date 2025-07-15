@@ -74,8 +74,8 @@ public class RingOfEnergy extends Ring {
 	public static float artifactChargeMultiplier( Char target ){
 		float bonus = (float)Math.pow(1.175, getBuffedBonus(target, Energy.class));
 
-		if (target instanceof Hero && !((Hero) target).heroClass.is(HeroClass.ROGUE) && ((Hero) target).hasTalent(Talent.LIGHT_CLOAK)){
-			bonus *= 1f + (0.2f * ((Hero) target).pointsInTalent(Talent.LIGHT_CLOAK)/3f);
+		if (target instanceof Hero && !((Hero) target).heroClass.is(HeroClass.ROGUE) && ((Hero) target).hasTalent(Talent.LIGHT_CLOAK, Talent.RK_FREERUNNER)){
+			bonus *= 1f + (0.2f * ((Hero) target).pointsInTalent(Talent.LIGHT_CLOAK, Talent.RK_FREERUNNER)/3f);
 		}
 
 		return bonus;

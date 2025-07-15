@@ -67,7 +67,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 			freerunCooldown--;
 		}
 
-		if (freerunCooldown == 0 && !freerunning() && target.invisible > 0 && Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH) >= 1){
+		if (freerunCooldown == 0 && !freerunning() && target.invisible > 0 && Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH, Talent.RK_FREERUNNER) >= 1){
 			momentumStacks = Math.min(momentumStacks + 2, 10);
 			movedLastTurn = true;
 			ActionIndicator.setAction(this);
@@ -75,7 +75,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 		}
 
 		if (freerunTurns > 0){
-			if (target.invisible == 0 || Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH) < 2) {
+			if (target.invisible == 0 || Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH, Talent.RK_FREERUNNER) < 2) {
 				freerunTurns--;
 			}
 		} else if (!movedLastTurn){
@@ -117,7 +117,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 	public float speedMultiplier(){
 		if (freerunning()){
 			return 2;
-		} else if (target.invisible > 0 && Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH) == 3){
+		} else if (target.invisible > 0 && Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH, Talent.RK_FREERUNNER) == 3){
 			return 2;
 		} else {
 			return 1;
@@ -126,7 +126,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 	
 	public int evasionBonus( int heroLvl, int excessArmorStr ){
 		if (freerunTurns > 0) {
-			return heroLvl/2 + excessArmorStr*Dungeon.hero.pointsInTalent(Talent.EVASIVE_ARMOR);
+			return heroLvl/2 + excessArmorStr*Dungeon.hero.pointsInTalent(Talent.EVASIVE_ARMOR, Talent.RK_FREERUNNER);
 		} else {
 			return 0;
 		}
@@ -248,8 +248,8 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 		target.sprite.emitter().burst(Speck.factory(Speck.JET), 5+ momentumStacks);
 		SpellSprite.show(target, SpellSprite.HASTE, 1, 1, 0);
 		momentumStacks = 0;
-		if (((Hero) target).hasTalent(Talent.MOMENTARY_FOCUSING)) {
-			Buff.affect(target, EvasiveMove.class, Dungeon.hero.pointsInTalent(Talent.MOMENTARY_FOCUSING));
+		if (((Hero) target).hasTalent(Talent.MOMENTARY_FOCUSING, Talent.RK_FREERUNNER)) {
+			Buff.affect(target, EvasiveMove.class, Dungeon.hero.pointsInTalent(Talent.MOMENTARY_FOCUSING, Talent.RK_FREERUNNER));
 		}
 		BuffIndicator.refreshHero();
 		ActionIndicator.clearAction(this);

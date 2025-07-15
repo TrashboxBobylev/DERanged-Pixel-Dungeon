@@ -734,10 +734,10 @@ public abstract class Char extends Actor {
 				if (Random.Int(5) < hero.pointsInTalent(Talent.COUNTER_ATTACK)) {
 					Buff.affect(hero, Talent.CounterAttackTracker.class);
 				}
-				if (hero.hasTalent(Talent.QUICK_PREP)) {
+				if (hero.hasTalent(Talent.QUICK_PREP, Talent.RK_FREERUNNER)) {
 					Momentum momentum = hero.buff(Momentum.class);
 					if (momentum != null) {
-						momentum.quickPrep(hero.pointsInTalent(Talent.QUICK_PREP));
+						momentum.quickPrep(hero.pointsInTalent(Talent.QUICK_PREP, Talent.RK_FREERUNNER));
 					}
 				}
 			}
