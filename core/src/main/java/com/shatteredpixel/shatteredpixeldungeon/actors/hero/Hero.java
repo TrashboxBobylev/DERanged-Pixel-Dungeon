@@ -2008,12 +2008,12 @@ public class Hero extends Char {
 					&& hero.buff(Talent.ChaseCooldown.class) == null
 					&& hero.buff(Invisibility.class) == null
 					&& hero.buff(CloakOfShadows.cloakStealth.class) == null ) {
-				if (hero.hasTalent(Talent.MASTER_OF_CLOAKING)) {
+				if (hero.hasTalent(Talent.MASTER_OF_CLOAKING, Talent.RK_CHASER)) {
 					Buff.affect(Dungeon.hero, Invisibility.class, 6f);
 				} else {
 					Buff.affect(Dungeon.hero, Invisibility.class, 5f);
 				}
-				if (hero.pointsInTalent(Talent.MASTER_OF_CLOAKING) > 1) {
+				if (hero.pointsInTalent(Talent.MASTER_OF_CLOAKING, Talent.RK_CHASER) > 1) {
 					Buff.affect(Dungeon.hero, Talent.ChaseCooldown.class, 10f);
 				} else {
 					Buff.affect(Dungeon.hero, Talent.ChaseCooldown.class, 15f);
@@ -3471,21 +3471,21 @@ public class Hero extends Char {
 		}
 
 		if (hero.subClass.is(HeroSubClass.CHASER)
-				&& hero.hasTalent(Talent.CHAIN_CLOCK)
+				&& hero.hasTalent(Talent.CHAIN_CLOCK, Talent.RK_CHASER)
 				&& ((Mob) attackTarget).surprisedBy(hero)
 				&& hero.buff(Talent.ChainCooldown.class) == null){
-			Buff.affect( this, Invisibility.class, 1f * hero.pointsInTalent(Talent.CHAIN_CLOCK));
-			Buff.affect( this, Haste.class, 1f * hero.pointsInTalent(Talent.CHAIN_CLOCK));
+			Buff.affect( this, Invisibility.class, 1f * hero.pointsInTalent(Talent.CHAIN_CLOCK, Talent.RK_CHASER));
+			Buff.affect( this, Haste.class, 1f * hero.pointsInTalent(Talent.CHAIN_CLOCK, Talent.RK_CHASER));
 			Buff.affect( this, Talent.ChainCooldown.class, 10f);
 			Sample.INSTANCE.play( Assets.Sounds.MELD );
 		}
 
 		if (hero.subClass.is(HeroSubClass.CHASER)
-				&& hero.hasTalent(Talent.LETHAL_SURPRISE)
+				&& hero.hasTalent(Talent.LETHAL_SURPRISE, Talent.RK_CHASER)
 				&& ((Mob) attackTarget).surprisedBy(hero)
 				&& !attackTarget.isAlive()
 				&& hero.buff(Talent.LethalCooldown.class) == null) {
-			if (hero.pointsInTalent(Talent.LETHAL_SURPRISE) >= 1) {
+			if (hero.pointsInTalent(Talent.LETHAL_SURPRISE, Talent.RK_CHASER) >= 1) {
 				for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 					if (mob.alignment == Alignment.ENEMY && Dungeon.level.heroFOV[mob.pos] && mob.state != mob.SLEEPING) {
 						Buff.affect( mob, Vulnerable.class, 1f);
@@ -3493,14 +3493,14 @@ public class Hero extends Char {
 				}
 				Buff.affect(hero, Talent.LethalCooldown.class, 5f);
 			}
-			if (hero.pointsInTalent(Talent.LETHAL_SURPRISE) >= 2) {
+			if (hero.pointsInTalent(Talent.LETHAL_SURPRISE, Talent.RK_CHASER) >= 2) {
 				for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 					if (mob.alignment == Alignment.ENEMY && Dungeon.level.heroFOV[mob.pos] && mob.state != mob.SLEEPING) {
 						Buff.affect( mob, Paralysis.class, 1f);
 					}
 				}
 			}
-			if (hero.pointsInTalent(Talent.LETHAL_SURPRISE) == 3) {
+			if (hero.pointsInTalent(Talent.LETHAL_SURPRISE, Talent.RK_CHASER) == 3) {
 				Buff.affect(hero, Swiftthistle.TimeBubble.class).twoTurns();
 			}
 		}

@@ -2238,11 +2238,11 @@ public enum Talent {
 		}
 
 		if (enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)) {
-			if (hero.hasTalent(Talent.POISONOUS_BLADE)) {
-				Buff.affect(enemy, Poison.class).set(2+hero.pointsInTalent(Talent.POISONOUS_BLADE));
+			if (hero.hasTalent(Talent.POISONOUS_BLADE, RK_CHASER)) {
+				Buff.affect(enemy, Poison.class).set(2+hero.pointsInTalent(Talent.POISONOUS_BLADE, RK_CHASER));
 			}
-			if (hero.hasTalent(Talent.SOUL_COLLECT) && damage >= enemy.HP) {
-				int healAmt = 3*hero.pointsInTalent(Talent.SOUL_COLLECT);
+			if (hero.hasTalent(Talent.SOUL_COLLECT, RK_CHASER) && damage >= enemy.HP) {
+				int healAmt = 3*hero.pointsInTalent(Talent.SOUL_COLLECT, RK_CHASER);
 				healAmt = Math.min( healAmt, hero.HT - hero.HP );
 				if (healAmt > 0 && hero.isAlive()) {
 					hero.HP += healAmt;
@@ -2250,11 +2250,11 @@ public enum Talent {
 					hero.sprite.showStatus( CharSprite.POSITIVE, Integer.toString( healAmt ) );
 				}
 			}
-			if (hero.hasTalent(Talent.TRAIL_TRACKING) && damage >= enemy.HP) {
-				Buff.affect(hero, MindVision.class, hero.pointsInTalent(Talent.TRAIL_TRACKING));
+			if (hero.hasTalent(Talent.TRAIL_TRACKING, RK_CHASER) && damage >= enemy.HP) {
+				Buff.affect(hero, MindVision.class, hero.pointsInTalent(Talent.TRAIL_TRACKING, RK_CHASER));
 			}
 
-			if (hero.pointsInTalent(Talent.MASTER_OF_CLOAKING) == 3) {
+			if (hero.pointsInTalent(Talent.MASTER_OF_CLOAKING, RK_CHASER) == 3) {
 				if (hero.buff(Talent.ChaseCooldown.class) != null) {
 					hero.buff(Talent.ChaseCooldown.class).spendTime();
 				}
