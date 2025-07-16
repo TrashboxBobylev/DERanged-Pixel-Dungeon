@@ -11,7 +11,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -33,7 +32,7 @@ public class Enchant extends InventoryClericSpell {
 
     @Override
     public float chargeUse(Hero hero) {
-        return 7-hero.pointsInTalent(Talent.ENCHANT);
+        return 7-hero.pointsInTalent(Talent.ENCHANT, Talent.RK_ENCHANTER);
     }
 
     @Override

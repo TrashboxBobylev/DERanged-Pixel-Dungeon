@@ -8,8 +8,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlessingParticle;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -40,7 +38,7 @@ public class TimeAmp extends TargetedClericSpell {
     }
 
     private float duration() {
-        return 2+2f*Dungeon.hero.pointsInTalent(Talent.TIME_AMP);
+        return 2+2f*Dungeon.hero.pointsInTalent(Talent.TIME_AMP, Talent.RK_ENCHANTER);
     }
 
     @Override

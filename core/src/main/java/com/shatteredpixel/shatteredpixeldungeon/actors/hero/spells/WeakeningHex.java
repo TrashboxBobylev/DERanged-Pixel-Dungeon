@@ -32,10 +32,10 @@ public class WeakeningHex extends TargetedClericSpell {
     public String desc() {
         StringBuilder s = new StringBuilder();
         s.append(new Hex().name());
-        if (Dungeon.hero.pointsInTalent(Talent.WEAKENING_HEX) >= 2) {
+        if (Dungeon.hero.pointsInTalent(Talent.WEAKENING_HEX, Talent.RK_ENCHANTER) >= 2) {
             s.append(", ").append(new Weakness().name());
         }
-        if (Dungeon.hero.pointsInTalent(Talent.WEAKENING_HEX) >= 3) {
+        if (Dungeon.hero.pointsInTalent(Talent.WEAKENING_HEX, Talent.RK_ENCHANTER) >= 3) {
             s.append(", ").append(new Vulnerable().name());
         }
         return Messages.get(this, "desc", s.toString())+ "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
@@ -80,10 +80,10 @@ public class WeakeningHex extends TargetedClericSpell {
         onEnchanterSpellCast(ch, chargeUse(hero));
 
         Buff.affect(ch, Hex.class, duration());
-        if (Dungeon.hero.pointsInTalent(Talent.WEAKENING_HEX) >= 2) {
+        if (Dungeon.hero.pointsInTalent(Talent.WEAKENING_HEX, Talent.RK_ENCHANTER) >= 2) {
             Buff.affect(ch, Weakness.class, duration());
         }
-        if (Dungeon.hero.pointsInTalent(Talent.WEAKENING_HEX) >= 3) {
+        if (Dungeon.hero.pointsInTalent(Talent.WEAKENING_HEX, Talent.RK_ENCHANTER) >= 3) {
             Buff.affect(ch, Vulnerable.class, duration());
         }
         CharSprite sprite = ch.sprite;

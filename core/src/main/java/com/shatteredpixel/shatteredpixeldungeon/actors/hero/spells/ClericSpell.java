@@ -194,22 +194,22 @@ public abstract class ClericSpell {
 				spells.add(InduceAggro.INSTANCE);
 			}
 
-			if (cleric.hasTalent(Talent.TIME_AMP)) {
+			if (cleric.hasTalent(Talent.TIME_AMP, Talent.RK_ENCHANTER)) {
 				spells.add(TimeAmp.INSTANCE);
 			}
-			if (cleric.hasTalent(Talent.WEAKENING_HEX)) {
+			if (cleric.hasTalent(Talent.WEAKENING_HEX, Talent.RK_ENCHANTER)) {
 				spells.add(WeakeningHex.INSTANCE);
 			}
-			if (cleric.hasTalent(Talent.STUN)) {
+			if (cleric.hasTalent(Talent.STUN, Talent.RK_ENCHANTER)) {
 				spells.add(Stun.INSTANCE);
 			}
-			if (cleric.hasTalent(Talent.THUNDER_IMBUE)) {
+			if (cleric.hasTalent(Talent.THUNDER_IMBUE, Talent.RK_ENCHANTER)) {
 				spells.add(ThunderImbueSpell.INSTANCE);
 			}
-			if (cleric.hasTalent(Talent.ARCANE_ARMOR)) {
+			if (cleric.hasTalent(Talent.ARCANE_ARMOR, Talent.RK_ENCHANTER)) {
 				spells.add(ArcaneArmorSpell.INSTANCE);
 			}
-			if (cleric.hasTalent(Talent.ENCHANT)) {
+			if (cleric.hasTalent(Talent.ENCHANT, Talent.RK_ENCHANTER)) {
 				spells.add(Enchant.INSTANCE);
 			}
 

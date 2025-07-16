@@ -28,7 +28,7 @@ public class ThunderImbueSpell extends TargetedClericSpell {
     }
 
     private int duration() {
-        return 10*Dungeon.hero.pointsInTalent(Talent.THUNDER_IMBUE);
+        return 10*Dungeon.hero.pointsInTalent(Talent.THUNDER_IMBUE, Talent.RK_ENCHANTER);
     }
 
     @Override

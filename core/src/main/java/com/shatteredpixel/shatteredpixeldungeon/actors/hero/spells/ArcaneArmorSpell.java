@@ -26,7 +26,7 @@ public class ArcaneArmorSpell extends ClericSpell {
     }
 
     private int interval() {
-        return 10*Dungeon.hero.pointsInTalent(Talent.ARCANE_ARMOR);
+        return 10*Dungeon.hero.pointsInTalent(Talent.ARCANE_ARMOR, Talent.RK_ENCHANTER);
     }
 
     @Override
