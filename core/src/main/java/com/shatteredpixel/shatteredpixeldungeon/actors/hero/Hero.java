@@ -3780,7 +3780,7 @@ public class Hero extends Char {
 				((EquipableItem) i).activate(this);
 			} else if (i instanceof CloakOfShadows && i.keptThroughLostInventory() && hasTalent(Talent.LIGHT_CLOAK, Talent.RK_FREERUNNER)) {
 				((CloakOfShadows) i).activate(this);
-			} else if (i instanceof HolyTome  && i.keptThroughLostInventory() && hasTalent(Talent.LIGHT_READING)) {
+			} else if (i instanceof HolyTome  && i.keptThroughLostInventory() && hasTalent(Talent.LIGHT_READING, Talent.RK_PALADIN)) {
 				((HolyTome) i).activate(this);
 			} else if (i instanceof Wand && i.keptThroughLostInventory()){
 				if (holster != null && holster.contains(i)){

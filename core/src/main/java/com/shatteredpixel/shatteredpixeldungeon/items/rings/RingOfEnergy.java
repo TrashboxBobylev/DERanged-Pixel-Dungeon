@@ -64,8 +64,8 @@ public class RingOfEnergy extends Ring {
 	public static float wandChargeMultiplier( Char target ){
 		float bonus = (float)Math.pow(1.175, getBuffedBonus(target, Energy.class));
 
-		if (target instanceof Hero && !((Hero) target).heroClass.is(HeroClass.CLERIC) && ((Hero) target).hasTalent(Talent.LIGHT_READING)){
-			bonus *= 1f + (0.2f * ((Hero) target).pointsInTalent(Talent.LIGHT_READING)/3f);
+		if (target instanceof Hero && !((Hero) target).heroClass.is(HeroClass.CLERIC) && ((Hero) target).hasTalent(Talent.LIGHT_READING, Talent.RK_PALADIN)){
+			bonus *= 1f + (0.2f * ((Hero) target).pointsInTalent(Talent.LIGHT_READING, Talent.RK_PALADIN)/3f);
 		}
 
 		return bonus;

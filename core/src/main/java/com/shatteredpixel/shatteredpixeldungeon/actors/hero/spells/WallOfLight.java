@@ -55,7 +55,7 @@ public class WallOfLight extends TargetedClericSpell {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", 1 + 2*Dungeon.hero.pointsInTalent(Talent.WALL_OF_LIGHT)) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
+		return Messages.get(this, "desc", 1 + 2*Dungeon.hero.pointsInTalent(Talent.WALL_OF_LIGHT, Talent.RK_PALADIN)) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class WallOfLight extends TargetedClericSpell {
 
 	@Override
 	public boolean canCast(Hero hero) {
-		return super.canCast(hero) && hero.hasTalent(Talent.WALL_OF_LIGHT);
+		return super.canCast(hero) && hero.hasTalent(Talent.WALL_OF_LIGHT, Talent.RK_PALADIN);
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class WallOfLight extends TargetedClericSpell {
 		int rightDirX = 0;
 		int rightDirY = 0;
 
-		int steps = Dungeon.hero.pointsInTalent(Talent.WALL_OF_LIGHT);
+		int steps = Dungeon.hero.pointsInTalent(Talent.WALL_OF_LIGHT, Talent.RK_PALADIN);
 
 		switch (closestIdx){
 			case 0: //top left

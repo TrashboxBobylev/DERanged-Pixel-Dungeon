@@ -49,7 +49,7 @@ public class LayOnHands extends TargetedClericSpell {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", 10 + 5*Dungeon.hero.pointsInTalent(Talent.LAY_ON_HANDS)) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
+		return Messages.get(this, "desc", 10 + 5*Dungeon.hero.pointsInTalent(Talent.LAY_ON_HANDS, Talent.RK_PALADIN)) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class LayOnHands extends TargetedClericSpell {
 
 	@Override
 	public boolean canCast(Hero hero) {
-		return super.canCast(hero) && hero.hasTalent(Talent.LAY_ON_HANDS);
+		return super.canCast(hero) && hero.hasTalent(Talent.LAY_ON_HANDS, Talent.RK_PALADIN);
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class LayOnHands extends TargetedClericSpell {
 	}
 
 	private void affectChar(Hero hero, Char ch){
-		int totalHeal = 10 + 5*hero.pointsInTalent(Talent.LAY_ON_HANDS);
+		int totalHeal = 10 + 5*hero.pointsInTalent(Talent.LAY_ON_HANDS, Talent.RK_PALADIN);
 		int totalBarrier = 0;
 		if (ch == hero){
 			Barrier barrier = Buff.affect(ch, Barrier.class);

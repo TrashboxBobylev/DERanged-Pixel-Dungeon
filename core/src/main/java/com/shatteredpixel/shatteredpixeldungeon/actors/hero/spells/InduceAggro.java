@@ -26,7 +26,7 @@ public class InduceAggro extends TargetedClericSpell {
 
     @Override
     public String desc() {
-        return Messages.get(this, "desc", 2+Dungeon.hero.pointsInTalent(Talent.INDUCE_AGGRO)) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
+        return Messages.get(this, "desc", 2+Dungeon.hero.pointsInTalent(Talent.INDUCE_AGGRO, Talent.RK_PALADIN)) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
     }
 
     @Override
@@ -54,10 +54,10 @@ public class InduceAggro extends TargetedClericSpell {
             if (Char.hasProp(ch, Char.Property.BOSS) || Char.hasProp(ch, Char.Property.MINIBOSS)) {
                 Buff.prolong(ch, StoneOfAggression.Aggression.class, 2f);
             } else {
-                Buff.prolong(ch, StoneOfAggression.Aggression.class, 2+hero.pointsInTalent(Talent.INDUCE_AGGRO));
+                Buff.prolong(ch, StoneOfAggression.Aggression.class, 2+hero.pointsInTalent(Talent.INDUCE_AGGRO, Talent.RK_PALADIN));
             }
         } else if (ch.alignment == Char.Alignment.ALLY) {
-            Buff.prolong(ch, StoneOfAggression.Aggression.class, 3*(2+hero.pointsInTalent(Talent.INDUCE_AGGRO)));
+            Buff.prolong(ch, StoneOfAggression.Aggression.class, 3*(2+hero.pointsInTalent(Talent.INDUCE_AGGRO, Talent.RK_PALADIN)));
         }
 
         CellEmitter.center(target).start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );

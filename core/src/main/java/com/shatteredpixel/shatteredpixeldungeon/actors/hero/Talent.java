@@ -1658,7 +1658,7 @@ public enum Talent {
 			}
 		}
 
-		if (talent == LIGHT_READING && hero.heroClass.is(HeroClass.CLERIC)){
+		if ((talent == LIGHT_READING || talent == RK_PALADIN) && hero.heroClass.is(HeroClass.CLERIC)){
 			for (Item item : Dungeon.hero.belongings.backpack){
 				if (item instanceof HolyTome){
 					if (!hero.belongings.lostInventory() || item.keptThroughLostInventory()) {

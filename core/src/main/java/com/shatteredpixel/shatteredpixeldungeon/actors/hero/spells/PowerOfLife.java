@@ -1,7 +1,5 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
@@ -13,6 +11,8 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 
 public class PowerOfLife extends ClericSpell {
     public static final PowerOfLife INSTANCE = new PowerOfLife();
@@ -29,7 +29,7 @@ public class PowerOfLife extends ClericSpell {
 
     @Override
     public String desc() {
-        return Messages.get(this, "desc", hero.HP/5, 2*(hero.HP/5), 20*hero.pointsInTalent(Talent.POWER_OF_LIFE)) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(hero));
+        return Messages.get(this, "desc", hero.HP/5, 2*(hero.HP/5), 20*hero.pointsInTalent(Talent.POWER_OF_LIFE, Talent.RK_PALADIN)) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(hero));
     }
 
     @Override
@@ -64,7 +64,7 @@ public class PowerOfLife extends ClericSpell {
         public int usedHP;
 
         public void proc(int damage) {
-            int healAmt = Math.min(usedHP, Math.round(0.2f*hero.pointsInTalent(Talent.POWER_OF_LIFE)*damage));
+            int healAmt = Math.min(usedHP, Math.round(0.2f*hero.pointsInTalent(Talent.POWER_OF_LIFE, Talent.RK_PALADIN)*damage));
             if (healAmt > 0) {
                 target.heal(healAmt);
                 usedHP -= healAmt;
@@ -73,7 +73,7 @@ public class PowerOfLife extends ClericSpell {
 
         @Override
         public String desc() {
-            return Messages.get(this, "desc", 20* hero.pointsInTalent(Talent.POWER_OF_LIFE), shielding(), usedHP);
+            return Messages.get(this, "desc", 20* hero.pointsInTalent(Talent.POWER_OF_LIFE, Talent.RK_PALADIN), shielding(), usedHP);
         }
 
         private static final String USED_HP = "usedHP";

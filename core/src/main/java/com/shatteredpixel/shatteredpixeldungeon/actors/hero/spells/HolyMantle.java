@@ -24,7 +24,7 @@ public class HolyMantle extends TargetedClericSpell {
 
     @Override
     public String desc() {
-        return Messages.get(this, "desc", 25*(1+Dungeon.hero.pointsInTalent(Talent.HOLY_MANTLE))) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
+        return Messages.get(this, "desc", 25*(1+Dungeon.hero.pointsInTalent(Talent.HOLY_MANTLE, Talent.RK_PALADIN))) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
     }
 
     @Override
@@ -65,12 +65,12 @@ public class HolyMantle extends TargetedClericSpell {
         }
 
         public static float DamageReduction(float damage) {
-            return Math.max(0, damage * (1 - 0.25f * (1+Dungeon.hero.pointsInTalent(Talent.HOLY_MANTLE))));
+            return Math.max(0, damage * (1 - 0.25f * (1+Dungeon.hero.pointsInTalent(Talent.HOLY_MANTLE, Talent.RK_PALADIN))));
         }
 
         @Override
         public String desc() {
-            return Messages.get(this, "desc", 25*(1+Dungeon.hero.pointsInTalent(Talent.HOLY_MANTLE)));
+            return Messages.get(this, "desc", 25*(1+Dungeon.hero.pointsInTalent(Talent.HOLY_MANTLE, Talent.RK_PALADIN)));
         }
     }
 }

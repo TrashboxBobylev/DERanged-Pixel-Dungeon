@@ -175,22 +175,22 @@ public abstract class ClericSpell {
 				spells.add(Resurrection.INSTANCE);
 			}
 
-			if (cleric.hasTalent(Talent.LAY_ON_HANDS)){
+			if (cleric.hasTalent(Talent.LAY_ON_HANDS, Talent.RK_PALADIN)){
 				spells.add(LayOnHands.INSTANCE);
 			}
-			if (cleric.hasTalent(Talent.AURA_OF_PROTECTION)){
+			if (cleric.hasTalent(Talent.AURA_OF_PROTECTION, Talent.RK_PALADIN)){
 				spells.add(AuraOfProtection.INSTANCE);
 			}
-			if (cleric.hasTalent(Talent.WALL_OF_LIGHT)){
+			if (cleric.hasTalent(Talent.WALL_OF_LIGHT, Talent.RK_PALADIN)){
 				spells.add(WallOfLight.INSTANCE);
 			}
-			if (cleric.hasTalent(Talent.HOLY_MANTLE)){
+			if (cleric.hasTalent(Talent.HOLY_MANTLE, Talent.RK_PALADIN)){
 				spells.add(HolyMantle.INSTANCE);
 			}
-			if (cleric.hasTalent(Talent.POWER_OF_LIFE)){
+			if (cleric.hasTalent(Talent.POWER_OF_LIFE, Talent.RK_PALADIN)){
 				spells.add(PowerOfLife.INSTANCE);
 			}
-			if (cleric.hasTalent(Talent.INDUCE_AGGRO)){
+			if (cleric.hasTalent(Talent.INDUCE_AGGRO, Talent.RK_PALADIN)){
 				spells.add(InduceAggro.INSTANCE);
 			}
 
