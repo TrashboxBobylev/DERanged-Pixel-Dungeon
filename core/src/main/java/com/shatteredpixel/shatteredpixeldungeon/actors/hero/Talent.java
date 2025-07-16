@@ -1647,7 +1647,7 @@ public enum Talent {
 			Item.updateQuickslot();
 		}
 
-		if (talent == UNENCUMBERED_SPIRIT && hero.pointsInTalent(talent) == 3){
+		if ((talent == UNENCUMBERED_SPIRIT || talent == RK_MONK) && hero.pointsInTalent(talent) == 3){
 			Item toGive = new ClothArmor().identify();
 			if (!toGive.collect()){
 				Dungeon.level.drop(toGive, hero.pos).sprite.drop();
@@ -2186,14 +2186,14 @@ public enum Talent {
 			}
 		}
 
-		if (hero.hasTalent(DEADLY_FOLLOWUP) && enemy.alignment == Char.Alignment.ENEMY) {
+		if (hero.hasTalent(DEADLY_FOLLOWUP, RK_MONK) && enemy.alignment == Char.Alignment.ENEMY) {
 			if (hero.belongings.attackingWeapon() instanceof MissileWeapon) {
 				if (!(hero.belongings.attackingWeapon() instanceof SpiritBow.SpiritArrow)) {
 					Buff.prolong(hero, DeadlyFollowupTracker.class, 5f).object = enemy.id();
 				}
 			} else if (hero.buff(DeadlyFollowupTracker.class) != null
 					&& hero.buff(DeadlyFollowupTracker.class).object == enemy.id()){
-				damage = Math.round(damage * (1.0f + .1f*hero.pointsInTalent(DEADLY_FOLLOWUP)));
+				damage = Math.round(damage * (1.0f + .1f*hero.pointsInTalent(DEADLY_FOLLOWUP, RK_MONK)));
 			}
 		}
 

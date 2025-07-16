@@ -99,8 +99,8 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public boolean act() {
-		if (Dungeon.hero.hasTalent(Talent.RESTORED_ENERGY)) {
-			energy = (float)Math.min(energy+(0.0075+Dungeon.hero.pointsInTalent(Talent.RESTORED_ENERGY)*0.0025), energyCap());
+		if (Dungeon.hero.hasTalent(Talent.RESTORED_ENERGY, Talent.RK_MONK)) {
+			energy = (float)Math.min(energy+(0.0075+Dungeon.hero.pointsInTalent(Talent.RESTORED_ENERGY, Talent.RK_MONK)*0.0025), energyCap());
 			BuffIndicator.refreshHero();
 		}
 		if (cooldown > 0){
@@ -166,8 +166,8 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 		float enGainMulti = 1f;
 		if (target instanceof Hero) {
 			Hero hero = (Hero) target;
-			if (hero.hasTalent(Talent.UNENCUMBERED_SPIRIT)) {
-				int points = hero.pointsInTalent(Talent.UNENCUMBERED_SPIRIT);
+			if (hero.hasTalent(Talent.UNENCUMBERED_SPIRIT, Talent.RK_MONK)) {
+				int points = hero.pointsInTalent(Talent.UNENCUMBERED_SPIRIT, Talent.RK_MONK);
 
 				if (hero.belongings.armor() != null){
 					if (hero.belongings.armor().tier <= 1 && points >= 3){
@@ -211,12 +211,12 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 	public void abilityUsed( MonkAbility abil ){
 		energy -= abil.energyCost();
 
-		if (target instanceof Hero && ((Hero) target).hasTalent(Talent.ENERGY_BARRIER)) {
-			Buff.affect(target, Barrier.class).incShield(abil.energyCost()*(3+2*(((Hero) target).pointsInTalent(Talent.ENERGY_BARRIER))));
+		if (target instanceof Hero && ((Hero) target).hasTalent(Talent.ENERGY_BARRIER, Talent.RK_MONK)) {
+			Buff.affect(target, Barrier.class).incShield(abil.energyCost()*(3+2*(((Hero) target).pointsInTalent(Talent.ENERGY_BARRIER, Talent.RK_MONK))));
 		}
 
-		if (target instanceof Hero && ((Hero) target).hasTalent(Talent.COMBINED_ENERGY)
-				&& abil.energyCost() >= 5-((Hero) target).pointsInTalent(Talent.COMBINED_ENERGY)) {
+		if (target instanceof Hero && ((Hero) target).hasTalent(Talent.COMBINED_ENERGY, Talent.RK_MONK)
+				&& abil.energyCost() >= 5-((Hero) target).pointsInTalent(Talent.COMBINED_ENERGY, Talent.RK_MONK)) {
 			Talent.CombinedEnergyAbilityTracker tracker = target.buff(Talent.CombinedEnergyAbilityTracker.class);
 			if (tracker == null || !tracker.wepAbilUsed){
 				Buff.prolong(target, Talent.CombinedEnergyAbilityTracker.class, 5f).monkAbilused = true;
@@ -236,14 +236,14 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 	public boolean abilitiesEmpowered( Hero hero ){
 		//100%/80%/60% energy at +1/+2/+3
-		return energy/energyCap() >= 1.2f - 0.2f*hero.pointsInTalent(Talent.MONASTIC_VIGOR);
+		return energy/energyCap() >= 1.2f - 0.2f*hero.pointsInTalent(Talent.MONASTIC_VIGOR, Talent.RK_MONK);
 	}
 
 	public boolean harmonized( Hero hero ){
 		//100%/80%/60% energy at +1/+2/+3
-		return hero.hasTalent(Talent.HARMONY)
-				&& energy/energyCap() >= 1.2f - 0.2f*hero.pointsInTalent(Talent.HARMONY)
-				&& hero.HP/(float)hero.HT >= 1.2f - 0.2f*hero.pointsInTalent(Talent.HARMONY);
+		return hero.hasTalent(Talent.HARMONY, Talent.RK_MONK)
+				&& energy/energyCap() >= 1.2f - 0.2f*hero.pointsInTalent(Talent.HARMONY, Talent.RK_MONK)
+				&& hero.HP/(float)hero.HT >= 1.2f - 0.2f*hero.pointsInTalent(Talent.HARMONY, Talent.RK_MONK);
 	}
 
 	public void processCombinedEnergy(Talent.CombinedEnergyAbilityTracker tracker){

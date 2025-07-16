@@ -304,7 +304,7 @@ public class MeleeWeapon extends Weapon {
 				tracker.detach();
 			}
 		}
-		if (hero.hasTalent(Talent.COMBINED_ENERGY)){
+		if (hero.hasTalent(Talent.COMBINED_ENERGY, Talent.RK_MONK)){
 			Talent.CombinedEnergyAbilityTracker tracker = hero.buff(Talent.CombinedEnergyAbilityTracker.class);
 			if (tracker == null || !tracker.monkAbilused){
 				Buff.prolong(hero, Talent.CombinedEnergyAbilityTracker.class, 5f).wepAbilUsed = true;
