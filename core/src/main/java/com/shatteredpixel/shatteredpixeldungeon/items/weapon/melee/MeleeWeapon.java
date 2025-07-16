@@ -755,8 +755,8 @@ public class MeleeWeapon extends Weapon {
 				if (hero.buff(DashTracker.class) != null) {
 					chargeToUse *= 0.5f;
 				}
-				if (hero.hasTalent(Talent.CLAM_STEPS)) {
-					chargeToUse *= Math.pow(0.795, hero.pointsInTalent(Talent.CLAM_STEPS));
+				if (hero.hasTalent(Talent.CLAM_STEPS, Talent.RK_FENCER)) {
+					chargeToUse *= Math.pow(0.795, hero.pointsInTalent(Talent.CLAM_STEPS, Talent.RK_FENCER));
 				}
 				Talent.AgressiveMovementAbilityTracker tracker = hero.buff(Talent.AgressiveMovementAbilityTracker.class);
 				if (tracker != null && tracker.wepAbilUsed) {
@@ -861,8 +861,8 @@ public class MeleeWeapon extends Weapon {
 				chargeToUse *= 0.5f;
 				hero.buff(DashTracker.class).detach();
 			}
-			if (hero.hasTalent(Talent.CLAM_STEPS)) {
-				chargeToUse *= Math.pow(0.795, hero.pointsInTalent(Talent.CLAM_STEPS));
+			if (hero.hasTalent(Talent.CLAM_STEPS, Talent.RK_FENCER)) {
+				chargeToUse *= Math.pow(0.795, hero.pointsInTalent(Talent.CLAM_STEPS, Talent.RK_FENCER));
 			}
 			Talent.AgressiveMovementAbilityTracker tracker = hero.buff(Talent.AgressiveMovementAbilityTracker.class);
 			if (tracker != null && tracker.wepAbilUsed){
