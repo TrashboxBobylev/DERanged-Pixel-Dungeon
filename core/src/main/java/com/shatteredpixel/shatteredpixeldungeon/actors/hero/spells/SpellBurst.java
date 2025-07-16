@@ -29,6 +29,11 @@ public class SpellBurst extends TargetedClericSpell implements Hero.Doom {
         return Messages.get(this, "desc", minDamage(), maxDamage() )+ "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
     }
 
+    @Override
+    public float chargeUse(Hero hero) {
+        return 2f;
+    }
+
     private int minDamage() {
         return 2+Dungeon.hero.lvl/5;
     }
