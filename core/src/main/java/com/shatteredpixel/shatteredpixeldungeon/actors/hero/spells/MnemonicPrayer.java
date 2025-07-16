@@ -79,7 +79,7 @@ public class MnemonicPrayer extends TargetedClericSpell {
 
 	@Override
 	public boolean canCast(Hero hero) {
-		return super.canCast(hero) && hero.hasTalent(Talent.MNEMONIC_PRAYER);
+		return super.canCast(hero) && hero.hasTalent(Talent.MNEMONIC_PRAYER, Talent.RK_PRIEST);
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class MnemonicPrayer extends TargetedClericSpell {
 
 		QuickSlotButton.target(ch);
 
-		float extension = 2 + hero.pointsInTalent(Talent.MNEMONIC_PRAYER);
+		float extension = 2 + hero.pointsInTalent(Talent.MNEMONIC_PRAYER, Talent.RK_PRIEST);
 		affectChar(ch, extension);
 
 		Char ally = PowerOfMany.getPoweredAlly();
@@ -194,7 +194,7 @@ public class MnemonicPrayer extends TargetedClericSpell {
 	}
 
 	public String desc(){
-		return Messages.get(this, "desc", 2 + Dungeon.hero.pointsInTalent(Talent.MNEMONIC_PRAYER)) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
+		return Messages.get(this, "desc", 2 + Dungeon.hero.pointsInTalent(Talent.MNEMONIC_PRAYER, Talent.RK_PRIEST)) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
 	}
 
 }

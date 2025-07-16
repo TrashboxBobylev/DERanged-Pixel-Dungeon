@@ -152,26 +152,26 @@ public abstract class ClericSpell {
 				spells.add(SpellBurst.INSTANCE);
 			}
 
-			if (cleric.hasTalent(Talent.CLEANSE)){
+			if (cleric.hasTalent(Talent.CLEANSE, Talent.RK_PRIEST)){
 				spells.add(Cleanse.INSTANCE);
 			}
 
-			if (cleric.hasTalent(Talent.HOLY_LANCE)){
+			if (cleric.hasTalent(Talent.HOLY_LANCE, Talent.RK_PRIEST)){
 				spells.add(HolyLance.INSTANCE);
 			}
-			if (cleric.hasTalent(Talent.HALLOWED_GROUND)){
+			if (cleric.hasTalent(Talent.HALLOWED_GROUND, Talent.RK_PRIEST)){
 				spells.add(HallowedGround.INSTANCE);
 			}
-			if (cleric.hasTalent(Talent.MNEMONIC_PRAYER)){
+			if (cleric.hasTalent(Talent.MNEMONIC_PRAYER, Talent.RK_PRIEST)){
 				spells.add(MnemonicPrayer.INSTANCE);
 			}
-			if (cleric.hasTalent(Talent.DIVINE_RAY)){
+			if (cleric.hasTalent(Talent.DIVINE_RAY, Talent.RK_PRIEST)){
 				spells.add(DivineRay.INSTANCE);
 			}
-			if (cleric.hasTalent(Talent.HOLY_BOMB)){
+			if (cleric.hasTalent(Talent.HOLY_BOMB, Talent.RK_PRIEST)){
 				spells.add(HolyBombSpell.INSTANCE);
 			}
-			if (cleric.hasTalent(Talent.RESURRECTION)){
+			if (cleric.hasTalent(Talent.RESURRECTION, Talent.RK_PRIEST)){
 				spells.add(Resurrection.INSTANCE);
 			}
 

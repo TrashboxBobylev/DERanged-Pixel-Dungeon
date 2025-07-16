@@ -6,7 +6,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedLargeArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -14,8 +13,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlessingParticle;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EnergyParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.YellowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
@@ -58,7 +55,7 @@ public class DivineRay extends TargetedClericSpell {
 
     @Override
     public String desc() {
-        return Messages.get(this, "desc", 4*Dungeon.hero.pointsInTalent(Talent.DIVINE_RAY)) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
+        return Messages.get(this, "desc", 4*Dungeon.hero.pointsInTalent(Talent.DIVINE_RAY, Talent.RK_PRIEST)) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
     }
 
     @Override
@@ -92,7 +89,7 @@ public class DivineRay extends TargetedClericSpell {
     }
 
     public void shootLaser(Hero hero, int target) {
-        int maxDistance = 4*hero.pointsInTalent(Talent.DIVINE_RAY);
+        int maxDistance = 4*hero.pointsInTalent(Talent.DIVINE_RAY, Talent.RK_PRIEST);
 
         Ballistica beam = new Ballistica(hero.pos, target, Ballistica.WONT_STOP);
         ArrayList<Char> affected = new ArrayList<>();

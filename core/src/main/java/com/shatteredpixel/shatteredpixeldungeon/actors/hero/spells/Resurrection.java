@@ -36,7 +36,7 @@ public class Resurrection extends ClericSpell {
 
     @Override
     public String desc() {
-        return Messages.get(this, "desc", Dungeon.hero.pointsInTalent(Talent.RESURRECTION)+2) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
+        return Messages.get(this, "desc", Dungeon.hero.pointsInTalent(Talent.RESURRECTION, Talent.RK_PRIEST)+2) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
     }
 
     @Override
@@ -48,7 +48,7 @@ public class Resurrection extends ClericSpell {
         hero.spendAndNext(Actor.TICK);
         hero.sprite.operate(hero.pos);
 
-        Buff.affect(hero, ResurrectionBuff.class, Dungeon.hero.pointsInTalent(Talent.RESURRECTION)+2);
+        Buff.affect(hero, ResurrectionBuff.class, Dungeon.hero.pointsInTalent(Talent.RESURRECTION, Talent.RK_PRIEST)+2);
 
         onSpellCast(tome, hero);
     }
@@ -67,7 +67,7 @@ public class Resurrection extends ClericSpell {
 
         @Override
         public float iconFadePercent() {
-            float maxDuration = Dungeon.hero.pointsInTalent(Talent.RESURRECTION)+2;
+            float maxDuration = Dungeon.hero.pointsInTalent(Talent.RESURRECTION, Talent.RK_PRIEST)+2;
 
             return Math.max(0, (maxDuration - visualcooldown()) / maxDuration);
         }

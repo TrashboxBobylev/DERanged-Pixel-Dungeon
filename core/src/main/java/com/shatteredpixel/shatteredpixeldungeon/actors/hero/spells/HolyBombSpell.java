@@ -31,7 +31,7 @@ public class HolyBombSpell extends TargetedClericSpell {
 
     @Override
     public float chargeUse(Hero hero) {
-        return 4-hero.pointsInTalent(Talent.HOLY_BOMB);
+        return 4-hero.pointsInTalent(Talent.HOLY_BOMB, Talent.RK_PRIEST);
     }
 
     @Override

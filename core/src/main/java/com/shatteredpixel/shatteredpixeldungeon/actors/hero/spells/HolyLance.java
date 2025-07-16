@@ -59,15 +59,15 @@ public class HolyLance extends TargetedClericSpell {
 
 	@Override
 	public String desc() {
-		int min = 15 + 15*Dungeon.hero.pointsInTalent(Talent.HOLY_LANCE);
-		int max = Math.round(27.5f + 27.5f*Dungeon.hero.pointsInTalent(Talent.HOLY_LANCE));
+		int min = 15 + 15*Dungeon.hero.pointsInTalent(Talent.HOLY_LANCE, Talent.RK_PRIEST);
+		int max = Math.round(27.5f + 27.5f*Dungeon.hero.pointsInTalent(Talent.HOLY_LANCE, Talent.RK_PRIEST));
 		return Messages.get(this, "desc", min, max) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
 	}
 
 	@Override
 	public boolean canCast(Hero hero) {
 		return super.canCast(hero)
-				&& hero.hasTalent(Talent.HOLY_LANCE)
+				&& hero.hasTalent(Talent.HOLY_LANCE, Talent.RK_PRIEST)
 				&& hero.buff(LanceCooldown.class) == null;
 	}
 
@@ -114,8 +114,8 @@ public class HolyLance extends TargetedClericSpell {
 							new Callback() {
 								@Override
 								public void call() {
-									int min = 15 + 15*Dungeon.hero.pointsInTalent(Talent.HOLY_LANCE);
-									int max = Math.round(27.5f + 27.5f*Dungeon.hero.pointsInTalent(Talent.HOLY_LANCE));
+									int min = 15 + 15*Dungeon.hero.pointsInTalent(Talent.HOLY_LANCE, Talent.RK_PRIEST);
+									int max = Math.round(27.5f + 27.5f*Dungeon.hero.pointsInTalent(Talent.HOLY_LANCE, Talent.RK_PRIEST));
 									if (Char.hasProp(enemy, Char.Property.UNDEAD) || Char.hasProp(enemy, Char.Property.DEMONIC)){
 										min = max;
 									}

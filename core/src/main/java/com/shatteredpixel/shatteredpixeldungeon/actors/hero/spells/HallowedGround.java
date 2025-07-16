@@ -78,7 +78,7 @@ public class HallowedGround extends TargetedClericSpell {
 
 	@Override
 	public boolean canCast(Hero hero) {
-		return super.canCast(hero) && hero.hasTalent(Talent.HALLOWED_GROUND);
+		return super.canCast(hero) && hero.hasTalent(Talent.HALLOWED_GROUND, Talent.RK_PRIEST);
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class HallowedGround extends TargetedClericSpell {
 
 		ArrayList<Char> affected = new ArrayList<>();
 
-		PathFinder.buildDistanceMap(target, BArray.not(Dungeon.level.solid, null), hero.pointsInTalent(Talent.HALLOWED_GROUND));
+		PathFinder.buildDistanceMap(target, BArray.not(Dungeon.level.solid, null), hero.pointsInTalent(Talent.HALLOWED_GROUND, Talent.RK_PRIEST));
 		for (int i = 0; i < Dungeon.level.length(); i++){
 			if (PathFinder.distance[i] != Integer.MAX_VALUE){
 				int c = Dungeon.level.map[i];
@@ -158,7 +158,7 @@ public class HallowedGround extends TargetedClericSpell {
 	}
 
 	public String desc(){
-		int area = 1 + 2*Dungeon.hero.pointsInTalent(Talent.HALLOWED_GROUND);
+		int area = 1 + 2*Dungeon.hero.pointsInTalent(Talent.HALLOWED_GROUND, Talent.RK_PRIEST);
 		return Messages.get(this, "desc", area) + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(Dungeon.hero));
 	}
 
@@ -174,7 +174,7 @@ public class HallowedGround extends TargetedClericSpell {
 			ArrayList<Char> affected = new ArrayList<>();
 
 			// on avg, hallowed ground produces 9/17/25 tiles of grass, 100/67/50% of total tiles
-			int chance = 10 + 10*Dungeon.hero.pointsInTalent(Talent.HALLOWED_GROUND);
+			int chance = 10 + 10*Dungeon.hero.pointsInTalent(Talent.HALLOWED_GROUND, Talent.RK_PRIEST);
 
 			for (int i = area.left-1; i <= area.right; i++) {
 				for (int j = area.top-1; j <= area.bottom; j++) {

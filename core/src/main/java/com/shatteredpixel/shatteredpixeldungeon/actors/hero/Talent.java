@@ -2057,8 +2057,8 @@ public enum Talent {
 
 		// 10/20/30%
 		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
-				&& Dungeon.hero.hasTalent(Talent.CLEANSE)
-				&& Random.Int(10) < Dungeon.hero.pointsInTalent(Talent.CLEANSE)){
+				&& Dungeon.hero.hasTalent(Talent.CLEANSE, RK_PRIEST)
+				&& Random.Int(10) < Dungeon.hero.pointsInTalent(Talent.CLEANSE, RK_PRIEST)){
 			boolean removed = false;
 			for (Buff b : Dungeon.hero.buffs()) {
 				if (b.type == Buff.buffType.NEGATIVE
