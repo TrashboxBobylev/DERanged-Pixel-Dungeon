@@ -1046,7 +1046,7 @@ public class Hero extends Char {
 		}
 
 		RouletteOfDeath roulette = buff(RouletteOfDeath.class);
-		if (hasTalent(Talent.HONORABLE_SHOT) && roulette != null && roulette.overHalf()) {
+		if (hasTalent(Talent.HONORABLE_SHOT, Talent.RK_OUTLAW) && roulette != null && roulette.overHalf()) {
 			Buff.prolong(hero, Talent.HonorableShotTracker.class, 1f);
 		}
 
@@ -2277,7 +2277,7 @@ public class Hero extends Char {
 				break;
 			case OUTLAW:
 				if (wep instanceof Gun.Bullet) {
-					if (hero.hasTalent(Talent.HEADSHOT) && Random.Float() < 0.01f*hero.pointsInTalent(Talent.HEADSHOT)) {
+					if (hero.hasTalent(Talent.HEADSHOT, Talent.RK_OUTLAW) && Random.Float() < 0.01f*hero.pointsInTalent(Talent.HEADSHOT, Talent.RK_OUTLAW)) {
 						if (!Char.hasProp(enemy, Property.BOSS) && !Char.hasProp(enemy, Property.MINIBOSS) && enemy.alignment == Alignment.ENEMY) {
 							damage = enemy.HP;
 						} else {
@@ -2287,7 +2287,7 @@ public class Hero extends Char {
 					}
 
 					if (hero.buff(Talent.HonorableShotTracker.class) != null
-							&& (enemy.HP/(float)enemy.HT) <= 0.4f*hero.pointsInTalent(Talent.HONORABLE_SHOT)/3f) {
+							&& (enemy.HP/(float)enemy.HT) <= 0.4f*hero.pointsInTalent(Talent.HONORABLE_SHOT, Talent.RK_OUTLAW)/3f) {
 						if (!Char.hasProp(enemy, Property.BOSS) && !Char.hasProp(enemy, Property.MINIBOSS)) {
 							damage = enemy.HP;
 						} else {
@@ -2305,10 +2305,10 @@ public class Hero extends Char {
 							if (hero.belongings.weapon instanceof Gun) {
 								((Gun)hero.belongings.weapon).quickReload();
 							}
-							if (hero.hasTalent(Talent.BULLET_TIME)) {
+							if (hero.hasTalent(Talent.BULLET_TIME, Talent.RK_OUTLAW)) {
 								for (Char ch : Actor.chars()) {
 									if (level.heroFOV[ch.pos] && ch != hero && ch.alignment == Alignment.ENEMY) {
-										Buff.affect(ch, Slow.class, 4*hero.pointsInTalent(Talent.BULLET_TIME));
+										Buff.affect(ch, Slow.class, 4*hero.pointsInTalent(Talent.BULLET_TIME, Talent.RK_OUTLAW));
 									}
 								}
 							}

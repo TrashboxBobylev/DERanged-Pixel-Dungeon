@@ -724,8 +724,8 @@ public class Gun extends MeleeWeapon {
 			if (Gun.this.attachMod == AttachMod.LASER_ATTACH) {
 				ACC *= 1.25f;
 			}
-			if (hero.hasTalent(Talent.INEVITABLE_DEATH) && hero.buff(RouletteOfDeath.class) != null && hero.buff(RouletteOfDeath.class).timeToDeath()) {
-				ACC *= 1 + hero.pointsInTalent(Talent.INEVITABLE_DEATH);
+			if (hero.hasTalent(Talent.INEVITABLE_DEATH, Talent.RK_OUTLAW) && hero.buff(RouletteOfDeath.class) != null && hero.buff(RouletteOfDeath.class).timeToDeath()) {
+				ACC *= 1 + hero.pointsInTalent(Talent.INEVITABLE_DEATH, Talent.RK_OUTLAW);
 			}
 
 			ACC = Gun.this.barrelMod.bulletAccuracyFactor(ACC, Dungeon.level.adjacent(owner.pos, target.pos));
@@ -806,8 +806,8 @@ public class Gun extends MeleeWeapon {
 		}
 
 		public void onShoot() {
-			if (curUser.hasTalent(Talent.ROLLING)) {
-				Buff.prolong(curUser, Talent.RollingTracker.class, curUser.pointsInTalent(Talent.ROLLING));
+			if (curUser.hasTalent(Talent.ROLLING, Talent.RK_OUTLAW)) {
+				Buff.prolong(curUser, Talent.RollingTracker.class, curUser.pointsInTalent(Talent.ROLLING, Talent.RK_OUTLAW));
 			}
 
 			boolean willUseRound = true;
