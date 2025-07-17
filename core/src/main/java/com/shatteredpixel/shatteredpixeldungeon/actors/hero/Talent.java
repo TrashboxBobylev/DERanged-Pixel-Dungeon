@@ -2353,9 +2353,6 @@ public enum Talent {
 					damage = Math.round(damage*buff.getDmgMulti());
 				}
 			}
-			if (hero.buff(Sheath.DashAttackAcceleration.class) != null) {
-				damage = Math.round(damage*hero.buff(Sheath.DashAttackAcceleration.class).getDmgMulti());
-			}
 			hero.buff(Sheath.DashAttackTracker.class).detach();
 		}
 
