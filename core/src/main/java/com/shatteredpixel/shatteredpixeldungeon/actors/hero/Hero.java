@@ -1051,8 +1051,8 @@ public class Hero extends Char {
 		}
 
 		Awakening awakening = buff(Awakening.class);
-		if (awakening != null && awakening.isAwaken() && hasTalent(Talent.HASTE_EVASION)) {
-			Buff.prolong(hero, Haste.class, 1+hero.pointsInTalent(Talent.HASTE_EVASION));
+		if (awakening != null && awakening.isAwaken() && hasTalent(Talent.HASTE_EVASION, Talent.RK_SLAYER)) {
+			Buff.prolong(hero, Haste.class, 1+hero.pointsInTalent(Talent.HASTE_EVASION, Talent.RK_SLAYER));
 		}
 
 		return super.defenseVerb();
@@ -2065,8 +2065,8 @@ public class Hero extends Char {
 
 		Awakening awakening = buff(Awakening.class);
 		if (awakening != null && awakening.isAwaken()) {
-			if (hasTalent(Talent.ACCELERATED_LETHALITY)) {
-				chance += 0.1f*pointsInTalent(Talent.ACCELERATED_LETHALITY);
+			if (hasTalent(Talent.ACCELERATED_LETHALITY, Talent.RK_SLAYER)) {
+				chance += 0.1f*pointsInTalent(Talent.ACCELERATED_LETHALITY, Talent.RK_SLAYER);
 			}
 			chance += Math.max(0, 0.01f*(defenseSkill(enemy) - (4 + lvl)));
 		}
@@ -2428,9 +2428,9 @@ public class Hero extends Char {
 
 				Awakening awakening = hero.buff(Awakening.class);
 				if (awakening != null && awakening.isAwaken()) {
-					if (hero.hasTalent(Talent.STABLE_BARRIER)) {
+					if (hero.hasTalent(Talent.STABLE_BARRIER, Talent.RK_SLAYER)) {
 						int shield = 1;
-						int maxShield = Math.round(hero.HT * 0.2f * hero.pointsInTalent(Talent.STABLE_BARRIER));
+						int maxShield = Math.round(hero.HT * 0.2f * hero.pointsInTalent(Talent.STABLE_BARRIER, Talent.RK_SLAYER));
 						int curShield = 0;
 						if (hero.buff(Barrier.class) != null) curShield = hero.buff(Barrier.class).shielding();
 						shield = Math.min(shield, maxShield-curShield);

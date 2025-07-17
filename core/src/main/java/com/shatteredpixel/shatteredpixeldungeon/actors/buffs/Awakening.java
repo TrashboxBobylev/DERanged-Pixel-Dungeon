@@ -21,8 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -37,6 +35,8 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 
 public class Awakening extends Buff implements ActionIndicator.Action {
 
@@ -68,7 +68,7 @@ public class Awakening extends Buff implements ActionIndicator.Action {
 
     public int evasionBonus( int heroLvl, int excessArmorStr ){
         if (isAwaken()) {
-            return heroLvl/2 + excessArmorStr*Dungeon.hero.pointsInTalent(Talent.AFTERIMAGE);
+            return heroLvl/2 + excessArmorStr*Dungeon.hero.pointsInTalent(Talent.AFTERIMAGE, Talent.RK_SLAYER);
         } else {
             return 0;
         }
@@ -161,8 +161,8 @@ public class Awakening extends Buff implements ActionIndicator.Action {
                 Sample.INSTANCE.play( Assets.Sounds.CHALLENGE );
                 hero.sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
                 //GameScene.flash(0xFF0000);
-                if (hero.hasTalent(Talent.FASTER_THAN_LIGHT)) {
-                    Buff.prolong(hero, EvasiveMove.class, hero.pointsInTalent(Talent.FASTER_THAN_LIGHT) + 0.0001f);
+                if (hero.hasTalent(Talent.FASTER_THAN_LIGHT, Talent.RK_SLAYER)) {
+                    Buff.prolong(hero, EvasiveMove.class, hero.pointsInTalent(Talent.FASTER_THAN_LIGHT, Talent.RK_SLAYER) + 0.0001f);
                 }
                 hero.spendAndNext(Actor.TICK);
             } else {
@@ -170,7 +170,7 @@ public class Awakening extends Buff implements ActionIndicator.Action {
             }
         } else {
             state = State.OFF;
-            Buff.affect(hero, AwakeningCooldown.class, AwakeningCooldown.DURATION * (float)Math.pow(0.8f, hero.pointsInTalent(Talent.QUICK_RECOVER)));
+            Buff.affect(hero, AwakeningCooldown.class, AwakeningCooldown.DURATION * (float)Math.pow(0.8f, hero.pointsInTalent(Talent.QUICK_RECOVER, Talent.RK_SLAYER)));
             Buff.affect(hero, Vulnerable.class, 5f);
             BuffIndicator.refreshHero();
             ActionIndicator.refresh();
