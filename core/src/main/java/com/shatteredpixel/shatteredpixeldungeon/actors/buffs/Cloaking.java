@@ -40,7 +40,7 @@ public class Cloaking extends Invisibility {
 	
 	@Override
 	public boolean attachTo( Char target ) {
-		if (Dungeon.level != null) {
+		if (Dungeon.hero.pointsInTalent(Talent.STEALTH_MASTER, Talent.RK_SPECIALIST) < 2 && Dungeon.level != null) {
 			for (Mob m : Dungeon.level.mobs) {
 				if (Dungeon.level.adjacent(m.pos, target.pos) && m.alignment != target.alignment) {
 					return false;
