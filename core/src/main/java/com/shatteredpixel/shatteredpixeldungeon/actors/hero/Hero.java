@@ -2083,7 +2083,7 @@ public class Hero extends Char {
 					buff(Sheath.FlashSlashCooldown.class) == null &&
 					buff(Sheath.DashAttackTracker.class) == null &&
 					this.belongings.attackingWeapon() instanceof MeleeWeapon) {
-				switch (pointsInTalent(Talent.ENHANCED_CRIT)) {
+				switch (pointsInTalent(Talent.ENHANCED_CRIT, Talent.RK_MASTER)) {
 					case 0: default:
 						chance *= 1.5f;
 						break;
@@ -2423,7 +2423,7 @@ public class Hero extends Char {
 				Buff.affect(enemy, Sheath.CriticalAttack.class);
 
 				if (Sheath.isFlashSlash()) {
-					damage = Math.round(damage * (1 + 0.15f * hero.pointsInTalent(Talent.POWERFUL_SLASH)));
+					damage = Math.round(damage * (1 + 0.15f * hero.pointsInTalent(Talent.POWERFUL_SLASH, Talent.RK_MASTER)));
 				}
 
 				Awakening awakening = hero.buff(Awakening.class);
@@ -2442,7 +2442,7 @@ public class Hero extends Char {
 				}
 			} else {
 				if (Sheath.isFlashSlash()) {
-					Buff.prolong(hero, Sheath.FlashSlashCooldown.class, (30-5*hero.pointsInTalent(Talent.STATIC_PREPARATION))-1);
+					Buff.prolong(hero, Sheath.FlashSlashCooldown.class, (30-5*hero.pointsInTalent(Talent.STATIC_PREPARATION, Talent.RK_MASTER))-1);
 				}
 			}
 		}
@@ -3515,7 +3515,7 @@ public class Hero extends Char {
 
 		if (hero.buff(Sheath.Sheathing.class) != null) {
 			hero.buff(Sheath.Sheathing.class).detach();
-			if (!attackTarget.isAlive() && Random.Float() < hero.pointsInTalent(Talent.QUICK_SHEATHING)/3f) {
+			if (!attackTarget.isAlive() && Random.Float() < hero.pointsInTalent(Talent.QUICK_SHEATHING, Talent.RK_MASTER)/3f) {
 				Buff.affect(hero, Sheath.Sheathing.class);
 			}
 		}

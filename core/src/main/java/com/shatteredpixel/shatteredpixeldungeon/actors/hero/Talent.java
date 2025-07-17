@@ -2346,7 +2346,7 @@ public enum Talent {
 		}
 
 		if (hero.buff(Sheath.DashAttackTracker.class) != null) {
-			if (hero.hasTalent(Talent.ACCELERATION)) {
+			if (hero.hasTalent(Talent.ACCELERATION, RK_MASTER)) {
 				Buff.prolong(hero, Sheath.DashAttackAcceleration.class, Sheath.DashAttackAcceleration.DURATION).hit();
 				Sheath.DashAttackAcceleration buff = hero.buff(Sheath.DashAttackAcceleration.class);
 				if (buff != null) {
