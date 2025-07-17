@@ -2119,7 +2119,7 @@ public class Hero extends Char {
 
 		damage = (int)(max * 0.75f + damage * 0.25f);
 
-		multi += 0.05f * pointsInTalent(Talent.LETHAL_POWER);
+		multi += 0.05f * pointsInTalent(Talent.LETHAL_POWER, Talent.RK_SLASHER);
 
 		return Math.round(damage * multi) + bonusDamage;
 	}

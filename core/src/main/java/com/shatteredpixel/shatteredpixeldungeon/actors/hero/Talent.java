@@ -1704,7 +1704,7 @@ public enum Talent {
 				hero.belongings.armor.identify();
 		}
 
-		if (talent == STORED_POWER) {
+		if (talent == STORED_POWER || talent == RK_SLASHER) {
 			BuffIndicator.refreshHero();
 		}
 

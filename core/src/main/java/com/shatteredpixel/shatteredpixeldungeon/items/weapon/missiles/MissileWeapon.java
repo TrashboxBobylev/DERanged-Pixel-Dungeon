@@ -201,7 +201,7 @@ abstract public class MissileWeapon extends Weapon {
 
 		if (this instanceof SwordAura.Aura) {
 			Ballistica aim = new Ballistica(hero.pos, dst, Ballistica.DASH);
-			if (Random.Float() < hero.pointsInTalent(Talent.ARCANE_POWER)/3f &&
+			if (Random.Float() < hero.pointsInTalent(Talent.ARCANE_POWER, Talent.RK_SLASHER)/3f &&
 					hero.belongings.weapon instanceof MeleeWeapon &&
 					((MeleeWeapon)hero.belongings.weapon).hasEnchant(Projecting.class, user)) {
 				projecting = true;

@@ -1,14 +1,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Sheath;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.bow.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.DisposableMissileWeapon;
@@ -30,6 +27,8 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+
 public class SwordAura extends Buff implements ActionIndicator.Action {
     {
         type = buffType.NEUTRAL;
@@ -46,13 +45,13 @@ public class SwordAura extends Buff implements ActionIndicator.Action {
 
     private float storeMulti() {
         float multi = 1f;
-        multi *= 1+hero.pointsInTalent(Talent.MIND_FOCUSING)/3f;
+        multi *= 1+hero.pointsInTalent(Talent.MIND_FOCUSING, Talent.RK_SLASHER)/3f;
         return multi;
     }
 
     private int maxDamage() {
         int maxDamage = 60;
-        maxDamage += 30 * hero.pointsInTalent(Talent.STORED_POWER);
+        maxDamage += 30 * hero.pointsInTalent(Talent.STORED_POWER, Talent.RK_SLASHER);
         return maxDamage;
     }
 
@@ -68,7 +67,7 @@ public class SwordAura extends Buff implements ActionIndicator.Action {
     }
 
     public void use(int recoverAmt) {
-        this.damage -= Math.round(damageUse()*(1-0.1f*(1+hero.pointsInTalent(Talent.ENERGY_SAVING)))) - recoverAmt;
+        this.damage -= Math.round(damageUse()*(1-0.1f*(1+hero.pointsInTalent(Talent.ENERGY_SAVING, Talent.RK_SLASHER)))) - recoverAmt;
         if (damage <= 0) {
             detach();
             ActionIndicator.clearAction();
@@ -206,7 +205,7 @@ public class SwordAura extends Buff implements ActionIndicator.Action {
         @Override
         public int proc(Char attacker, Char defender, int damage) {
             int dmg = super.proc(attacker, defender, damage);
-            if (Random.Float() < hero.pointsInTalent(Talent.ARCANE_POWER)/3f && hero.belongings.weapon != null) {
+            if (Random.Float() < hero.pointsInTalent(Talent.ARCANE_POWER, Talent.RK_SLASHER)/3f && hero.belongings.weapon != null) {
                 dmg = hero.belongings.weapon.proc(attacker, defender, dmg);
             }
             return dmg;
@@ -228,14 +227,14 @@ public class SwordAura extends Buff implements ActionIndicator.Action {
                     if (curUser.shoot(ch, this)) {
                         hitChar++;
 
-                        if (hero.hasTalent(Talent.WIND_BLAST)) {
-                            ch.damage(5*hero.pointsInTalent(Talent.WIND_BLAST), new SwordAuraMagicDamage());
+                        if (hero.hasTalent(Talent.WIND_BLAST, Talent.RK_SLASHER)) {
+                            ch.damage(5*hero.pointsInTalent(Talent.WIND_BLAST, Talent.RK_SLASHER), new SwordAuraMagicDamage());
                         }
                     }
                 }
             }
-            if (hero.hasTalent(Talent.ENERGY_COLLECT)) {
-                SwordAura.this.use(hitChar * Math.round(damageUse()/(float)(7-hero.pointsInTalent(Talent.ENERGY_COLLECT))));
+            if (hero.hasTalent(Talent.ENERGY_COLLECT, Talent.RK_SLASHER)) {
+                SwordAura.this.use(hitChar * Math.round(damageUse()/(float)(7-hero.pointsInTalent(Talent.ENERGY_COLLECT, Talent.RK_SLASHER))));
             } else {
                 SwordAura.this.use();
             }
