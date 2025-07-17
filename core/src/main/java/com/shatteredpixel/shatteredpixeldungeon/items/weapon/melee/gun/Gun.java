@@ -328,9 +328,9 @@ public class Gun extends MeleeWeapon {
 			Buff.affect(hero, Barrier.class).setShield( 1 + 2 * hero.pointsInTalent(Talent.SAFE_RELOAD, Talent.WELL_PROTECTED));
 		}
 
-		if (hero.hasTalent(Talent.ELEMENTAL_BULLET) && round == 0) {
+		if (hero.hasTalent(Talent.ELEMENTAL_BULLET, Talent.RK_GUNSLINGER) && round == 0) {
 			int chance = Random.Int(6);
-			int point = Dungeon.hero.pointsInTalent(Talent.ELEMENTAL_BULLET);
+			int point = Dungeon.hero.pointsInTalent(Talent.ELEMENTAL_BULLET, Talent.RK_GUNSLINGER);
 			switch (chance) {
 				default:
 					break;
@@ -411,7 +411,7 @@ public class Gun extends MeleeWeapon {
 		amount = this.magazineMod.reloadTimeFactor(amount);
 
 		if (hero != null && user == hero) {
-			amount -= hero.pointsInTalent(Talent.FAST_RELOAD);
+			amount -= hero.pointsInTalent(Talent.FAST_RELOAD, Talent.RK_GUNSLINGER);
 			if (((Hero)user).heroClass.is(HeroClass.GUNNER)) {
 				amount -= 1;
 			}
@@ -821,8 +821,8 @@ public class Gun extends MeleeWeapon {
 				round --;
 			}
 
-			if (round == 0 && curUser.hasTalent(Talent.IMPROVISATION)) {
-				Buff.affect(curUser, Barrier.class).setShield(8*curUser.pointsInTalent(Talent.IMPROVISATION));
+			if (round == 0 && curUser.hasTalent(Talent.IMPROVISATION, Talent.RK_GUNSLINGER)) {
+				Buff.affect(curUser, Barrier.class).setShield(8*curUser.pointsInTalent(Talent.IMPROVISATION, Talent.RK_GUNSLINGER));
 			}
 
 			boolean willAggroEnemy = true;

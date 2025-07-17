@@ -864,7 +864,7 @@ public class Hero extends Char {
 		}
 
 		if (hero.subClass.is(HeroSubClass.GUNSLINGER) && hero.justMoved && wep instanceof MissileWeapon) {
-			accuracy *= 0.25f*(1+0.5f*hero.pointsInTalent(Talent.MOVING_SHOT));
+			accuracy *= 0.25f*(1+0.5f*hero.pointsInTalent(Talent.MOVING_SHOT, Talent.RK_GUNSLINGER));
 		}
 
 		if (buff(Scimitar.SwordDance.class) != null){
@@ -1205,10 +1205,10 @@ public class Hero extends Char {
 			speed *= 3f;
 		}
 
-		if (hero.hasTalent(Talent.LIGHT_MOVEMENT)) {
+		if (hero.hasTalent(Talent.LIGHT_MOVEMENT, Talent.RK_GUNSLINGER)) {
 			int aEnc = hero.belongings.armor.STRReq() - hero.STR();
 			if (aEnc < 0) {
-				speed *= 1 + 0.05f * hero.pointsInTalent(Talent.LIGHT_MOVEMENT) * (-aEnc);
+				speed *= 1 + 0.05f * hero.pointsInTalent(Talent.LIGHT_MOVEMENT, Talent.RK_GUNSLINGER) * (-aEnc);
 			}
 		}
 
@@ -2914,9 +2914,9 @@ public class Hero extends Char {
 				hero.buff(Talent.RollingTracker.class).detach();
 			}
 
-			if (hero.hasTalent(Talent.QUICK_RELOAD)
+			if (hero.hasTalent(Talent.QUICK_RELOAD, Talent.RK_GUNSLINGER)
 					&& hero.belongings.weapon instanceof Gun
-					&& Random.Float() < 0.03f * hero.pointsInTalent(Talent.QUICK_RELOAD)
+					&& Random.Float() < 0.03f * hero.pointsInTalent(Talent.QUICK_RELOAD, Talent.RK_GUNSLINGER)
 					&& Dungeon.bullet > 1
 					&& !((Gun) hero.belongings.weapon).isReloaded()) {
 				Dungeon.bullet --;

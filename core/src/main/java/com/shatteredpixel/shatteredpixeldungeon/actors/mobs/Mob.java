@@ -958,8 +958,8 @@ public abstract class Mob extends Char {
 				berserk.add(0.067f*Dungeon.hero.pointsInTalent(Talent.LETHAL_RAGE, Talent.RK_BERSERKER));
 			}
 
-			if (hero.hasTalent(Talent.SOUL_BULLET)) {
-				Buff.affect(hero, InfiniteBullet.class, hero.pointsInTalent(Talent.SOUL_BULLET));
+			if (hero.hasTalent(Talent.SOUL_BULLET, Talent.RK_GUNSLINGER)) {
+				Buff.affect(hero, InfiniteBullet.class, hero.pointsInTalent(Talent.SOUL_BULLET, Talent.RK_GUNSLINGER));
 			}
 
 			if (hero.hasTalent(Talent.ADRENALINE_SURGE)) {
