@@ -1709,7 +1709,7 @@ public enum Talent {
 		}
 
 		//adventurer
-		if (talent == WATCHTOWER && hero.pointsInTalent(WATCHTOWER) > 1) {
+		if ((talent == WATCHTOWER || talent == RK_ENGINEER) && hero.pointsInTalent(WATCHTOWER) > 1) {
 			for (Char ch : Actor.chars()) {
 				if (ch instanceof WatchTower) {
 					((WatchTower) ch).updateFOV();
@@ -2272,8 +2272,8 @@ public enum Talent {
 			Buff.prolong(hero, Adrenaline.class, hero.pointsInTalent(Talent.WAR_CRY, AMBUSH));
 		}
 
-		if (hero.hasTalent(Talent.BLOOMING_WEAPON)
-				&& Random.Float() < 0.05f*hero.pointsInTalent(Talent.BLOOMING_WEAPON)) {
+		if (hero.hasTalent(Talent.BLOOMING_WEAPON, RK_ENGINEER)
+				&& Random.Float() < 0.05f*hero.pointsInTalent(Talent.BLOOMING_WEAPON, RK_ENGINEER)) {
 			boolean secondPlant = Random.Float() <= 0.33f;
 			ArrayList<Integer> positions = new ArrayList<>();
 			Blooming blooming = new Blooming();

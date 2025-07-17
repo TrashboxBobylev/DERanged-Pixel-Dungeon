@@ -33,7 +33,7 @@ public class WatchTower extends Building {
 
     public void updateFOV() {
         viewDistance = 4;
-        if (Dungeon.hero.pointsInTalent(Talent.WATCHTOWER) > 1) {
+        if (Dungeon.hero.pointsInTalent(Talent.WATCHTOWER, Talent.RK_ENGINEER) > 1) {
             viewDistance = 6;
         }
 

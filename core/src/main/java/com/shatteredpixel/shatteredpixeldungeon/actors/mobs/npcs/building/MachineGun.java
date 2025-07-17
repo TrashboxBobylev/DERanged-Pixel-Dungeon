@@ -2,24 +2,15 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.building;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM201;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.DisposableMissileWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MachineGunSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Callback;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class MachineGun extends Building {
@@ -62,7 +53,7 @@ public class MachineGun extends Building {
 
     @Override
     public int damageRoll() {
-        if (Dungeon.hero.pointsInTalent(Talent.MACHINEGUN) > 1) {
+        if (Dungeon.hero.pointsInTalent(Talent.MACHINEGUN, Talent.RK_ENGINEER) > 1) {
             return Random.NormalIntRange(6, 6+Math.round(Dungeon.scalingDepth()*2f));
         } else {
             return Random.NormalIntRange(4, 4+Math.round(Dungeon.scalingDepth()*1.33f));
@@ -106,7 +97,7 @@ public class MachineGun extends Building {
 
     @Override
     protected boolean act() {
-        viewDistance = 4 + (Dungeon.hero.pointsInTalent(Talent.MACHINEGUN) == 3 ? 2 : 0);
+        viewDistance = 4 + (Dungeon.hero.pointsInTalent(Talent.MACHINEGUN, Talent.RK_ENGINEER) == 3 ? 2 : 0);
         return super.act();
     }
 

@@ -66,7 +66,7 @@ public class Cannon extends Building {
         Game.runOnRenderThread(new Callback() {
             @Override
             public void call() {
-                int bulletReq = Dungeon.hero.pointsInTalent(Talent.CANNON) > 2 ? 3 : 6;
+                int bulletReq = Dungeon.hero.pointsInTalent(Talent.CANNON, Talent.RK_ENGINEER) > 2 ? 3 : 6;
                 if (Dungeon.bullet < bulletReq) {
                     GLog.w(Messages.get(Cannon.class, "no_bullet"));
                     return;
@@ -122,7 +122,7 @@ public class Cannon extends Building {
                 continue;
             }
 
-            int dmg = Random.NormalIntRange(40, Dungeon.hero.pointsInTalent(Talent.CANNON) > 1 ? 150 : 100);
+            int dmg = Random.NormalIntRange(40, Dungeon.hero.pointsInTalent(Talent.CANNON, Talent.RK_ENGINEER) > 1 ? 150 : 100);
 
             //those not at the center of the blast take less damage
             if (ch.pos != cell){
@@ -156,7 +156,7 @@ public class Cannon extends Building {
         @Override
         public void onSelect(Integer target) {
             if (target != null) {
-                int bulletReq = Dungeon.hero.pointsInTalent(Talent.CANNON) > 2 ? 3 : 6;
+                int bulletReq = Dungeon.hero.pointsInTalent(Talent.CANNON, Talent.RK_ENGINEER) > 2 ? 3 : 6;
                 if (target == Cannon.this.pos) return;
                 final Ballistica aim = new Ballistica(Cannon.this.pos, target, Ballistica.PROJECTILE);
                 cell = aim.collisionPos;

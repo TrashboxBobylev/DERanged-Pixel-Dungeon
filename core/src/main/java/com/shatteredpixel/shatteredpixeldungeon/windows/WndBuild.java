@@ -39,13 +39,13 @@ public class WndBuild extends Window {
 
         for (Build.Building building : Build.Building.values()) {
             int ropeUse = building.ropeReq;
-            if (building == Build.Building.BARRICADE && Dungeon.hero.pointsInTalent(Talent.BARRICADE) > 2) {
+            if (building == Build.Building.BARRICADE && Dungeon.hero.pointsInTalent(Talent.BARRICADE, Talent.RK_ENGINEER) > 2) {
                 ropeUse /= 2;
             }
-            if (building == Build.Building.WIRE && Dungeon.hero.pointsInTalent(Talent.WIRE) > 2) {
+            if (building == Build.Building.WIRE && Dungeon.hero.pointsInTalent(Talent.WIRE, Talent.RK_ENGINEER) > 2) {
                 ropeUse /= 2;
             }
-            if (building == Build.Building.WATCHTOWER && Dungeon.hero.pointsInTalent(Talent.WATCHTOWER) > 2) {
+            if (building == Build.Building.WATCHTOWER && Dungeon.hero.pointsInTalent(Talent.WATCHTOWER, Talent.RK_ENGINEER) > 2) {
                 ropeUse /= 2;
             }
             String text = "_" + Messages.titleCase(building.title()) + " " + Messages.get(this, "rope_req", ropeUse) + ":_ " + building.desc();

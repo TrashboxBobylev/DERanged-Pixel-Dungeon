@@ -5,7 +5,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BarricadeSprite;
@@ -17,13 +16,13 @@ import com.watabou.utils.Random;
 public class Barricade extends Building {
     int maxDr;
     {
-        if (Dungeon.hero.pointsInTalent(Talent.BARRICADE) > 1) {
+        if (Dungeon.hero.pointsInTalent(Talent.BARRICADE, Talent.RK_ENGINEER) > 1) {
             HP = HT = 30+Dungeon.depth*5;
         } else {
             HP = HT = 60+Dungeon.depth*5;
         }
 
-        maxDr = Dungeon.hero.pointsInTalent(Talent.BARRICADE) > 1 ? 10 : 5;
+        maxDr = Dungeon.hero.pointsInTalent(Talent.BARRICADE, Talent.RK_ENGINEER) > 1 ? 10 : 5;
 
         state = PASSIVE;
 

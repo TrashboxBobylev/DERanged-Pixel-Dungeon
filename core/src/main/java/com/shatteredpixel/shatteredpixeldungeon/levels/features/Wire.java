@@ -24,7 +24,7 @@ public class Wire {
         if (ch != null) {
             Buff.affect(ch, Cripple.class, Cripple.DURATION/2f);
             int bleed = Math.round(2+Dungeon.depth/3f);
-            if (Dungeon.hero.pointsInTalent(Talent.WIRE) > 1) {
+            if (Dungeon.hero.pointsInTalent(Talent.WIRE, Talent.RK_ENGINEER) > 1) {
                 bleed += 3;
             }
             Buff.affect(ch, Bleeding.class).set(bleed);

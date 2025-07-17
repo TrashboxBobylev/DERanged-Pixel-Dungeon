@@ -129,17 +129,17 @@ public class Build extends Buff implements ActionIndicator.Action {
             case FLOOR:
                 return haveRope;
             case BARRICADE:
-                return haveRope && hero.hasTalent(Talent.BARRICADE);
+                return haveRope && hero.hasTalent(Talent.BARRICADE, Talent.RK_ENGINEER);
             case WIRE:
-                return haveRope && hero.hasTalent(Talent.WIRE);
+                return haveRope && hero.hasTalent(Talent.WIRE, Talent.RK_ENGINEER);
             case WATCHTOWER:
-                return haveRope && hero.hasTalent(Talent.WATCHTOWER);
+                return haveRope && hero.hasTalent(Talent.WATCHTOWER, Talent.RK_ENGINEER);
             case CANNON:
-                return haveRope && hero.hasTalent(Talent.CANNON);
+                return haveRope && hero.hasTalent(Talent.CANNON, Talent.RK_ENGINEER);
             case MACHINEGUN:
-                return haveRope && hero.hasTalent(Talent.MACHINEGUN);
+                return haveRope && hero.hasTalent(Talent.MACHINEGUN, Talent.RK_ENGINEER);
             case MORTAR:
-                return haveRope && hero.hasTalent(Talent.MORTAR);
+                return haveRope && hero.hasTalent(Talent.MORTAR, Talent.RK_ENGINEER);
         }
         return false;
     }
@@ -305,7 +305,7 @@ public class Build extends Buff implements ActionIndicator.Action {
                         level.occupyCell(barricade);
 
                         GameScene.updateMap(target);
-                        if (hero.pointsInTalent(Talent.BARRICADE) > 2) {
+                        if (hero.pointsInTalent(Talent.BARRICADE, Talent.RK_ENGINEER) > 2) {
                             ropeUse /= 2;
                         }
                         break;
@@ -320,7 +320,7 @@ public class Build extends Buff implements ActionIndicator.Action {
                         Level.set(target, Terrain.WIRE);
                         GameScene.updateMap(target);
 
-                        if (hero.pointsInTalent(Talent.WIRE) > 2) {
+                        if (hero.pointsInTalent(Talent.WIRE, Talent.RK_ENGINEER) > 2) {
                             ropeUse /= 2;
                         }
                         break;
@@ -345,7 +345,7 @@ public class Build extends Buff implements ActionIndicator.Action {
 
                         GameScene.updateMap(target);
 
-                        if (hero.pointsInTalent(Talent.WATCHTOWER) > 2) {
+                        if (hero.pointsInTalent(Talent.WATCHTOWER, Talent.RK_ENGINEER) > 2) {
                             ropeUse /= 2;
                         }
                         break;
