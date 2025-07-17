@@ -1189,8 +1189,8 @@ public class Hero extends Char {
 			speed *= 1f + 0.25f * hero.pointsInTalent(Talent.HASTE_MOVE);
 		}
 
-		if (level.map[hero.pos] == Terrain.FURROWED_GRASS && hero.hasTalent(Talent.JUNGLE_EXPLORE)) {
-			speed *= Math.pow(1.2f, hero.pointsInTalent(Talent.JUNGLE_EXPLORE));
+		if (level.map[hero.pos] == Terrain.FURROWED_GRASS && hero.hasTalent(Talent.JUNGLE_EXPLORE, Talent.RK_EXPLORER)) {
+			speed *= Math.pow(1.2f, hero.pointsInTalent(Talent.JUNGLE_EXPLORE, Talent.RK_EXPLORER));
 		}
 
 		if (hero.buff(HorseRiding.class) != null

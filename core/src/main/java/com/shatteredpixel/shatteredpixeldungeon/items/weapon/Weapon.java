@@ -378,8 +378,8 @@ abstract public class Weapon extends KindOfWeapon {
 		if (owner instanceof Hero && owner.buff(AscendedForm.AscendBuff.class) != null){
 			reach += 2;
 		}
-		if (!hero.heroClass.is(HeroClass.ADVENTURER) && hero.hasTalent(Talent.LONG_MACHETE)) {
-			reach += hero.pointsInTalent(Talent.LONG_MACHETE);
+		if (!hero.heroClass.is(HeroClass.ADVENTURER) && hero.hasTalent(Talent.LONG_MACHETE, Talent.RK_EXPLORER)) {
+			reach += hero.pointsInTalent(Talent.LONG_MACHETE, Talent.RK_EXPLORER);
 		}
 		if (hasEnchant(Projecting.class, owner)){
 			return reach + Math.round(Enchantment.genericProcChanceMultiplier(owner));

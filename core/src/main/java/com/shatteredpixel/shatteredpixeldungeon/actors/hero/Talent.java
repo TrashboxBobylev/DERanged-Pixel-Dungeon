@@ -2399,9 +2399,9 @@ public enum Talent {
 			}
 		}
 
-		if (hero.belongings.attackingWeapon() instanceof MeleeWeapon && !hero.heroClass.is(HeroClass.ADVENTURER) && hero.hasTalent(Talent.LONG_MACHETE)) {
+		if (hero.belongings.attackingWeapon() instanceof MeleeWeapon && !hero.heroClass.is(HeroClass.ADVENTURER) && hero.hasTalent(Talent.LONG_MACHETE, RK_EXPLORER)) {
 			int dist = level.distance(hero.pos, enemy.pos)-1;
-			dist = Math.min(dist, hero.pointsInTalent(Talent.LONG_MACHETE));
+			dist = Math.min(dist, hero.pointsInTalent(Talent.LONG_MACHETE, RK_EXPLORER));
 			damage = (int)Math.round(damage * Math.pow(0.8f, dist));
 		}
 

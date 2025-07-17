@@ -51,7 +51,7 @@ public class Machete extends MeleeWeapon {
     public int reachFactor(Char owner) {
         int reach = super.reachFactor(owner);
 
-        reach += Dungeon.hero.pointsInTalent(Talent.LONG_MACHETE);
+        reach += Dungeon.hero.pointsInTalent(Talent.LONG_MACHETE, Talent.RK_EXPLORER);
 
         return reach;
     }
@@ -119,8 +119,8 @@ public class Machete extends MeleeWeapon {
                 GameScene.updateMap(cell);
                 CellEmitter.get(cell).burst( LeafParticle.LEVEL_SPECIFIC, 4 );
                 float chance = 0.5f;
-                if (hero.hasTalent(Talent.ROPE_COLLECTOR)) {
-                    chance *= 1+0.2f * hero.pointsInTalent(Talent.ROPE_COLLECTOR);
+                if (hero.hasTalent(Talent.ROPE_COLLECTOR, Talent.RK_EXPLORER)) {
+                    chance *= 1+0.2f * hero.pointsInTalent(Talent.ROPE_COLLECTOR, Talent.RK_EXPLORER);
                 }
                 if (Random.Float() < chance) {
                     count ++;

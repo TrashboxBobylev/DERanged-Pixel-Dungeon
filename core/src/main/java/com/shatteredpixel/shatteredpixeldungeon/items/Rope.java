@@ -80,7 +80,7 @@ public class Rope extends Item {
                 }
 
                 int ballistica = Ballistica.PROJECTILE;
-                if (hero.pointsInTalent(Talent.ROPE_MASTER) > 2) {
+                if (hero.pointsInTalent(Talent.ROPE_MASTER, Talent.RK_EXPLORER) > 2) {
                     ballistica = Ballistica.STOP_TARGET;
                 }
 
@@ -121,7 +121,7 @@ public class Rope extends Item {
 
         boolean bind = false;
         if (bestPos == -1) {
-            if (hero.hasTalent(Talent.VINE_BIND)) {
+            if (hero.hasTalent(Talent.VINE_BIND, Talent.RK_EXPLORER)) {
                 bind = true;
             } else {
                 GLog.i(Messages.get(Rope.class, "does_nothing"));
@@ -132,7 +132,7 @@ public class Rope extends Item {
         final int pulledPos = bestPos;
 
         int ropeUse = Dungeon.level.distance(enemy.pos, pulledPos);
-        if (hero.hasTalent(Talent.ROPE_MASTER)) {
+        if (hero.hasTalent(Talent.ROPE_MASTER, Talent.RK_EXPLORER)) {
             ropeUse = Math.round(ropeUse/2f);
         }
         if (bind) {
@@ -149,7 +149,7 @@ public class Rope extends Item {
         }
 
         if (bind) {
-            Buff.affect(enemy, Roots.class, 3*hero.pointsInTalent(Talent.VINE_BIND));
+            Buff.affect(enemy, Roots.class, 3*hero.pointsInTalent(Talent.VINE_BIND, Talent.RK_EXPLORER));
             updateQuickslot();
             return;
         }
@@ -167,13 +167,13 @@ public class Rope extends Item {
                                 Dungeon.observe();
                                 GameScene.updateFog();
                                 float spendTime = Actor.TICK;
-                                if (hero.pointsInTalent(Talent.ROPE_MASTER) > 1){
+                                if (hero.pointsInTalent(Talent.ROPE_MASTER, Talent.RK_EXPLORER) > 1){
                                     spendTime = 0;
                                 }
                                 hero.spendAndNext(spendTime);
 
-                                if (hero.hasTalent(Talent.LASSO)) {
-                                    Buff.affect(enemy, Cripple.class, 1+hero.pointsInTalent(Talent.LASSO));
+                                if (hero.hasTalent(Talent.LASSO, Talent.RK_EXPLORER)) {
+                                    Buff.affect(enemy, Cripple.class, 1+hero.pointsInTalent(Talent.LASSO, Talent.RK_EXPLORER));
                                 }
 
                                 updateQuickslot();

@@ -416,8 +416,8 @@ public abstract class Char extends Actor {
 					//PathFinder.distance[hero.pos]가 Integer.MAX_VALUE가 될 수는 없기 때문에 이것에 대한 조건 처리는 따로 하지 않는다.
 					//왜냐하면 [영웅이 공격을 했다 -> PathFinder.distance[hero.pos]가 공격 거리보다 짧거나 같다]는 의미이기 때문.
 					int ropeUse = (PathFinder.distance[hero.pos] - weaponReach);
-					if (hero.hasTalent(Talent.DURABLE_ROPE)) {
-						ropeUse = (int)(ropeUse*(0.9f-0.1f*hero.pointsInTalent(Talent.DURABLE_ROPE)));
+					if (hero.hasTalent(Talent.DURABLE_ROPE, Talent.RK_EXPLORER)) {
+						ropeUse = (int)(ropeUse*(0.9f-0.1f*hero.pointsInTalent(Talent.DURABLE_ROPE, Talent.RK_EXPLORER)));
 					}
 					rope.quantity(rope.quantity() - ropeUse);
 					if (rope.quantity() <= 0) {
