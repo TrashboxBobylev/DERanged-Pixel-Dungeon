@@ -674,7 +674,7 @@ public class Gun extends MeleeWeapon {
 			}
 
 			int distance = Dungeon.level.distance(attacker.pos, defender.pos) - 1; //적과 나 사이의 간격, 근접한 경우 0
-			float multiplier = Math.min(2.5f, (float)Math.pow(1 + 0.025f * hero.pointsInTalent(Talent.RANGED_SNIPING), distance));
+			float multiplier = Math.min(2.5f, (float)Math.pow(1 + 0.025f * hero.pointsInTalent(Talent.RANGED_SNIPING, Talent.RK_SPECIALIST), distance));
 			damage = Math.round(damage * multiplier);
 
 			if (spread) {
@@ -828,7 +828,7 @@ public class Gun extends MeleeWeapon {
 			boolean willAggroEnemy = true;
 
 			if (curUser.subClass.is(HeroSubClass.SPECIALIST) && curUser.buff(Invisibility.class) != null ||
-					curUser.hasTalent(Talent.STEALTH_MASTER)) {
+					curUser.hasTalent(Talent.STEALTH_MASTER, Talent.RK_SPECIALIST)) {
 				willAggroEnemy = false;
 			}
 

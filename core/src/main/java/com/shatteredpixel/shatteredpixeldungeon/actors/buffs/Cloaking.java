@@ -61,8 +61,8 @@ public class Cloaking extends Invisibility {
 	@Override
 	public void detach() {
 		super.detach();
-		if (Dungeon.hero.hasTalent(Talent.SKILLFUL_RUNNER) && Dungeon.hero.buff(Talent.SkillfulRunnerCooldown.class) == null) {
-			Buff.prolong(target, Haste.class, 2f*Dungeon.hero.pointsInTalent(Talent.SKILLFUL_RUNNER));
+		if (Dungeon.hero.hasTalent(Talent.SKILLFUL_RUNNER, Talent.RK_SPECIALIST) && Dungeon.hero.buff(Talent.SkillfulRunnerCooldown.class) == null) {
+			Buff.prolong(target, Haste.class, 2f*Dungeon.hero.pointsInTalent(Talent.SKILLFUL_RUNNER, Talent.RK_SPECIALIST));
 			Buff.affect(target, Talent.SkillfulRunnerCooldown.class, 30f);
 		}
 		Dungeon.observe();

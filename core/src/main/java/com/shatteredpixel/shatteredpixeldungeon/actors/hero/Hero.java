@@ -2028,10 +2028,10 @@ public class Hero extends Char {
 						break;
 					}
 				}
-				if (hero.pointsInTalent(Talent.STEALTH_MASTER) > 1) {
+				if (hero.pointsInTalent(Talent.STEALTH_MASTER, Talent.RK_SPECIALIST) > 1) {
 					adjacentMob = false;
 				}
-				if (!adjacentMob && hero.hasTalent(Talent.INTO_THE_SHADOW) && hero.buff(Talent.IntoTheShadowCooldown.class) == null) {
+				if (!adjacentMob && hero.hasTalent(Talent.INTO_THE_SHADOW, Talent.RK_SPECIALIST) && hero.buff(Talent.IntoTheShadowCooldown.class) == null) {
 					Buff.affect(this, Invisibility.class, 3f*hero.pointsInTalent(Talent.INTO_THE_SHADOW));
 					Buff.affect(this, Talent.IntoTheShadowCooldown.class, 15);
 				} else {
@@ -3200,7 +3200,7 @@ public class Hero extends Char {
 	public float stealth() {
 		float stealth = super.stealth();
 
-		stealth += hero.pointsInTalent(Talent.STEALTH);
+		stealth += hero.pointsInTalent(Talent.STEALTH, Talent.RK_SPECIALIST);
 
 		KindOfWeapon wep = belongings.weapon;
 		if (wep instanceof Gun) {
