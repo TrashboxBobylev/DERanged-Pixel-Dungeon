@@ -3233,8 +3233,8 @@ public class Hero extends Char {
 			return;
 		}
 
-		if (hero.hasTalent(Talent.UNDEAD) && !(cause instanceof Undead)) {
-			Buff.affect(hero, Undead.class, hero.pointsInTalent(Talent.UNDEAD));
+		if (hero.hasTalent(Talent.UNDEAD, Talent.RK_DEATHKNIGHT) && !(cause instanceof Undead)) {
+			Buff.affect(hero, Undead.class, hero.pointsInTalent(Talent.UNDEAD, Talent.RK_DEATHKNIGHT));
 			return;
 		}
 

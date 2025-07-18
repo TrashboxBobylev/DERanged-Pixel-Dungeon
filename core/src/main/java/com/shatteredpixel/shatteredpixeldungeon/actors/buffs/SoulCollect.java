@@ -4,7 +4,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blizzard;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -84,12 +83,12 @@ public class SoulCollect extends Buff {
     }
 
     public int healAmount(Hero hero) {
-        return Math.round(hero.HT * 0.05f) + 1 + 3*hero.pointsInTalent(Talent.OVERCOME);
+        return Math.round(hero.HT * 0.05f) + 1 + 3*hero.pointsInTalent(Talent.OVERCOME, Talent.RK_DEATHKNIGHT);
     }
 
     public void onResurrect() {
         Hero hero = (Hero) target;
-        switch (hero.pointsInTalent(Talent.DEATHS_CHILL)) {
+        switch (hero.pointsInTalent(Talent.DEATHS_CHILL, Talent.RK_DEATHKNIGHT)) {
             case 3:
                 for (Char ch : Actor.chars()) {
                     if (Dungeon.level.heroFOV[ch.pos] && ch.alignment == Char.Alignment.ENEMY) {
@@ -113,10 +112,10 @@ public class SoulCollect extends Buff {
                 break;
         }
 
-        if (hero.hasTalent(Talent.DEATHS_FEAR)) {
+        if (hero.hasTalent(Talent.DEATHS_FEAR, Talent.RK_DEATHKNIGHT)) {
             for (Char ch : Actor.chars()) {
                 if (Dungeon.level.heroFOV[ch.pos] && ch.alignment == Char.Alignment.ENEMY) {
-                    switch (hero.pointsInTalent(Talent.DEATHS_FEAR)) {
+                    switch (hero.pointsInTalent(Talent.DEATHS_FEAR, Talent.RK_DEATHKNIGHT)) {
                         case 3:
                             Buff.affect(ch, Terror.class, 10f);
                         case 2:
@@ -128,9 +127,9 @@ public class SoulCollect extends Buff {
             }
         }
 
-        if (hero.hasTalent(Talent.RESENTMENT)) {
-            int wraith = hero.pointsInTalent(Talent.RESENTMENT);
-            if (hero.pointsInTalent(Talent.RESENTMENT) == 3) wraith++;
+        if (hero.hasTalent(Talent.RESENTMENT, Talent.RK_DEATHKNIGHT)) {
+            int wraith = hero.pointsInTalent(Talent.RESENTMENT, Talent.RK_DEATHKNIGHT);
+            if (hero.pointsInTalent(Talent.RESENTMENT, Talent.RK_DEATHKNIGHT) == 3) wraith++;
 
             ArrayList<Integer> candidates = new ArrayList<>();
 

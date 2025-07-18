@@ -2227,8 +2227,8 @@ public enum Talent {
 			damage = hero.buff(Talent.KineticBattle.class).proc(damage);
 		}
 
-		if (hero.hasTalent(Talent.TACKLE) && level.adjacent(enemy.pos, hero. pos) && hero.belongings.armor != null && (hero.belongings.attackingWeapon() instanceof MeleeWeapon || (hero.belongings.attackingWeapon() == null))) {
-			damage += Math.round(hero.belongings.armor.DRMax()*0.05f*hero.pointsInTalent(Talent.TACKLE));
+		if (hero.hasTalent(Talent.TACKLE, RK_DEATHKNIGHT) && level.adjacent(enemy.pos, hero. pos) && hero.belongings.armor != null && (hero.belongings.attackingWeapon() instanceof MeleeWeapon || (hero.belongings.attackingWeapon() == null))) {
+			damage += Math.round(hero.belongings.armor.DRMax()*0.05f*hero.pointsInTalent(Talent.TACKLE, RK_DEATHKNIGHT));
 		}
 
 		//attacking procs
@@ -2295,8 +2295,8 @@ public enum Talent {
 			damage = Math.round(damage * 1f+hero.pointsInTalent(Talent.ANTI_DEMON)/3f);
 		}
 
-		if (hero.hasTalent(Talent.ARMY_OF_DEATH)) {
-			float procChance = 0.1f * hero.pointsInTalent(Talent.ARMY_OF_DEATH);
+		if (hero.hasTalent(Talent.ARMY_OF_DEATH, RK_DEATHKNIGHT)) {
+			float procChance = 0.1f * hero.pointsInTalent(Talent.ARMY_OF_DEATH, RK_DEATHKNIGHT);
 			if (damage >= enemy.HP
 					&& Random.Float() < procChance
 					&& !enemy.isImmune(Corruption.class)
