@@ -2333,8 +2333,8 @@ public enum Talent {
 			} //heals nearby enemies and herself per every attack
 		}
 
-		if (hero.hasTalent(Talent.TARGET_SET) && wep instanceof MissileWeapon) {
-			int duration = hero.pointsInTalent(Talent.TARGET_SET);
+		if (hero.hasTalent(Talent.TARGET_SET, Talent.RK_MEDICALOFFICER) && wep instanceof MissileWeapon) {
+			int duration = hero.pointsInTalent(Talent.TARGET_SET, Talent.RK_MEDICALOFFICER);
 			if (enemy.alignment != Char.Alignment.ENEMY) duration *= 5;
 			Buff.prolong(enemy, StoneOfAggression.Aggression.class, duration);
 		}

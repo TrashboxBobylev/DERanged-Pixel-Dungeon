@@ -1,7 +1,5 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -47,6 +45,8 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 
 public class Command extends Buff implements ActionIndicator.Action {
     {
@@ -144,17 +144,17 @@ public class Command extends Buff implements ActionIndicator.Action {
             case RECRUIT: case MEDICAL_SUPPORT: default:
                 return true;
             case MOVE:
-                return hero.hasTalent(Talent.MOVE_CMD);
+                return hero.hasTalent(Talent.MOVE_CMD, Talent.RK_MEDICALOFFICER);
             case STIMPACK:
-                return hero.hasTalent(Talent.STIMPACK_CMD);
+                return hero.hasTalent(Talent.STIMPACK_CMD, Talent.RK_MEDICALOFFICER);
             case ENGINEER:
-                return hero.hasTalent(Talent.ENGINEER_CMD);
+                return hero.hasTalent(Talent.ENGINEER_CMD, Talent.RK_MEDICALOFFICER);
             case PROMOTE:
-                return hero.hasTalent(Talent.PROMOTE_CMD);
+                return hero.hasTalent(Talent.PROMOTE_CMD, Talent.RK_MEDICALOFFICER);
             case EXPLOSION:
-                return hero.hasTalent(Talent.EXPLOSION_CMD);
+                return hero.hasTalent(Talent.EXPLOSION_CMD, Talent.RK_MEDICALOFFICER);
             case CLOSE_AIR_SUPPORT:
-                return hero.hasTalent(Talent.CAS_CMD);
+                return hero.hasTalent(Talent.CAS_CMD, Talent.RK_MEDICALOFFICER);
         }
     }
 
@@ -260,7 +260,7 @@ public class Command extends Buff implements ActionIndicator.Action {
         if (!allies.isEmpty()) {
 
             for (SupportSoldier ally : allies) {
-                Buff.affect(ally, StimPack.class, 5*hero.pointsInTalent(Talent.STIMPACK_CMD));
+                Buff.affect(ally, StimPack.class, 5*hero.pointsInTalent(Talent.STIMPACK_CMD, Talent.RK_MEDICALOFFICER));
             }
 
             useCharge(CommandMove.STIMPACK);
@@ -305,9 +305,9 @@ public class Command extends Buff implements ActionIndicator.Action {
                 }
                 return allies+1;
             case MOVE:
-                return hero.pointsInTalent(Talent.MOVE_CMD) < 2 ? 1 : 0; //특성 레벨이 2 이상이면 명령권을 소모하지 않음
+                return hero.pointsInTalent(Talent.MOVE_CMD, Talent.RK_MEDICALOFFICER) < 2 ? 1 : 0; //특성 레벨이 2 이상이면 명령권을 소모하지 않음
             case PROMOTE:
-                return hero.pointsInTalent(Talent.PROMOTE_CMD) > 2 ? 2 : 3; //특성 레벨이 3이면 명령권 소모량 -1
+                return hero.pointsInTalent(Talent.PROMOTE_CMD, Talent.RK_MEDICALOFFICER) > 2 ? 2 : 3; //특성 레벨이 3이면 명령권 소모량 -1
         }
     }
 
@@ -343,21 +343,21 @@ public class Command extends Buff implements ActionIndicator.Action {
                 default:
                     return Messages.get(this, name() + ".desc");
                 case MOVE:
-                    return Messages.get(this, name() + ".desc" + (hero.pointsInTalent(Talent.MOVE_CMD) == 3 ? 2 : 1)); //특성 레벨이 3이면 desc2를, 아니라면 desc1을 출력
+                    return Messages.get(this, name() + ".desc" + (hero.pointsInTalent(Talent.MOVE_CMD, Talent.RK_MEDICALOFFICER) == 3 ? 2 : 1)); //특성 레벨이 3이면 desc2를, 아니라면 desc1을 출력
                 case STIMPACK:
-                    talentLv = Math.max(1, hero.pointsInTalent(Talent.STIMPACK_CMD));
+                    talentLv = Math.max(1, hero.pointsInTalent(Talent.STIMPACK_CMD, Talent.RK_MEDICALOFFICER));
                     return Messages.get(this, name() + ".desc", 5*talentLv);
                 case ENGINEER:
-                    talentLv = Math.max(1, hero.pointsInTalent(Talent.ENGINEER_CMD));
+                    talentLv = Math.max(1, hero.pointsInTalent(Talent.ENGINEER_CMD, Talent.RK_MEDICALOFFICER));
                     return Messages.get(this, name() + ".desc" + talentLv);
                 case PROMOTE:
-                    talentLv = Math.max(1, hero.pointsInTalent(Talent.PROMOTE_CMD));
+                    talentLv = Math.max(1, hero.pointsInTalent(Talent.PROMOTE_CMD, Talent.RK_MEDICALOFFICER));
                     return Messages.get(this, name() + ".desc", 5*talentLv, Messages.decimalFormat("#.#", (1+0.5f*talentLv)));
                 case EXPLOSION:
-                    talentLv = Math.max(1, hero.pointsInTalent(Talent.EXPLOSION_CMD));
+                    talentLv = Math.max(1, hero.pointsInTalent(Talent.EXPLOSION_CMD, Talent.RK_MEDICALOFFICER));
                     return Messages.get(this, name() + ".desc", talentLv*3);
                 case CLOSE_AIR_SUPPORT:
-                    talentLv = Math.max(1, hero.pointsInTalent(Talent.CAS_CMD));
+                    talentLv = Math.max(1, hero.pointsInTalent(Talent.CAS_CMD, Talent.RK_MEDICALOFFICER));
                     return Messages.get(this, name() + ".desc", 2+3*talentLv);
             }
         }
@@ -372,7 +372,7 @@ public class Command extends Buff implements ActionIndicator.Action {
                 ArrayList<SupportSoldier> allies = new ArrayList<>();
                 for (Char ch : Actor.chars()) {
                     if (ch instanceof SupportSoldier) {
-                        if (hero.pointsInTalent(Talent.MOVE_CMD) < 3 && !Dungeon.level.heroFOV[ch.pos]) {
+                        if (hero.pointsInTalent(Talent.MOVE_CMD, Talent.RK_MEDICALOFFICER) < 3 && !Dungeon.level.heroFOV[ch.pos]) {
                             continue;
                         }
                         allies.add((SupportSoldier) ch);
@@ -410,7 +410,7 @@ public class Command extends Buff implements ActionIndicator.Action {
                         Trap t;
                         Building b;
                         //특성 레벨에 따라 다른 빌딩을 건설
-                        switch (hero.pointsInTalent(Talent.ENGINEER_CMD)) {
+                        switch (hero.pointsInTalent(Talent.ENGINEER_CMD, Talent.RK_MEDICALOFFICER)) {
                             case 1: default:
                                 b = new MachineGun(); //거치형 기관총
                                 break;
@@ -480,7 +480,7 @@ public class Command extends Buff implements ActionIndicator.Action {
                         ch.sprite.killAndErase();
                         Dungeon.level.mobs.remove(ch);
 
-                        if (hero.pointsInTalent(Talent.PROMOTE_CMD) > 1) {
+                        if (hero.pointsInTalent(Talent.PROMOTE_CMD, Talent.RK_MEDICALOFFICER) > 1) {
                             newAlly.HP = newAlly.HT;
                         } else {
                             newAlly.HP = Math.max(1, (int)Math.ceil(newAlly.HT * enemyHPPercent)); //체력 비율은 올림 처리, 적어도 1의 체력을 보유하고 있어야 함
@@ -547,7 +547,7 @@ public class Command extends Buff implements ActionIndicator.Action {
             if (target != null) {
                 Ballistica aim = new Ballistica(hero.pos, target, Ballistica.DASH);
                 float delay = 0f;
-                for (int cell : aim.subPath(2, Math.min((2+3*hero.pointsInTalent(Talent.CAS_CMD)), aim.dist))) { //경로의 3번째 타일부터 5/8/11타일 까지가 범위. 경로의 끝을 벗어나지 않음.
+                for (int cell : aim.subPath(2, Math.min((2+3*hero.pointsInTalent(Talent.CAS_CMD, Talent.RK_MEDICALOFFICER)), aim.dist))) { //경로의 3번째 타일부터 5/8/11타일 까지가 범위. 경로의 끝을 벗어나지 않음.
                     float finalDelay = delay; //폭발 이펙트 지연 시간. 0에서 시작해 루프 한 번을 돌 때마다 0.05가 추가된다.
                     hero.sprite.parent.add(new Tweener(hero.sprite.parent, finalDelay) { //finalDelay초 후에 폭발 이펙트가 작동하도록 설정한 Tweener
                         @Override

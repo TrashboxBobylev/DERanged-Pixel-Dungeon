@@ -70,7 +70,7 @@ public class ExplosiveTracker extends Buff {
 		}
 
 		Point c = Dungeon.level.cellToPoint(pos);
-		ShadowCaster.castShadow(c.x, c.y, Dungeon.level.width(), fieldOfView, Dungeon.level.solid, Math.min(3*Dungeon.hero.pointsInTalent(Talent.EXPLOSION_CMD), 11-turnsLeft));
+		ShadowCaster.castShadow(c.x, c.y, Dungeon.level.width(), fieldOfView, Dungeon.level.solid, Math.min(3*Dungeon.hero.pointsInTalent(Talent.EXPLOSION_CMD, Talent.RK_MEDICALOFFICER), 11-turnsLeft));
 
 		if (turnsLeft <= 0){
 			detach();
@@ -84,7 +84,7 @@ public class ExplosiveTracker extends Buff {
 				}
 			}
 
-			switch (Dungeon.hero.pointsInTalent(Talent.EXPLOSION_CMD)) {
+			switch (Dungeon.hero.pointsInTalent(Talent.EXPLOSION_CMD, Talent.RK_MEDICALOFFICER)) {
 				case 3:
 					Sample.INSTANCE.playDelayed(Assets.Sounds.BLAST, 0.5f);
 				case 2:
@@ -92,7 +92,7 @@ public class ExplosiveTracker extends Buff {
 				case 1: default:
 					Sample.INSTANCE.play(Assets.Sounds.BLAST);
 			}
-			PixelScene.shake( 2+Dungeon.hero.pointsInTalent(Talent.EXPLOSION_CMD), 0.5f*(1+Dungeon.hero.pointsInTalent(Talent.EXPLOSION_CMD)) );
+			PixelScene.shake( 2+Dungeon.hero.pointsInTalent(Talent.EXPLOSION_CMD, Talent.RK_MEDICALOFFICER), 0.5f*(1+Dungeon.hero.pointsInTalent(Talent.EXPLOSION_CMD)) );
 			for (int i = 0; i < Dungeon.level.length(); i++){
 				if (fieldOfView[i] && !Dungeon.level.solid[i]){
 					new Command.CASBomb().explode(i); //yes, a bomb at every cell
