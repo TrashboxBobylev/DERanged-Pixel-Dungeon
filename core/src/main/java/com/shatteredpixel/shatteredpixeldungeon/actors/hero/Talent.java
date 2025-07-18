@@ -2390,12 +2390,12 @@ public enum Talent {
 			damage = Math.round(damage * 0.5f);
 		}
 
-		if (hero.hasTalent(Talent.BIOLOGY_PROJECT)) {
+		if (hero.hasTalent(Talent.BIOLOGY_PROJECT, RK_RESEARCHER)) {
 			if (!(enemy.properties().contains(Char.Property.INORGANIC) || enemy.properties().contains(Char.Property.UNDEAD))){
 				enemy.sprite.emitter().start( ShadowParticle.UP, 0.05f, 3 );
 				Sample.INSTANCE.play(Assets.Sounds.BURNING);
 
-				damage = damage * (int)Math.pow(1.1f, hero.pointsInTalent(Talent.BIOLOGY_PROJECT));
+				damage = damage * (int)Math.pow(1.1f, hero.pointsInTalent(Talent.BIOLOGY_PROJECT, RK_RESEARCHER));
 			}
 		}
 
@@ -2428,7 +2428,7 @@ public enum Talent {
 
 
 		if (hero.subClass.is(HeroSubClass.RESEARCHER) && Random.Float() < 0.2f) {
-			Buff.affect(enemy, Ooze.class).set(Ooze.DURATION/4f * (1+0.5f*hero.pointsInTalent(Talent.POWERFUL_ACID)));
+			Buff.affect(enemy, Ooze.class).set(Ooze.DURATION/4f * (1+0.5f*hero.pointsInTalent(Talent.POWERFUL_ACID, RK_RESEARCHER)));
 		}
 
 		if (hero.buff(TreasureMap.LuckTracker.class) != null

@@ -161,10 +161,10 @@ public class HighGrass {
 				Sample.INSTANCE.play( Assets.Sounds.MELD );
 			}
 
-			if (ch instanceof Hero && Dungeon.hero.hasTalent(Talent.BIO_ENERGY)) {
+			if (ch instanceof Hero && Dungeon.hero.hasTalent(Talent.BIO_ENERGY, Talent.RK_RESEARCHER)) {
 				for (Buff b : hero.buffs()){
 					if (b instanceof Artifact.ArtifactBuff && !((Artifact.ArtifactBuff) b).isCursed() ) {
-						((Artifact.ArtifactBuff) b).charge(hero, 0.2f*hero.pointsInTalent(Talent.BIO_ENERGY));
+						((Artifact.ArtifactBuff) b).charge(hero, 0.2f*hero.pointsInTalent(Talent.BIO_ENERGY, Talent.RK_RESEARCHER));
 					}
 				}
 			}

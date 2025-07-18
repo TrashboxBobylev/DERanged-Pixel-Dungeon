@@ -21,14 +21,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -36,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -48,6 +43,8 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 
 public class Shovel extends MeleeWeapon {
 
@@ -96,7 +93,7 @@ public class Shovel extends MeleeWeapon {
         ArrayList<Integer> tiles = new ArrayList<>();
         for (int i : PathFinder.NEIGHBOURS9) {
             int tile = pos + i;
-            if (Dungeon.level.map[tile] == Terrain.GRASS || (Dungeon.level.map[tile] == Terrain.WATER && hero.hasTalent(Talent.WATER_ABSORB))) {
+            if (Dungeon.level.map[tile] == Terrain.GRASS || (Dungeon.level.map[tile] == Terrain.WATER && hero.hasTalent(Talent.WATER_ABSORB, Talent.RK_RESEARCHER))) {
                 tiles.add(tile);
             }
         }
@@ -108,7 +105,7 @@ public class Shovel extends MeleeWeapon {
 
         for (int tile : tiles) {
             if (Dungeon.level.map[tile] == Terrain.GRASS) {
-                if (hero.hasTalent(Talent.RAPID_GROWTH) && Random.Float() < 0.2f*hero.pointsInTalent(Talent.RAPID_GROWTH)) {
+                if (hero.hasTalent(Talent.RAPID_GROWTH, Talent.RK_RESEARCHER) && Random.Float() < 0.2f*hero.pointsInTalent(Talent.RAPID_GROWTH, Talent.RK_RESEARCHER)) {
                     Level.set(tile, Terrain.FURROWED_GRASS);
                 } else {
                     Level.set(tile, Terrain.EMPTY);
@@ -122,7 +119,7 @@ public class Shovel extends MeleeWeapon {
                 Level.set(tile, Terrain.EMPTY);
                 GameScene.updateMap( tile );
                 CellEmitter.get( tile ).burst( Speck.factory( Speck.STEAM ), 10 );
-                if (Random.Float() < 0.05f*hero.pointsInTalent(Talent.WATER_ABSORB)) {
+                if (Random.Float() < 0.05f*hero.pointsInTalent(Talent.WATER_ABSORB, Talent.RK_RESEARCHER)) {
                     Dungeon.level.drop(new Dewdrop(), tile).sprite.drop(tile);
                 }
             }
