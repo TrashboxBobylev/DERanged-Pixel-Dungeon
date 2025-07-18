@@ -106,6 +106,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
+import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ratking.OmniAbility.markAbilityUsed;
+
 public class ElementalStrike extends ArmorAbility {
 
 	//TODO a few duplicates here (curse duplicates are fine)
@@ -227,6 +229,7 @@ public class ElementalStrike extends ArmorAbility {
 
 				Invisibility.dispel();
 				hero.spendAndNext(hero.attackDelay());
+				markAbilityUsed(ElementalStrike.this);
 			}
 		});
 

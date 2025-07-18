@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ratking.OmniAbility;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
@@ -46,6 +47,7 @@ public class StimPack extends ArmorAbility {
 		int damage = Math.round(hero.HT*(0.3f - 0.05f*(hero.pointsInTalent(Talent.BURDEN_RELIEF))));
 		if (hero.HP <= damage) {
 			GLog.w(Messages.get(this, "cannot_use"));
+			OmniAbility.markAbilityUsed(this);
 		} else {
 			hero.damage(damage, hero);
 			hero.sprite.operate(hero.pos);
@@ -58,8 +60,7 @@ public class StimPack extends ArmorAbility {
 			if (hero.hasTalent(Talent.TIME_STOP)) {
 				Buff.affect(hero, Swiftthistle.TimeBubble.class).set(hero.pointsInTalent(Talent.TIME_STOP)+1);
 			}
-			armor.charge -= chargeUse(hero);
-			armor.updateQuickslot();
+			armor.useCharge(hero, this);
 			hero.spendAndNext(Actor.TICK);
 		}
 	}

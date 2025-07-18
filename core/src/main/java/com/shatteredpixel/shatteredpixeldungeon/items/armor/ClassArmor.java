@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -31,22 +30,30 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Trinity;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ratking.OmniAbility;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndChooseAbility;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.quickslot;
+import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ratking.OmniAbility.additionalActions;
 
 abstract public class ClassArmor extends Armor {
 
@@ -177,13 +184,12 @@ abstract public class ClassArmor extends Armor {
 		tier = bundle.getInt( ARMOR_TIER );
 		charge = bundle.getFloat(CHARGE);
 	}
-	
+
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if (isEquipped( hero )) {
-			actions.add( AC_ABILITY );
-		}
+		actions.add( AC_ABILITY );
+		actions.addAll( additionalActions().keySet() );
 		actions.add( AC_TRANSFER );
 		return actions;
 	}
@@ -191,15 +197,43 @@ abstract public class ClassArmor extends Armor {
 	@Override
 	public String actionName(String action, Hero hero) {
 		if (hero.armorAbility != null && action.equals(AC_ABILITY)){
-			return Messages.upperCase(hero.armorAbility.name());
+			return hero.armorAbility.actionName();
 		} else {
-			return super.actionName(action, hero);
+			String actionName = super.actionName(action, hero);
+			//overriding the default to suppress NULL so that OmniAbility can communicate with itself.
+			//noinspection StringEquality
+			return actionName != Messages.NO_TEXT_FOUND ? actionName : action;
 		}
 	}
 
 	@Override
-	public String status() {
-		return Messages.format( "%.0f%%", Math.floor(charge) );
+	public void execute(Hero hero) {
+		if(additionalActions().isEmpty()) super.execute(hero);
+		else {
+			// omni-ability default action.
+			OmniAbility omniAbility = (OmniAbility)hero.armorAbility;
+			ArmorAbility activeAbility = omniAbility.activeAbility();
+			usesTargeting = false; // manually handled.
+			GameScene.show(new WndChooseAbility(null,this, omniAbility.name(),false) {
+				@Override protected ArrayList<ArmorAbility> getArmorAbilities() {
+					ArrayList<ArmorAbility> abilities = new ArrayList<>();
+					abilities.add(activeAbility);
+					abilities.addAll( OmniAbility.activeAbilities() );
+					return abilities;
+				}
+				@Override protected WndInfoArmorAbility getAbilityInfo(ArmorAbility ability) {
+					return new WndInfoArmorAbility(ability, OmniAbility::transferTalents);
+				}
+				@Override protected void selectAbility(ArmorAbility ability) {
+					hide();
+					if(ability.equals(activeAbility)) ClassArmor.super.execute(hero);
+					else execute(hero, ability.actionName());
+					// due to the delay, we need to manually enable targeting.
+					int slotIdx = quickslot.getSlot(ClassArmor.this);
+					if(slotIdx != -1 && usesTargeting) QuickSlotButton.useTargeting(slotIdx);
+				}
+			});
+		}
 	}
 
 	@Override
@@ -209,21 +243,10 @@ abstract public class ClassArmor extends Armor {
 
 		if (action.equals(AC_ABILITY)){
 
-			if (hero.armorAbility == null){
-				GameScene.show(new WndChooseAbility(null, this, hero));
-			} else if (!isEquipped( hero )) {
-				usesTargeting = false;
-				GLog.w( Messages.get(this, "not_equipped") );
-			} else if (charge < hero.armorAbility.chargeUse(hero)) {
-				usesTargeting = false;
-				GLog.w( Messages.get(this, "low_charge") );
-			} else  {
-				usesTargeting = hero.armorAbility.useTargeting();
-				hero.armorAbility.use(this, hero);
-			}
-			
+			useAbility(hero, hero.armorAbility);
+		} else if(additionalActions().containsKey(action)) {
+			useAbility(hero, additionalActions().get(action));
 		} else if (action.equals(AC_TRANSFER)){
-
 			GameScene.show(new WndOptions(new ItemSprite(ItemSpriteSheet.CROWN),
 					Messages.get(ClassArmor.class, "transfer_title"),
 					Messages.get(ClassArmor.class, "transfer_desc"),
@@ -306,19 +329,49 @@ abstract public class ClassArmor extends Armor {
 					}
 				}
 			});
-
 		}
+	}
+
+	private void useAbility(Hero hero, ArmorAbility armorAbility) {
+		//for pre-0.9.3 saves
+		if (armorAbility == null){
+			GameScene.show(new WndChooseAbility(null, this));
+		} else {
+			if (charge < armorAbility.chargeUse(hero)) {
+				/*usesTargeting = false;
+				GLog.w( Messages.get(this, "low_charge") );*/
+				GLog.n("Rat King: I don't have time for this nonsense! I have a kingdom to run! CLASS ARMOR SUPERCHAARGE!!");
+				charge += 100;
+				hero.HP = Math.max( Math.min(hero.HP,1), hero.HP*2/3 );
+				updateQuickslot();
+				ScrollOfRecharging.charge(hero);
+				Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
+			}
+			usesTargeting = armorAbility.useTargeting();
+			armorAbility.use(this, hero);
+		}
+	}
+
+	public void useCharge(Hero hero, ArmorAbility armorAbility, boolean recordUsed) {
+		if (hero.armorAbility != null)
+			charge -= armorAbility.chargeUse(hero);
+		// This is a trigger for OmniAbility to transition to a new ability.
+		if(recordUsed) OmniAbility.markAbilityUsed(armorAbility);
+		updateQuickslot();
+	}
+	public void useCharge(Hero hero, ArmorAbility armorAbility) {
+		useCharge(hero, armorAbility, true);
 	}
 
 	@Override
 	public String desc() {
 		String desc = super.desc();
 
-		if (Dungeon.hero != null && Dungeon.hero.belongings.contains(this)) {
-			ArmorAbility ability = Dungeon.hero.armorAbility;
+		if (hero != null && hero.belongings.contains(this)) {
+			ArmorAbility ability = hero.armorAbility;
 			if (ability != null) {
 				desc += "\n\n" + ability.shortDesc();
-				float chargeUse = ability.chargeUse(Dungeon.hero);
+				float chargeUse = ability.chargeUse(hero);
 				//trinity has variable charge cost
 				if (!(ability instanceof Trinity)) {
 					desc += " " + Messages.get(this, "charge_use", Messages.decimalFormat("#.##", chargeUse));
@@ -342,7 +395,7 @@ abstract public class ClassArmor extends Armor {
 		public boolean attachTo( Char target ) {
 			if (super.attachTo( target )) {
 				//if we're loading in and the hero has partially spent a turn, delay for 1 turn
-				if (target instanceof Hero && Dungeon.hero == null && cooldown() == 0 && target.cooldown() > 0) {
+				if (target instanceof Hero && hero == null && cooldown() == 0 && target.cooldown() > 0) {
 					spend(TICK);
 				}
 				return true;

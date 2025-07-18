@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
-import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
@@ -52,11 +51,14 @@ public class ReinforcedArmor extends ArmorAbility {
         Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
         //hero.sprite.emitter().burst(LeafParticle.GENERAL, 10);
 
-        armor.charge -= chargeUse(hero);
-        armor.updateQuickslot();
+        armor.useCharge(hero, this);
         Invisibility.dispel();
         hero.spendAndNext(Actor.TICK);
+    }
 
+    @Override
+    public boolean isTracked(Hero hero) {
+        return Actor.containsClass(ReinforcedArmorTracker.class);
     }
 
     @Override

@@ -50,8 +50,7 @@ public class ShadowBlade extends ArmorAbility {
 		Sample.INSTANCE.play(Assets.Sounds.MISS);
 		hero.sprite.emitter().burst(ShadowParticle.UP, 10);
 
-		armor.charge -= chargeUse(hero);
-		armor.updateQuickslot();
+		armor.useCharge(hero, this);
 		Invisibility.dispel();
 		hero.spendAndNext(Actor.TICK);
 
@@ -65,6 +64,11 @@ public class ShadowBlade extends ArmorAbility {
 	@Override
 	public Talent[] talents() {
 		return new Talent[]{Talent.DOUBLE_BLADE_PRACTICE, Talent.CRITICAL_SHADOW, Talent.HERBAL_SHADOW, Talent.HEROIC_ENERGY};
+	}
+
+	@Override
+	public boolean isTracked(Hero hero) {
+		return Actor.containsClass(shadowBladeTracker.class);
 	}
 
 	public static class shadowBladeTracker extends FlavourBuff {

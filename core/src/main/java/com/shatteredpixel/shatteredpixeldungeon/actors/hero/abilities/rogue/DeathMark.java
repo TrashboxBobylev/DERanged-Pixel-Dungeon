@@ -39,10 +39,10 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
-import com.watabou.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.BArray;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 
@@ -144,6 +144,15 @@ public class DeathMark extends ArmorAbility {
 	@Override
 	public Talent[] talents() {
 		return new Talent[]{Talent.FEAR_THE_REAPER, Talent.DEATHLY_DURABILITY, Talent.DOUBLE_MARK, Talent.HEROIC_ENERGY};
+	}
+
+	@Override public boolean isTracked(Hero hero) {
+		return Actor.containsClass(DeathMarkTracker.class);
+	}
+
+	@Override
+	public boolean isActive(Hero hero) {
+		return hero.buff(DoubleMarkTracker.class) != null;
 	}
 
 	public static class DeathMarkTracker extends FlavourBuff {

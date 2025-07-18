@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ratking.OmniAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.BodyForm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.MindForm;
@@ -145,6 +146,7 @@ public class Trinity extends ArmorAbility {
 								armor.updateQuickslot();
 								Invisibility.dispel();
 								hide();
+								OmniAbility.markAbilityUsed(Trinity.this);
 							}
 						}
 					};
@@ -179,6 +181,7 @@ public class Trinity extends ArmorAbility {
 								armor.updateQuickslot();
 								Invisibility.dispel();
 								hide();
+								OmniAbility.markAbilityUsed(Trinity.this);
 							}
 						}
 					};
@@ -214,6 +217,7 @@ public class Trinity extends ArmorAbility {
 						if (((Item) mindForm).usesTargeting && Dungeon.quickslot.contains(armor)){
 							QuickSlotButton.useTargeting(Dungeon.quickslot.getSlot(armor));
 						}
+						OmniAbility.markAbilityUsed(Trinity.this);
 					}
 				};
 				btnMind.icon(new ItemSprite((Item)mindForm));
@@ -257,6 +261,7 @@ public class Trinity extends ArmorAbility {
 						armor.charge -= trinityChargeUsePerEffect(spiritForm.getClass());
 						armor.updateQuickslot();
 						hide();
+						OmniAbility.markAbilityUsed(Trinity.this);
 					}
 				};
 				if (spiritForm instanceof Artifact){
@@ -278,6 +283,11 @@ public class Trinity extends ArmorAbility {
 
 		}
 
+	}
+
+	@Override
+	public boolean isActive(Hero hero) {
+		return bodyForm != null || mindForm != null || spiritForm != null;
 	}
 
 	private static final String BODY = "body_form";

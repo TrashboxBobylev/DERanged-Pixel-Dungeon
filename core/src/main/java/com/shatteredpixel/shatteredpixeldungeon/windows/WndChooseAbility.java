@@ -21,10 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Trinity;
 import com.shatteredpixel.shatteredpixeldungeon.items.KingsCrown;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -38,19 +35,33 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
+import java.util.Arrays;
+import java.util.Collection;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+
 public class WndChooseAbility extends Window {
 
 	private static final int WIDTH		= 130;
 	private static final float GAP		= 2;
 
-	public WndChooseAbility(final KingsCrown crown, final Armor armor, final Hero hero){
+	protected KingsCrown crown;
+	protected Armor armor;
+
+	public WndChooseAbility(final KingsCrown crown, final Armor armor) {
+		this(crown,armor, crown == null ? armor.name() : crown.name(), true);
+	}
+
+	public WndChooseAbility(final KingsCrown crown, final Armor armor, String title, boolean includeCancel){
 
 		super();
+		this.crown = crown;
+		this.armor = armor;
 
 		//crown can be null if hero is choosing from armor
 		IconTitle titlebar = new IconTitle();
 		titlebar.icon( new ItemSprite( crown == null ? armor.image() : crown.image(), null ) );
-		titlebar.label( Messages.titleCase(crown == null ? armor.name() : crown.name()) );
+		titlebar.label( Messages.titleCase(title) );
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
 
@@ -64,36 +75,12 @@ public class WndChooseAbility extends Window {
 		add( body );
 
 		float pos = body.bottom() + 3*GAP;
-		for (ArmorAbility ability : hero.heroClass.armorAbilities()) {
+		for (ArmorAbility ability : getArmorAbilities()) {
 
-			String warn;
-			if (Dungeon.initialVersion < 821 && ability instanceof Trinity){
-				warn = "_WARNING, code to track which items you have found for use in trinity was added in BETA-2.2. This run was started before that, and so some items you have encountered may not be usable with Trinity. Any items you currently hold can be made selectable by dropping and picking them back up._\n\n";
-			} else {
-				warn = "";
-			}
 			RedButton abilityButton = new RedButton(ability.shortDesc(), 6){
 				@Override
 				protected void onClick() {
-					GameScene.show(new WndOptions( new HeroIcon( ability ),
-							Messages.titleCase(ability.name()),
-							warn + Messages.get(WndChooseAbility.this, "are_you_sure"),
-							Messages.get(WndChooseAbility.this, "yes"),
-							Messages.get(WndChooseAbility.this, "no")){
-
-						@Override
-						protected void onSelect(int index) {
-							hide();
-							if (index == 0 && WndChooseAbility.this.parent != null){
-								WndChooseAbility.this.hide();
-								if (crown != null) {
-									crown.upgradeArmor(hero, armor, ability);
-								} else {
-									new KingsCrown().upgradeArmor(hero, null, ability);
-								}
-							}
-						}
-					});
+					selectAbility(ability);
 				}
 			};
 			abilityButton.leftJustify = true;
@@ -105,7 +92,7 @@ public class WndChooseAbility extends Window {
 			IconButton abilityInfo = new IconButton(Icons.get(Icons.INFO)){
 				@Override
 				protected void onClick() {
-					GameScene.show(new WndInfoArmorAbility(Dungeon.hero.heroClass, ability));
+					GameScene.show(getAbilityInfo(ability));
 				}
 			};
 			abilityInfo.setRect(WIDTH-20, abilityButton.top() + (abilityButton.height()-20)/2, 20, 20);
@@ -114,19 +101,51 @@ public class WndChooseAbility extends Window {
 			pos = abilityButton.bottom() + GAP;
 		}
 
-		RedButton cancelButton = new RedButton(Messages.get(this, "cancel")){
-			@Override
-			protected void onClick() {
-				hide();
-			}
-		};
-		cancelButton.setRect(0, pos, WIDTH, 18);
-		add(cancelButton);
-		pos = cancelButton.bottom() + GAP;
+		if(includeCancel) {
+			RedButton cancelButton = new RedButton(Messages.get(this, "cancel")){
+				@Override
+				protected void onClick() {
+					hide();
+				}
+			};
+			cancelButton.setRect(0, pos, WIDTH, 18);
+			add(cancelButton);
+			pos = cancelButton.bottom() + GAP;
+		}
 
 		resize(WIDTH, (int)pos);
 
 	}
 
+	protected Collection<ArmorAbility> getArmorAbilities() {
+		return Arrays.asList(hero.heroClass.armorAbilities());
+	}
+
+	protected WndInfoArmorAbility getAbilityInfo(ArmorAbility ability) {
+		return new WndInfoArmorAbility(ability);
+	}
+
+	protected void selectAbility(ArmorAbility ability) {
+		String warn = "";
+		GameScene.show(new WndOptions( new HeroIcon( ability ),
+				Messages.titleCase(ability.name()),
+				warn + Messages.get(WndChooseAbility.this, "are_you_sure"),
+				Messages.get(WndChooseAbility.this, "yes"),
+				Messages.get(WndChooseAbility.this, "no")){
+
+			@Override
+			protected void onSelect(int index) {
+				hide();
+				if (index == 0 && WndChooseAbility.this.parent != null){
+					WndChooseAbility.this.hide();
+					if (crown != null) {
+						crown.upgradeArmor(hero, armor, ability);
+					} else {
+						new KingsCrown().upgradeArmor(hero, null, ability);
+					}
+				}
+			}
+		});
+	}
 
 }

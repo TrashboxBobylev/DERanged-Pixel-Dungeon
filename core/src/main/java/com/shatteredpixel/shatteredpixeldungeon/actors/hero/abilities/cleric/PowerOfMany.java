@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ratking.OmniAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.BeamingRay;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.LifeLinkSpell;
@@ -174,6 +175,7 @@ public class PowerOfMany extends ArmorAbility {
 
 			Invisibility.dispel();
 			hero.spendAndNext(Actor.TICK);
+			OmniAbility.markAbilityUsed(this);
 
 		}
 
@@ -197,6 +199,8 @@ public class PowerOfMany extends ArmorAbility {
 		}
 		return null;
 	}
+
+	@Override public boolean isActive(Hero hero) { return getPoweredAlly() != null; }
 
 	public static class PowerBuff extends FlavourBuff {
 

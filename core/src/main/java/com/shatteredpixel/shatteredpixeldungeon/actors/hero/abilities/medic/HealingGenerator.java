@@ -49,9 +49,13 @@ public class HealingGenerator extends ArmorAbility {
 		hero.sprite.operate(hero.pos);
 		hero.spendAndNext(Actor.TICK);
 
-		armor.charge -= chargeUse(hero);
-		armor.updateQuickslot();
+		armor.useCharge(hero, this);
 		Invisibility.dispel();
+	}
+
+	@Override
+	public boolean isTracked(Hero hero) {
+		return Actor.containsClass(RegenBuff.class);
 	}
 
 	@Override

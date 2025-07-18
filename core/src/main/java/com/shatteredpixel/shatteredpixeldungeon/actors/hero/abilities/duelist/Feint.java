@@ -146,13 +146,18 @@ public class Feint extends ArmorAbility {
 			}
 		}
 
-		armor.charge -= chargeUse(hero);
+		armor.useCharge(hero, this);
 		Item.updateQuickslot();
 	}
 
 	@Override
 	public Talent[] talents() {
 		return new Talent[]{Talent.FEIGNED_RETREAT, Talent.EXPOSE_WEAKNESS, Talent.COUNTER_ABILITY, Talent.HEROIC_ENERGY};
+	}
+
+	@Override
+	public boolean isTracked(Hero hero) {
+		return Actor.containsClass(AfterImage.class);
 	}
 
 	public static class AfterImage extends Mob {

@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ratking.OmniAbility;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
@@ -184,6 +185,7 @@ public class WarpBeacon extends ArmorAbility {
 							InterlevelScene.returnPos = tracker.pos;
 							Game.switchScene( InterlevelScene.class );
 						}
+						if(hero.armorAbility instanceof OmniAbility) tracker.detach();
 
 					} else if (index == 1){
 						hero.buff(WarpBeaconTracker.class).detach();
@@ -221,6 +223,10 @@ public class WarpBeacon extends ArmorAbility {
 			Invisibility.dispel();
 			hero.spendAndNext(Actor.TICK);
 		}
+	}
+
+	@Override public boolean isActive(Hero hero) {
+		return hero.buff(WarpBeaconTracker.class) != null;
 	}
 
 	public static class WarpBeaconTracker extends Buff {

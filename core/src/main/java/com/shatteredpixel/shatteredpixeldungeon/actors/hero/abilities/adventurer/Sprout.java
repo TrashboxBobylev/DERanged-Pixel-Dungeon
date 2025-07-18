@@ -104,8 +104,7 @@ public class Sprout extends ArmorAbility {
 		Invisibility.dispel();
 		hero.busy();
 
-		armor.charge -= chargeUse(hero);
-		armor.updateQuickslot();
+		armor.useCharge(hero, this);
 
 		Sample.INSTANCE.play( Assets.Sounds.TRAMPLE );
 

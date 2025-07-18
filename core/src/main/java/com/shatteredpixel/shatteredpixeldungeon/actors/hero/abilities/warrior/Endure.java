@@ -68,6 +68,11 @@ public class Endure extends ArmorAbility {
 		hero.spendAndNext(3f);
 	}
 
+	@Override
+	public boolean isTracked(Hero hero) {
+		return hero.buff(EndureTracker.class) != null;
+	}
+
 	public static class EndureTracker extends FlavourBuff {
 
 		{

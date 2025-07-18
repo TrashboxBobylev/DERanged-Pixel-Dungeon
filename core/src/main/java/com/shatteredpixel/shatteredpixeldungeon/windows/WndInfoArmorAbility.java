@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
@@ -32,21 +31,28 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.TalentsPane;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.function.Function;
 
 public class WndInfoArmorAbility extends WndTitledMessage {
 
-	public WndInfoArmorAbility(HeroClass cls, ArmorAbility ability){
+	public WndInfoArmorAbility(ArmorAbility ability, Function<ArmorAbility, LinkedHashMap<Talent, Integer>> initializeArmorTalents){
 		super( new HeroIcon(ability), Messages.titleCase(ability.name()), ability.desc());
 
-		ArrayList<LinkedHashMap<Talent, Integer>> talentList = new ArrayList<>();
-		Talent.initArmorTalents(ability, talentList);
-
+		LinkedHashMap<Talent, Integer> talents = initializeArmorTalents.apply(ability);
+		if(talents.isEmpty()) return;
 		Ratmogrify.useRatroicEnergy = ability instanceof Ratmogrify;
-		TalentsPane.TalentTierPane talentPane = new TalentsPane.TalentTierPane(talentList.get(3), 4, TalentButton.Mode.INFO);
-		talentPane.title.text( Messages.titleCase(Messages.get(WndHeroInfo.class, "talents")));
-		talentPane.setRect(0, height + 5, width, talentPane.height());
-		addToBottom(talentPane, 5, 0);
 
+		TalentsPane.TalentTierPane talentPane = new TalentsPane.TalentTierPane(talents, 4, TalentButton.Mode.INFO);
+		talentPane.title.text( Messages.titleCase(Messages.get(WndHeroInfo.class, "talents")));
+		addToBottom(talentPane, 5, 0);
+	}
+	public WndInfoArmorAbility(ArmorAbility ability) {
+		this(ability, WndInfoArmorAbility::initializeTalents);
+	}
+
+	public static LinkedHashMap<Talent, Integer> initializeTalents(ArmorAbility ability) {
+		ArrayList<LinkedHashMap<Talent, Integer>> talentList = Talent.initArmorTalents(ability);
+		return talentList.size() < 4 ? new LinkedHashMap<>() : talentList.get(3);
 	}
 
 	@Override

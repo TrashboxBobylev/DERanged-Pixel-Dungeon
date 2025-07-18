@@ -109,6 +109,10 @@ public abstract class ArmorAbility implements Bundlable {
 	}
 
 	public abstract Talent[] talents();
+	public final boolean hasTalent(Talent talent) {
+		for(Talent t : talents()) if(t == talent) return true;
+		return false;
+	}
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
@@ -117,4 +121,19 @@ public abstract class ArmorAbility implements Bundlable {
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 	}
+
+	// for ClassArmor.java
+	public String actionName() { return name().toUpperCase(); }
+	/** causes OmniAbility to trick the game into thinking you have talents for this ArmorAbility.
+	 * Careful with using things like hero#byTalent though, as this may cause unexpected behavior (both talents being active.)
+	 **/
+	public boolean isTracked(Hero hero) { return false; }
+	/** lets omniability select this manually even when not its stored armor ability. **/
+	public boolean isActive(Hero hero) { return false; }
+
+	// all objects of a given armor ability are equal. they're all interchangeable.
+	@Override public boolean equals(Object other) {
+		return other != null && getClass().equals(other.getClass());
+	}
+	@Override public int hashCode() { return getClass().hashCode(); }
 }

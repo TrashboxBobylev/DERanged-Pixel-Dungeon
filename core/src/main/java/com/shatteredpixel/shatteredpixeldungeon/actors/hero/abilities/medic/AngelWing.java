@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfFeatherFall;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -61,8 +60,7 @@ public class AngelWing extends ArmorAbility {
 		hero.sprite.operate(hero.pos);
 		hero.spendAndNext(Actor.TICK);
 
-		armor.charge -= chargeUse(hero);
-		Item.updateQuickslot();
+		armor.useCharge(hero, this);
 		Invisibility.dispel();
 	}
 
@@ -74,6 +72,11 @@ public class AngelWing extends ArmorAbility {
 	@Override
 	public Talent[] talents() {
 		return new Talent[]{Talent.LIGHT_LIKE_FEATHER, Talent.ANGELS_BLESS, Talent.HEALING_WING, Talent.HEROIC_ENERGY};
+	}
+
+	@Override
+	public boolean isTracked(Hero hero) {
+		return Actor.containsClass(AngelWingBuff.class);
 	}
 
 	public static class AngelWingBuff extends FlavourBuff {

@@ -180,7 +180,7 @@ public class Challenge extends ArmorAbility {
 		GameScene.flash(0x80FFFFFF);
 		Sample.INSTANCE.play(Assets.Sounds.DESCEND);
 
-		armor.charge -= chargeUse( hero );
+		armor.useCharge(hero, this);
 		armor.updateQuickslot();
 		Invisibility.dispel();
 		hero.sprite.zap(target);
@@ -195,6 +195,16 @@ public class Challenge extends ArmorAbility {
 	@Override
 	public Talent[] talents() {
 		return new Talent[]{Talent.CLOSE_THE_GAP, Talent.INVIGORATING_VICTORY, Talent.ELIMINATION_MATCH, Talent.HEROIC_ENERGY};
+	}
+
+	@Override
+	public boolean isTracked(Hero hero) {
+		return Actor.containsClass(DuelParticipant.class);
+	}
+
+	@Override
+	public boolean isActive(Hero hero) {
+		return hero.buff(EliminationMatchTracker.class) != null;
 	}
 
 	public static class EliminationMatchTracker extends FlavourBuff{};

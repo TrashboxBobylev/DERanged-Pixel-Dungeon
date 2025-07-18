@@ -52,11 +52,14 @@ public class Riot extends ArmorAbility {
         Sample.INSTANCE.play(Assets.Sounds.MISS);
         //hero.sprite.emitter().burst(LeafParticle.GENERAL, 10);
 
-        armor.charge -= chargeUse(hero);
-        armor.updateQuickslot();
+        armor.useCharge(hero, this);
         Invisibility.dispel();
         hero.spendAndNext(Actor.TICK);
+    }
 
+    @Override
+    public boolean isTracked(Hero hero) {
+        return Actor.containsClass(RiotTracker.class);
     }
 
     @Override

@@ -73,8 +73,7 @@ public class UnstableAnkh extends ArmorAbility {
 		hero.sprite.operate(hero.pos);
 		Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 
-		armor.charge -= chargeUse(hero);
-		armor.updateQuickslot();
+		armor.useCharge(hero, this);
 		Invisibility.dispel();
 		hero.spendAndNext(Actor.TICK);
 	}

@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
@@ -50,10 +49,8 @@ public class NaturesPower extends ArmorAbility {
 		Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
 		hero.sprite.emitter().burst(LeafParticle.GENERAL, 10);
 
-		armor.charge -= chargeUse(hero);
-		armor.updateQuickslot();
+		armor.useCharge(hero, this);
 		Invisibility.dispel();
-		hero.spendAndNext(Actor.TICK);
 
 	}
 
@@ -65,6 +62,11 @@ public class NaturesPower extends ArmorAbility {
 	@Override
 	public Talent[] talents() {
 		return new Talent[]{Talent.GROWING_POWER, Talent.NATURES_WRATH, Talent.WILD_MOMENTUM, Talent.HEROIC_ENERGY};
+	}
+
+	@Override
+	public boolean isTracked(Hero hero) {
+		return hero.buff(naturesPowerTracker.class) != null;
 	}
 
 	public static class naturesPowerTracker extends FlavourBuff{

@@ -96,6 +96,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.gunner.Rei
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.gunner.Riot;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.medic.AngelWing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ratking.OmniAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.samurai.ShadowBlade;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.BodyForm;
@@ -587,7 +588,7 @@ public class Hero extends Char {
 		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_TALENTS))
 			return true;*/
 		for(LinkedHashMap<Talent,Integer> tier : talents) if(tier.containsKey(talent)) return true;
-		return /*OmniAbility.findTalent(talent) != null*/false;
+		return OmniAbility.findTalent(talent) != null;
 	}
 	public boolean hasTalent( Talent talent ){
 		return pointsInTalent(talent) > 0;
@@ -615,9 +616,8 @@ public class Hero extends Char {
 				if (f == talent) return tier.get(f);
 			}
 		}
-		return 0;
-		/*Integer omniPoints = OmniAbility.findTalent(talent);
-		return omniPoints != null ? omniPoints : 0;*/
+		Integer omniPoints = OmniAbility.findTalent(talent);
+		return omniPoints != null ? omniPoints : 0;
 	}
 	// stacks was the legacy behavior.
 	public final int pointsInTalent(Talent... talents) {

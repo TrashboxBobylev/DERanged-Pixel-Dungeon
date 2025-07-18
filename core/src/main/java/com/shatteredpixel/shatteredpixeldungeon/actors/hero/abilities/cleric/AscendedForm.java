@@ -54,11 +54,21 @@ public class AscendedForm extends ArmorAbility {
 		Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
 		new Flare(6, 48).color(0xFFFF00, true).show(hero.sprite, 2f);
 
-		armor.charge -= chargeUse(hero);
+		armor.useCharge(hero, this);
 		armor.updateQuickslot();
 		Invisibility.dispel();
 		hero.spendAndNext(Actor.TICK);
 
+	}
+
+	@Override
+	public boolean isTracked(Hero hero) {
+		return Actor.containsClass(AscendBuff.class);
+	}
+
+	@Override
+	public boolean isActive(Hero hero) {
+		return Actor.containsClass(AscendBuff.class);
 	}
 
 	@Override

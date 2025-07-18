@@ -22,10 +22,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ratking.OmniAbility;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
@@ -36,9 +37,14 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.SafeCast;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Rect;
+
+import java.util.Collections;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 
 public class ItemSlot extends Button {
 
@@ -245,13 +251,24 @@ public class ItemSlot extends Button {
 		}
 
 		if (item instanceof Gun
-				&& Dungeon.hero.buff(MeleeWeapon.Charger.class) != null) {
-			if ((Dungeon.hero.belongings.weapon() == item || Dungeon.hero.belongings.secondWep() == item && Dungeon.hero.buff(MeleeWeapon.Charger.class).charges >= 2)) {
+				&& hero.buff(MeleeWeapon.Charger.class) != null) {
+			if ((hero.belongings.weapon() == item || hero.belongings.secondWep() == item && hero.buff(MeleeWeapon.Charger.class).charges >= 2)) {
 				status.hardlight(ENHANCED);
 			}
 		}
 
-		if (item.icon != -1 && (item.isIdentified() || (item instanceof Ring && ((Ring) item).isKnown()))){
+		if(item instanceof ClassArmor) {
+			OmniAbility ability = SafeCast.cast(hero.armorAbility, OmniAbility.class);
+			if(ability != null && ability.activeAbility() != null) {
+				// this violates pixel art rules but I need something.
+				itemIcon = new HeroIcon(ability.activeAbility());
+				itemIcon.scale.set(0.5f);
+				// fixme I would prefer that this go underneath level
+				add(itemIcon);
+				int indexOfItemIcon=indexOf(itemIcon), indexOfLevel=indexOf(level);
+				if(indexOfLevel < indexOfItemIcon) Collections.swap(members, indexOfItemIcon, indexOfLevel);
+			}
+		} else if (item.icon != -1 && (item.isIdentified() || (item instanceof Ring && ((Ring) item).isKnown()))){
 			extra.text( null );
 
 			itemIcon = new Image(Assets.Sprites.ITEM_ICONS);
@@ -263,7 +280,7 @@ public class ItemSlot extends Button {
 			if (item.levelKnown){
 				int str = item instanceof Weapon ? ((Weapon)item).STRReq() : ((Armor)item).STRReq();
 				extra.text( Messages.format( TXT_STRENGTH, str ) );
-				if (Dungeon.hero != null && str > Dungeon.hero.STR()) {
+				if (hero != null && str > hero.STR()) {
 					extra.hardlight( DEGRADED );
 				} else if (item instanceof Weapon && ((Weapon) item).masteryPotionBonus){
 					extra.hardlight( MASTERED );

@@ -55,8 +55,7 @@ public class Awake extends ArmorAbility {
 		Sample.INSTANCE.play( Assets.Sounds.CHALLENGE );
 		GameScene.flash(0xFF0000);
 
-		armor.charge -= chargeUse(hero);
-		armor.updateQuickslot();
+		armor.useCharge(hero, this);
 		Invisibility.dispel();
 		hero.spendAndNext(Actor.TICK);
 
@@ -70,6 +69,11 @@ public class Awake extends ArmorAbility {
 	@Override
 	public Talent[] talents() {
 		return new Talent[]{Talent.AWAKE_LIMIT, Talent.AWAKE_DURATION, Talent.INSURANCE, Talent.HEROIC_ENERGY};
+	}
+
+	@Override
+	public boolean isTracked(Hero hero) {
+		return Actor.containsClass(awakeTracker.class);
 	}
 
 	public static class awakeTracker extends FlavourBuff {

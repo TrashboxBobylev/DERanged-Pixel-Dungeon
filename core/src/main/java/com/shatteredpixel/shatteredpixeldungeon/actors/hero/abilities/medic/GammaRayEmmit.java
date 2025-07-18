@@ -434,8 +434,7 @@ public class GammaRayEmmit extends ArmorAbility {
 			}
 		}
 
-		armor.charge -= chargeUse(hero);
-		armor.updateQuickslot();
+		armor.useCharge(hero, this);
 		Invisibility.dispel();
 		hero.spendAndNext(Actor.TICK);
 

@@ -103,8 +103,7 @@ public class ShadowClone extends ArmorAbility {
 			}
 
 			if (!spawnPoints.isEmpty()){
-				armor.charge -= chargeUse(hero);
-				armor.updateQuickslot();
+				armor.useCharge(hero, this);
 
 				ally = new ShadowAlly(hero.lvl);
 				ally.pos = Random.element(spawnPoints);
@@ -140,6 +139,8 @@ public class ShadowClone extends ArmorAbility {
 		}
 		return null;
 	}
+
+	@Override public boolean isActive(Hero hero) { return getShadowAlly() != null; }
 
 	public static class ShadowAlly extends DirectableAlly {
 

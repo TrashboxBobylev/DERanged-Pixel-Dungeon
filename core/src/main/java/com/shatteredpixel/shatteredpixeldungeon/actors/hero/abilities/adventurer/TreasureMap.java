@@ -59,10 +59,14 @@ public class TreasureMap extends ArmorAbility {
 		hero.busy();
 		((HeroSprite)hero.sprite).read();
 
-		armor.charge -= chargeUse(hero);
-		armor.updateQuickslot();
+		armor.useCharge(hero, this);
 		Invisibility.dispel();
 		hero.spendAndNext(Actor.TICK);
+	}
+
+	@Override
+	public boolean isTracked(Hero hero) {
+		return hero.buff(LuckTracker.class) != null;
 	}
 
 	@Override

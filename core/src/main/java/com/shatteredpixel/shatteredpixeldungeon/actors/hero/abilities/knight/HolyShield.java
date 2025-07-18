@@ -61,8 +61,7 @@ public class HolyShield extends ArmorAbility {
 		Emitter e = hero.sprite.centerEmitter();
 		if (e != null) e.burst( EnergyParticle.FACTORY, 15 );
 
-		armor.charge -= chargeUse(hero);
-		armor.updateQuickslot();
+		armor.useCharge(hero, this);
 		hero.spendAndNext(Actor.TICK);
 	}
 
