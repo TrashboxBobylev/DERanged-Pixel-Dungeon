@@ -1312,7 +1312,7 @@ public enum Talent {
 
 		public void set() {
 			dmgBoost = Math.min(5, ++dmgBoost);
-			maxDuration = 1+2*hero.pointsInTalent(Talent.KINETIC_BATTLE);
+			maxDuration = 1+2*hero.pointsInTalent(Talent.KINETIC_BATTLE, EXTRA_POWER);
 			duration = maxDuration;
 		}
 

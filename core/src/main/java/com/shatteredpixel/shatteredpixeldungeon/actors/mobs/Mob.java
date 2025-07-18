@@ -974,7 +974,7 @@ public abstract class Mob extends Char {
 				hero.buff(HorseRiding.RidingCooldown.class).kill();
 			}
 
-			if (hero.hasTalent(Talent.KINETIC_BATTLE)) {
+			if (hero.hasTalent(Talent.KINETIC_BATTLE, Talent.EXTRA_POWER)) {
 				Buff.affect(hero, Talent.KineticBattle.class).set();
 			}
 
