@@ -152,9 +152,9 @@ public class GammaRayGun extends Item {
                                     }
                                 }
                                 if (ch instanceof Mob
-                                        && allyNumber < 2 + hero.pointsInTalent(Talent.RECRUIT)
+                                        && allyNumber < 2 + hero.pointsInTalent(Talent.RECRUIT, Talent.RK_SAVIOR)
                                         && !ch.isImmune(SaviorAllyBuff.class)
-                                        && Random.Float() < (ch.HT - ch.HP + 5*(1+hero.pointsInTalent(Talent.APPEASE))) / (float)ch.HT) {
+                                        && Random.Float() < (ch.HT - ch.HP + 5*(1+hero.pointsInTalent(Talent.APPEASE, Talent.RK_SAVIOR))) / (float)ch.HT) {
                                     
                                     // 아군으로 만드는 버프
                                     AllyBuff.affectAndLoot((Mob)ch, curUser, SaviorAllyBuff.class);
@@ -172,27 +172,27 @@ public class GammaRayGun extends Item {
                                     }
                                     
                                     // 구원자 3-8 특성
-                                    if (hero.hasTalent(Talent.DELAYED_HEALING)) {
-                                        Buff.affect(ch, Healing.class).setHeal((int)(0.2f*hero.pointsInTalent(Talent.DELAYED_HEALING))*ch.HT, 0, 1);
+                                    if (hero.hasTalent(Talent.DELAYED_HEALING, Talent.RK_SAVIOR)) {
+                                        Buff.affect(ch, Healing.class).setHeal((int)(0.2f*hero.pointsInTalent(Talent.DELAYED_HEALING, Talent.RK_SAVIOR))*ch.HT, 0, 1);
                                     }
                                 }
                             }
                         }
                         if (ch.alignment == Char.Alignment.ALLY && (ch != curUser)) {
                             int healAmt = Math.round((5f+curUser.lvl/2f)*powerMulti());
-                            if (hero.hasTalent(Talent.MEDICAL_RAY)) {
-                                healAmt = Math.round(healAmt * (1f + 0.2f * hero.pointsInTalent(Talent.MEDICAL_RAY)));
+                            if (hero.hasTalent(Talent.MEDICAL_RAY, Talent.RK_SAVIOR)) {
+                                healAmt = Math.round(healAmt * (1f + 0.2f * hero.pointsInTalent(Talent.MEDICAL_RAY, Talent.RK_SAVIOR)));
                             }
                             // 아군 회복
                             ch.heal(healAmt);
 
-                            if (hero.hasTalent(Talent.ADRENALINE)) {
-                                Buff.prolong(ch, Adrenaline.class, 3*hero.pointsInTalent(Talent.ADRENALINE));
-                                Buff.affect(ch, Poison.class).set(3*hero.pointsInTalent(Talent.ADRENALINE));
+                            if (hero.hasTalent(Talent.ADRENALINE, Talent.RK_SAVIOR)) {
+                                Buff.prolong(ch, Adrenaline.class, 3*hero.pointsInTalent(Talent.ADRENALINE, Talent.RK_SAVIOR));
+                                Buff.affect(ch, Poison.class).set(3*hero.pointsInTalent(Talent.ADRENALINE, Talent.RK_SAVIOR));
                             }
 
-                            if (hero.hasTalent(Talent.STIMPACK)) {
-                                Buff.prolong(ch, StimPack.class, hero.pointsInTalent(Talent.STIMPACK));
+                            if (hero.hasTalent(Talent.STIMPACK, Talent.RK_SAVIOR)) {
+                                Buff.prolong(ch, StimPack.class, hero.pointsInTalent(Talent.STIMPACK, Talent.RK_SAVIOR));
                             }
                         }
                     }

@@ -2322,10 +2322,10 @@ public enum Talent {
 			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 		}
 
-		if (hero.hasTalent(Talent.STRONG_NEXUS)) {
+		if (hero.hasTalent(Talent.STRONG_NEXUS, RK_SAVIOR)) {
 			for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 				if (mob.alignment == Char.Alignment.ALLY && level.heroFOV[mob.pos]) { // 아군이 영웅의 시야 내에 있을 때
-					int healAmt = 3 * hero.pointsInTalent(Talent.STRONG_NEXUS) - Dungeon.level.distance(hero.pos, mob.pos) + 1;
+					int healAmt = 3 * hero.pointsInTalent(Talent.STRONG_NEXUS, RK_SAVIOR) - Dungeon.level.distance(hero.pos, mob.pos) + 1;
 					if (healAmt > 0) {
 						mob.heal(healAmt);
 					}
