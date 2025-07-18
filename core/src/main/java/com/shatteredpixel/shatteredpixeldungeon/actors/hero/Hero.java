@@ -1194,11 +1194,11 @@ public class Hero extends Char {
 		}
 
 		if (hero.buff(HorseRiding.class) != null
-				&& hero.hasTalent(Talent.PILOTING)
+				&& hero.hasTalent(Talent.PILOTING, Talent.RK_HORSEMAN)
 				&& hero.belongings.armor != null
 				&& hero.STR() > hero.belongings.armor.STRReq()) {
 			int aEnc = hero.STR() - hero.belongings.armor.STRReq();
-			speed *= Math.pow(1+0.03f*hero.pointsInTalent(Talent.PILOTING), aEnc);
+			speed *= Math.pow(1+0.03f*hero.pointsInTalent(Talent.PILOTING, Talent.RK_HORSEMAN), aEnc);
 		}
 
 		if (hero.buff(AngelWing.AngelWingBuff.class) != null) {
