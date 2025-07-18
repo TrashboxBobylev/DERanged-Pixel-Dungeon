@@ -2,14 +2,11 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCleansing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -22,7 +19,6 @@ import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.BArray;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 
@@ -88,8 +84,8 @@ public class FirstAidBuff extends Buff implements ActionIndicator.Action {
     @Override
     public void doAction() {
         Hero hero = Dungeon.hero;
-        if (hero.hasTalent(Talent.OINTMENT)) {
-            float healPercent = 1f/(float)(1+hero.pointsInTalent(Talent.OINTMENT));
+        if (hero.hasTalent(Talent.OINTMENT, Talent.RK_THERAPIST)) {
+            float healPercent = 1f/(float)(1+hero.pointsInTalent(Talent.OINTMENT, Talent.RK_THERAPIST));
             Healing healing = Buff.affect(hero, Healing.class);
             healing.setHeal(healAmt(), healPercent, 0);
             healing.applyVialEffect();
@@ -115,8 +111,8 @@ public class FirstAidBuff extends Buff implements ActionIndicator.Action {
     }
 
     public int healAmt() {
-        if (Dungeon.hero.hasTalent(Talent.OINTMENT)) {
-            return Math.max(1, Math.round(recentDamage * 0.4f * (1+0.25f*Dungeon.hero.pointsInTalent(Talent.OINTMENT))));
+        if (Dungeon.hero.hasTalent(Talent.OINTMENT, Talent.RK_THERAPIST)) {
+            return Math.max(1, Math.round(recentDamage * 0.4f * (1+0.25f*Dungeon.hero.pointsInTalent(Talent.OINTMENT, Talent.RK_THERAPIST))));
         } else {
             return Math.max(1, Math.round(recentDamage * 0.4f));
         }
@@ -124,11 +120,11 @@ public class FirstAidBuff extends Buff implements ActionIndicator.Action {
 
     public void onHeal() {
         Hero hero = Dungeon.hero;
-        if (hero.hasTalent(Talent.COMPRESS_BANDAGE)) {
-            Buff.prolong(hero, PainKiller.class, hero.pointsInTalent(Talent.COMPRESS_BANDAGE));
+        if (hero.hasTalent(Talent.COMPRESS_BANDAGE, Talent.RK_THERAPIST)) {
+            Buff.prolong(hero, PainKiller.class, hero.pointsInTalent(Talent.COMPRESS_BANDAGE, Talent.RK_THERAPIST));
         }
-        if (hero.hasTalent(Talent.ANTIBIOTICS)) {
-            switch (hero.pointsInTalent(Talent.ANTIBIOTICS)) {
+        if (hero.hasTalent(Talent.ANTIBIOTICS, Talent.RK_THERAPIST)) {
+            switch (hero.pointsInTalent(Talent.ANTIBIOTICS, Talent.RK_THERAPIST)) {
                 case 3:
                     Buff.prolong(hero, PotionOfCleansing.Cleanse.class, 2f);
                 case 2:
@@ -143,10 +139,10 @@ public class FirstAidBuff extends Buff implements ActionIndicator.Action {
                     }
             }
         }
-        if (hero.hasTalent(Talent.SPLINT)) {
-            Buff.affect(hero, GreaterHaste.class).set(Dungeon.hero.pointsInTalent(Talent.SPLINT));
+        if (hero.hasTalent(Talent.SPLINT, Talent.RK_THERAPIST)) {
+            Buff.affect(hero, GreaterHaste.class).set(Dungeon.hero.pointsInTalent(Talent.SPLINT, Talent.RK_THERAPIST));
         }
-        if (hero.hasTalent(Talent.DEFIBRILLATOR)) {
+        if (hero.hasTalent(Talent.DEFIBRILLATOR, Talent.RK_THERAPIST)) {
             Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
             Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
 
@@ -161,7 +157,7 @@ public class FirstAidBuff extends Buff implements ActionIndicator.Action {
             }
             for (Char ch : affected) {
                 if (ch.alignment != hero.alignment) {
-                    ch.damage(healAmt()*hero.pointsInTalent(Talent.DEFIBRILLATOR), hero);
+                    ch.damage(healAmt()*hero.pointsInTalent(Talent.DEFIBRILLATOR, Talent.RK_THERAPIST), hero);
                 }
             }
             hero.sprite.parent.addToFront( new Lightning( arcs, null ) );
@@ -201,7 +197,7 @@ public class FirstAidBuff extends Buff implements ActionIndicator.Action {
         }
 
         public void set() {
-            switch (Dungeon.hero.pointsInTalent(Talent.QUICK_PREPARE)) {
+            switch (Dungeon.hero.pointsInTalent(Talent.QUICK_PREPARE, Talent.RK_THERAPIST)) {
                 case 0: default:
                     maxCoolDown = -1;
                     break;
@@ -220,7 +216,7 @@ public class FirstAidBuff extends Buff implements ActionIndicator.Action {
 
         @Override
         public boolean act() {
-            if (Dungeon.hero.hasTalent(Talent.QUICK_PREPARE)) {
+            if (Dungeon.hero.hasTalent(Talent.QUICK_PREPARE, Talent.RK_THERAPIST)) {
                 if ((coolDown -= TICK) <= 0) {
                     detach();
                 }
