@@ -176,12 +176,12 @@ public class Emitter extends Group {
 			super.draw();
 		}
 	}
-	
-	abstract public static class Factory {
-		
-		abstract public void emit( Emitter emitter, int index, float x, float y );
-		
-		public boolean lightMode() {
+
+	public interface Factory {
+
+		void emit( Emitter emitter, int index, float x, float y );
+
+		default boolean lightMode() {
 			return false;
 		}
 	}

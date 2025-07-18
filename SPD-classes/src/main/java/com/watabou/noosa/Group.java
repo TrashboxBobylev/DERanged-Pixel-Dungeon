@@ -95,17 +95,17 @@ public class Group extends Gizmo {
 	public synchronized int indexOf( Gizmo g ) {
 		return members.indexOf( g );
 	}
-	
-	public synchronized Gizmo add( Gizmo g ) {
-		
+
+	public synchronized <T extends Gizmo> T add( T g ) {
+
 		if (g.parent == this) {
 			return g;
 		}
-		
+
 		if (g.parent != null) {
 			g.parent.remove( g );
 		}
-		
+
 		// Trying to find an empty space for a new member
 		for (int i=0; i < length; i++) {
 			if (members.get( i ) == null) {
@@ -114,14 +114,14 @@ public class Group extends Gizmo {
 				return g;
 			}
 		}
-		
+
 		members.add( g );
 		g.parent = this;
 		length++;
 		return g;
 	}
-	
-	public synchronized Gizmo addToFront( Gizmo g){
+
+	public synchronized <T extends Gizmo> T addToFront( T g){
 
 		if (g.parent == this) {
 			return g;
@@ -150,55 +150,55 @@ public class Group extends Gizmo {
 		length++;
 		return g;
 	}
-	
-	public synchronized Gizmo addToBack( Gizmo g ) {
-		
+
+	public synchronized <T extends Gizmo> T addToBack( T g ) {
+
 		if (g.parent == this) {
 			sendToBack( g );
 			return g;
 		}
-		
+
 		if (g.parent != null) {
 			g.parent.remove( g );
 		}
-		
+
 		if (!members.isEmpty() && members.get( 0 ) == null) {
 			members.set( 0, g );
 			g.parent = this;
 			return g;
 		}
-		
+
 		members.add( 0, g );
 		g.parent = this;
 		length++;
 		return g;
 	}
-	
-	public synchronized Gizmo recycle( Class<? extends Gizmo> c ) {
 
-		Gizmo g = getFirstAvailable( c );
+	public synchronized <T extends Gizmo> T recycle( Class<T> c ) {
+
+		T g = (T)getFirstAvailable( c );
 		if (g != null) {
-			
+
 			return g;
-			
+
 		} else if (c == null) {
-			
+
 			return null;
-			
+
 		} else {
-			
+
 			g = Reflection.newInstance(c);
 			if (g != null) {
 				return add(g);
 			}
-			
+
 		}
-		
+
 		return null;
 	}
-	
+
 	// Fast removal - replacing with null
-	public synchronized Gizmo erase( Gizmo g ) {
+	public synchronized <T extends Gizmo> T erase( T g ) {
 		int index = members.indexOf( g );
 
 		if (index != -1) {
@@ -209,9 +209,9 @@ public class Group extends Gizmo {
 			return null;
 		}
 	}
-	
+
 	// Real removal
-	public synchronized Gizmo remove( Gizmo g ) {
+	public synchronized <T extends Gizmo> T remove( T g ) {
 		if (members.remove( g )) {
 			length--;
 			g.parent = null;
@@ -220,8 +220,8 @@ public class Group extends Gizmo {
 			return null;
 		}
 	}
-	
-	public synchronized Gizmo replace( Gizmo oldOne, Gizmo newOne ) {
+
+	public synchronized <T extends Gizmo> T replace( Gizmo oldOne, T newOne ) {
 		int index = members.indexOf( oldOne );
 		if (index != -1) {
 			members.set( index, newOne );
@@ -232,16 +232,17 @@ public class Group extends Gizmo {
 			return null;
 		}
 	}
-	
-	public synchronized Gizmo getFirstAvailable( Class<? extends Gizmo> c ) {
-		
+
+	public synchronized <T extends Gizmo> T getFirstAvailable( Class<T> c ) {
+
 		for (int i=0; i < length; i++) {
 			Gizmo g = members.get( i );
 			if (g != null && !g.exists && ((c == null) || g.getClass() == c)) {
-				return g;
+				//noinspection unchecked
+				return (T)g;
 			}
 		}
-		
+
 		return null;
 	}
 	

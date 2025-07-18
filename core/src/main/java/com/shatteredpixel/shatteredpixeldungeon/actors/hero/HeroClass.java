@@ -57,6 +57,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.medic.Ange
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.medic.GammaRayEmmit;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.medic.HealingGenerator;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ratking.OmniAbility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ratking.Wrath;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.DeathMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.ShadowClone;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.SmokeBomb;
@@ -610,7 +611,7 @@ public enum HeroClass {
 			case ARCHER:
 				return new ArmorAbility[]{new DashAbility(), new Hunt(), new Snipe()};
 			case RAT_KING:
-				return new ArmorAbility[]{new Ratmogrify(), new OmniAbility()};
+				return new ArmorAbility[]{new Wrath(), new Ratmogrify(), new OmniAbility()};
 		}
 	}
 

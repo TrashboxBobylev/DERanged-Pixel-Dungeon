@@ -28,8 +28,8 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.DarkBlock;
 import com.shatteredpixel.shatteredpixeldungeon.effects.EmoIcon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
-import com.shatteredpixel.shatteredpixeldungeon.effects.IceBlock;
 import com.shatteredpixel.shatteredpixeldungeon.effects.GlowBlock;
+import com.shatteredpixel.shatteredpixeldungeon.effects.IceBlock;
 import com.shatteredpixel.shatteredpixeldungeon.effects.ShieldHalo;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
@@ -253,33 +253,51 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			motion.stop(false);
 		}
 	}
-	
-	public void attack( int cell ) {
-		attack( cell, null );
+
+	// putting animation changes in here will guarentee that each gets to play, but the default is that they override each other.
+	// didn't expect to have to rewrite this in order to get what I want...
+	// set is used to emulate current behavior vs the delayed behavior.
+	// note that doing this also overrides auto-ending so you might want to deal with that.
+	public void doAfterAnim(Callback callback) { doAfterAnim(callback,false); }
+	protected synchronized void doAfterAnim(Callback callback, boolean set) {
+		if(animCallback != null) { // which means something is playing
+			Callback curCallback = animCallback;
+			animCallback = () -> { // this allows me to effectively stack callbacks while keeping sequence of events intact.
+				curCallback.call();
+				callback.call();
+			};
+		}
+		else if (set) animCallback = callback; // this is the internal behavior.
+		else callback.call(); // this is the public behavior.
 	}
-	
-	public synchronized void attack( int cell, Callback callback ) {
-		animCallback = callback;
+
+	public void attack( int cell ) {
 		turnTo( ch.pos, cell );
 		play( attack );
 	}
-	
-	public void operate( int cell ) {
-		operate( cell, null );
+
+	public void attack( int cell, Callback callback ) {
+		doAfterAnim(callback,true);
+		attack(cell);
 	}
-	
-	public synchronized void operate( int cell, Callback callback ) {
-		animCallback = callback;
+
+	public void operate( int cell ) {
 		turnTo( ch.pos, cell );
 		play( operate );
 	}
-	
-	public void zap( int cell ) {
-		zap( cell, null );
+
+	public final void operate( int cell, Callback callback ) {
+		doAfterAnim(callback,true);
+		operate(cell);
 	}
-	
-	public synchronized void zap( int cell, Callback callback ) {
-		animCallback = callback;
+
+	public void zap( int cell ) {
+		turnTo( ch.pos, cell );
+		play( zap );
+	}
+
+	public final void zap( int cell, Callback callback ) {
+		doAfterAnim(callback,true);
 		turnTo( ch.pos, cell );
 		play( zap );
 	}

@@ -939,7 +939,18 @@ public enum Talent {
 		public float iconFadePercent() { return Math.max(0, visualcooldown() / 20); }
 	};
 	//Spectral Blades 4-3
-	public static class SpiritBladesTracker extends FlavourBuff{};
+	public static class SpiritBladesTracker extends FlavourBuff{
+		// todo should I have enchant have increased proc chances for Wrath?
+		public float getModifier() {
+			return hero.pointsInTalent(SPIRIT_BLADES, SEA_OF_BLADES) < 4 ? 1f : 1.1f;
+		}
+		public void setModifier(float modifier) {/* ignored by default */}
+
+		public static float getProcModifier() {
+			SpiritBladesTracker tracker = hero.buff(SpiritBladesTracker.class, false);
+			return tracker != null ? tracker.getModifier() : 1f;
+		}
+	};
 	//Sniper
 	public static class KickCooldown extends FlavourBuff{
 		public int icon() { return BuffIndicator.TIME; }

@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Tackle;
@@ -50,6 +51,8 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
+import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.*;
+
 public class Shockwave extends ArmorAbility {
 
 	{
@@ -65,6 +68,99 @@ public class Shockwave extends ArmorAbility {
 	public int targetedPos(Char user, int dst) {
 		return new Ballistica( user.pos, dst, Ballistica.STOP_SOLID | Ballistica.STOP_TARGET ).collisionPos;
 	}
+
+	public static void activate(Hero hero, int target, int degrees, int maxDist, Callback next) {
+		boolean endTurn = next == null;
+
+		hero.busy();
+
+		Ballistica aim = new Ballistica(hero.pos, target, Ballistica.WONT_STOP);
+
+		int dist = Math.min(aim.dist, maxDist);
+
+		ConeAOE cone = new ConeAOE(aim, dist, degrees,
+				Ballistica.STOP_SOLID | Ballistica.STOP_TARGET);
+
+		//cast to cells at the tip, rather than all cells, better performance.
+		for (Ballistica ray : cone.outerRays){
+			hero.sprite.parent.recycle( MagicMissile.class ).reset(
+					MagicMissile.FORCE_CONE,
+					hero.sprite,
+					ray.path.get(ray.dist),
+					null
+			);
+		}
+
+		hero.sprite.zap(target);
+		// TODO fix so that sounds can just play as soon as possible.
+		Sample.INSTANCE.playDelayed(Assets.Sounds.BLAST, next == null ? 0f : 0.125f, next == null ? 1f : 3f, 0.5f);
+		PixelScene.shake(2, 0.5f);
+		//final zap at 2/3 distance, for timing of the actual effect
+		MagicMissile.boltFromChar(hero.sprite.parent,
+				MagicMissile.FORCE_CONE,
+				hero.sprite,
+				cone.coreRay.path.get(dist * 2 / 3),
+				() -> {
+					for (int cell : cone.cells){
+
+						Char ch = Actor.findChar(cell);
+						if (ch != null && ch.alignment != hero.alignment){
+							int scalingStr = hero.STR()-10;
+							int damage = Hero.heroDamageIntRange(5 + scalingStr, 10 + 2*scalingStr);
+							float modifier = (1f + hero.byTalent(
+									SHOCK_FORCE, .2f,
+									AFTERSHOCK, .15f));
+							damage = Math.round(damage * modifier);
+							damage -= ch.drRoll();
+
+							// note I'm not giving this to aftershock.
+							if (hero.pointsInTalent(STRIKING_WAVE) == 4){
+								Buff.affect(hero, Talent.StrikingWaveTracker.class, 0f);
+							}
+
+							if (Random.Int(10) < hero.byTalent(
+									STRIKING_WAVE, 3,
+									AFTERSHOCK, 2)){
+								boolean wasEnemy = ch.alignment == Char.Alignment.ENEMY
+										|| (ch instanceof Mimic && ch.alignment == Char.Alignment.NEUTRAL);
+								damage = hero.attackProc(ch, damage);
+								ch.damage(damage, hero);
+								if(wasEnemy) {
+									if (hero.subClass.is(HeroSubClass.GLADIATOR) && wasEnemy){
+										Buff.affect( hero, Combo.class ).hit( ch );
+									}
+									if (hero.subClass.is(HeroSubClass.VETERAN)){
+										if (Dungeon.level.adjacent(ch.pos, hero.pos) && hero.buff(Tackle.class) == null) {
+											Buff.prolong(hero, Tackle.class, 1).set(ch.id());
+										}
+									}
+								}
+							} else {
+								ch.damage(damage, hero);
+							}
+							if (ch.isAlive()){
+								// fixme for wrath this should probably be delayed, though
+								if (Random.Int(hero.hasTalent(SHOCK_FORCE) ? 4 : 5) < hero.pointsInTalent(SHOCK_FORCE,AFTERSHOCK)){
+									Buff.affect(ch, Paralysis.class, 5f);
+									Buff.affect(ch, ShockForceStunHold.class, 0f);} else {
+									Buff.affect(ch, Cripple.class, 5f);
+								}
+							}
+
+						}
+					}
+
+					if(endTurn) {
+						Invisibility.dispel();
+						hero.spendAndNext(Actor.TICK);
+						OmniAbility.markAbilityUsed(new Shockwave());
+					} else next.call();
+
+				});
+	}
+
+	// this prevents stun from being broken during wrath.
+	public static class ShockForceStunHold extends FlavourBuff {{ actPriority = VFX_PRIO; }}
 
 	@Override
 	protected void activate(ClassArmor armor, Hero hero, Integer target) {
@@ -118,14 +214,14 @@ public class Shockwave extends ArmorAbility {
 							if (ch != null && ch.alignment != hero.alignment){
 								int scalingStr = hero.STR()-10;
 								int damage = Hero.heroDamageIntRange(5 + scalingStr, 10 + 2*scalingStr);
-								damage = Math.round(damage * (1f + 0.2f*hero.pointsInTalent(Talent.SHOCK_FORCE)));
+								damage = Math.round(damage * (1f + 0.2f*hero.pointsInTalent(SHOCK_FORCE)));
 								damage -= ch.drRoll();
 
-								if (hero.pointsInTalent(Talent.STRIKING_WAVE) == 4){
+								if (hero.pointsInTalent(STRIKING_WAVE) == 4){
 									Buff.affect(hero, Talent.StrikingWaveTracker.class, 0f);
 								}
 
-								if (Random.Int(10) < 3*hero.pointsInTalent(Talent.STRIKING_WAVE)){
+								if (Random.Int(10) < 3*hero.pointsInTalent(STRIKING_WAVE)){
 									boolean wasEnemy = ch.alignment == Char.Alignment.ENEMY
 											|| (ch instanceof Mimic && ch.alignment == Char.Alignment.NEUTRAL);
 									damage = hero.attackProc(ch, damage);
@@ -142,7 +238,7 @@ public class Shockwave extends ArmorAbility {
 									ch.damage(damage, hero);
 								}
 								if (ch.isAlive()){
-									if (Random.Int(4) < hero.pointsInTalent(Talent.SHOCK_FORCE)){
+									if (Random.Int(4) < hero.pointsInTalent(SHOCK_FORCE)){
 										Buff.affect(ch, Paralysis.class, 5f);
 									} else {
 										Buff.affect(ch, Cripple.class, 5f);
@@ -167,6 +263,6 @@ public class Shockwave extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.EXPANDING_WAVE, Talent.STRIKING_WAVE, Talent.SHOCK_FORCE, Talent.HEROIC_ENERGY};
+		return new Talent[]{Talent.EXPANDING_WAVE, STRIKING_WAVE, SHOCK_FORCE, Talent.HEROIC_ENERGY};
 	}
 }

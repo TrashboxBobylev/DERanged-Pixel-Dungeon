@@ -25,11 +25,14 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ratking.OmniAbility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
@@ -40,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
@@ -137,22 +141,50 @@ public class SpectralBlades extends ArmorAbility {
 		hero.busy();
 	}
 
-	private Char findChar(Ballistica path, Hero hero, int wallPenetration, HashSet<Char> existingTargets){
+	public static void shoot(Hero hero,
+							 Char ch,
+							 float dmgMulti,
+							 float accMulti,
+							 Talent spiritBlades,
+							 Class<? extends Talent.SpiritBladesTracker> trackerClass,
+							 HashSet<Callback> callbacks,
+							 Callback onComplete)
+	{
+		Item blade = new Shuriken();
+		Callback callback = new Callback() {
+			@Override public void call() {
+				if (hero.hasTalent(spiritBlades)) {
+					// todo should I have enchant effectiveness for sea of blades be seperate from dmgMulti? In that case it would be 200/300/400/500-550%. Currently it is 150/200/250/300-330.
+					Buff.affect(hero, trackerClass, 0f).setModifier(dmgMulti);
+				}
+				int dmgBonus = 0;
+				if(hero.attack( ch, dmgMulti, dmgBonus, accMulti )
+						&& hero.subClass.is(HeroSubClass.KING)
+						&& Random.Float() < Talent.SpiritBladesTracker.getProcModifier()) {
+					// this isn't going to be added otherwise.
+					Buff.affect(hero, Combo.class).hit(ch);
+				};
+				callbacks.remove( this );
+				if (callbacks.isEmpty()) onComplete.call();
+			}
+		};
+
+		MissileSprite m = hero.sprite.parent.recycle( MissileSprite.class );
+		m.reset( hero.sprite, ch.pos, blade, callback );
+        m.hardlight(0.6f, 1f, 1f);
+        m.alpha(0.8f);
+        callbacks.add(callback);
+	}
+
+	public static Char findChar(Ballistica path, Hero hero, int wallPenetration, HashSet<Char> existingTargets){
 		for (int cell : path.path){
 			Char ch = Actor.findChar(cell);
 			if (ch != null){
-				if (ch == hero || existingTargets.contains(ch) || ch.alignment == Char.Alignment.ALLY){
-					continue;
-				} else {
-					return ch;
-				}
+				if (ch == hero || existingTargets.contains(ch)
+						|| ch.alignment == Char.Alignment.ALLY || ch instanceof NPC) continue;
+				else return ch;
 			}
-			if (Dungeon.level.solid[cell]){
-				wallPenetration--;
-				if (wallPenetration < 0){
-					return null;
-				}
-			}
+			if (Dungeon.level.solid[cell] && --wallPenetration < 0) return null;
 		}
 		return null;
 	}

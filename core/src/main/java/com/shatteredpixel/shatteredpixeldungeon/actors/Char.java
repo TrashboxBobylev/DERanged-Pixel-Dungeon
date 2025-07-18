@@ -1316,15 +1316,30 @@ public abstract class Char extends Actor {
 		return filtered;
 	}
 
+	public synchronized final <T extends Object> T buff(Class<T> c) {
+		return buff(c, true);
+	}
+
 	@SuppressWarnings("unchecked")
 	//returns an instance of the specific buff class, if it exists. Not just assignable
-	public synchronized  <T extends Buff> T buff( Class<T> c ) {
+	public synchronized <T extends Object> T buff( Class<T> c, boolean matchClass ) {
 		for (Buff b : buffs) {
-			if (b.getClass() == c) {
+			if (matchClass ? b.getClass() == c: c.isAssignableFrom(b.getClass())) {
 				return (T)b;
+			}
+			if (c.isInterface()){
+				Class[] interfaces = b.getClass().getInterfaces();
+				for (Class clazz : interfaces){
+					if (clazz.isAssignableFrom(c)){
+						return (T)b;
+					}
+				}
 			}
 		}
 		return null;
+	}
+	public synchronized <T extends Buff> T virtualBuff( Class<T> c) {
+		return buff(c, false);
 	}
 
 	public synchronized boolean isCharmedBy( Char ch ) {
