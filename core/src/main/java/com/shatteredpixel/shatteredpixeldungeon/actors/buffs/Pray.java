@@ -80,7 +80,7 @@ public class Pray extends Buff implements ActionIndicator.Action {
         Buff.affect(hero, Praying.class, 1f);
 
         if (hero.buff(Talent.PrayForDeadTracker.class) != null) {
-            switch (hero.pointsInTalent(Talent.PRAY_FOR_DEAD)) {
+            switch (hero.pointsInTalent(Talent.PRAY_FOR_DEAD, Talent.RK_CRUSADER)) {
                 case 3:
                     hero.heal(3);
                 case 2:
@@ -124,10 +124,10 @@ public class Pray extends Buff implements ActionIndicator.Action {
 //        }
 
         public void defenseProc(Char enemy, int damage) {
-            if (hero.hasTalent(Talent.GODS_JUDGEMENT)) {
+            if (hero.hasTalent(Talent.GODS_JUDGEMENT, Talent.RK_CRUSADER)) {
                 Buff.affect(enemy, Talent.JudgementTracker.class, Talent.JudgementTracker.DURATION);
             }
-            if (hero.hasTalent(Talent.PUNISHMENT)) {
+            if (hero.hasTalent(Talent.PUNISHMENT, Talent.RK_CRUSADER)) {
                 Buff.affect(hero, Punishment.class);
             }
         }
@@ -150,11 +150,11 @@ public class Pray extends Buff implements ActionIndicator.Action {
 
         public static float resist( Char target, Class effect ){
             if (!(target instanceof Hero)) return 1f;
-            if (!((Hero)target).hasTalent(Talent.CLEANSING_PRAY)) return 1f;
+            if (!((Hero)target).hasTalent(Talent.CLEANSING_PRAY, Talent.RK_CRUSADER)) return 1f;
 
             for (Class c : RESISTS){
                 if (c.isAssignableFrom(effect)){
-                    return 1f - hero.pointsInTalent(Talent.CLEANSING_PRAY)/3f; //67%/33%/0% damage at +1/+2/+3
+                    return 1f - hero.pointsInTalent(Talent.CLEANSING_PRAY, Talent.RK_CRUSADER)/3f; //67%/33%/0% damage at +1/+2/+3
                 }
             }
 
@@ -180,7 +180,7 @@ public class Pray extends Buff implements ActionIndicator.Action {
             enemy.damage(Hero.heroDamageIntRange(Math.round(damage*0.2f), Math.round(damage*0.6f)), target);
             ThunderImbue.thunderEffect(enemy.sprite);
             countUp(1);
-            if (count() >= hero.pointsInTalent(Talent.PUNISHMENT)) { //it counts from 0, so the count become +1 after 1 hit
+            if (count() >= hero.pointsInTalent(Talent.PUNISHMENT, Talent.RK_CRUSADER)) { //it counts from 0, so the count become +1 after 1 hit
                 detach();
             }
         }

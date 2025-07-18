@@ -2289,10 +2289,10 @@ public enum Talent {
 			}
 		}
 
-		if (hero.hasTalent(Talent.ANTI_DEMON) &&
+		if (hero.hasTalent(Talent.ANTI_DEMON, RK_CRUSADER) &&
 				hero.buff(Bless.class) != null &&
 				(Char.hasProp(enemy, Char.Property.DEMONIC) || Char.hasProp(enemy, Char.Property.UNDEAD))) {
-			damage = Math.round(damage * 1f+hero.pointsInTalent(Talent.ANTI_DEMON)/3f);
+			damage = Math.round(damage * 1f+hero.pointsInTalent(Talent.ANTI_DEMON, RK_CRUSADER)/3f);
 		}
 
 		if (hero.hasTalent(Talent.ARMY_OF_DEATH, RK_DEATHKNIGHT)) {
@@ -2440,8 +2440,8 @@ public enum Talent {
 			int healAmt = Math.round(damage*0.4f);
 			int excessHeal = healAmt - (hero.HT - hero.HP);
 			hero.heal(healAmt);
-			if (hero.hasTalent(Talent.HOLY_SHIELD) && excessHeal > 0) {
-				int maxShield = Math.round(hero.HT*0.2f*hero.pointsInTalent(Talent.HOLY_SHIELD));
+			if (hero.hasTalent(Talent.HOLY_SHIELD, RK_CRUSADER) && excessHeal > 0) {
+				int maxShield = Math.round(hero.HT*0.2f*hero.pointsInTalent(Talent.HOLY_SHIELD, RK_CRUSADER));
 				Barrier barrier = hero.buff(Barrier.class);
 				if (barrier != null) {
 					if (barrier.shielding()+excessHeal > maxShield) {

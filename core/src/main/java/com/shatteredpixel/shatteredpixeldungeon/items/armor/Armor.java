@@ -561,8 +561,8 @@ public class Armor extends EquipableItem {
 			if (armorEnhance != null && isEquipped( hero )) {
 				lvl = armorEnhance.armorLevel(lvl);
 			}
-			if (hero.hasTalent(Talent.CRAFTMANS_SKILLS) && isEquipped( hero )) {
-				lvl += hero.pointsInTalent(Talent.CRAFTMANS_SKILLS);
+			if (hero.hasTalent(Talent.CRAFTMANS_SKILLS, Talent.RK_CRUSADER) && isEquipped( hero )) {
+				lvl += hero.pointsInTalent(Talent.CRAFTMANS_SKILLS, Talent.RK_CRUSADER);
 			}
 		}
 		return lvl;
