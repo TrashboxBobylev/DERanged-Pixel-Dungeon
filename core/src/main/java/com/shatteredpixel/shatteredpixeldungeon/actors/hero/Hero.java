@@ -3093,7 +3093,7 @@ public class Hero extends Char {
 				buff(Talent.WandPreservationCounter.class).detach();
 			}
 
-			if (lvl < MAX_LEVEL) {
+			if (lvl < 10000) {
 				lvl++;
 				levelUp = true;
 				
