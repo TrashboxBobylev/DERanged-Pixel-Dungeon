@@ -1432,13 +1432,14 @@ public enum Talent {
 	public static int talentAmount(HeroClass hCl, int tier){
 		int amount = 5;
 		if (tier == 2) amount++;
-		if (hCl == HeroClass.RAT_KING) amount--;
+		if (hCl == HeroClass.RAT_KING) amount*=2;
 		return amount;
 	}
 
 	public static int getMaxPoints(int tier) {
 		if (tier >= 5) return 0;
 		int max = tierLevelThresholds[tier+1] - tierLevelThresholds[tier];
+		if (hero.isClassedLoosely(HeroClass.RAT_KING)) max *= 1.5f;
 		return max;
 	}
 

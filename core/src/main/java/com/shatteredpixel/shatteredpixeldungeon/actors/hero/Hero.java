@@ -712,8 +712,8 @@ public class Hero extends Char {
 		if (!hasTier(tier)) {
 			return 0;
 		} else {
-			return Math.min(1 + lvl - Talent.tierLevelThresholds[tier], Talent.getMaxPoints(tier))
-					- talentPointsSpent(tier) + bonusTalentPoints(tier);
+			return (int) (Math.min(1 + lvl*(isClassedLoosely(HeroClass.RAT_KING) ? 1.5f : 1f) - Talent.tierLevelThresholds[tier]*(isClassedLoosely(HeroClass.RAT_KING) ? 1.5f : 1), Talent.getMaxPoints(tier))
+                                - talentPointsSpent(tier) + bonusTalentPoints(tier));
 		}
 	}
 
