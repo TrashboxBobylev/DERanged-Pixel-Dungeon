@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.MageArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.MedicArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.RatKingArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.RogueArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.SamuraiArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
@@ -113,6 +114,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportat
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.spellbook.BookOfBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.spellbook.BookOfCorrosion;
 import com.shatteredpixel.shatteredpixeldungeon.items.spellbook.BookOfCorruption;
@@ -127,7 +129,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.spellbook.BookOfThunderBol
 import com.shatteredpixel.shatteredpixeldungeon.items.spellbook.BookOfTransfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.spellbook.BookOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.items.spellbook.SpellBook;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Spell;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
@@ -143,8 +144,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFlock;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfShock;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.BrokenMagnifyingGlass;
-import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.CrystalBall;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ChaoticCenser;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.CrystalBall;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.DimensionalSundial;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ExoticCrystals;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.EyeOfNewt;
@@ -158,9 +159,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ParchmentScrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.PetrifiedSeed;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.PinkGem;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.RatSkull;
-import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.SuspiciousKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.SaltCube;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ShardOfOblivion;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.SuspiciousKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ThirteenLeafClover;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrapMechanism;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.Trinket;
@@ -268,9 +269,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.GL.GL_T3;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.GL.GL_T5;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.HG.HG_T2;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.HG.HG_T5;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.LG.LG_T5;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.MG.MG_T3;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.MG.MG_T5;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.LG.LG_T5;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.RL.RL_T4;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.RL.RL_T5;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SG.SG_T3;
@@ -746,9 +747,10 @@ public class Generator {
 					SamuraiArmor.class,
 					AdventurerArmor.class,
 					KnightArmor.class,
-					MedicArmor.class
+					MedicArmor.class,
+					RatKingArmor.class
 			};
-			ARMOR.probs = new float[]{ 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 };
+			ARMOR.probs = new float[]{ 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 			
 			//see Generator.randomMissile
 			MISSILE.classes = new Class<?>[]{};

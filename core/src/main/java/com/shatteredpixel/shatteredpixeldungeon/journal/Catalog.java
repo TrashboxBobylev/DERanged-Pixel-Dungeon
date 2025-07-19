@@ -47,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.TengusMask;
 import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.CheesyCheest;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
@@ -110,6 +111,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.remains.BrokenHilt;
 import com.shatteredpixel.shatteredpixeldungeon.items.remains.BrokenShield;
 import com.shatteredpixel.shatteredpixeldungeon.items.remains.BrokenStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.remains.CloakScrap;
+import com.shatteredpixel.shatteredpixeldungeon.items.remains.CrownShard;
 import com.shatteredpixel.shatteredpixeldungeon.items.remains.HoledPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.remains.SealShard;
 import com.shatteredpixel.shatteredpixeldungeon.items.remains.ShatteredPillbox;
@@ -269,7 +271,7 @@ public enum Catalog {
 		MISC_EQUIPMENT.addItems(BrokenSeal.class, KnightsShield.class, DeathSword.class, Saddle.class, Rosary.class,
 				SpiritBow.class, WindBow.class, TacticalBow.class, GoldenBow.class, NaturesBow.class, CorrosiveBow.class, ElectricBow.class, MagicalBow.class, PhaseBow.class,
 				Sheath.class, GammaRayGun.class,
-				Waterskin.class, VelvetPouch.class, PotionBandolier.class, ScrollHolder.class, MagicalHolster.class,
+				Waterskin.class, VelvetPouch.class, PotionBandolier.class, ScrollHolder.class, MagicalHolster.class, CheesyCheest.class,
 				OldAmulet.class, Amulet.class);
 
 
@@ -316,7 +318,7 @@ public enum Catalog {
 				GooBlob.class, TengusMask.class, MetalShard.class, KingsCrown.class,
 				LiquidMetal.class, ArcaneResin.class,
 				SealShard.class, BrokenStaff.class, CloakScrap.class, BowFragment.class, BrokenHilt.class, TornPage.class,
-				SpareMagazine.class, SheathFragment.class, HoledPouch.class, BrokenShield.class, ShatteredPillbox.class,
+				SpareMagazine.class, SheathFragment.class, HoledPouch.class, BrokenShield.class, ShatteredPillbox.class, CrownShard.class,
 				Rope.class, GunSmithingTool.class, BulletBelt.class,
 				Chaosstone.class, AbyssalSpawner.Clump.class, RedCrystal.class);
 
