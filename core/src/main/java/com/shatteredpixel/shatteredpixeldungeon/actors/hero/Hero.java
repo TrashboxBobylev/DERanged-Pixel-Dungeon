@@ -3147,13 +3147,13 @@ public class Hero extends Char {
 			return true;
 		}
 	}
-	
+
 	public int maxExp() {
 		return maxExp( lvl );
 	}
-	
+
 	public static int maxExp( int lvl ){
-		return 5 + lvl * 5;
+		return (int) ((5 + lvl * 5)*Math.pow(1.2, Math.max(0, lvl - 30)));
 	}
 	
 	public boolean isStarving() {
