@@ -37,6 +37,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Build;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Command;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EnhancedRings;
@@ -1608,7 +1610,21 @@ public enum Talent {
 			Buff.affect(hero, ParryTracker.class);
 		}
 
+		if (talent  == RK_ENGINEER) {
+			Buff.affect(hero, Build.class);
+		}
 
+		if (talent  == RK_HORSEMAN) {
+			Buff.affect(hero, HorseRiding.class).set();
+		}
+
+		if (talent  == RK_CRUSADER) {
+			Buff.affect(hero, Pray.class);
+		}
+
+		if (talent  == RK_MEDICALOFFICER) {
+			Buff.affect(hero, Command.class);
+		}
 
 		//rouge
 		if ((talent == THIEFS_INTUITION || talent == ROYAL_INTUITION) && hero.pointsInTalent(THIEFS_INTUITION, ROYAL_INTUITION) == 2){
