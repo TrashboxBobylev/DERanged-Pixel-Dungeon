@@ -92,7 +92,7 @@ public class MeleeWeapon extends Weapon {
 	@Override
 	public void activate(Char ch) {
 		super.activate(ch);
-		if (ch instanceof Hero && ((Hero) ch).isClassed(HeroClass.DUELIST)){
+		if (ch instanceof Hero && ((Hero) ch).isClassedLoosely(HeroClass.DUELIST)){
 			Buff.affect(ch, Charger.class);
 		}
 	}
