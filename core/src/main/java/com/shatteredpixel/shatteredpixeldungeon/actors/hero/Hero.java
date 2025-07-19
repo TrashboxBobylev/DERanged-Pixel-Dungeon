@@ -3816,6 +3816,6 @@ public class Hero extends Char {
 	}
 
 	public boolean canFurrowGrass(){
-		return isClassed(HeroClass.HUNTRESS) || isClassed(HeroClass.ADVENTURER) || isSubclassed(HeroSubClass.SPECIALIST);
+		return isClassedLoosely(HeroClass.HUNTRESS) || isClassedLoosely(HeroClass.ADVENTURER) || isSubclassedLoosely(HeroSubClass.SPECIALIST);
 	}
 }
