@@ -11,13 +11,13 @@ buildscript {
 allprojects {
 
     ext {
-        appName = 'Rearranged Pixel Dungeon'
-        appPackageName = 'com.rearrangedpixel.rearrangedpixeldungon'
+        appName = 'DERanged Pixel Dungeon'
+        appPackageName = 'com.trashboxbobylev.derangedpixeldungeon'
 
         appVersionCode = 850
-        appVersionName = '3.1.1'
+        appVersionName = '1.0.0'
         appVersionCode += 52
-        appVersionName += '_based_3.34.0'
+        appVersionName += '_based_3.1.1'
 
         appJavaCompatibility = JavaVersion.VERSION_1_8
 
