@@ -112,6 +112,23 @@ public abstract class ChampionEnemy extends Buff {
 		}
 	}
 
+	public static Class[] championTitles = {
+		Blazing.class, Projecting.class, AntiMagic.class, Giant.class, Blessed.class
+	};
+
+	private static Class<? extends ChampionEnemy> getTitle(){
+        return Random.element(championTitles);
+	}
+
+	private static void makeChampion(Mob m, Class<? extends ChampionEnemy> title) {
+		Buff.affect(m, title);
+	}
+
+	public static void rollForChampionInstantly(Mob m){
+		makeChampion(m, getTitle());
+		m.state = m.WANDERING;
+	}
+
 	public static class Blazing extends ChampionEnemy {
 
 		{

@@ -30,11 +30,13 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.GlowBlock;
 import com.shatteredpixel.shatteredpixeldungeon.effects.IceBlock;
+import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.ShieldHalo;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.TorchHalo;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FrostfireParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LightParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SnowParticle;
@@ -86,7 +88,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected float shadowOffset    = 0.25f;
 
 	public enum State {
-		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, HEARTS, GLOWING, AURA, JUDGED, ELECTRIC, SHRUNK
+		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, HEARTS, GLOWING, AURA, JUDGED, ELECTRIC, SHRUNK, FROSTBURNING, SPIRIT
 	}
 	
 	protected Animation idle;
@@ -108,6 +110,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected Emitter hearts;
 	protected Emitter judged;
 	protected Emitter electric;
+	protected Emitter frostburning;
+	protected Emitter spirit;
 
 	protected IceBlock iceBlock;
 	protected DarkBlock darkBlock;
@@ -495,6 +499,20 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				scale.x = 0.75f;
 				scale.y = 0.75f;
 				break;
+			case FROSTBURNING:
+				frostburning = emitter();
+				frostburning.pour( FrostfireParticle.FACTORY, 0.06f );
+				if (visible) {
+					Sample.INSTANCE.play( Assets.Sounds.BURNING );
+				}
+				break;
+			case SPIRIT:
+				spirit = emitter();
+				spirit.pour(MagicMissile.ForceParticle.FACTORY, 0.06f );
+				if (visible) {
+					Sample.INSTANCE.play( Assets.Sounds.BURNING );
+				}
+				break;
 		}
 	}
 
@@ -610,6 +628,18 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			case SHRUNK:
 				scale.x = 1f;
 				scale.y = 1f;
+				break;
+			case FROSTBURNING:
+				if (frostburning != null) {
+					frostburning.on = false;
+					frostburning = null;
+				}
+				break;
+			case SPIRIT:
+				if (spirit != null) {
+					spirit.on = false;
+					spirit = null;
+				}
 				break;
 		}
 	}

@@ -137,6 +137,7 @@ public class BuffIndicator extends Component {
 	public static final int SEAL_SHIELD = 84;
 
 	//arranged buffs
+	public static final int FROSTBURN   = 133;
 	public static final int ERADICATION = 134;
 	public static final int PARRY		= 135;
 	public static final int DUEL_BOW	= 136;

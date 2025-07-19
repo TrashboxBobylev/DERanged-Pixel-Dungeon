@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.RatSkull;
+import com.shatteredpixel.shatteredpixeldungeon.levels.AbyssLevel;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -70,6 +71,11 @@ public class MobSpawner extends Actor {
 
 	//returns a rotation of standard mobs, unshuffled.
 	private static ArrayList<Class<? extends Mob>> standardMobRotation( int depth ){
+		if (Dungeon.branch == AbyssLevel.BRANCH){
+			return new ArrayList<>(Arrays.asList(
+					SpectreRat.class, DarkestElf.class, GhostChicken.class, Phantom.class, BlinkingMan.class, Trappet.class
+			));
+		}
 		if (Dungeon.branch == 2) {
 			switch(depth){
 				default:
@@ -311,7 +317,10 @@ public class MobSpawner extends Actor {
 
 	//switches out regular mobs for their alt versions when appropriate
 	private static void swapMobAlts(ArrayList<Class<?extends Mob>> rotation) {
-		float altChance = 1 / 50f * RatSkull.exoticChanceMultiplier();
+		float altChance = 1 / 50f;
+		if (Dungeon.branch == AbyssLevel.BRANCH && Dungeon.depth % 5 == 0)
+			altChance *= 20f;
+		altChance *= RatSkull.exoticChanceMultiplier();
 		for (int i = 0; i < rotation.size(); i++) {
 			if (Random.Float() < altChance) {
 				Class<? extends Mob> cl = rotation.get(i);
@@ -332,6 +341,13 @@ public class MobSpawner extends Actor {
 				else if (cl == Scorpio.class)       cl = Acidic.class;
 
 				else if (cl == Soldier.class) 		cl = SWAT.class;
+				else if (cl == GhostChicken.class || cl == DarkestElf.class){
+					cl = AbyssalNightmare.class;
+				} else if (cl == BlinkingMan.class || cl == Trappet.class){
+					cl = Dragon.class;
+				} else if (cl == Phantom.class || cl == SpectreRat.class){
+					cl = LostSpirit.class;
+				}
 
 				rotation.set(i, cl);
 			}

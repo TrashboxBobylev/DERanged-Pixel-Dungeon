@@ -307,7 +307,7 @@ public abstract class Mob extends Char {
 				return enemy;
 			}
 			for (Char ch : Actor.chars()) {
-				if (ch != this && fieldOfView[ch.pos] &&
+				if (ch != this && canSee(ch.pos) &&
 						ch.buff(StoneOfAggression.Aggression.class) != null) {
 					state = HUNTING;
 					return ch;
@@ -348,7 +348,7 @@ public abstract class Mob extends Char {
 				//try to find an enemy mob to attack first.
 				for (Mob mob : Dungeon.level.mobs)
 					if (mob.alignment == Alignment.ENEMY && mob != this
-							&& fieldOfView[mob.pos] && mob.invisible <= 0) {
+							&& canSee(mob.pos) && mob.invisible <= 0) {
 						enemies.add(mob);
 					}
 				
@@ -356,7 +356,7 @@ public abstract class Mob extends Char {
 					//try to find ally mobs to attack second.
 					for (Mob mob : Dungeon.level.mobs)
 						if (mob.alignment == Alignment.ALLY && mob != this
-								&& fieldOfView[mob.pos] && mob.invisible <= 0) {
+								&& canSee(mob.pos) && mob.invisible <= 0) {
 							enemies.add(mob);
 						}
 					
@@ -372,7 +372,7 @@ public abstract class Mob extends Char {
 			} else if ( alignment == Alignment.ALLY ) {
 				//look for hostile mobs to attack
 				for (Mob mob : Dungeon.level.mobs)
-					if (mob.alignment == Alignment.ENEMY && fieldOfView[mob.pos]
+					if (mob.alignment == Alignment.ENEMY && canSee(mob.pos)
 							&& mob.invisible <= 0 && !mob.isInvulnerable(getClass()))
 						//do not target passive mobs
 						//intelligent allies also don't target mobs which are wandering or asleep
@@ -385,7 +385,7 @@ public abstract class Mob extends Char {
 			} else if (alignment == Alignment.ENEMY) {
 				//look for ally mobs to attack
 				for (Mob mob : Dungeon.level.mobs)
-					if (mob.alignment == Alignment.ALLY && fieldOfView[mob.pos] && mob.invisible <= 0)
+					if (mob.alignment == Alignment.ALLY && canSee(mob.pos) && mob.invisible <= 0)
 						enemies.add(mob);
 
 				//and look for the hero
@@ -799,6 +799,10 @@ public abstract class Mob extends Char {
 		return alignment != Alignment.ENEMY && buff(Amok.class) == null;
 	}
 
+	public boolean canSee(int pos){
+		return fieldOfView[pos];
+	}
+
 	public void aggro( Char ch ) {
 		enemy = ch;
 		if (state != PASSIVE){
@@ -1200,7 +1204,7 @@ public abstract class Mob extends Char {
 				float closestHostileDist = Float.POSITIVE_INFINITY;
 
 				for (Char ch : Actor.chars()){
-					if (fieldOfView[ch.pos] && ch.invisible == 0 && ch.alignment != alignment && ch.alignment != Alignment.NEUTRAL){
+					if (canSee(ch.pos) && ch.invisible == 0 && ch.alignment != alignment && ch.alignment != Alignment.NEUTRAL){
 						float chDist = ch.stealth() + distance(ch);
 						//silent steps rogue talent, which also applies to rogue's shadow clone
 						if ((ch instanceof Hero || ch instanceof ShadowClone.ShadowAlly)
@@ -1345,7 +1349,7 @@ public abstract class Mob extends Char {
 				if (!recentlyAttackedBy.isEmpty()){
 					boolean swapped = false;
 					for (Char ch : recentlyAttackedBy){
-						if (ch != null && ch.isActive() && Actor.chars().contains(ch) && alignment != ch.alignment && fieldOfView[ch.pos] && ch.invisible == 0 && !isCharmedBy(ch)) {
+						if (ch != null && ch.isActive() && Actor.chars().contains(ch) && alignment != ch.alignment && canSee(ch.pos) && ch.invisible == 0 && !isCharmedBy(ch)) {
 							if (canAttack(ch) || enemy == null || Dungeon.level.distance(pos, ch.pos) < Dungeon.level.distance(pos, enemy.pos)) {
 								enemy = ch;
 								target = ch.pos;

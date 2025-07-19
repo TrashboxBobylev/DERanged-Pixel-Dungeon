@@ -424,5 +424,9 @@ public class Assets {
 		public static final String SUPPORT_FORCE = "sprites/support_force.png";
 		public static final String RAT_STATUE = "sprites/rat_statue.png";
 		public static final String FINAL_FROGGIT = "sprites/final_froggit.png";
+		public static final String DRAGON = "sprites/mob_drake.png";
+		public static final String TRAPPET = "sprites/trappet.png";
+		public static final String ATTUNEMENT_SPIRIT = "sprites/attunement_spirit.png";
+		public static final String CHICKEN = "sprites/chicken.png";
 	}
 }

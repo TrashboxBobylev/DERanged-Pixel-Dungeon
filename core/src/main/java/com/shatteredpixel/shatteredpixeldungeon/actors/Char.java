@@ -1486,6 +1486,10 @@ public abstract class Char extends Actor {
 	}
 	
 	protected final HashSet<Class> resistances = new HashSet<>();
+
+	public float resistanceValue(Class effect){
+		return 0.5f;
+	}
 	
 	//returns percent effectiveness after resistances
 	//TODO currently resistances reduce effectiveness by a static 50%, and do not stack.
@@ -1501,7 +1505,7 @@ public abstract class Char extends Actor {
 		float result = 1f;
 		for (Class c : resists){
 			if (c.isAssignableFrom(effect)){
-				result *= 0.5f;
+				result *= resistanceValue(effect);
 			}
 		}
 

@@ -180,7 +180,7 @@ public class ActionIndicator extends Tag {
 
 	public interface Action {
 
-		String actionName();
+		default String actionName() { return Messages.get(this, "action_name"); };
 
 		default int actionIcon(){
 			return HeroIcon.NONE;
