@@ -143,7 +143,9 @@ public enum Icons {
 	PURIGRO,
 	ARCNOR,
 	DCINSIDE,
-	NOTHING;
+	NOTHING,
+
+	BOBYLEV, ZRP200;
 
 	public Image get() {
 		return get( this );
@@ -440,6 +442,12 @@ public enum Icons {
 				break;
 			case WATA:
 				icon.frame( icon.texture.uvRectBySize( 0, 112, 17, 12 ) );
+				break;
+			case BOBYLEV:
+				icon.frame( icon.texture.uvRectBySize( 112, 128, 30, 20 ) );
+				break;
+			case ZRP200:
+				icon.frame( icon.texture.uvRectBySize( 144, 128, 16, 16 ) );
 				break;
 
 			//large icons are scaled down to match game's size

@@ -65,13 +65,40 @@ public class AboutScene extends PixelScene {
 		Component content = list.content();
 		content.clear();
 
+		CreditsBlock tb = new CreditsBlock(true, 0x3c9efa,
+				"DE-Ranged Pixel Dungeon",
+				Icons.BOBYLEV.get(),
+				"Developed by: _Trashbox Bobylev_\nThe silly expansion of ReARranged PD\nBased on ReARranged's and RKA's open source",
+				"reddit.com/u/TrashboxBobylev",
+				"https://reddit.com/u/TrashboxBobylev");
+		tb.setRect((w - fullWidth)/2f, 6, 120, 0);
+		content.add(tb);
+
+		CreditsBlock zrp200 = new CreditsBlock(false, 0xffc61a,
+				"RKPD2's creator",
+				Icons.ZRP200.get(),
+				"Zrp200 (484 Palkia)",
+				"https://github.com/Zrp200",
+				"https://github.com/Zrp200");
+		zrp200.setSize(colWidth/2f, 0);
+		if (landscape()){
+			zrp200.setPos(tb.right(), tb.top());
+		} else {
+			zrp200.setPos(w/2f - colWidth/2f + tb.width()/2f, tb.bottom()+12);
+		}
+		content.add(zrp200);
+
 		CreditsBlock arranged = new CreditsBlock(true, Window.WHITE,
 				"Re-ARranged Pixel Dungeon",
 				Icons.ARRANGED.get(),
 				"Developed by: _Cocoa_\nBased on Shattered Pixel Dungeon's open source",
 				"github repository",
 				"https://github.com/Hoto-Mocha/Re-ARranged-Pixel-Dungeon");
-		arranged.setRect((w - fullWidth)/2f, 6, 120, 0);
+		if (landscape()){
+			arranged.setRect(tb.left(), tb.bottom() + 12, colWidth, 0);
+		} else {
+			arranged.setRect(tb.left(), zrp200.bottom() + 12, colWidth, 0);
+		}
 		content.add(arranged);
 
 		CreditsBlock splash = new CreditsBlock(false, Window.WHITE,
@@ -91,6 +118,8 @@ public class AboutScene extends PixelScene {
 		if (!landscape()){
 			addLine(splash.top() - 4, content);
 		}
+
+		addLine(arranged.top() - 8, content);
 
 		CreditsBlock arrangedTransifex = new CreditsBlock(true,
 				Window.TITLE_COLOR,
