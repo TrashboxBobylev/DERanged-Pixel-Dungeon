@@ -288,7 +288,7 @@ public abstract class RegularLevel extends Level {
 				mob = null;
 
 				//chance to add a second mob to this room, except on floor 1
-				if (Dungeon.depth > 1 && mobsToSpawn > 0 && Random.Int(4) == 0){
+				if (Dungeon.scalingDepth() > 1 && mobsToSpawn > 0 && Random.Int(4) == 0){
 					mob = createMob();
 
 					tries = 30;

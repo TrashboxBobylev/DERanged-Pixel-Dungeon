@@ -3,6 +3,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.badlogic.gdx.graphics.Color;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
@@ -68,6 +69,10 @@ public class AbyssLevel extends RegularLevel {
         rooms.add(new AbyssalSpawnerRoom());
 
         return rooms;
+    }
+
+    public Actor addRespawner() {
+        return null;
     }
 
     @Override
