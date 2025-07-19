@@ -22,6 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.FinalFroggit;
+import com.shatteredpixel.shatteredpixeldungeon.levels.AbyssLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
@@ -33,6 +35,7 @@ import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ExitRoom extends StandardRoom {
 	
@@ -58,6 +61,17 @@ public class ExitRoom extends StandardRoom {
 		
 		for (Room.Door door : connected.values()) {
 			door.set( Room.Door.Type.REGULAR );
+		}
+
+		if (Dungeon.branch == AbyssLevel.BRANCH) {
+			for (int i = 0; i < Random.IntRange(1, 5); i++) {
+				FinalFroggit npc = new FinalFroggit();
+				do {
+					npc.pos = level.pointToCell(random());
+				} while (level.map[npc.pos] != Terrain.EMPTY || level.findMob(npc.pos) != null || npc.pos == level.exit);
+				npc.state = npc.SLEEPING;
+				level.mobs.add(npc);
+			}
 		}
 		
 		int exit = level.pointToCell(random( 2 ));
@@ -126,6 +140,11 @@ public class ExitRoom extends StandardRoom {
 	}
 
 	public static StandardRoom createExit(){
+		if (Dungeon.branch == AbyssLevel.BRANCH){
+			float[] chance = new float[chances[1].length];
+			Arrays.fill(chance, 1);
+			return Reflection.newInstance(rooms.get(Random.chances(chance)));
+		}
 		return Reflection.newInstance(rooms.get(Random.chances(chances[Dungeon.depth])));
 	}
 }

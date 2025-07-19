@@ -35,9 +35,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.LostBackpack;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
+import com.shatteredpixel.shatteredpixeldungeon.levels.AbyssLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.TempleChasmLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.TempleNewLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
@@ -77,7 +76,7 @@ public class InterlevelScene extends PixelScene {
 	private static float fadeTime;
 	
 	public enum Mode {
-		DESCEND, ASCEND, CONTINUE, RESURRECT, RETURN, FALL, RESET, NONE
+		DESCEND, ASCEND, CONTINUE, RESURRECT, RETURN, FALL, RESET, ABYSS, NONE
 	}
 	public static Mode mode;
 
@@ -412,6 +411,9 @@ public class InterlevelScene extends PixelScene {
 							case DESCEND:
 								descend();
 								break;
+							case ABYSS:
+								abyssDescend();
+								break;
 							case ASCEND:
 								ascend();
 								break;
@@ -650,6 +652,25 @@ public class InterlevelScene extends PixelScene {
 			Dungeon.switchLevel( level, destTransition.cell() );
 		}
 
+	}
+
+	private void abyssDescend() throws IOException {
+
+		if (Dungeon.hero == null) {
+			Mob.clearHeldAllies();
+			Dungeon.init();
+			GameLog.wipe();
+		} else {
+			Mob.holdAllies( Dungeon.level );
+			Dungeon.saveAll();
+		}
+
+		Dungeon.depth = 1;
+		Dungeon.branch = AbyssLevel.BRANCH;
+		Statistics.deepestFloor = 0;
+		Statistics.floorsExplored.clear();
+		Level level = Dungeon.newLevel();
+		Dungeon.switchLevel( level, level.entrance );
 	}
 
 	//TODO atm falling always just increments depth by 1, do we eventually want to roll it into the transition system?

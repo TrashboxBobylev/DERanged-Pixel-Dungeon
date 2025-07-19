@@ -58,6 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.SuspiciousKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
+import com.shatteredpixel.shatteredpixeldungeon.levels.AbyssLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
@@ -142,6 +143,9 @@ public class Dungeon {
 		GOLEM_EQUIP,
 		SOLDIER_WEP,
 		MEDIC_HP,
+		PHANTOM_EQUIP,
+		SPECTRE_RAT,
+		ABYSSAL_SPAWNER,
 
 		//containers
 		VELVET_POUCH,
@@ -410,6 +414,8 @@ public class Dungeon {
 				default:
 					level = new DeadEndLevel();
 			}
+		} else if (branch == AbyssLevel.BRANCH) {
+			level = new AbyssLevel();
 		} else {
 			level = new DeadEndLevel();
 		}
@@ -422,7 +428,7 @@ public class Dungeon {
 				generatedLevels.add(depth + 1000 * branch);
 			}
 
-			if (depth > Statistics.deepestFloor && branch == 0) {
+			if (depth > Statistics.deepestFloor && (branch == 0 || branch == AbyssLevel.BRANCH)) {
 				Statistics.deepestFloor = depth;
 
 				if (Statistics.qualifiedForNoKilling) {
@@ -485,6 +491,9 @@ public class Dungeon {
 	//value used for scaling of damage values and other effects.
 	//is usually the dungeon depth, but can be set to 26 when ascending
 	public static int scalingDepth(){
+		if (branch == AbyssLevel.BRANCH){
+			return 31 + depth;
+		}
 		if (Dungeon.hero != null && Dungeon.hero.buff(AscensionChallenge.class) != null){
 			return 31;
 		} else {
@@ -915,6 +924,7 @@ public class Dungeon {
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
 		info.depth = bundle.getInt( DEPTH );
+		info.branch = bundle.getInt( BRANCH );
 		info.version = bundle.getInt( VERSION );
 		info.challenges = bundle.getInt( CHALLENGES );
 		info.seed = bundle.getLong( SEED );

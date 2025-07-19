@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.Chaosstone;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -230,11 +231,19 @@ public class RankingsScene extends PixelScene {
 			int odd = pos % 2;
 			
 			if (rec.win) {
-				shield.copy( new ItemSprite(ItemSpriteSheet.AMULET, null) );
-				position.hardlight( TEXT_WIN[odd] );
-				desc.hardlight( TEXT_WIN[odd] );
-				depth.hardlight( TEXT_WIN[odd] );
-				level.hardlight( TEXT_WIN[odd] );
+				if (rec.cause == Chaosstone.class){
+					shield.copy(new ItemSprite(ItemSpriteSheet.CHAOSSTONE, new ItemSprite.Glowing()));
+					position.hardlight(TEXT_WIN[odd]);
+					desc.hardlight(TEXT_WIN[odd]);
+					depth.hardlight(TEXT_WIN[odd]);
+					level.hardlight(TEXT_WIN[odd]);
+				} else {
+					shield.copy(new ItemSprite(ItemSpriteSheet.AMULET, null));
+					position.hardlight(TEXT_WIN[odd]);
+					desc.hardlight(TEXT_WIN[odd]);
+					depth.hardlight(TEXT_WIN[odd]);
+					level.hardlight(TEXT_WIN[odd]);
+				}
 			} else {
 				position.hardlight( TEXT_LOSE[odd] );
 				desc.hardlight( TEXT_LOSE[odd] );

@@ -96,6 +96,7 @@ public class DM100 extends Mob implements Callback {
 			Invisibility.dispel(this);
 			if (hit( this, enemy, true )) {
 				int dmg = Random.NormalIntRange(3, 10);
+				if (buff(Shrink.class) != null|| enemy.buff(TimedShrink.class) != null) dmg *= 0.6f;
 				dmg = Math.round(dmg * AscensionChallenge.statModifier(this));
 				enemy.damage( dmg, new LightningBolt() );
 

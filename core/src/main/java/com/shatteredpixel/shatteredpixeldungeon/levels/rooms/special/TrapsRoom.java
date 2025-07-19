@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.levels.AbyssLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -104,7 +105,13 @@ public class TrapsRoom extends SpecialRoom {
 		for(Point p : getPoints()) {
 			int cell = level.pointToCell(p);
 			if (level.map[cell] == Terrain.TRAP){
-				level.setTrap(Reflection.newInstance(trapClass).reveal(), cell);
+				Class<? extends Trap> usedTrapClass;
+				if (Dungeon.branch == AbyssLevel.BRANCH){
+					usedTrapClass = Random.oneOf(AbyssLevel.trapClasses);
+				} else {
+					usedTrapClass = trapClass;
+				}
+				level.setTrap(Reflection.newInstance(usedTrapClass).reveal(), cell);
 			}
 		}
 		

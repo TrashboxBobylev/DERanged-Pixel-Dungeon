@@ -56,6 +56,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMi
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfTalent;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfToxicEssence;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.RedCrystal;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.spellbook.SpellBook;
@@ -85,6 +86,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.alchemy.Cross;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.alchemy.PotOThunder;
+import com.shatteredpixel.shatteredpixeldungeon.levels.AbyssLevel;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.AlchemyScene;
@@ -451,6 +453,9 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new FireImbueSpell.Recipe()));
 				result.add(new QuickRecipe(new ElectricityImbue.Recipe()));
 				result.add(new QuickRecipe(new UnstableIdentification.Recipe()));
+				if (Dungeon.branch == AbyssLevel.BRANCH){
+					result.add(new QuickRecipe(new RedCrystal.StrengthRecipe()));
+				}
 				return result;
 			case 9:
 				Recipe pillRecipe = new Potion.PotionToPill();

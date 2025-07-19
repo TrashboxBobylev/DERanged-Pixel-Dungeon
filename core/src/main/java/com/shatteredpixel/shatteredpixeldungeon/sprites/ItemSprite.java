@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
+import com.badlogic.gdx.graphics.Color;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -372,6 +373,12 @@ public class ItemSprite extends MovieClip {
 			}
 			
 			float value = phase / glowing.period * 0.6f;
+			if (glowing.isRainbow) {
+				glowing.tempColor.fromHsv(Random.Float(360), Random.Float(0.5f, 1f), 0.9f);
+				glowing.red = glowing.tempColor.r;
+				glowing.blue = glowing.tempColor.b;
+				glowing.green = glowing.tempColor.g;
+			}
 			
 			rm = gm = bm = 1 - value;
 			ra = glowing.red * value;
@@ -395,6 +402,8 @@ public class ItemSprite extends MovieClip {
 		public float green;
 		public float blue;
 		public float period;
+		public boolean isRainbow;
+		public Color tempColor = new Color();
 		
 		public Glowing( int color ) {
 			this( color, 1f );
@@ -409,6 +418,24 @@ public class ItemSprite extends MovieClip {
 			blue = (color & 0xFF) / 255f;
 			
 			this.period = period;
+
+			this.isRainbow = false;
+		}
+
+		public Glowing(){
+			this.color = 0x000000;
+
+			period = 0.33f;
+
+			this.isRainbow = true;
+		}
+
+		public Glowing(float period){
+			this.color = 0x000000;
+
+			this.period = period;
+
+			this.isRainbow = true;
 		}
 	}
 }

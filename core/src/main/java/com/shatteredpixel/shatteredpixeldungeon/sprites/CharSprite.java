@@ -86,7 +86,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected float shadowOffset    = 0.25f;
 
 	public enum State {
-		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, HEARTS, GLOWING, AURA, JUDGED, ELECTRIC
+		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, HEARTS, GLOWING, AURA, JUDGED, ELECTRIC, SHRUNK
 	}
 	
 	protected Animation idle;
@@ -491,6 +491,10 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				electric = emitter();
 				electric.pour( SparkParticle.STATIC, 0.06f );
 				break;
+			case SHRUNK:
+				scale.x = 0.75f;
+				scale.y = 0.75f;
+				break;
 		}
 	}
 
@@ -602,6 +606,10 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 					electric.on = false;
 					electric = null;
 				}
+				break;
+			case SHRUNK:
+				scale.x = 1f;
+				scale.y = 1f;
 				break;
 		}
 	}

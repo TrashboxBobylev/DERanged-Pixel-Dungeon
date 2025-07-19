@@ -141,6 +141,7 @@ public class GamesInProgress {
 		info.lastPlayed = Dungeon.lastPlayed;
 		
 		info.depth = Dungeon.depth;
+		info.branch = Dungeon.branch;
 		info.challenges = Dungeon.challenges;
 
 		info.seed = Dungeon.seed;
@@ -177,6 +178,7 @@ public class GamesInProgress {
 		public int slot;
 
 		public int depth;
+		public int branch;
 		public int version;
 		public int challenges;
 

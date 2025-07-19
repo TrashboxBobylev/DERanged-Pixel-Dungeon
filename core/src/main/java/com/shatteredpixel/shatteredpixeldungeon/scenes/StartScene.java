@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
+import com.shatteredpixel.shatteredpixeldungeon.levels.AbyssLevel;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
@@ -222,6 +223,8 @@ public class StartScene extends PixelScene {
 					add(hero);
 					
 					steps = new Image(Icons.get(Icons.STAIRS));
+					if (info.branch == AbyssLevel.BRANCH)
+						steps.tint(2f, 2f, 2f, 0.5f);
 					add(steps);
 					depth = new BitmapText(PixelScene.pixelFont);
 					add(depth);
@@ -250,8 +253,11 @@ public class StartScene extends PixelScene {
 				} else {
 					lastPlayed.text(Messages.get(StartScene.class, "months_ago", diff / (30L * 24 * 60 * 60_000)));
 				}
-				
-				depth.text(Integer.toString(info.depth));
+
+				if (info.branch == AbyssLevel.BRANCH)
+					depth.text( "A" + info.depth);
+				else
+					depth.text( Integer.toString(info.depth) );
 				depth.measure();
 				
 				level.text(Integer.toString(info.level));

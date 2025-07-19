@@ -22,11 +22,13 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.levels.AbyssLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public abstract class ConnectionRoom extends Room {
 	
@@ -83,6 +85,11 @@ public abstract class ConnectionRoom extends Room {
 	}
 	
 	public static ConnectionRoom createRoom(){
+		if (Dungeon.branch == AbyssLevel.BRANCH){
+			float[] chance = new float[chances[1].length];
+			Arrays.fill(chance, 1);
+			return Reflection.newInstance(rooms.get(Random.chances(chance)));
+		}
 		return Reflection.newInstance(rooms.get(Random.chances(chances[Dungeon.depth])));
 	}
 }

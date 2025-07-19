@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.GuidePage;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
+import com.shatteredpixel.shatteredpixeldungeon.levels.AbyssLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
@@ -38,6 +39,7 @@ import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class EntranceRoom extends StandardRoom {
 	
@@ -193,6 +195,11 @@ public class EntranceRoom extends StandardRoom {
 	}
 
 	public static StandardRoom createEntrance(){
+		if (Dungeon.branch == AbyssLevel.BRANCH){
+			float[] chance = new float[chances[1].length];
+			Arrays.fill(chance, 1);
+			return Reflection.newInstance(rooms.get(Random.chances(chance)));
+		}
 		return Reflection.newInstance(rooms.get(Random.chances(chances[Dungeon.depth])));
 	}
 

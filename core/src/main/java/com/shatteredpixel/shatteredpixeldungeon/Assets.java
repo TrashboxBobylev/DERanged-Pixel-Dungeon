@@ -44,6 +44,7 @@ public class Assets {
 		public static final String TILES_HALLS  = "environment/tiles_halls.png";
 		public static final String TILES_TEMPLE = "environment/tiles_temple.png";
 		public static final String TILES_LABS	= "environment/tiles_labs.png";
+		public static final String TILES_ABYSS	= "environment/tiles_abyss.png";
 
 		public static final String TILES_CAVES_CRYSTAL  = "environment/tiles_caves_crystal.png";
 		public static final String TILES_CAVES_GNOLL    = "environment/tiles_caves_gnoll.png";
@@ -55,6 +56,7 @@ public class Assets {
 		public static final String WATER_HALLS  = "environment/water4.png";
 		public static final String WATER_TEMPLE = "environment/water0_temple.png";
 		public static final String WATER_LABS	= "environment/water5.png";
+		public static final String WATER_ABYSS	= "environment/water6.png";
 
 		public static final String WEAK_FLOOR       = "environment/custom_tiles/weak_floor.png";
 		public static final String SEWER_BOSS       = "environment/custom_tiles/sewer_boss.png";
@@ -65,6 +67,7 @@ public class Assets {
 		public static final String CITY_BOSS        = "environment/custom_tiles/city_boss.png";
 		public static final String HALLS_SP         = "environment/custom_tiles/halls_special.png";
 		public static final String TEMPLE_SP        = "environment/custom_tiles/temple_special.png";
+		public static final String ABYSS_SP         = "environment/custom_tiles/abyss_special.png";
 	}
 	
 	//TODO include other font assets here? Some are platform specific though...
@@ -201,6 +204,12 @@ public class Assets {
 		public static final String OLD_MAIN				= "music/old_main.ogg";
 		public static final String OLD_THEME			= "music/old_theme.ogg";
 		public static final String OLD_SURFACE			= "music/old_surface.ogg";
+
+		public static final String ABYSS_1               = "music/abyss_1.ogg";
+		public static final String ABYSS_2               = "music/abyss_2.ogg";
+		public static final String ABYSS_3               = "music/abyss_3.ogg";
+		public static final String ABYSS_4               = "music/abyss_4.ogg";
+		public static final String ABYSS_5               = "music/abyss_5.ogg";
 	}
 
 	public static class Sounds {
@@ -381,6 +390,7 @@ public class Assets {
 		public static final String GHOUL    = "sprites/ghoul.png";
 		public static final String RIPPER   = "sprites/ripper.png";
 		public static final String SPAWNER  = "sprites/spawner.png";
+		public static final String ABYSS_SPAWNER  = "sprites/abyss_spawner.png";
 		public static final String DM100    = "sprites/dm100.png";
 		public static final String PYLON    = "sprites/pylon.png";
 		public static final String DM200    = "sprites/dm200.png";
@@ -413,5 +423,6 @@ public class Assets {
 		public static final String SPIRIT_HORSE = "sprites/spirit_horse.png";
 		public static final String SUPPORT_FORCE = "sprites/support_force.png";
 		public static final String RAT_STATUE = "sprites/rat_statue.png";
+		public static final String FINAL_FROGGIT = "sprites/final_froggit.png";
 	}
 }

@@ -30,6 +30,8 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.Chaosstone;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -77,7 +79,11 @@ public class AmuletScene extends PixelScene {
 		btnExit = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(this, "exit") ) {
 			@Override
 			protected void onClick() {
-				Dungeon.win( Amulet.class );
+				Class clazz = Amulet.class;
+				if (Dungeon.hero.belongings.getSimilar(new Chaosstone()) != null) {
+					clazz = Chaosstone.class;
+				}
+				Dungeon.win(clazz);
 				Dungeon.deleteGame( GamesInProgress.curSlot, true );
 				Badges.saveGlobal();
 				btnExit.enable(false);
@@ -119,21 +125,34 @@ public class AmuletScene extends PixelScene {
 		btnStay.icon(Icons.CLOSE.get());
 		btnStay.setSize( WIDTH, BTN_HEIGHT );
 		add( btnStay );
+		StyledButton btnMastery = new StyledButton(Chrome.Type.GREY_BUTTON_TR,  Messages.get(this, "mastery") ) {
+			@Override
+			protected void onClick() {
+				InterlevelScene.mode = InterlevelScene.Mode.ABYSS;
+				Notes.reset();
+				Dungeon.LimitedDrops.LAB_ROOM.count = 0;
+				Game.switchScene(InterlevelScene.class);
+			}
+		};
+		btnMastery.icon(Icons.CHALLENGE_COLOR.get());
+		btnMastery.setSize( WIDTH, BTN_HEIGHT );
+		add( btnMastery );
 		
 		float height;
 		if (noText) {
 			height = amulet.height + LARGE_GAP + btnExit.height() + SMALL_GAP + btnStay.height();
-			
+
 			amulet.x = (Camera.main.width - amulet.width) / 2;
 			amulet.y = (Camera.main.height - height) / 2;
 			align(amulet);
 
 			btnExit.setPos( (Camera.main.width - btnExit.width()) / 2, amulet.y + amulet.height + LARGE_GAP );
 			btnStay.setPos( btnExit.left(), btnExit.bottom() + SMALL_GAP );
-			
+			btnMastery.setPos(btnExit.left(), btnStay.bottom() + SMALL_GAP);
+
 		} else {
 			height = amulet.height + LARGE_GAP + text.height() + LARGE_GAP + btnExit.height() + SMALL_GAP + btnStay.height();
-			
+
 			amulet.x = (Camera.main.width - amulet.width) / 2;
 			amulet.y = (Camera.main.height - height) / 2;
 			align(amulet);
@@ -141,9 +160,10 @@ public class AmuletScene extends PixelScene {
 			text.setPos((Camera.main.width - text.width()) / 2, amulet.y + amulet.height + LARGE_GAP);
 			align(text);
 			add(text);
-			
+
 			btnExit.setPos( (Camera.main.width - btnExit.width()) / 2, text.top() + text.height() + LARGE_GAP );
 			btnStay.setPos( btnExit.left(), btnExit.bottom() + SMALL_GAP );
+			btnMastery.setPos(btnExit.left(), btnStay.bottom() + SMALL_GAP);
 		}
 
 		new Flare( 8, 48 ).color( 0xFFDDBB, true ).show( amulet, 0 ).angularSpeed = +30;

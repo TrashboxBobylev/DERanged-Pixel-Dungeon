@@ -117,6 +117,7 @@ public class Warlock extends Mob implements Callback {
 			}
 			
 			int dmg = Random.NormalIntRange( 12, 18 );
+			if (buff(Shrink.class) != null|| enemy.buff(TimedShrink.class) != null) dmg *= 0.6f;
 			dmg = Math.round(dmg * AscensionChallenge.statModifier(this));
 
 			//logic for DK taking 1/2 damage from aggression stoned minions

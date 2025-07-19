@@ -196,7 +196,7 @@ public abstract class RegularLevel extends Level {
 	protected abstract Painter painter();
 	
 	protected int nTraps() {
-		return Random.NormalIntRange( 2, 3 + (Dungeon.depth/5) );
+		return Random.NormalIntRange( 2, 3 + (Dungeon.scalingDepth()/5) );
 	}
 	
 	protected Class<?>[] trapClasses(){
@@ -209,14 +209,17 @@ public abstract class RegularLevel extends Level {
 	
 	@Override
 	public int mobLimit() {
-		if (Dungeon.depth <= 1){
+		if (Dungeon.depth <= 1 && !(this instanceof AbyssLevel)){
 			if (!Statistics.amuletObtained) return 0;
 			else                            return 10;
 		}
 
-		int mobs = 3 + Dungeon.depth % 5 + Random.Int(3);
+		int mobs = 3 + Dungeon.scalingDepth() % 5 + Random.Int(3);
 		if (feeling == Feeling.LARGE){
 			mobs = (int)Math.ceil(mobs * 1.33f);
+		}
+		if (Dungeon.bossLevel() && Dungeon.branch == AbyssLevel.BRANCH){
+			mobs *= 3;
 		}
 		return mobs;
 	}
@@ -224,7 +227,7 @@ public abstract class RegularLevel extends Level {
 	@Override
 	protected void createMobs() {
 		//on floor 1, 8 pre-set mobs are created so the player can get level 2.
-		int mobsToSpawn = Dungeon.depth == 1 ? 8 : mobLimit();
+		int mobsToSpawn = Dungeon.scalingDepth() == 1 ? 8 : mobLimit();
 
 		ArrayList<Room> stdRooms = new ArrayList<>();
 		for (Room room : rooms) {

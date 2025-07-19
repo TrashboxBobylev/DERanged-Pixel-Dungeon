@@ -30,11 +30,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.Chaosstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.Trinket;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
+import com.shatteredpixel.shatteredpixeldungeon.levels.AbyssLevel;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
@@ -108,6 +110,7 @@ public enum Rankings {
 			rec.depth = Statistics.highestAscent;
 			rec.ascending = true;
 		}
+		rec.abyssal     = Dungeon.branch == AbyssLevel.BRANCH;
 		rec.score       = calculateScore();
 		rec.customSeed  = Dungeon.customSeedText;
 		rec.daily       = Dungeon.daily;
@@ -172,8 +175,13 @@ public enum Rankings {
 	public int calculateScore(){
 
 		if (Dungeon.initialVersion > ShatteredPixelDungeon.v1_2_3){
-			Statistics.progressScore = Dungeon.hero.lvl * Statistics.deepestFloor * 65;
-			Statistics.progressScore = Math.min(Statistics.progressScore, 50_000);
+			if (Dungeon.branch == AbyssLevel.BRANCH){
+				Statistics.progressScore = Dungeon.hero.lvl * (Statistics.deepestFloor + 31) * 65;
+				Statistics.progressScore = Math.min(Statistics.progressScore, 100_000);
+			} else {
+				Statistics.progressScore = Dungeon.hero.lvl * Statistics.deepestFloor * 65;
+				Statistics.progressScore = Math.min(Statistics.progressScore, 50_000);
+			}
 
 			if (Statistics.heldItemValue == 0) {
 				for (Item i : Dungeon.hero.belongings) {
@@ -186,10 +194,11 @@ public enum Rankings {
 				}
 			}
 			Statistics.treasureScore = Statistics.goldCollected + Statistics.heldItemValue;
-			Statistics.treasureScore = Math.min(Statistics.treasureScore, 20_000);
+			Statistics.treasureScore = Math.min(Statistics.treasureScore,
+					Dungeon.branch == AbyssLevel.BRANCH ? 60_000 : 20_000);
 
 			Statistics.exploreScore = 0;
-			int scorePerFloor = Statistics.floorsExplored.size * 50;
+			int scorePerFloor = (Dungeon.branch == AbyssLevel.BRANCH ? 150 : 50);
 			for (float percentExplored : Statistics.floorsExplored.valueList()){
 				Statistics.exploreScore += Math.round(percentExplored*scorePerFloor);
 			}
@@ -242,6 +251,7 @@ public enum Rankings {
 	public static final String CUSTOM_SEED	= "custom_seed";
 	public static final String DAILY	    = "daily";
 	public static final String DAILY_REPLAY	= "daily_replay";
+	public static final String CHAOSSTONES = "chaosstones";
 
 	public void saveGameData(Record rec){
 		if (Dungeon.hero == null){
@@ -255,6 +265,13 @@ public enum Rankings {
 
 		//save the hero and belongings
 		ArrayList<Item> allItems = (ArrayList<Item>) belongings.backpack.items.clone();
+		int chaosstones = 0;
+		for (Item item : allItems){
+			if (item instanceof Chaosstone){
+				chaosstones = item.quantity();
+			}
+		}
+		rec.gameData.put(CHAOSSTONES, chaosstones);
 		//remove items that won't show up in the rankings screen
 		for (Item item : belongings.backpack.items.toArray( new Item[0])) {
 			if (item instanceof Bag){
@@ -336,6 +353,9 @@ public enum Rankings {
 		Dungeon.hero.belongings.identify();
 
 		Statistics.restoreFromBundle(data.getBundle(STATS));
+
+		if (rec.abyssal)
+			Dungeon.branch = AbyssLevel.BRANCH;
 		
 		Dungeon.challenges = data.getInt(CHALLENGES);
 
@@ -456,6 +476,7 @@ public enum Rankings {
 		private static final String LEVEL	= "level";
 		private static final String DEPTH	= "depth";
 		private static final String ASCEND	= "ascending";
+		private static final String ABYSS	= "abyssal";
 		private static final String DATA	= "gameData";
 		private static final String ID      = "gameID";
 		private static final String SEED    = "custom_seed";
@@ -471,7 +492,10 @@ public enum Rankings {
 		public int armorTier;
 		public int herolevel;
 		public int depth;
+		public int chaosstones;
+
 		public boolean ascending;
+		public boolean abyssal;
 
 		public Bundle gameData;
 		public String gameID;
@@ -494,7 +518,10 @@ public enum Rankings {
 				}
 			} else if (cause == null) {
 				return Messages.get(this, "something");
-			} else {
+			} if (cause == Chaosstone.class){
+				return Messages.get(this, "chaosstone", gameData.getInt(CHAOSSTONES));
+			}
+			else {
 				String result = Messages.get(cause, "rankings_desc", (Messages.get(cause, "name")));
 				if (result.contains(Messages.NO_TEXT_FOUND)){
 					return Messages.get(this, "something");
@@ -523,6 +550,7 @@ public enum Rankings {
 			herolevel   = bundle.getInt( LEVEL );
 			depth       = bundle.getInt( DEPTH );
 			ascending   = bundle.getBoolean( ASCEND );
+			abyssal  = bundle.getBoolean( ABYSS );
 
 			if (bundle.contains( DATE )){
 				date = bundle.getString( DATE );
@@ -556,6 +584,7 @@ public enum Rankings {
 
 			bundle.put( DATE, date );
 			bundle.put( VERSION, version );
+			bundle.put( ABYSS, abyssal );
 
 			if (gameData != null) bundle.put( DATA, gameData );
 			bundle.put( ID, gameID );
