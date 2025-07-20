@@ -76,6 +76,7 @@ public class Badges {
 		MASTERY_KNIGHT,
 		MASTERY_MEDIC,
 		MASTERY_ARCHER,
+		MASTERY_RAT_KING,
 		FOUND_RATMOGRIFY,
 
 		//bronze
@@ -142,6 +143,7 @@ public class Badges {
 		BOSS_SLAIN_1_KNIGHT,
 		BOSS_SLAIN_1_MEDIC,
 		BOSS_SLAIN_1_ARCHER,
+		BOSS_SLAIN_1_RAT_KING,
 		BOSS_SLAIN_1_ALL_CLASSES    ( 54, BadgeType.GLOBAL ),
 		RESEARCHER_2                ( 55, BadgeType.JOURNAL ),
 		GAMES_PLAYED_2              ( 56, BadgeType.GLOBAL ),
@@ -197,6 +199,7 @@ public class Badges {
 		VICTORY_HUNTRESS,
 		VICTORY_DUELIST,
 		VICTORY_CLERIC,
+		VICTORY_RAT_KING,
 		VICTORY_ALL_CLASSES         ( 102, BadgeType.GLOBAL ),
 		DEATH_FROM_ALL              ( 103, BadgeType.GLOBAL ),
 		BOSS_SLAIN_3_GLADIATOR,
@@ -221,6 +224,7 @@ public class Badges {
 
 		BOSS_SLAIN_3_PRIEST,
 		BOSS_SLAIN_3_PALADIN,
+		BOSS_SLAIN_3_RAT_KING,
 		BOSS_SLAIN_3_ALL_SUBCLASSES ( 104, BadgeType.GLOBAL ),
 		BOSS_CHALLENGE_3            ( 105 ),
 		BOSS_CHALLENGE_4            ( 106 ),
@@ -878,6 +882,7 @@ public class Badges {
 		firstBossClassBadges.put(HeroClass.KNIGHT, Badge.BOSS_SLAIN_1_KNIGHT);
 		firstBossClassBadges.put(HeroClass.MEDIC, Badge.BOSS_SLAIN_1_MEDIC);
 		firstBossClassBadges.put(HeroClass.ARCHER, Badge.BOSS_SLAIN_1_ARCHER);
+		firstBossClassBadges.put(HeroClass.RAT_KING, Badge.BOSS_SLAIN_1_RAT_KING);
 	}
 
 	private static LinkedHashMap<HeroClass, Badge> victoryClassBadges = new LinkedHashMap<>();
@@ -894,6 +899,7 @@ public class Badges {
 		victoryClassBadges.put(HeroClass.KNIGHT, Badge.VICTORY_KNIGHT);
 		victoryClassBadges.put(HeroClass.MEDIC, Badge.VICTORY_MEDIC);
 		victoryClassBadges.put(HeroClass.ARCHER, Badge.VICTORY_ARCHER);
+		victoryClassBadges.put(HeroClass.RAT_KING, Badge.VICTORY_RAT_KING);
 	}
 
 	private static LinkedHashMap<HeroSubClass, Badge> thirdBossSubclassBadges = new LinkedHashMap<>();
@@ -934,6 +940,7 @@ public class Badges {
 		thirdBossSubclassBadges.put(HeroSubClass.BOWMASTER, Badge.BOSS_SLAIN_3_BOWMASTER);
 		thirdBossSubclassBadges.put(HeroSubClass.JUGGLER, Badge.BOSS_SLAIN_3_JUGGLER);
 		thirdBossSubclassBadges.put(HeroSubClass.SHARPSHOOTER, Badge.BOSS_SLAIN_3_SHARPSHOOTER);
+		thirdBossSubclassBadges.put(HeroSubClass.KING, Badge.BOSS_SLAIN_3_RAT_KING);
 	}
 	
 	public static void validateBossSlain() {
@@ -1073,6 +1080,9 @@ public class Badges {
 				break;
 			case ARCHER:
 				badge = Badge.MASTERY_ARCHER;
+				break;
+			case RAT_KING:
+				badge = Badge.MASTERY_RAT_KING;
 				break;
 		}
 		
