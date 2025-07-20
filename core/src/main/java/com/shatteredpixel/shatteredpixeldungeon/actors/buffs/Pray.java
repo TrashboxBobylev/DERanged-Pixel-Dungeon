@@ -55,7 +55,7 @@ public class Pray extends Buff implements ActionIndicator.Action {
 
     @Override
     public boolean usable() {
-        return hero.exp >= 5;
+        return hero != null && hero.exp >= 5;
     }
 
     @Override
