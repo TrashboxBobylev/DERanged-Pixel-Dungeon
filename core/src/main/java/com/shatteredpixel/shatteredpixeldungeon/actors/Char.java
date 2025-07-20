@@ -641,6 +641,8 @@ public abstract class Char extends Actor {
 			if (buff(ThunderImbue.class) != null) buff(ThunderImbue.class).proc(enemy, (int)dmg);
 			if (buff(ElectricityImbue.ElectricityImbueBuff.class) != null) buff(ElectricityImbue.ElectricityImbueBuff.class).proc(enemy, (int)dmg);
 
+			SharpShooterBuff.channel(this, enemy, effectiveDamage);
+
 			if (enemy.isAlive() && enemy.alignment != alignment && prep != null && prep.canKO(enemy)){
 				enemy.HP = 0;
 				if (enemy.buff(Brute.BruteRage.class) != null){
