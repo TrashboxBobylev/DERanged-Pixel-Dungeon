@@ -37,7 +37,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SacrificialFire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AdrenalineSurge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArmorEnhance;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BowMasterSkill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awakening;
@@ -47,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BowMasterSkill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
@@ -2065,7 +2065,7 @@ public class Hero extends Char {
 			chance += Math.max(0, (0.02f + 0.005f*pointsInTalent(Talent.WEAPON_MASTERY, Talent.KINGS_WRATH)) * (STR() - wep.STRReq()));
 		}
 
-		if (heroClass == HeroClass.ARCHER && wep instanceof MissileWeapon) {
+		if (heroClass.is(HeroClass.ARCHER) && wep instanceof MissileWeapon) {
 			chance = 0.03f;
 			chance += 0.03f*(lvl-1);
 			chance = Math.min(chance, 0.3f);

@@ -232,7 +232,7 @@ abstract public class MissileWeapon extends Weapon {
 		if (owner instanceof Hero && owner.buff(Momentum.class) != null && owner.buff(Momentum.class).freerunning()){
 			accFactor *= 1f + 0.2f*((Hero) owner).pointsInTalent(Talent.PROJECTILE_MOMENTUM, Talent.RK_FREERUNNER);
 		}
-		if (owner instanceof Hero && ((Hero) owner).heroClass != HeroClass.ARCHER && ((Hero) owner).hasTalent(Talent.MAKESHIFT_BOW)) {
+		if (owner instanceof Hero && !(((Hero) owner).heroClass.is(HeroClass.ARCHER)) && ((Hero) owner).hasTalent(Talent.MAKESHIFT_BOW)) {
 			accFactor *= 1f + 0.2f*((Hero) owner).pointsInTalent(Talent.MAKESHIFT_BOW);
 		}
 

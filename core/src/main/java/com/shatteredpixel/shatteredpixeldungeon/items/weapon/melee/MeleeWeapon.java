@@ -55,7 +55,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.bow.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.bow.BowWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.Gun;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -117,7 +116,7 @@ public class MeleeWeapon extends Weapon {
 		if (isEquipped(hero) && hero.heroClass.is(HeroClass.DUELIST)){
 			actions.add(AC_ABILITY);
 		}
-		if (!isEquipped(hero) && (hero.heroClass.is(HeroClass.GUNNER || hero.heroClass == HeroClass.ARCHER))) {
+		if (!isEquipped(hero) && (hero.heroClass.is(HeroClass.GUNNER) || hero.heroClass.is(HeroClass.ARCHER))) {
 			actions.add(AC_SCRAP);
 		}
 		return actions;
