@@ -47,7 +47,7 @@ public class HeroSprite extends CharSprite {
 	public int frameWidth() { return FRAME_WIDTH; }
 	public int frameHeight() { return FRAME_HEIGHT; }
 	
-	protected static TextureFilm tiers;
+	protected TextureFilm tiers;
 	
 	protected Animation fly;
 	protected Animation read;
