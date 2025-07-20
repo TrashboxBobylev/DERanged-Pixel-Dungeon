@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Juggling;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
@@ -33,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SharpShooterBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SwordAura;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ThunderImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -171,7 +169,7 @@ abstract public class MissileWeapon extends Weapon {
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		actions.remove( AC_EQUIP );
-		if (Dungeon.hero.subClass == HeroSubClass.JUGGLER && this.STRReq() <= Dungeon.hero.STR()) {
+		if (Dungeon.hero.subClass.is(HeroSubClass.JUGGLER) && this.STRReq() <= Dungeon.hero.STR()) {
 			actions.add(AC_JUGGLE);
 		}
 		return actions;
@@ -571,7 +569,7 @@ abstract public class MissileWeapon extends Weapon {
 
 	@Override
 	public String defaultAction() {
-		if (Dungeon.hero.subClass == HeroSubClass.JUGGLER && this.STRReq() <= Dungeon.hero.STR()) {
+		if (Dungeon.hero.subClass.is(HeroSubClass.JUGGLER) && this.STRReq() <= Dungeon.hero.STR()) {
 			usesTargeting = false;
 			return AC_JUGGLE;
 		} else {

@@ -393,10 +393,10 @@ public class BowWeapon extends MeleeWeapon {
             if (Dungeon.hero.buff(PenetrationShotBuff.class) != null) {
                 Dungeon.hero.buff(PenetrationShotBuff.class).detach();
             }
-            if (Dungeon.hero.subClass != HeroSubClass.BOWMASTER) {
+            if (!(Dungeon.hero.subClass.is(HeroSubClass.BOWMASTER))) {
                 Buff.affect(Dungeon.hero, BowFatigue.class).countUp(1);
             }
-            if (Dungeon.hero.subClass == HeroSubClass.BOWMASTER) {
+            if (Dungeon.hero.subClass.is(HeroSubClass.BOWMASTER)) {
                 Buff.affect(Dungeon.hero, BowMasterSkill.class).shoot();
             }
             if (Dungeon.hero.hasTalent(Talent.SPECTRE_ARROW)) {

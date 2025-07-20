@@ -222,7 +222,7 @@ public class Juggling extends Buff implements ActionIndicator.Action {
     }
 
     public static void kill() {
-        if (Dungeon.hero.subClass == HeroSubClass.JUGGLER && Dungeon.bullet > 1 && Dungeon.hero.hasTalent(Talent.HABITUAL_HAND)) {
+        if (Dungeon.hero.subClass.is(HeroSubClass.JUGGLER) && Dungeon.bullet > 1 && Dungeon.hero.hasTalent(Talent.HABITUAL_HAND)) {
             for (int i = 0; i < Dungeon.hero.pointsInTalent(Talent.HABITUAL_HAND); i++) {
                 if (Dungeon.bullet <= 0) break;
                 BowWeapon.Arrow arrow = getBow().knockArrow();
@@ -243,7 +243,7 @@ public class Juggling extends Buff implements ActionIndicator.Action {
     }
 
     public static void move() {
-        if (Dungeon.hero.subClass == HeroSubClass.JUGGLER
+        if (Dungeon.hero.subClass.is(HeroSubClass.JUGGLER)
                 && Dungeon.bullet > 1
                 && Dungeon.hero.hasTalent(Talent.TOUR_PERFORMANCE)
                 && Random.Float() < 0.01f*Dungeon.hero.pointsInTalent(Talent.TOUR_PERFORMANCE)) {
