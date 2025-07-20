@@ -156,7 +156,7 @@ public class Sheath extends Item {
 
         @Override
         public boolean usable() {
-            return hero.subClass.is(HeroSubClass.MASTER) && hero.buff(DashAttackCooldown.class) == null;
+            return hero != null && hero.subClass.is(HeroSubClass.MASTER) && hero.buff(DashAttackCooldown.class) == null;
         }
 
         @Override
