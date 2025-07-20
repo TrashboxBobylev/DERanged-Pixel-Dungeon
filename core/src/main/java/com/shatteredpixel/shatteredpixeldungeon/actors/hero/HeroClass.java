@@ -554,12 +554,15 @@ public enum HeroClass {
 		chest.collect();
 		BulletBelt bulletBelt = new BulletBelt();
 		bulletBelt.quantity(5).collect();
+		new AR_T1().identify().collect();
 		new Sheath().collect();
 		new Machete().identify().collect();
 		new Shovel().identify().collect();
 		new KnightsShield().collect();
 		new GammaRayGun().collect();
 		new MedicKit().identify().collect();
+		new WornShortBow().identify().collect();
+        new ArrowBag().collect();
 		// allocating slots
 		Dungeon.quickslot.setSlot(0, bow);
 		Dungeon.quickslot.setSlot(1, cloak);
