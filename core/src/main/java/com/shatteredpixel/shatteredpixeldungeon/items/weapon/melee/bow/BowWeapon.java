@@ -105,7 +105,7 @@ public class BowWeapon extends MeleeWeapon {
         //적과 근접한 상태에서 공격 시 40% 확률로, 혹은 기습 공격 시 적을 2타일 밀쳐냄
         if (Dungeon.level.adjacent(attacker.pos, defender.pos)
                 && ((defender instanceof Mob && ((Mob) defender).surprisedBy(attacker)) || Random.Float() < 0.4f)) {
-            pushEnemy(this, attacker, defender, 2 + Dungeon.hero.pointsInTalent(Talent.PUSHBACK));
+            pushEnemy(this, attacker, defender, 2 + Dungeon.hero.pointsInTalent(Talent.PUSHBACK, Talent.NOBLE_CALL));
         }
         return super.proc(attacker, defender, damage);
     }

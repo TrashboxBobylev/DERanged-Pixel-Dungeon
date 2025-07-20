@@ -1966,7 +1966,7 @@ public enum Talent {
 		}
 
 		if (hero.hasTalent(Talent.FIGHTING_MEAL, ROYAL_FEAST)) {
-			Buff.affect(hero, Adrenaline.class, 1+hero.pointsInTalent(Talent.FIGHTING_MEAL));
+			Buff.affect(hero, Adrenaline.class, 1+hero.pointsInTalent(Talent.FIGHTING_MEAL, ROYAL_FEAST));
 		}
 	}
 
@@ -2079,10 +2079,10 @@ public enum Talent {
 		if (hero.hasTalent(PHARMACEUTICS, TEMPORARY_DRAUGHT)) {
 			hero.heal(Math.round(factor*(2+3*hero.pointsInTalent(PHARMACEUTICS, TEMPORARY_DRAUGHT))));
 		}
-		if (hero.hasTalent(FULLY_POTION) && cell == hero.pos) {
+		if (hero.hasTalent(FULLY_POTION, TEMPORARY_DRAUGHT) && cell == hero.pos) {
 			for (Buff b : hero.buffs()){
 				if (b instanceof Hunger){
-					((Hunger) b).satisfy(factor * (10+20*hero.pointsInTalent(Talent.FULLY_POTION)));
+					((Hunger) b).satisfy(factor * (10+20*hero.pointsInTalent(Talent.FULLY_POTION, TEMPORARY_DRAUGHT)));
 				}
 			}
 		}
@@ -2615,11 +2615,11 @@ public enum Talent {
 		}
 
 		if (hero.buff(ForceSavingTracker.class) != null) {
-			Elastic.pushEnemy(wep, hero, enemy, 1+hero.pointsInTalent(Talent.FORCE_SAVING));
+			Elastic.pushEnemy(wep, hero, enemy, 1+hero.pointsInTalent(Talent.FORCE_SAVING, ROYAL_FOCUS));
 			hero.buff(ForceSavingTracker.class).detach();
 		}
 
-		if (enemy instanceof Mob && enemy.buff(SurprisePanicTracker.class) == null && hero.hasTalent(Talent.SURPRISE_PANIC)) {
+		if (enemy instanceof Mob && enemy.buff(SurprisePanicTracker.class) == null && hero.hasTalent(Talent.SURPRISE_PANIC, AMBUSH)) {
 			if (((Mob)enemy).surprisedBy(hero)) {
 				new FlavourBuff() {
 					{
@@ -2627,7 +2627,7 @@ public enum Talent {
 					}
 
 					public boolean act() {
-						Buff.affect(target, Terror.class, 1+2*hero.pointsInTalent(Talent.SURPRISE_PANIC));
+						Buff.affect(target, Terror.class, 1+2*hero.pointsInTalent(Talent.SURPRISE_PANIC, AMBUSH));
 						return super.act();
 					}
 				}.attachTo(enemy);
@@ -2635,10 +2635,10 @@ public enum Talent {
 			Buff.affect(enemy, SurprisePanicTracker.class);
 		}
 
-		if (hero.hasTalent(Talent.PUSHBACK) && !(wep instanceof BowWeapon)) {
+		if (hero.hasTalent(Talent.PUSHBACK, NOBLE_CALL) && !(wep instanceof BowWeapon)) {
 			if (level.adjacent(hero.pos, enemy.pos)
 					&& ((enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)) || Random.Float() < 0.4f)) {
-				Elastic.pushEnemy(wep, hero, enemy, hero.pointsInTalent(Talent.PUSHBACK));
+				Elastic.pushEnemy(wep, hero, enemy, hero.pointsInTalent(Talent.PUSHBACK, NOBLE_CALL));
 			}
 		}
 

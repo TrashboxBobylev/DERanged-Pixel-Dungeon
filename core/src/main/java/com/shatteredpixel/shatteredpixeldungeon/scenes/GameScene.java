@@ -553,7 +553,7 @@ public class GameScene extends PixelScene {
 				Random.popGenerator();
 			}
 
-			if (Dungeon.hero.hasTalent(Talent.ARCHERS_FORESIGHT)
+			if (Dungeon.hero.hasTalent(Talent.ARCHERS_FORESIGHT, Talent.KINGS_VISION)
 					&& Dungeon.level instanceof RegularLevel && Dungeon.branch == 0){
 				int length = Dungeon.level.length();
 				boolean[] mapped = Dungeon.level.mapped;
@@ -568,7 +568,7 @@ public class GameScene extends PixelScene {
 				GameScene.updateFog();
 
 				Random.pushGenerator(Dungeon.seedCurDepth()+1);
-					if (Random.Float() < 0.5f+0.25f*Dungeon.hero.pointsInTalent(Talent.ARCHERS_FORESIGHT)){
+					if (Random.Float() < 0.5f+0.25f*Dungeon.hero.pointsInTalent(Talent.ARCHERS_FORESIGHT, Talent.KINGS_VISION)){
 						GLog.p(Messages.get(this, "trap_discover"));
 					}
 				Random.popGenerator();
