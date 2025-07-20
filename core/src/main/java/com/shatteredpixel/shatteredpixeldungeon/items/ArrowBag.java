@@ -259,7 +259,7 @@ public class ArrowBag extends Item {
                     upgrade();
                 } else {
                     potion = (Potion)item;
-                    uses = Math.max(1, Math.round(((Potion)item).talentFactor()*(12 + 6 * (level() + Dungeon.hero.pointsInTalent(Talent.BOTTLE_EXPANSION)))));
+                    uses = Math.max(1, Math.round(((Potion)item).talentFactor()*(12 + 6 * (level() + Dungeon.hero.pointsInTalent(Talent.BOTTLE_EXPANSION, Talent.RK_BOWMASTER)))));
                 }
 
                 Dungeon.hero.sprite.operate(Dungeon.hero.pos);

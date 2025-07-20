@@ -1,7 +1,5 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -19,6 +17,8 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+
 public class BowMasterSkill extends Buff implements ActionIndicator.Action {
     {
         type = buffType.NEUTRAL;
@@ -31,7 +31,7 @@ public class BowMasterSkill extends Buff implements ActionIndicator.Action {
     private final int MAX_CHARGE = 4;
 
     private int maxCharge() {
-        return MAX_CHARGE + Dungeon.hero.pointsInTalent(Talent.EXPANDED_POWER);
+        return MAX_CHARGE + Dungeon.hero.pointsInTalent(Talent.EXPANDED_POWER, Talent.RK_BOWMASTER);
     }
 
     @Override
@@ -177,16 +177,16 @@ public class BowMasterSkill extends Buff implements ActionIndicator.Action {
     }
 
     public static boolean isFastShot(Hero hero) {
-        return hero.buff(BowMasterSkill.class) == null && hero.hasTalent(Talent.FASTSHOT);
+        return hero.buff(BowMasterSkill.class) == null && hero.hasTalent(Talent.FASTSHOT, Talent.RK_BOWMASTER);
     }
 
     public static float fastShotDamageMultiplier(Hero hero) {
-        if (!hero.hasTalent(Talent.FASTSHOT)) return 1;
-        else return 0.2f * hero.pointsInTalent(Talent.FASTSHOT);
+        if (!hero.hasTalent(Talent.FASTSHOT, Talent.RK_BOWMASTER)) return 1;
+        else return 0.2f * hero.pointsInTalent(Talent.FASTSHOT, Talent.RK_BOWMASTER);
     }
 
     public static float speedBoost(Hero hero){
-        if (!hero.hasTalent(Talent.UNENCUMBERED_STEP)){
+        if (!hero.hasTalent(Talent.UNENCUMBERED_STEP, Talent.RK_BOWMASTER)){
             return 1;
         }
 
@@ -211,7 +211,7 @@ public class BowMasterSkill extends Buff implements ActionIndicator.Action {
         if (enemyNear){
             return 1;
         } else {
-            return (1 + 0.1f*hero.pointsInTalent(Talent.UNENCUMBERED_STEP));
+            return (1 + 0.1f*hero.pointsInTalent(Talent.UNENCUMBERED_STEP, Talent.RK_BOWMASTER));
         }
     }
 
@@ -241,8 +241,8 @@ public class BowMasterSkill extends Buff implements ActionIndicator.Action {
     }
 
     public static void move() {
-        if (hero.hasTalent(Talent.MOVING_FOCUS) && hero.buff(BowMasterSkill.class) != null && !hero.buff(BowMasterSkill.class).isMoved()) {
-            hero.buff(BowMasterSkill.class).moveCharge(Math.max(-1, hero.pointsInTalent(Talent.MOVING_FOCUS)-2));
+        if (hero.hasTalent(Talent.MOVING_FOCUS, Talent.RK_BOWMASTER) && hero.buff(BowMasterSkill.class) != null && !hero.buff(BowMasterSkill.class).isMoved()) {
+            hero.buff(BowMasterSkill.class).moveCharge(Math.max(-1, hero.pointsInTalent(Talent.MOVING_FOCUS, Talent.RK_BOWMASTER)-2));
         }
     }
 }

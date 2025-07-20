@@ -1791,9 +1791,9 @@ public enum Talent {
 		}
 
 		//archer
-		if (talent == MAKESHIFT_BOW && hero.heroClass.is(HeroClass.ARCHER)) {
+		if ((talent == MAKESHIFT_BOW || talent == RK_BOWMASTER) && hero.heroClass.is(HeroClass.ARCHER)) {
 			BowWeapon bow = null;
-			switch (hero.pointsInTalent(Talent.MAKESHIFT_BOW)) {
+			switch (hero.pointsInTalent(Talent.MAKESHIFT_BOW, RK_BOWMASTER)) {
 				case 0: default:
 					break;
 				case 1:

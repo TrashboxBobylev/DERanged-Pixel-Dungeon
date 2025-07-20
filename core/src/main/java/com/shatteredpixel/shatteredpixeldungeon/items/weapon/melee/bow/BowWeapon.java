@@ -399,8 +399,8 @@ public class BowWeapon extends MeleeWeapon {
             if (Dungeon.hero.subClass.is(HeroSubClass.BOWMASTER)) {
                 Buff.affect(Dungeon.hero, BowMasterSkill.class).shoot();
             }
-            if (Dungeon.hero.hasTalent(Talent.SPECTRE_ARROW)) {
-                if (Random.Float() < Dungeon.hero.pointsInTalent(Talent.SPECTRE_ARROW)/6f && useBullet) {
+            if (Dungeon.hero.hasTalent(Talent.SPECTRE_ARROW, Talent.RK_BOWMASTER)) {
+                if (Random.Float() < Dungeon.hero.pointsInTalent(Talent.SPECTRE_ARROW, Talent.RK_BOWMASTER)/6f && useBullet) {
                     Dungeon.bullet++;
                 }
             }
