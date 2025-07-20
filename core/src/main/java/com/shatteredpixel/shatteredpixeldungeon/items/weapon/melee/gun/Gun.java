@@ -20,8 +20,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.gunner.Riot;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.DeathMark;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Brute;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
@@ -34,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Disposable
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -771,8 +768,8 @@ public class Gun extends MeleeWeapon {
 
 			ACC = Gun.this.barrelMod.bulletAccuracyFactor(ACC, Dungeon.level.adjacent(owner.pos, target.pos));
 
-			if (isBurst && owner instanceof Hero && ((Hero) owner).hasTalent(Talent.BULLSEYE)) {
-				switch (((Hero) owner).pointsInTalent(Talent.BULLSEYE)) {
+			if (isBurst && owner instanceof Hero && ((Hero) owner).hasTalent(Talent.BULLSEYE, Talent.RK_SHARPSHOOTER)) {
+				switch (((Hero) owner).pointsInTalent(Talent.BULLSEYE, Talent.RK_SHARPSHOOTER)) {
 					case 3:
 						return Hero.INFINITE_ACCURACY;
 					case 2:

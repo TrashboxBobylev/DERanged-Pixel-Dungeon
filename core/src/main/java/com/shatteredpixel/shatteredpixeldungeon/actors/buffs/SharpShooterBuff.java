@@ -1,7 +1,5 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
-
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -34,6 +32,8 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 
 public class SharpShooterBuff extends Buff implements ActionIndicator.Action {
 
@@ -137,8 +137,8 @@ public class SharpShooterBuff extends Buff implements ActionIndicator.Action {
                     public void call() {
                         if (isLast) {
                             Dungeon.hero.spendAndNext(bullet.castDelay(Dungeon.hero, direction));
-                            if (Dungeon.hero.hasTalent(Talent.PERFECT_SHOT)) {
-                                gun.manualReload(Dungeon.hero.pointsInTalent(Talent.PERFECT_SHOT), false);
+                            if (Dungeon.hero.hasTalent(Talent.PERFECT_SHOT, Talent.RK_SHARPSHOOTER)) {
+                                gun.manualReload(Dungeon.hero.pointsInTalent(Talent.PERFECT_SHOT, Talent.RK_SHARPSHOOTER), false);
                             }
                         }
                     }
@@ -202,8 +202,8 @@ public class SharpShooterBuff extends Buff implements ActionIndicator.Action {
                     public void call() {
                         if (isLast) {
                             Dungeon.hero.spendAndNext(bullet.castDelay(Dungeon.hero, direction));
-                            if (Dungeon.hero.hasTalent(Talent.PERFECT_SHOT)) {
-                                gun.manualReload(Dungeon.hero.pointsInTalent(Talent.PERFECT_SHOT), false);
+                            if (Dungeon.hero.hasTalent(Talent.PERFECT_SHOT, Talent.RK_SHARPSHOOTER)) {
+                                gun.manualReload(Dungeon.hero.pointsInTalent(Talent.PERFECT_SHOT, Talent.RK_SHARPSHOOTER), false);
                             }
                         }
                     }
@@ -307,12 +307,12 @@ public class SharpShooterBuff extends Buff implements ActionIndicator.Action {
     }
 
     public static void rangedLethal(Char enemy, boolean isBurst, Weapon wep) {
-        if (enemy != null && isBurst && Dungeon.hero.hasTalent(Talent.RANGED_LETHALITY)
+        if (enemy != null && isBurst && Dungeon.hero.hasTalent(Talent.RANGED_LETHALITY, Talent.RK_SHARPSHOOTER)
                 && enemy.isAlive()
                 && enemy.alignment == Char.Alignment.ENEMY
                 && !Char.hasProp(enemy, Char.Property.BOSS)
                 && !Char.hasProp(enemy, Char.Property.MINIBOSS)
-                && (enemy.HP/(float)enemy.HT) <= 0.1f*Dungeon.hero.pointsInTalent(Talent.RANGED_LETHALITY)) {
+                && (enemy.HP/(float)enemy.HT) <= 0.1f*Dungeon.hero.pointsInTalent(Talent.RANGED_LETHALITY, Talent.RK_SHARPSHOOTER)) {
             enemy.HP = 0;
             if (enemy.buff(Brute.BruteRage.class) != null){
                 enemy.buff(Brute.BruteRage.class).detach();
@@ -333,8 +333,8 @@ public class SharpShooterBuff extends Buff implements ActionIndicator.Action {
 
     public static void channel(Char attacker, Char defender, int damage) {
         if (attacker instanceof Hero
-                && ((Hero)attacker).hasTalent(Talent.CHANNELING)
-                && Random.Float() < 0.1f*((Hero)attacker).pointsInTalent(Talent.CHANNELING)
+                && ((Hero)attacker).hasTalent(Talent.CHANNELING, Talent.RK_SHARPSHOOTER)
+                && Random.Float() < 0.1f*((Hero)attacker).pointsInTalent(Talent.CHANNELING, Talent.RK_SHARPSHOOTER)
                 && !defender.isImmune(Electricity.class)) {
             defender.damage(Hero.heroDamageIntRange(Math.round(damage*0.2f), Math.round(damage*0.6f)), new Electricity());
             if (!defender.isAlive()) {
@@ -354,7 +354,7 @@ public class SharpShooterBuff extends Buff implements ActionIndicator.Action {
         private static final String SHOOT = "shoot";
 
         private int maxShoot() {
-            return 9 - 2 * Dungeon.hero.pointsInTalent(Talent.FOCUS_SHOT);
+            return 9 - 2 * Dungeon.hero.pointsInTalent(Talent.FOCUS_SHOT, Talent.RK_SHARPSHOOTER);
         }
 
         @Override
@@ -383,7 +383,7 @@ public class SharpShooterBuff extends Buff implements ActionIndicator.Action {
 
         @Override
         public float iconFadePercent() {
-            if (!Dungeon.hero.hasTalent(Talent.FOCUS_SHOT)) return super.iconFadePercent();
+            if (!Dungeon.hero.hasTalent(Talent.FOCUS_SHOT, Talent.RK_SHARPSHOOTER)) return super.iconFadePercent();
 
             int max = maxShoot();
             return Math.max(0, (max-shoot)/(float)max);
@@ -391,14 +391,14 @@ public class SharpShooterBuff extends Buff implements ActionIndicator.Action {
 
         @Override
         public String iconTextDisplay() {
-            if (!Dungeon.hero.hasTalent(Talent.FOCUS_SHOT)) return super.iconTextDisplay();
+            if (!Dungeon.hero.hasTalent(Talent.FOCUS_SHOT, Talent.RK_SHARPSHOOTER)) return super.iconTextDisplay();
 
             return Integer.toString(maxShoot()-shoot);
         }
 
         @Override
         public String desc() {
-            if (!Dungeon.hero.hasTalent(Talent.FOCUS_SHOT)) return super.desc();
+            if (!Dungeon.hero.hasTalent(Talent.FOCUS_SHOT, Talent.RK_SHARPSHOOTER)) return super.desc();
 
             return Messages.get(this, "alt_desc", maxShoot()-shoot);
         }
@@ -409,10 +409,10 @@ public class SharpShooterBuff extends Buff implements ActionIndicator.Action {
         }
 
         public void hit() {
-            if (!Dungeon.hero.hasTalent(Talent.FOCUS_SHOT)) return;
+            if (!Dungeon.hero.hasTalent(Talent.FOCUS_SHOT, Talent.RK_SHARPSHOOTER)) return;
 
             shoot++;
-            if (shoot >= 9 - 2 * Dungeon.hero.pointsInTalent(Talent.FOCUS_SHOT)) {
+            if (shoot >= 9 - 2 * Dungeon.hero.pointsInTalent(Talent.FOCUS_SHOT, Talent.RK_SHARPSHOOTER)) {
                 kill();
             }
         }
@@ -420,7 +420,7 @@ public class SharpShooterBuff extends Buff implements ActionIndicator.Action {
         public static void missileHit(Char attacker) {
             if (attacker == Dungeon.hero
                     && attacker.buff(SharpShooterBuff.SharpShootingCoolDown.class) != null
-                    && ((Hero) attacker).hasTalent(Talent.FOCUS_SHOT)) {
+                    && ((Hero) attacker).hasTalent(Talent.FOCUS_SHOT, Talent.RK_SHARPSHOOTER)) {
                 attacker.buff(SharpShooterBuff.SharpShootingCoolDown.class).hit();
             }
         }

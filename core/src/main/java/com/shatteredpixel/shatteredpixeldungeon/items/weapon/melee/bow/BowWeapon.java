@@ -321,8 +321,8 @@ public class BowWeapon extends MeleeWeapon {
                 return Hero.INFINITE_ACCURACY;
             }
 
-            if (isBurst && owner instanceof Hero && ((Hero) owner).hasTalent(Talent.BULLSEYE)) {
-                switch (((Hero) owner).pointsInTalent(Talent.BULLSEYE)) {
+            if (isBurst && owner instanceof Hero && ((Hero) owner).hasTalent(Talent.BULLSEYE, Talent.RK_SHARPSHOOTER)) {
+                switch (((Hero) owner).pointsInTalent(Talent.BULLSEYE, Talent.RK_SHARPSHOOTER)) {
                     case 3:
                         return Hero.INFINITE_ACCURACY;
                     case 2:
@@ -344,8 +344,8 @@ public class BowWeapon extends MeleeWeapon {
 
         private float arrowPinChance() {
             float chance = 0.25f + 0.125f*Dungeon.hero.pointsInTalent(Talent.DEXTERITY);
-            if (Dungeon.hero.hasTalent(Talent.PERFECT_SHOT) && isBurst) {
-                chance = Math.max(chance, Dungeon.hero.pointsInTalent(Talent.PERFECT_SHOT)/3f);
+            if (Dungeon.hero.hasTalent(Talent.PERFECT_SHOT, Talent.RK_SHARPSHOOTER) && isBurst) {
+                chance = Math.max(chance, Dungeon.hero.pointsInTalent(Talent.PERFECT_SHOT, Talent.RK_SHARPSHOOTER)/3f);
             }
             return chance;
         }
@@ -362,8 +362,8 @@ public class BowWeapon extends MeleeWeapon {
                             dropArrow(cell);
                         }
                     }
-                    if (!enemy.isAlive() && isBurst && Dungeon.hero.hasTalent(Talent.HURRICANE)) {
-                        Buff.affect(Dungeon.hero, GreaterHaste.class).set(1+Dungeon.hero.pointsInTalent(Talent.HURRICANE));
+                    if (!enemy.isAlive() && isBurst && Dungeon.hero.hasTalent(Talent.HURRICANE, Talent.RK_SHARPSHOOTER)) {
+                        Buff.affect(Dungeon.hero, GreaterHaste.class).set(1+Dungeon.hero.pointsInTalent(Talent.HURRICANE, Talent.RK_SHARPSHOOTER));
                     }
                 } else {
                     if (Random.Float() < arrowPinChance()) {
