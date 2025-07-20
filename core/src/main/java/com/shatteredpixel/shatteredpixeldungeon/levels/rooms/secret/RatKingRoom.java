@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.RatKing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -65,9 +67,11 @@ public class RatKingRoom extends SecretRoom {
 			addChest( level, i * level.width() + right - 1, door );
 		}
 
-		RatKing king = new RatKing();
-		king.pos = level.pointToCell(random( 2 ));
-		level.mobs.add( king );
+		if (!Dungeon.hero.isClassed(HeroClass.RAT_KING)){
+			RatKing king = new RatKing();
+			king.pos = level.pointToCell(random( 2 ));
+			level.mobs.add( king );
+		}
 	}
 	
 	private static void addChest( Level level, int pos, int door ) {
