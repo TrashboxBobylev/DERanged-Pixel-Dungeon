@@ -145,6 +145,7 @@ public class HolyTome extends Artifact {
 
 	public boolean canCast( Hero hero, ClericSpell spell ){
 		return (isEquipped(hero) || (Dungeon.hero.hasTalent(Talent.LIGHT_READING, Talent.RK_PALADIN) && hero.belongings.contains(this)))
+				&& spell != null
 				&& hero.buff(MagicImmune.class) == null
 				&& charge >= spell.chargeUse(hero)
 				&& spell.canCast(hero);
@@ -335,6 +336,12 @@ public class HolyTome extends Artifact {
 			} else {
 				return 0x002157;
 			}
+		}
+
+		@Override
+		public boolean usable() {
+			Hero hero = Dungeon.hero;
+			return !cursed && (hero == null || canCast(hero, quickSpell));
 		}
 
 		@Override

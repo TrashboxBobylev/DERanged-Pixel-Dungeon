@@ -67,11 +67,6 @@ public class FirstAidBuff extends Buff implements ActionIndicator.Action {
     }
 
     @Override
-    public String actionName() {
-        return Messages.get(this, "action_name");
-    }
-
-    @Override
     public int actionIcon() {
         return HeroIcon.FIRST_AID;
     }

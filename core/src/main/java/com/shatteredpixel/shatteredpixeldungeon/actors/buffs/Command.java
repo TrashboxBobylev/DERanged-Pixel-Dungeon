@@ -72,11 +72,6 @@ public class Command extends Buff implements ActionIndicator.Action {
     }
 
     @Override
-    public String actionName() {
-        return Messages.get(this, "action_name");
-    }
-
-    @Override
     public int actionIcon() {
         return HeroIcon.COMMAND;
     }
@@ -113,6 +108,11 @@ public class Command extends Buff implements ActionIndicator.Action {
     @Override
     public int indicatorColor() {
         return 0x1F1F1F;
+    }
+
+    @Override
+    public boolean usable() {
+        return charge > 0;
     }
 
     @Override

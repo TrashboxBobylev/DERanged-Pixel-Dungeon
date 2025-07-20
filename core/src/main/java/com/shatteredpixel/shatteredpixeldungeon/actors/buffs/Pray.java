@@ -44,11 +44,6 @@ public class Pray extends Buff implements ActionIndicator.Action {
     }
 
     @Override
-    public String actionName() {
-        return Messages.get(this, "action_name");
-    }
-
-    @Override
     public int actionIcon() {
         return HeroIcon.PRAY;
     }
@@ -56,6 +51,11 @@ public class Pray extends Buff implements ActionIndicator.Action {
     @Override
     public int indicatorColor() {
         return 0xFF6F1B;
+    }
+
+    @Override
+    public boolean usable() {
+        return hero.exp >= 5;
     }
 
     @Override

@@ -145,11 +145,6 @@ public class Sheath extends Item {
         }
 
         @Override
-        public String actionName() {
-            return Messages.get(this, "action");
-        }
-
-        @Override
         public int actionIcon() {
             return HeroIcon.PREPARATION;
         }
@@ -157,6 +152,11 @@ public class Sheath extends Item {
         @Override
         public int indicatorColor() {
             return 0x171717;
+        }
+
+        @Override
+        public boolean usable() {
+            return hero.subClass.is(HeroSubClass.MASTER) && hero.buff(DashAttackCooldown.class) == null;
         }
 
         @Override

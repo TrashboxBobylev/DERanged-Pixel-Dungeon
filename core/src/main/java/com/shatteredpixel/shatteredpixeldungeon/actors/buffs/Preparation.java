@@ -225,23 +225,22 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 	}
 	
 	private static final String TURNS = "turnsInvis";
-	
+
+	private boolean bundleRestoring = false; // allows skipping of certain checks that require the game to be fully instantiated.
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		turnsInvis = bundle.getInt(TURNS);
+		// this lets us ignore checks that are impossible to make.
+		bundleRestoring = true;
 		ActionIndicator.setAction(this);
+		bundleRestoring = false;
 	}
 	
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
 		bundle.put(TURNS, turnsInvis);
-	}
-
-	@Override
-	public String actionName() {
-		return Messages.get(this, "action_name");
 	}
 	
 	@Override
@@ -268,6 +267,12 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 	@Override
 	public int indicatorColor() {
 		return 0x444444;
+	}
+
+	@Override
+	public boolean usable() {
+		return bundleRestoring ||
+				AttackLevel.getLvl(turnsInvis).blinkDistance() > 0 && target == Dungeon.hero;
 	}
 	
 	@Override

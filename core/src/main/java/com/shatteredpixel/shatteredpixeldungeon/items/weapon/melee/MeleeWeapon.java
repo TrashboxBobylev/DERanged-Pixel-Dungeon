@@ -719,7 +719,14 @@ public class MeleeWeapon extends Weapon {
 		}
 
 		@Override
+		public boolean usable() {
+			return target == hero && hero.subClass.is(HeroSubClass.CHAMPION);
+		}
+
+		@Override
 		public void doAction() {
+			if ( !usable() ) return;
+
 			if (!Dungeon.hero.subClass.is(HeroSubClass.CHAMPION) && !Dungeon.hero.subClass.is(HeroSubClass.FENCER)) {
 				return;
 			}

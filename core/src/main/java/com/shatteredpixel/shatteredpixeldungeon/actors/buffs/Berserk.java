@@ -285,12 +285,7 @@ public class Berserk extends ShieldBuff implements ActionIndicator.Action {
 		else return false;
 	}
 
-	@Override
-	public String actionName() {
-		return Messages.get(this, "action_name");
-	}
-
-	@Override
+    @Override
 	public int actionIcon() {
 		return HeroIcon.BERSERK;
 	}
@@ -307,6 +302,11 @@ public class Berserk extends ShieldBuff implements ActionIndicator.Action {
 	@Override
 	public int indicatorColor() {
 		return 0x660000;
+	}
+
+	@Override
+	public boolean usable() {
+		return power >= 1f && state == State.NORMAL;
 	}
 
 	@Override

@@ -23,8 +23,29 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awakening;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Build;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Command;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FirstAidBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HorseRiding;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalCombo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Pray;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SwordAura;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Tackle;
+import com.shatteredpixel.shatteredpixeldungeon.items.Sheath;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndActionList;
 import com.watabou.input.GameAction;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Visual;
@@ -55,6 +76,8 @@ public class ActionIndicator extends Tag {
 	public void destroy() {
 		super.destroy();
 		instance = null;
+
+		longClickListener.destroy();
 	}
 	
 	@Override
@@ -87,6 +110,9 @@ public class ActionIndicator extends Tag {
 		super.update();
 
 		synchronized (ActionIndicator.class) {
+			// auto clear unusable actions
+			if (action != null && !action.usable()) clearAction(action);
+
 			if (!visible && action != null) {
 				visible = true;
 				needsRefresh = true;
@@ -151,11 +177,60 @@ public class ActionIndicator extends Tag {
 		}
 	}
 
-	public static void setAction(Action action){
+	@Override
+	protected boolean onLongClick() {
+		GameScene.show(new WndActionList());
+		return true;
+	}
+
+	private final Button longClickListener = new Button() {
+		@Override public GameAction keyAction() { return SPDAction.TAG_CYCLE; }
+		@Override protected void onClick()      { GameScene.show(new WndActionList()); }
+	};
+
+	public static boolean setAction(Action action){
+		if(action == null || !action.usable()) return false;
 		synchronized (ActionIndicator.class) {
 			ActionIndicator.action = action;
 			refresh();
 		}
+		return true;
+	}
+
+	// list of action buffs that we should replace it with.
+	public static final Class<?extends Buff>[] actionBuffClasses = new Class[]{
+			Preparation.class,
+			SnipersMark.class,
+			Combo.class,
+			Momentum.class,
+			MonkEnergy.class,
+			Berserk.class,
+			MeleeWeapon.Charger.class,
+			HolyTome.TomeRecharge.class,
+			Tackle.class,
+			MagicalCombo.class,
+			Sheath.Sheathing.class,
+			SwordAura.class,
+			Awakening.class,
+			Build.class,
+			HorseRiding.class,
+			Pray.class,
+			FirstAidBuff.class,
+			Command.class
+	};
+	private static boolean findAction(boolean cycle) {
+		if(Dungeon.hero == null) return false;
+		if(action == null) cycle = false;
+		int start = -1;
+		if(cycle) while(++start < actionBuffClasses.length && !actionBuffClasses[start].isInstance(action));
+
+		for(int i = (start+1)%actionBuffClasses.length; i != start && i < actionBuffClasses.length; i++) {
+			for(Buff b : Dungeon.hero.buffs(actionBuffClasses[i])) {
+				if( b != action && setAction( (Action) b ) ) return true;
+			}
+			if(cycle && i+1 == actionBuffClasses.length) i = -1;
+		}
+		return false;
 	}
 
 	public static void clearAction(){
@@ -166,6 +241,7 @@ public class ActionIndicator extends Tag {
 		synchronized (ActionIndicator.class) {
 			if (action == null || ActionIndicator.action == action) {
 				ActionIndicator.action = null;
+				findAction(false);
 			}
 		}
 	}
@@ -199,6 +275,8 @@ public class ActionIndicator extends Tag {
 		int indicatorColor();
 
 		void doAction();
+
+		default boolean usable() { return true; }
 
 	}
 

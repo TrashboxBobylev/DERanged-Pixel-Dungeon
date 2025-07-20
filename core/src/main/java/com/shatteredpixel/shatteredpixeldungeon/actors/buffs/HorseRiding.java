@@ -112,11 +112,6 @@ public class HorseRiding extends Buff implements ActionIndicator.Action, Hero.Do
     }
 
     @Override
-    public String actionName() {
-        return Messages.get(this, "action_name");
-    }
-
-    @Override
     public int actionIcon() {
         return HeroIcon.RIDE;
     }

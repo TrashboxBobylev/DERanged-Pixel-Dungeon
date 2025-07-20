@@ -172,12 +172,7 @@ public class MagicalCombo extends Buff implements ActionIndicator.Action {
 		ActionIndicator.setAction(this);
 	}
 
-	@Override
-	public String actionName() {
-		return Messages.get(this, "action_name");
-	}
-
-	@Override
+    @Override
 	public int actionIcon() {
 		return HeroIcon.MAGIC_COMBO;
 	}
@@ -185,6 +180,11 @@ public class MagicalCombo extends Buff implements ActionIndicator.Action {
 	@Override
 	public int indicatorColor() {
 		return 0xFFFF00;
+	}
+
+	@Override
+	public boolean usable() {
+		return count > 0;
 	}
 
 	@Override

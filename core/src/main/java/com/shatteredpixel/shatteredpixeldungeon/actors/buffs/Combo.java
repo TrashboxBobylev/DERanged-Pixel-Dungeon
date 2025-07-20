@@ -177,12 +177,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		if (getHighestMove() != null) ActionIndicator.setAction(this);
 	}
 
-	@Override
-	public String actionName() {
-		return Messages.get(this, "action_name");
-	}
-
-	@Override
+    @Override
 	public int actionIcon() {
 		return HeroIcon.COMBO;
 	}
@@ -208,6 +203,11 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			int b = (int) ((best.tintColor & 0xFF) * 0.875f);
 			return (r << 16) + (g << 8) + b;
 		}
+	}
+
+	@Override
+	public boolean usable() {
+		return getHighestMove() != null;
 	}
 
 	@Override

@@ -128,11 +128,6 @@ public class Awakening extends Buff implements ActionIndicator.Action {
     }
 
     @Override
-    public String actionName() {
-        return Messages.get(this, "action_name");
-    }
-
-    @Override
     public int actionIcon() {
         if (isAwaken()) {
             return HeroIcon.AWAKEN_OFF;
@@ -148,6 +143,11 @@ public class Awakening extends Buff implements ActionIndicator.Action {
         } else {
             return 0xC21313;
         }
+    }
+
+    @Override
+    public boolean usable() {
+        return !isAwaken() && hero.buff(AwakeningCooldown.class) == null;
     }
 
     @Override

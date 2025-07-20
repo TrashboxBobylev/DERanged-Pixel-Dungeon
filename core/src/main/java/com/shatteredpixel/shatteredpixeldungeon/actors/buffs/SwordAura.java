@@ -120,11 +120,6 @@ public class SwordAura extends Buff implements ActionIndicator.Action {
     }
 
     @Override
-    public String actionName() {
-        return Messages.get(this, "action");
-    }
-
-    @Override
     public int actionIcon() {
         return HeroIcon.SWORD_AURA;
     }

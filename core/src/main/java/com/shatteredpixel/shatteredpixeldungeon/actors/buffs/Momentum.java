@@ -215,12 +215,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 		movedLastTurn = false;
 	}
 
-	@Override
-	public String actionName() {
-		return Messages.get(this, "action_name");
-	}
-
-	@Override
+    @Override
 	public int actionIcon() {
 		return HeroIcon.MOMENTUM;
 	}
@@ -237,6 +232,10 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 	@Override
 	public int indicatorColor() {
 		return 0x444444;
+	}
+
+	public boolean usable() {
+		return momentumStacks > 0 && freerunTurns <= 0;
 	}
 
 	@Override
