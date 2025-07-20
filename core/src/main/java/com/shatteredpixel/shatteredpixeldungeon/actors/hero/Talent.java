@@ -2314,12 +2314,12 @@ public enum Talent {
 			}
 		}
 
-		if (hero.hasTalent(FOLLOWUP_SHOOT) && enemy.alignment == Char.Alignment.ENEMY) {
+		if (hero.hasTalent(FOLLOWUP_SHOOT, RK_JUGGLER) && enemy.alignment == Char.Alignment.ENEMY) {
 			if (!(hero.belongings.attackingWeapon() instanceof MissileWeapon)) {
 				Buff.prolong(hero, FollowupShootTracker.class, 5f).object = enemy.id();
 			} else if (hero.buff(FollowupShootTracker.class) != null
 					&& hero.buff(FollowupShootTracker.class).object == enemy.id()){
-				damage = Math.round(damage * (1.0f + .1f*hero.pointsInTalent(FOLLOWUP_SHOOT)));
+				damage = Math.round(damage * (1.0f + .1f*hero.pointsInTalent(FOLLOWUP_SHOOT, RK_JUGGLER)));
 			}
 		}
 

@@ -49,7 +49,7 @@ public class Juggling extends Buff implements ActionIndicator.Action {
     }
 
     private int maxWeapons(Hero hero) {
-        return 3 + hero.pointsInTalent(Talent.SKILLFUL_JUGGLING);
+        return 3 + hero.pointsInTalent(Talent.SKILLFUL_JUGGLING, Talent.RK_JUGGLER);
     }
 
     public void juggle(Hero hero, MissileWeapon wep, boolean useTurn) {
@@ -69,7 +69,7 @@ public class Juggling extends Buff implements ActionIndicator.Action {
         hero.sprite.zap(hero.pos);
         Sample.INSTANCE.play(Assets.Sounds.MISS);
         if (useTurn) {
-            hero.spendAndNext(Math.max(0, 1f - hero.pointsInTalent(Talent.SWIFT_JUGGLING)/3f));
+            hero.spendAndNext(Math.max(0, 1f - hero.pointsInTalent(Talent.SWIFT_JUGGLING, Talent.RK_JUGGLER)/3f));
         }
 
         ActionIndicator.setAction(this);
@@ -167,10 +167,10 @@ public class Juggling extends Buff implements ActionIndicator.Action {
                             weapon.cast(Dungeon.hero, destination, false, weapons.isEmpty() ? 1 : 0, new Callback() {
                                 @Override
                                 public void call() {
-                                    if (Dungeon.hero.hasTalent(Talent.FANCY_PERFORMANCE)) {
+                                    if (Dungeon.hero.hasTalent(Talent.FANCY_PERFORMANCE, Talent.RK_JUGGLER)) {
                                         Char ch = Actor.findChar(destination);
                                         if (ch != null) {
-                                            Dungeon.level.drop(new Gold(5*Dungeon.hero.pointsInTalent(Talent.FANCY_PERFORMANCE)), destination).sprite.drop();
+                                            Dungeon.level.drop(new Gold(5*Dungeon.hero.pointsInTalent(Talent.FANCY_PERFORMANCE, Talent.RK_JUGGLER)), destination).sprite.drop();
                                         }
                                     }
                                 }
@@ -222,8 +222,8 @@ public class Juggling extends Buff implements ActionIndicator.Action {
     }
 
     public static void kill() {
-        if (Dungeon.hero.subClass.is(HeroSubClass.JUGGLER) && Dungeon.bullet > 1 && Dungeon.hero.hasTalent(Talent.HABITUAL_HAND)) {
-            for (int i = 0; i < Dungeon.hero.pointsInTalent(Talent.HABITUAL_HAND); i++) {
+        if (Dungeon.hero.subClass.is(HeroSubClass.JUGGLER) && Dungeon.bullet > 1 && Dungeon.hero.hasTalent(Talent.HABITUAL_HAND, Talent.RK_JUGGLER)) {
+            for (int i = 0; i < Dungeon.hero.pointsInTalent(Talent.HABITUAL_HAND, Talent.RK_JUGGLER); i++) {
                 if (Dungeon.bullet <= 0) break;
                 BowWeapon.Arrow arrow = getBow().knockArrow();
                 arrow.useBullet = false;
@@ -236,7 +236,7 @@ public class Juggling extends Buff implements ActionIndicator.Action {
 
     public static float accuracyFactor(Hero hero) {
         if (hero.buff(Juggling.class) != null) {
-            return 0.5f + 0.2f*Dungeon.hero.pointsInTalent(Talent.FOCUS_MAINTAIN);
+            return 0.5f + 0.2f*Dungeon.hero.pointsInTalent(Talent.FOCUS_MAINTAIN, Talent.RK_JUGGLER);
         } else {
             return 1;
         }
@@ -245,8 +245,8 @@ public class Juggling extends Buff implements ActionIndicator.Action {
     public static void move() {
         if (Dungeon.hero.subClass.is(HeroSubClass.JUGGLER)
                 && Dungeon.bullet > 1
-                && Dungeon.hero.hasTalent(Talent.TOUR_PERFORMANCE)
-                && Random.Float() < 0.01f*Dungeon.hero.pointsInTalent(Talent.TOUR_PERFORMANCE)) {
+                && Dungeon.hero.hasTalent(Talent.TOUR_PERFORMANCE, Talent.RK_JUGGLER)
+                && Random.Float() < 0.01f*Dungeon.hero.pointsInTalent(Talent.TOUR_PERFORMANCE, Talent.RK_JUGGLER)) {
 
             if (Dungeon.bullet <= 0) return;
 
