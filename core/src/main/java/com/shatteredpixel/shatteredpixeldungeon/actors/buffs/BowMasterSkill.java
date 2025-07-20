@@ -231,6 +231,11 @@ public class BowMasterSkill extends Buff implements ActionIndicator.Action {
     }
 
     @Override
+    public boolean usable() {
+        return charge >= MAX_CHARGE;
+    }
+
+    @Override
     public void doAction() {
         ScrollOfRecharging.charge(Dungeon.hero);
         powerShot = true;

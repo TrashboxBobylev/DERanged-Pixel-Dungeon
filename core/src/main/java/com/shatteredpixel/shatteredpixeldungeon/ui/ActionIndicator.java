@@ -25,17 +25,20 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awakening;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BowMasterSkill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Build;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Command;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FirstAidBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HorseRiding;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Juggling;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalCombo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Pray;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SharpShooterBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SwordAura;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Tackle;
@@ -216,7 +219,10 @@ public class ActionIndicator extends Tag {
 			HorseRiding.class,
 			Pray.class,
 			FirstAidBuff.class,
-			Command.class
+			Command.class,
+			BowMasterSkill.class,
+			Juggling.class,
+			SharpShooterBuff.class
 	};
 	private static boolean findAction(boolean cycle) {
 		if(Dungeon.hero == null) return false;
