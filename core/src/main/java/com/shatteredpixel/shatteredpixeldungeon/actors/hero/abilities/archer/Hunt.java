@@ -53,7 +53,7 @@ public class Hunt extends ArmorAbility {
             Buff.affect(hero, Haste.class, 2*hero.pointsInTalent(Talent.CANNOT_ESCAPE));
         }
 
-        armor.charge -= chargeUse(hero);
+        armor.useCharge(hero, this);
         Item.updateQuickslot();
     }
 

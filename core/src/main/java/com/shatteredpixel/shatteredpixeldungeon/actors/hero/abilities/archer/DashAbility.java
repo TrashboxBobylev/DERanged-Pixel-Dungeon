@@ -25,8 +25,6 @@ import com.watabou.utils.BArray;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 
-import java.util.HashSet;
-
 public class DashAbility extends ArmorAbility {
 
     {
@@ -112,7 +110,7 @@ public class DashAbility extends ArmorAbility {
                     }
                 }
 
-                armor.charge -= chargeUse(hero);
+                armor.useCharge(hero, DashAbility.this);
                 Item.updateQuickslot();
 
                 if (hero.hasTalent(Talent.KINETIC_DASH)) {

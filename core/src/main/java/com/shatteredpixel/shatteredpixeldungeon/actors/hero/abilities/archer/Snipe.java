@@ -47,7 +47,7 @@ public class Snipe extends ArmorAbility {
             return;
         }
 
-        armor.charge -= chargeUse(hero);
+        armor.useCharge(hero, this);
         Item.updateQuickslot();
 
         hero.sprite.zap(target);
@@ -82,6 +82,11 @@ public class Snipe extends ArmorAbility {
 
     public SnipeArrow knockArrow() {
         return new SnipeArrow();
+    }
+
+    @Override
+    public boolean isTracked(Hero hero) {
+        return hero.belongings.attackingWeapon() instanceof SnipeArrow;
     }
 
     public static class SnipeArrow extends DisposableMissileWeapon {
