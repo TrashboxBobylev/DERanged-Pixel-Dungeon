@@ -1,5 +1,6 @@
 buildscript {
     repositories {
+        maven { url 'https://jitpack.io'}
         google()
         mavenCentral()
     }
@@ -34,6 +35,7 @@ allprojects {
     version = appVersionName
 
     repositories {
+        maven { url 'https://jitpack.io'}
         google()
         mavenCentral()
         maven { url 'https://central.sonatype.com/repository/maven-snapshots/' }
