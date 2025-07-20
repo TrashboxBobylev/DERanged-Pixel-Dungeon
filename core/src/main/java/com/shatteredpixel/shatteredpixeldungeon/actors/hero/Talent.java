@@ -61,6 +61,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ScrollEmpower;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SharpShooterBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SwordAura;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WandEmpower;
@@ -821,6 +822,7 @@ public enum Talent {
 	RK_ENGINEER(17, 15,3), RK_EXPLORER(18, 15,3), RK_RESEARCHER(19, 15, 3),
 	RK_DEATHKNIGHT(20, 13,3), RK_HORSEMAN(21, 13,3), RK_CRUSADER(22, 13, 3),
 	RK_SAVIOR(20, 14,3), RK_THERAPIST(21, 14,3), RK_MEDICALOFFICER(22, 14, 3),
+	RK_BOWMASTER(20, 15, 3), RK_JUGGLER(21, 15, 3), RK_SHARPSHOOTER(22, 15, 3),
 
 	// Wrath2
 	AFTERSHOCK(23, 13,4), RAT_BLAST(24, 13,4), SMOKE_AND_MIRRORS(25, 13,4), SEA_OF_BLADES(26, 13,4),
@@ -1658,6 +1660,10 @@ public enum Talent {
 
 		if (talent  == RK_MEDICALOFFICER) {
 			Buff.affect(hero, Command.class);
+		}
+
+		if (talent == RK_SHARPSHOOTER) {
+			Buff.affect(hero, SharpShooterBuff.class);
 		}
 
 		//rouge
@@ -3078,7 +3084,7 @@ public enum Talent {
 						RK_CHAMPION, RK_MONK, RK_FENCER, RK_PRIEST, RK_PALADIN, RK_ENCHANTER,
 						RK_OUTLAW, RK_GUNSLINGER, RK_SPECIALIST, RK_SLASHER, RK_MASTER, RK_SLAYER,
 						RK_ENGINEER, RK_EXPLORER, RK_RESEARCHER, RK_DEATHKNIGHT, RK_HORSEMAN, RK_CRUSADER,
-						RK_SAVIOR, RK_THERAPIST, RK_MEDICALOFFICER);
+						RK_SAVIOR, RK_THERAPIST, RK_MEDICALOFFICER, RK_BOWMASTER, RK_JUGGLER, RK_SHARPSHOOTER);
 				break;
 		}
 		for (Talent talent : tierTalents){
