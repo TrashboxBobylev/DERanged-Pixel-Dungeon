@@ -79,6 +79,11 @@ public class Shovel extends MeleeWeapon {
     }
 
     @Override
+    public String defaultAction() {
+        return AC_DIG;
+    }
+
+    @Override
     public int proc(Char attacker, Char defender, int damage) {
         return super.proc( attacker, defender, damage );
     }
