@@ -28,10 +28,9 @@ import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.DeviceCompat;
 
+import javax.net.ssl.SSLProtocolException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.net.ssl.SSLProtocolException;
 
 public class GitHubUpdates extends UpdateService {
 
@@ -60,7 +59,7 @@ public class GitHubUpdates extends UpdateService {
 		}
 
 		Net.HttpRequest httpGet = new Net.HttpRequest(Net.HttpMethods.GET);
-		httpGet.setUrl("https://api.github.com/repos/Hoto-Mocha/Re-ARranged-Pixel-Dungeon/releases");
+		httpGet.setUrl("https://api.github.com/repos/TrashboxBobylev/DERanged-Pixel-Dungeon/releases");
 		httpGet.setHeader("Accept", "application/vnd.github.v3+json");
 
 		Gdx.net.sendHttpRequest(httpGet, new Net.HttpResponseListener() {
