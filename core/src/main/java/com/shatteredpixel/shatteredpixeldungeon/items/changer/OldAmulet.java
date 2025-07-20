@@ -6,9 +6,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Transmuting;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
@@ -43,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
@@ -50,6 +53,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -119,7 +123,21 @@ public class OldAmulet extends Item {
             if (hero.buff(TempleCurse.class) != null) {
                 GLog.w(Messages.get(this, "cannot_use"));
             } else {
-                GameScene.selectItem( itemSelector );
+                if (hero.isClassed(HeroClass.RAT_KING)){
+                    GLog.h(Messages.get(this, "fully_used_up"));
+                    GLog.p(Messages.get(this, "fully_used_up_2"));
+                    hero.busy();
+                    hero.sprite.operate(hero.pos, () -> {
+                        hero.spendAndNext(Actor.TICK);
+                        Buff.affect(hero, RatTalentUpgrade.class);
+                        hero.sprite.idle();
+                    });
+                    Sample.INSTANCE.play(Assets.Sounds.HIT_CRUSH, 1f, 0.7f);
+                    Sample.INSTANCE.play(Assets.Sounds.BOSS, 1f, 0.7f);
+                    Splash.at( DungeonTilemap.tileCenterToWorld( hero.pos ), -PointF.PI/2, PointF.PI/2, 0xb06742, 50, 0.002f);
+                } else {
+                    GameScene.selectItem( itemSelector );
+                }
             }
         }
     }
@@ -543,4 +561,6 @@ public class OldAmulet extends Item {
             GLog.i(Messages.get(this, "escape"));
         }
     }
+
+    public static class RatTalentUpgrade extends Buff {}
 }

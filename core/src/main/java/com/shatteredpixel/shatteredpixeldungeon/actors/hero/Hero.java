@@ -152,6 +152,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArm
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
+import com.shatteredpixel.shatteredpixeldungeon.items.changer.OldAmulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.CrystalKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
@@ -735,6 +736,9 @@ public class Hero extends Char {
 		}
 		if (tier == 3 && buff(ElixirOfTalent.BonusTalentTracker.class) != null) {
 			bonusPoints += 4;
+		}
+		if (buff(OldAmulet.RatTalentUpgrade.class) != null && tier <= 3){
+			bonusPoints += tier != 3 ? 2 : 3;
 		}
 		return bonusPoints;
 	}
