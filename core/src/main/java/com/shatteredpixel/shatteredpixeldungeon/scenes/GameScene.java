@@ -553,6 +553,27 @@ public class GameScene extends PixelScene {
 				Random.popGenerator();
 			}
 
+			if (Dungeon.hero.hasTalent(Talent.ARCHERS_FORESIGHT)
+					&& Dungeon.level instanceof RegularLevel && Dungeon.branch == 0){
+				int length = Dungeon.level.length();
+				boolean[] mapped = Dungeon.level.mapped;
+
+				for (int i=0; i < length; i++) {
+					Trap trap = Dungeon.level.traps.get( i );
+					if (trap != null) {
+						mapped[i] = true;
+						Dungeon.level.discover( i );
+					}
+				}
+				GameScene.updateFog();
+
+				Random.pushGenerator(Dungeon.seedCurDepth()+1);
+					if (Random.Float() < 0.5f+0.25f*Dungeon.hero.pointsInTalent(Talent.ARCHERS_FORESIGHT)){
+						GLog.p(Messages.get(this, "trap_discover"));
+					}
+				Random.popGenerator();
+			}
+
 			boolean unspentTalents = false;
 			for (int i = 1; i <= Dungeon.hero.talents.size(); i++){
 				if (Dungeon.hero.talentPointsAvailable(i) > 0){

@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SacrificialFire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AdrenalineSurge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArmorEnhance;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BowMasterSkill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awakening;
@@ -66,6 +67,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HorseRiding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invulnerability;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Juggling;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Levitation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalCombo;
@@ -432,7 +434,7 @@ public class Hero extends Char {
 		if (heroClass == HeroClass.RAT_KING){
 			HT = (int) (HT * 0.4f);
 		}
-		
+
 		if (buff(ElixirOfMight.HTBoost.class) != null){
 			HT += buff(ElixirOfMight.HTBoost.class).boost();
 		}
@@ -490,7 +492,8 @@ public class Hero extends Char {
 	private static final String EXPERIENCE	= "exp";
 	private static final String HTBOOST     = "htboost";
 	private static final String NECKLACE_BUFF = "necklaceBuff";
-	
+	private static final String JUST_MOVED	= "justMoved";
+
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 
@@ -514,6 +517,8 @@ public class Hero extends Char {
 		bundle.put( HTBOOST, HTBoost );
 
 		bundle.put( NECKLACE_BUFF, necklaceRing );
+
+		bundle.put( JUST_MOVED, justMoved );
 
 		belongings.storeInBundle( bundle );
 	}
@@ -546,6 +551,7 @@ public class Hero extends Char {
 		defenseSkill = bundle.getInt( DEFENSE );
 		
 		STR = bundle.getInt( STRENGTH );
+		justMoved = bundle.getBoolean( JUST_MOVED );
 
 		belongings.restoreFromBundle( bundle );
 	}
@@ -883,6 +889,8 @@ public class Hero extends Char {
 			accuracy *= 1.2f;
 		}
 
+		accuracy *= Juggling.accuracyFactor(this);
+
 		if (hero.buff(UnholyBible.Demon.class) != null) {
 			accuracy = INFINITE_ACCURACY;
 		}
@@ -958,6 +966,8 @@ public class Hero extends Char {
 				return INFINITE_EVASION;
 			}
 		}
+
+		if (buff(EvasiveMove.class) != null) return INFINITE_EVASION;
 
 		if (buff(Quarterstaff.DefensiveStance.class) != null){
 			evasion *= 3;
@@ -1211,6 +1221,8 @@ public class Hero extends Char {
 				speed *= 1 + 0.05f * hero.pointsInTalent(Talent.LIGHT_MOVEMENT, Talent.RK_GUNSLINGER) * (-aEnc);
 			}
 		}
+
+		speed *= BowMasterSkill.speedBoost(hero);
 
 		speed = AscensionChallenge.modifyHeroSpeed(speed);
 		
@@ -2031,11 +2043,13 @@ public class Hero extends Char {
 				if (hero.pointsInTalent(Talent.STEALTH_MASTER, Talent.RK_SPECIALIST) > 1) {
 					adjacentMob = false;
 				}
-				if (!adjacentMob && hero.hasTalent(Talent.INTO_THE_SHADOW, Talent.RK_SPECIALIST) && hero.buff(Talent.IntoTheShadowCooldown.class) == null) {
-					Buff.affect(this, Invisibility.class, 3f*hero.pointsInTalent(Talent.INTO_THE_SHADOW));
-					Buff.affect(this, Talent.IntoTheShadowCooldown.class, 15);
-				} else {
-					Buff.affect(this, Cloaking.class);
+				if (!adjacentMob) {
+					if (hero.hasTalent(Talent.INTO_THE_SHADOW, Talent.RK_SPECIALIST) && hero.buff(Talent.IntoTheShadowCooldown.class) == null) {
+						Buff.affect(this, Invisibility.class, 3f*hero.pointsInTalent(Talent.INTO_THE_SHADOW));
+						Buff.affect(this, Talent.IntoTheShadowCooldown.class, 15);
+					} else {
+						Buff.affect(this, Cloaking.class);
+					}
 				}
 			}
 		}
@@ -2049,6 +2063,13 @@ public class Hero extends Char {
 			chance = 0.01f;
 			chance += 0.01f * (lvl - 1);
 			chance += Math.max(0, (0.02f + 0.005f*pointsInTalent(Talent.WEAPON_MASTERY, Talent.KINGS_WRATH)) * (STR() - wep.STRReq()));
+		}
+
+		if (heroClass == HeroClass.ARCHER && wep instanceof MissileWeapon) {
+			chance = 0.03f;
+			chance += 0.03f*(lvl-1);
+			chance = Math.min(chance, 0.3f);
+			chance += Math.max(0, 0.03f*(STR()-wep.STRReq()));
 		}
 
 		if (buff(Sheath.CertainCrit.class) != null) {
@@ -2108,14 +2129,11 @@ public class Hero extends Char {
 
 	public int criticalDamage(int damage, Weapon wep, Char enemy) {
 		int max = wep.max();
-		if (STR() > wep.STRReq()) {
+		if (STR() > wep.STRReq() && !(wep instanceof Gun.Bullet)) {
 			max += STR()-wep.STRReq();
 		}
 		float multi = 1f+Math.max(0, critChance(enemy, wep)-1);
 		int bonusDamage = 0;
-		System.out.println(max);
-		System.out.println(damage);
-		System.out.println();
 
 		damage = (int)(max * 0.75f + damage * 0.25f);
 
@@ -2805,7 +2823,7 @@ public class Hero extends Char {
 	//FIXME this is a fairly crude way to track this, really it would be nice to have a short
 	//history of hero actions
 	public boolean justMoved = false;
-	
+
 	private boolean getCloser( final int target ) {
 
 		if (target == pos)
@@ -2926,7 +2944,11 @@ public class Hero extends Char {
 			if (hero.hasTalent(Talent.MIND_VISION, Talent.THE_PROTECTOR) && Random.Float() < 0.01f*hero.pointsInTalent(Talent.MIND_VISION, Talent.THE_PROTECTOR)) {
 				Buff.affect(this, MindVision.class, 1f);
 			}
-			
+
+			BowMasterSkill.move();
+
+			Juggling.move();
+
 			sprite.move(pos, step);
 			move(step);
 

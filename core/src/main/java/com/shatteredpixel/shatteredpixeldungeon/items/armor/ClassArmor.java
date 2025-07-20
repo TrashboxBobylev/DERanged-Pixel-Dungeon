@@ -140,6 +140,9 @@ abstract public class ClassArmor extends Armor {
 			case MEDIC:
 				classArmor = new MedicArmor();
 				break;
+			case ARCHER:
+				classArmor = new ArcherArmor();
+				break;
 			case RAT_KING:
 				classArmor = new RatKingArmor();
 				break;
