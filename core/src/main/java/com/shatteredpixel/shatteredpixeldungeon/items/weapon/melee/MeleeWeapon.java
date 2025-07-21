@@ -182,7 +182,7 @@ public class MeleeWeapon extends Weapon {
 			}
 		}
 		if (action.equals(AC_SCRAP)) {
-			if (hero.heroClass == HeroClass.GUNNER) {
+			if (hero.heroClass.is(HeroClass.GUNNER)) {
 				Game.runOnRenderThread(new Callback() {
 					@Override
 					public void call() {
@@ -237,7 +237,7 @@ public class MeleeWeapon extends Weapon {
 						);
 					}
 				});
-			} else if (hero.heroClass == HeroClass.ARCHER) {
+			} else if (hero.heroClass.is(HeroClass.ARCHER)) {
 				detach(hero.belongings.backpack);
 				hero.sprite.operate(hero.pos);
 				Sample.INSTANCE.play(Assets.Sounds.EVOKE);
