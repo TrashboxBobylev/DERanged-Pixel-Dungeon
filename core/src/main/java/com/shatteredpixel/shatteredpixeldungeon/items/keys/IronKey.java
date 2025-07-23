@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.keys;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class IronKey extends Key {
@@ -30,13 +31,13 @@ public class IronKey extends Key {
 	}
 
 	public IronKey() {
-		this( 0 );
+		this( 0, 0 );
 	}
 	
 	public IronKey( int depth ) {
 		super();
 		this.depth = depth;
-		this.branch = 0;
+		this.branch = Dungeon.branch;
 	}
 
 	public IronKey( int depth, int branch ) {
