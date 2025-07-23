@@ -1,3 +1,4 @@
 #libGDX native dependancies
 libgdx.so
 libgdx-freetype.so
+/debug/output-metadata.json
