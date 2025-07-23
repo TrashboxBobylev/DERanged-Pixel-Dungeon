@@ -210,6 +210,11 @@ abstract public class ClassArmor extends Armor {
 	}
 
 	@Override
+	public String status() {
+		return Messages.format("%.0f%%", Math.floor(charge));
+	}
+
+	@Override
 	public void execute(Hero hero) {
 		if(additionalActions().isEmpty()) super.execute(hero);
 		else {
