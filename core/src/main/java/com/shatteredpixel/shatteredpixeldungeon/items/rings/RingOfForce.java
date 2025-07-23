@@ -189,7 +189,7 @@ public class RingOfForce extends Ring {
 	@Override
 	public void activate(Char ch) {
 		super.activate(ch);
-		if (ch instanceof Hero && ((Hero) ch).heroClass.is(HeroClass.DUELIST)){
+		if (ch instanceof Hero && ((Hero) ch).isClassedLoosely(HeroClass.DUELIST)){
 			Buff.affect(ch, MeleeWeapon.Charger.class);
 		}
 	}
