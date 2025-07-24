@@ -139,6 +139,9 @@ public abstract class RegularLevel extends Level {
 		if (this instanceof TempleLevel) {
 			standards *= 3;
 		}
+		if (Dungeon.isChallenged(Challenges.MANY_MOBS)){
+			standards *= 4;
+		}
 		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BIGGER))
 			standards *= 2;
 		for (int i = 0; i < standards; i++) {
@@ -241,6 +244,9 @@ public abstract class RegularLevel extends Level {
 		int mobsToSpawn = Dungeon.scalingDepth() == 1 ? 8 : mobLimit();
 		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BIGGER))
 			mobsToSpawn *= 2;
+		if (Dungeon.isChallenged(Challenges.MANY_MOBS)){
+			mobsToSpawn *= 16;
+		}
 
 		ArrayList<Room> stdRooms = new ArrayList<>();
 		for (Room room : rooms) {
