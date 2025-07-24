@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -41,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.sewerboss.SewerBoss
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.sewerboss.SewerBossExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Music;
@@ -51,11 +53,28 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
+import static com.shatteredpixel.shatteredpixeldungeon.Assets.Environment.TILES_HALLS;
+import static com.shatteredpixel.shatteredpixeldungeon.Assets.Environment.WATER_HALLS;
+
 public class SewerBossLevel extends SewerLevel {
 
 	{
 		color1 = 0x48763c;
 		color2 = 0x59994a;
+	}
+
+	@Override
+	public String tilesTex() {
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.REVERSE))
+			return TILES_HALLS;
+		return Assets.Environment.TILES_SEWERS;
+	}
+
+	@Override
+	public String waterTex() {
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.REVERSE))
+			return WATER_HALLS;
+		return Assets.Environment.WATER_SEWERS;
 	}
 	
 	@Override

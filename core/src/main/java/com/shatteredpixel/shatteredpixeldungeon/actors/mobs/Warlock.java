@@ -26,11 +26,16 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Shrink;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.TimedShrink;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WarriorParry;
+import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
@@ -43,6 +48,8 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 
 public class Warlock extends Mob implements Callback {
 	
@@ -113,7 +120,7 @@ public class Warlock extends Mob implements Callback {
 		Char enemy = this.enemy;
 		if (hit( this, enemy, true )) {
 			//TODO would be nice for this to work on ghost/statues too
-			if (enemy == Dungeon.hero && Random.Int( 2 ) == 0) {
+			if (enemy == hero && Random.Int( 2 ) == 0 && enemy.buff(WarriorParry.BlockTrock.class) == null) {
 				Buff.prolong( enemy, Degrade.class, Degrade.DURATION );
 				Sample.INSTANCE.play( Assets.Sounds.DEGRADE );
 			}
@@ -128,13 +135,21 @@ public class Warlock extends Mob implements Callback {
 					&& (Char.hasProp(enemy, Property.BOSS) || Char.hasProp(enemy, Property.MINIBOSS))){
 				dmg *= 0.5f;
 			}
+			if (enemy.buff(WarriorParry.BlockTrock.class) != null){
+				enemy.sprite.emitter().burst( Speck.factory( Speck.FORGE ), 15 );
+				SpellSprite.show(enemy, SpellSprite.BLOCK, 2f, 2f, 2f);
+				Buff.affect(enemy, Barrier.class).incShield(Math.round(dmg*1.25f));
+				hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(Math.round(dmg*1.25f)), FloatingText.SHIELDING );
+				enemy.buff(WarriorParry.BlockTrock.class).triggered = true;
+			} else {
 
-			enemy.damage( dmg, new DarkBolt() );
-			
-			if (enemy == Dungeon.hero && !enemy.isAlive()) {
-				Badges.validateDeathFromEnemyMagic();
-				Dungeon.fail( this );
-				GLog.n( Messages.get(this, "bolt_kill") );
+				enemy.damage(dmg, new DarkBolt());
+
+				if (enemy == hero && !enemy.isAlive()) {
+					Badges.validateDeathFromEnemyMagic();
+					Dungeon.fail(this);
+					GLog.n(Messages.get(this, "bolt_kill"));
+				}
 			}
 		} else {
 			enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );

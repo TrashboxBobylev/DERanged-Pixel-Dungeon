@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
@@ -69,7 +70,7 @@ public class Smite extends TargetedClericSpell {
 
 	@Override
 	public boolean canCast(Hero hero) {
-		return super.canCast(hero) && hero.subClass.is(HeroSubClass.PALADIN);
+		return super.canCast(hero) && (hero.subClass.is(HeroSubClass.PALADIN) || Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CLERIC));
 	}
 
 	@Override

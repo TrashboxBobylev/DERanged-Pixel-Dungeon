@@ -1,9 +1,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.templeChambers;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlink;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FlashingTrap;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.utils.Reflection;
 
 public class WarpStoneChamber extends Chamber {
@@ -32,7 +34,10 @@ public class WarpStoneChamber extends Chamber {
         };
 
         for (int pos : customOffsetArray(offsets)) {
-            level.drop(new StoneOfBlink(), pos);
+            Heap.Type type = Heap.Type.HEAP;
+            if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CHESTS))
+                type = Heap.Type.CHEST;
+            level.drop(new StoneOfBlink(), pos).type = type;
         }
 
 

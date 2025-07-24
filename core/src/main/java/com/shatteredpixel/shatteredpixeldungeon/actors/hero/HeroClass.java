@@ -27,6 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WarriorParry;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.adventurer.Root;
@@ -71,6 +73,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.ArrowBag;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.BulletBelt;
 import com.shatteredpixel.shatteredpixeldungeon.items.GammaRayGun;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KingsCrown;
 import com.shatteredpixel.shatteredpixeldungeon.items.KnightsShield;
@@ -78,6 +81,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Sheath;
 import com.shatteredpixel.shatteredpixeldungeon.items.Teleporter;
 import com.shatteredpixel.shatteredpixeldungeon.items.TengusMask;
 import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
@@ -111,13 +115,17 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurs
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorrosion;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.bow.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Cudgel;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Machete;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Rapier;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Saber;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scalpel;
@@ -132,7 +140,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingSp
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingStone;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.utils.DeviceCompat;
+import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 
@@ -180,6 +194,9 @@ public enum HeroClass {
 
 		hero.heroClass = this;
 		Talent.initClassTalents(hero);
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RANDOM_TALENTS)){
+			Talent.shuffleTalents(hero);
+		}
 
 		Item i = new ClothArmor().identify();
 		if (!Challenges.isItemBlocked(i)) hero.belongings.armor = (ClothArmor)i;
@@ -275,6 +292,57 @@ public enum HeroClass {
 				break;
 		}
 
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CORROSION)){
+			WandOfCorrosion wand = new WandOfCorrosion();
+			wand.identify();
+			wand.upgrade(100);
+			wand.collect();
+			for (int s = 0; s < QuickSlot.SIZE; s++) {
+				if (Dungeon.quickslot.getItem(s) == null) {
+					Dungeon.quickslot.setSlot(s, wand);
+					break;
+				}
+			}
+		}
+
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.DUELIST)){
+			MeleeWeapon weapon = (MeleeWeapon) Generator.randomUsingDefaults(Random.oneOf(Generator.Category.WEP_T1, Generator.Category.WEP_T2, Generator.Category.WEP_T3, Generator.Category.WEP_T4, Generator.Category.WEP_T5));
+			if (Random.Int(22) == 0){
+				weapon = (MeleeWeapon) Generator.randomUsingDefaults(Generator.Category.WEP_AL_T6);
+			}
+			if (weapon != null){
+				weapon.duelistStart = true;
+				weapon.tier = 1;
+				weapon.cursed = false;
+				weapon.level(0);
+				weapon.enchant(null);
+				(hero.belongings.weapon = weapon).identify();
+			}
+		}
+
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ENCHANTED_WORLD)){
+			for (Item item: hero.belongings){
+				if (item instanceof Weapon){
+					((Weapon) item).enchant();
+				} else if (item instanceof Armor){
+					((Armor) item).inscribe();
+				}
+			}
+		}
+
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CLERIC)){
+			HolyTome tome = new HolyTome();
+			tome.collect();
+			tome.identify();
+			tome.activate(hero);
+			for (int s = 0; s < QuickSlot.SIZE; s++) {
+				if (Dungeon.quickslot.getItem(s) == null) {
+					Dungeon.quickslot.setSlot(s, tome);
+					break;
+				}
+			}
+		}
+
 		if (SPDSettings.quickslotWaterskin()) {
 			for (int s = 0; s < QuickSlot.SIZE; s++) {
 				if (Dungeon.quickslot.getItem(s) == null) {
@@ -282,6 +350,12 @@ public enum HeroClass {
 					break;
 				}
 			}
+		}
+
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.LEVELLING_DOWN)){
+			hero.lvl = 24;
+			hero.exp += hero.maxExp()/2;
+			hero.updateStats();
 		}
 
 	}
@@ -327,6 +401,10 @@ public enum HeroClass {
 			Catalog.setSeen(BrokenSeal.class); //as it's not added to the inventory
 		}
 
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.WARRIOR)){
+			Buff.affect(hero, WarriorParry.class);
+		}
+
 		new PotionOfHealing().identify();
 		new ScrollOfRage().identify();
 	}
@@ -334,7 +412,13 @@ public enum HeroClass {
 	private static void initMage( Hero hero ) {
 		MagesStaff staff;
 
-		staff = new MagesStaff(new WandOfMagicMissile());
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.MAGE)){
+			do {
+				staff = new MagesStaff((Wand) Reflection.newInstance(Random.element(Generator.Category.WAND.classes)));
+			} while (staff.wandClass() == WandOfMagicMissile.class);
+		} else {
+			staff = new MagesStaff(new WandOfMagicMissile());
+		}
 
 		(hero.belongings.weapon = staff).identify();
 		hero.belongings.weapon.activate(hero);
@@ -348,14 +432,24 @@ public enum HeroClass {
 	private static void initRogue( Hero hero ) {
 		(hero.belongings.weapon = new Dagger()).identify();
 
-		CloakOfShadows cloak = new CloakOfShadows();
-		(hero.belongings.artifact = cloak).identify();
-		hero.belongings.artifact.activate( hero );
+		if (!Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ROGUE)) {
+			CloakOfShadows cloak = new CloakOfShadows();
+			(hero.belongings.artifact = cloak).identify();
+			hero.belongings.artifact.activate(hero);
+			Dungeon.quickslot.setSlot(0, cloak);
+		}
+		 else {
+			Random.pushGenerator();
+			Artifact cloak = Generator.randomArtifact();
+			(hero.belongings.artifact = cloak).identify();
+			hero.belongings.artifact.activate(hero);
+			Random.popGenerator();
+			Dungeon.quickslot.setSlot(0, cloak);
+		}
 
 		ThrowingKnife knives = new ThrowingKnife();
 		knives.quantity(3).collect();
 
-		Dungeon.quickslot.setSlot(0, cloak);
 		Dungeon.quickslot.setSlot(1, knives);
 
 		new ScrollOfMagicMapping().identify();
@@ -506,42 +600,41 @@ public enum HeroClass {
 		new PotionOfHaste().identify();
 	}
 
-	// TODO: reenable special seed content when needed
 	private static void initRatKing( Hero hero ) {
 		// warrior
 		if (hero.belongings.armor != null){
 			hero.belongings.armor.affixSeal(new BrokenSeal());
 		}
-		/*if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.WARRIOR)){
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.WARRIOR)){
 			Buff.affect(hero, WarriorParry.class);
-		}*/
+		}
 		// mage
 		MagesStaff staff;
 
-		/*if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.MAGE)){
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.MAGE)){
 			do {
 				staff = new MagesStaff((Wand) Reflection.newInstance(Random.element(Generator.Category.WAND.classes)));
 			} while (staff.wandClass() == WandOfMagicMissile.class);
-		} else {*/
+		} else {
 			staff = new MagesStaff(new WandOfMagicMissile());
-		/*}*/
+		}
 		(hero.belongings.weapon = staff).identify();
 		hero.belongings.weapon.activate(hero);
 		// rogue
 		Artifact cloak;
-		/*if (!Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ROGUE)) {*/
+		if (!Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ROGUE)) {
 			cloak = new CloakOfShadows();
 			(hero.belongings.artifact = cloak).identify();
 			hero.belongings.artifact.activate(hero);
 			Dungeon.quickslot.setSlot(0, cloak);
-		/*} else {
+		} else {
 			Random.pushGenerator();
 			cloak = Generator.randomArtifact();
 			(hero.belongings.artifact = cloak).identify();
 			hero.belongings.artifact.activate(hero);
 			Random.popGenerator();
 			Dungeon.quickslot.setSlot(0, cloak);
-		}*/
+		}
 		// huntress
 		SpiritBow bow = new SpiritBow();
 		bow.identify().collect();
@@ -583,11 +676,14 @@ public enum HeroClass {
 		return Messages.get(HeroClass.class, name()+"_desc_short");
 	}
 
-	public HeroSubClass[] subClasses() {
-		return subClasses;
+	public ArrayList<HeroSubClass> subClasses() {
+		return new ArrayList<>(Arrays.asList(subClasses));
 	}
 
 	public ArmorAbility[] armorAbilities(){
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RANDOM_HERO) && hero != null && hero.armorAbility == null){
+			return new ArmorAbility[]{new OmniAbility()};
+		}
 		switch (this) {
 			case WARRIOR: default:
 				return new ArmorAbility[]{new HeroicLeap(), new Shockwave(), new Endure()};

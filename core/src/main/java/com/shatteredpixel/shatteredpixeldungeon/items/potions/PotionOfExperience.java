@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Holy
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
@@ -48,7 +49,10 @@ public class PotionOfExperience extends Potion {
 	@Override
 	public void apply( Hero hero ) {
 		identify();
-		hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(5 + 5* hero.lvl), FloatingText.EXPERIENCE);
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.LEVELLING_DOWN))
+			hero.sprite.showStatusWithIcon(CharSprite.NEGATIVE, Integer.toString(5 + 5* hero.lvl), FloatingText.EXPERIENCE);
+		else
+			hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(5 + 5* hero.lvl), FloatingText.EXPERIENCE);
 		hero.earnExp( 5 + 5* hero.lvl, getClass() );
 		new Flare( 6, 32 ).color(0xFFFF00, true).show( curUser.sprite, 2f );
 	}

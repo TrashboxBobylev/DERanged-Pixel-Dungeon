@@ -49,6 +49,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WarpingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WeakeningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -88,7 +89,8 @@ public class HallsLevel extends RegularLevel {
 	protected ArrayList<Room> initRooms() {
 		ArrayList<Room> rooms = super.initRooms();
 
-		rooms.add(new DemonSpawnerRoom());
+		if (!Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.REVERSE))
+			rooms.add(new DemonSpawnerRoom());
 
 		return rooms;
 	}

@@ -90,6 +90,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.TimeStasis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Undead;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WarriorParry;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.AscendedForm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Challenge;
@@ -107,6 +108,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HolyWard;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.HolyWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.Resurrection;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.Smite;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Ech;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
@@ -236,6 +238,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StatusPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
@@ -287,16 +290,15 @@ public class Hero extends Char {
 	}
 
 	public static boolean isSubclassedLoosely(Hero hero, HeroSubClass sub){
-		//TODO: uncomment when porting special seed content
-		/*if ((Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE) || Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_SUBS)) & hero.subClass != HeroSubClass.NONE){
+		if ((Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE) || Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_SUBS)) & hero.subClass != HeroSubClass.NONE){
 			return true;
-		} else {*/
+		} else {
 			if (hero.subClass2 == HeroSubClass.NONE) {
 				return hero.matchSubclass(hero.subClass, sub);
 			} else {
 				return hero.matchSubclass(hero.subClass, sub) || hero.matchSubclass(hero.subClass2, sub);
 			}
-		/*}*/
+		}
 	}
 
 	public boolean isSubclassed(HeroSubClass sub){
@@ -304,16 +306,15 @@ public class Hero extends Char {
 	}
 
 	public static boolean isSubclassed(Hero hero, HeroSubClass sub){
-		//TODO: uncomment when porting special seed content
-		/*if ((Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE) || Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_SUBS)) & hero.subClass != HeroSubClass.NONE){
+		if ((Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE) || Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_SUBS)) & hero.subClass != HeroSubClass.NONE){
 			return true;
-		} else {*/
+		} else {
 			if (hero.subClass2 == HeroSubClass.NONE) {
 				return hero.subClass == sub;
 			} else {
 				return hero.subClass == sub || hero.subClass2 == sub;
 			}
-		/*}*/
+		}
 	}
 
 	public boolean matchSubclass(HeroSubClass sub1, HeroSubClass sub2){
@@ -338,19 +339,18 @@ public class Hero extends Char {
 	}
 
 	public static boolean isClassedLoosely(Hero hero, HeroClass sub){
-		//TODO: uncomment when porting special seed content
-		/*if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CLERIC) && sub == HeroClass.CLERIC){
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CLERIC) && sub == HeroClass.CLERIC){
 			return true;
 		}
 		if ((Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE) || Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_CLASSES))){
 			return true;
-		} else {*/
+		} else {
 			if (hero.heroClass2 == null) {
 				return hero.matchClass(hero.heroClass, sub);
 			} else {
 				return hero.matchClass(hero.heroClass, sub) || hero.matchClass(hero.heroClass2, sub);
 			}
-		/*}*/
+		}
 	}
 
 	public boolean isClassed(HeroClass sub){
@@ -358,15 +358,15 @@ public class Hero extends Char {
 	}
 
 	public boolean isClassed(Hero hero, HeroClass sub){
-		/*if ((Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE) || Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_CLASSES))){
+		if ((Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE) || Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_CLASSES))){
 			return true;
-		} else {*/
+		} else {
 			if (hero.heroClass2 == null) {
 				return hero.heroClass == sub;
 			} else {
 				return hero.heroClass == sub || hero.heroClass2 == sub;
 			}
-		/*}*/
+		}
 	}
 
 	public boolean matchClass(HeroClass class1, HeroClass class2){
@@ -418,6 +418,9 @@ public class Hero extends Char {
 
 		HP = HT = (Dungeon.isChallenged(Challenges.SUPERMAN)) ? 10 : 20;
 		STR = STARTING_STR;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE)){
+			HP = HT = 5;
+		}
 		
 		belongings = new Belongings( this );
 		
@@ -428,12 +431,15 @@ public class Hero extends Char {
 		int curHT = HT;
 
 		HT = (Dungeon.isChallenged(Challenges.SUPERMAN)) ? 10 : 20 + 5 * (lvl-1) + HTBoost;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE)){
+			HT = 5 + 3*(lvl-1) + HTBoost;
+		}
 		if (this.hasTalent(Talent.MAX_HEALTH, Talent.EXTRA_BULK)) {
 			HT += 5*this.pointsInTalent(Talent.MAX_HEALTH, Talent.EXTRA_BULK);
 		}
 		float multiplier = RingOfMight.HTMultiplier(this);
 		HT = Math.round(multiplier * HT);
-		if (heroClass == HeroClass.RAT_KING){
+		if (heroClass == HeroClass.RAT_KING && !Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE)){
 			HT = (int) (HT * 0.4f);
 		}
 
@@ -579,7 +585,7 @@ public class Hero extends Char {
 	}
 
 	public boolean canHaveTalent(Talent talent) {
-		/*if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CLERIC)){
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CLERIC)){
 			for (Talent tal: HolyTome.allSpellTalents){
 				if (tal == talent)
 					return true;
@@ -587,14 +593,8 @@ public class Hero extends Char {
 			if (talent == Talent.LIGHT_READING)
 				return true;
 		}
-		if (buff(MetaForm.MetaFormBuff.class) != null){
-			Talent metaTalent = buff(MetaForm.MetaFormBuff.class).talent;
-			if (metaTalent == talent){
-				return true;
-			}
-		}
 		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_TALENTS))
-			return true;*/
+			return true;
 		for(LinkedHashMap<Talent,Integer> tier : talents) if(tier.containsKey(talent)) return true;
 		return OmniAbility.findTalent(talent) != null;
 	}
@@ -609,7 +609,7 @@ public class Hero extends Char {
 	}
 
 	public int pointsInTalent( Talent talent ){
-		/*if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CLERIC)){
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CLERIC)){
 			for (Talent tal: HolyTome.allSpellTalents){
 				if (tal == talent)
 					return talent.maxPoints();
@@ -618,7 +618,7 @@ public class Hero extends Char {
 				return talent.maxPoints();
 		}
 		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_TALENTS))
-			return talent.maxPoints();*/
+			return talent.maxPoints();
 		for (LinkedHashMap<Talent, Integer> tier : talents){
 			for (Talent f : tier.keySet()){
 				if (f == talent) return tier.get(f);
@@ -771,7 +771,8 @@ public class Hero extends Char {
 
 	@Override
 	public boolean blockSound(float pitch) {
-		if ( belongings.weapon() != null && belongings.weapon().defenseFactor(this) >= 4 ){
+		if ( (belongings.weapon() != null && belongings.weapon().defenseFactor(this) >= 4) ||
+				buff(WarriorParry.BlockTrock.class) != null ){
 			Sample.INSTANCE.play( Assets.Sounds.HIT_PARRY, 1, pitch);
 			return true;
 		}
@@ -784,6 +785,15 @@ public class Hero extends Char {
 		}
 		Buff.affect( this, Regeneration.class );
 		Buff.affect( this, Hunger.class );
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ECH)){
+			Buff.affect(this, Ech.EchDied.class).depth = -1;
+		}
+	}
+
+	public void updateStats(){
+		attackSkill = lvl + 9;
+		defenseSkill = lvl + 4;
+		updateHT(true);
 	}
 	
 	public int tier() {
@@ -3068,7 +3078,10 @@ public class Hero extends Char {
 
 		//xp granted by ascension challenge is only for on-exp gain effects
 		if (source != AscensionChallenge.class) {
-			this.exp += exp;
+			if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.LEVELLING_DOWN))
+				this.exp -= exp;
+			else
+				this.exp += exp;
 		}
 		float percent = exp/(float)maxExp();
 
@@ -3112,7 +3125,42 @@ public class Hero extends Char {
 		}
 		
 		boolean levelUp = false;
-		while (this.exp >= maxExp()) {
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.LEVELLING_DOWN)){
+			while (this.exp < 0) {
+				if (lvl > 1) {
+					lvl--;
+					this.exp += maxExp();
+					levelUp = true;
+
+					if (buff(ElixirOfMight.HTBoost.class) != null){
+						buff(ElixirOfMight.HTBoost.class).onLevelUp();
+					}
+
+					updateHT( true );
+					attackSkill--;
+					defenseSkill--;
+
+				} else {
+					lvl--;
+					die(new PotionOfExperience());
+					break;
+				}
+
+				if (levelUp) {
+
+					if (sprite != null) {
+						GLog.newLine();
+						GLog.n( Messages.get(this, "low_level") );
+						sprite.showStatus( CharSprite.NEGATIVE, Messages.get(Hero.class, "level_down") );
+						Sample.INSTANCE.play( Assets.Sounds.LEVELDOWN );
+					}
+
+					Item.updateQuickslot();
+
+					Badges.validateLevelReached();
+				}
+			}
+		} else while (this.exp >= maxExp()) {
 			this.exp -= maxExp();
 
 			if (buff(Talent.WandPreservationCounter.class) != null

@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
@@ -38,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ExoticCrystals;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
@@ -84,6 +87,10 @@ public class SecretLibraryRoom extends SecretRoom {
 			Painter.drawInside(level, this, entrance, (height() - 3) / 2, Terrain.EMPTY_SP);
 		}
 		entrance.set( Door.Type.HIDDEN );
+
+		Heap.Type type = Heap.Type.HEAP;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CHESTS))
+			type = Heap.Type.CHEST;
 		
 		int n = Random.IntRange( 2, 3 );
 		HashMap<Class<? extends Scroll>, Float> chances = new HashMap<>(scrollChances);
@@ -102,7 +109,7 @@ public class SecretLibraryRoom extends SecretRoom {
 				}
 			}
 
-			level.drop( Reflection.newInstance(scrollCls), pos );
+			level.drop( Reflection.newInstance(scrollCls), pos ).type = type;
 		}
 	}
 	

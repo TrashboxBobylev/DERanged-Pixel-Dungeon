@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
@@ -30,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -54,6 +56,10 @@ public class ArmoryRoom extends SpecialRoom {
 		if (statue != null) {
 			Painter.set( level, statue, Terrain.STATUE );
 		}
+
+		Heap.Type type = Heap.Type.HEAP;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CHESTS))
+			type = Heap.Type.CHEST;
 		
 		int n = Random.IntRange( 2, 3 );
 		prizeCats = new float[]{1,1,1,1};
@@ -62,7 +68,7 @@ public class ArmoryRoom extends SpecialRoom {
 			do {
 				pos = level.pointToCell(random());
 			} while (level.map[pos] != Terrain.EMPTY || level.heaps.get( pos ) != null);
-			level.drop( prize( level ), pos );
+			level.drop( prize( level ), pos ).type = type;
 		}
 
 		Item cata = level.findPrizeItem(TrinketCatalyst.class);
@@ -71,7 +77,7 @@ public class ArmoryRoom extends SpecialRoom {
 			do {
 				pos = level.pointToCell(random());
 			} while (level.map[pos] != Terrain.EMPTY || level.heaps.get( pos ) != null);
-			level.drop( cata, pos );
+			level.drop( cata, pos ).type = type;
 		}
 		
 		entrance.set( Door.Type.LOCKED );

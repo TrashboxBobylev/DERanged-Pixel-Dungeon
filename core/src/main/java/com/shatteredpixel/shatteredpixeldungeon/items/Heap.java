@@ -48,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Tipp
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
@@ -112,6 +113,9 @@ public class Heap implements Bundlable {
 		}
 
 		type = Type.HEAP;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CAPITALISM)){
+			type = Heap.Type.FOR_SALE;
+		}
 		ArrayList<Item> bonus = RingOfWealth.tryForBonusDrop(hero, 1);
 		if (bonus != null && !bonus.isEmpty()) {
 			items.addAll(0, bonus);
@@ -186,6 +190,10 @@ public class Heap implements Bundlable {
 			d.quantity(TippedDart.lostDarts);
 			TippedDart.lostDarts = 0;
 			drop(d);
+		}
+
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CAPITALISM)){
+			type = Heap.Type.FOR_SALE;
 		}
 	}
 	

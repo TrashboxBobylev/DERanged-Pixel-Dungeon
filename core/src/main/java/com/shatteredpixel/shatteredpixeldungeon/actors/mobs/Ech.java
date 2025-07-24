@@ -1,0 +1,203 @@
+package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
+
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.DirectableAlly;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.bow.SpiritBow;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.EchSprite;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.level;
+
+public class Ech extends DirectableAlly {
+
+    {
+        spriteClass = EchSprite.class;
+
+        alignment = Alignment.ALLY;
+
+        update();
+        HP = HT;
+        viewDistance = Light.DISTANCE;
+
+        maxLvl = -1;
+
+        baseSpeed = 1f;
+    }
+
+    public void update(){
+        HT = (int) (8 * getModifier()*(Dungeon.hero.heroClass.isExact(HeroClass.CLERIC) ? 1.33f : 1));
+        defenseSkill = (int) ((int) (5 * getModifier())*
+                (Dungeon.hero.heroClass.isExact(HeroClass.ROGUE) ? 1.5f : 1));
+    }
+
+    private static double getModifier() {return Math.max(1, Dungeon.scalingDepth()/4d); }
+
+    @Override
+    public float spawningWeight() {
+        return 0;
+    }
+    protected int[]
+            damageRange = {1,5},
+            armorRange  = {1,3};
+
+    @Override
+    public int damageRoll() {
+        int damage = Random.NormalIntRange((int) (damageRange[0] * getModifier()), (int) (damageRange[1] * getModifier()));
+        if (Dungeon.hero.heroClass.isExact(HeroClass.DUELIST) && Dungeon.hero.belongings.weapon() != null){
+            damage += Dungeon.hero.belongings.weapon().damageRoll(Dungeon.hero)/4;
+        }
+        if (!level.adjacent(pos, enemy.pos)) damage /= 4;
+        return damage;
+    }
+
+    @Override
+    public int attackSkill( Char target ) {
+        return Random.round((float) (8*getModifier())*
+                (Dungeon.hero.heroClass.isExact(HeroClass.ROGUE) ? 1.5f : 1));
+    }
+
+    @Override
+    public int drRoll() {
+        return super.drRoll() + Random.round(Random.NormalIntRange(armorRange[0], armorRange[1])*
+                (Dungeon.hero.heroClass.isExact(HeroClass.WARRIOR) ? 2 : 1));
+    }
+
+    @Override
+    public boolean isImmune(Class effect) {
+        return Dungeon.hero.isImmune(effect);
+    }
+
+    @Override
+    public float resist(Class effect) {
+        return Dungeon.hero.resist(effect);
+    }
+
+    public void hitSound( float pitch ){
+        Sample.INSTANCE.play(Assets.Sounds.HIT, 1, pitch*0.5f);
+    }
+
+    @Override
+    public int attackProc(Char enemy, int damage) {
+        damage = Talent.onAttackProc(Dungeon.hero, enemy, damage);
+        SpiritBow bow = Dungeon.hero.belongings.getItem(SpiritBow.class);
+        if (bow != null && bow.enchantment != null && Dungeon.hero.buff(MagicImmune.class) == null) {
+            damage = bow.enchantment.proc(bow, this, enemy, damage);
+        }
+        return super.attackProc(enemy, damage);
+    }
+
+    @Override
+    public int defenseProc(Char enemy, int damage) {
+        if (Random.Int(4) == 0){
+            HolyTome.TomeRecharge recharge = Dungeon.hero.buff(HolyTome.TomeRecharge.class);
+            if (recharge != null){
+                recharge.charge(Dungeon.hero, 1f);
+            }
+        }
+        return super.defenseProc(enemy, damage);
+    }
+
+    @Override
+    public float attackDelay() {
+        return super.attackDelay()/(Dungeon.hero.heroClass.isExact(HeroClass.DUELIST) ? 2f : 1);
+    }
+
+    @Override
+    public boolean canAttack(Char enemy) {
+        if (Dungeon.hero.heroClass.isExact(HeroClass.MAGE)){
+            return super.canAttack(enemy) || new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE).collisionPos == enemy.pos;
+        }
+        else return super.canAttack(enemy);
+    }
+
+    @Override
+    public float speed() {
+        float speed = super.speed();
+
+        //moves 2 tiles at a time when returning to the hero
+        if (state == WANDERING && defendingPos == -1){
+            speed *= 2;
+        }
+
+        return speed;
+    }
+
+    @Override
+    public void die(Object cause) {
+        super.die(cause);
+        Buff.affect(Dungeon.hero, EchDied.class).depth = Dungeon.depth;
+        Talent.onFoodEaten(Dungeon.hero, 0, null);
+    }
+
+    public static class EchDied extends Buff {
+
+        public int depth;
+
+        {
+            actPriority = HERO_PRIO + 1;
+        }
+
+        @Override
+        public boolean act() {
+            if (Dungeon.depth != depth){
+                ArrayList<Integer> candidatePositions = new ArrayList<>();
+                for (int i : PathFinder.NEIGHBOURS8) {
+                    if (!level.solid[i+target.pos] && level.findMob(i+target.pos) == null){
+                        candidatePositions.add(i+target.pos);
+                    }
+                }
+                Collections.shuffle(candidatePositions);
+                Ech ech = new Ech();
+                ech.state = ech.WANDERING;
+
+                if (!candidatePositions.isEmpty()){
+                    ech.pos = candidatePositions.remove(0);
+                } else {
+                    ech.pos = target.pos;
+                }
+
+                if (ech.fieldOfView == null || ech.fieldOfView.length != level.length()){
+                    ech.fieldOfView = new boolean[level.length()];
+                }
+                GameScene.add(ech);
+                level.updateFieldOfView( ech, ech.fieldOfView );
+                detach();
+                return true;
+            }
+
+            spend( TICK );
+
+            return true;
+        }
+
+        private static final String DEPTH = "depth";
+
+        @Override
+        public void storeInBundle(Bundle bundle) {
+            super.storeInBundle(bundle);
+            bundle.put(DEPTH, depth);
+        }
+
+        @Override
+        public void restoreFromBundle(Bundle bundle) {
+            super.restoreFromBundle(bundle);
+            depth = bundle.getInt(DEPTH);
+        }
+    }
+}

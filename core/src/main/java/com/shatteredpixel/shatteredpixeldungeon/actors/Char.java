@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StormCloud;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
@@ -86,6 +87,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ThunderImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.TimedShrink;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WarriorParry;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
@@ -108,6 +110,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CrystalSpire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollGeomancer;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Necromancer;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogDzewa;
@@ -118,6 +121,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
+import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
@@ -143,6 +147,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetributio
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfSirensSong;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.ElectricityImbue;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.FerretTuft;
@@ -177,6 +182,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MobSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BArray;
@@ -256,7 +262,11 @@ public abstract class Char extends Actor {
 	}
 
 	public String name(){
-		return Messages.get(this, "name");
+		String name = Messages.get(this, "name");
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RLETTER)) {
+			name = ShatteredPixelDungeon.turnIntoRrrr(name);
+		}
+		return name;
 	}
 
 	public boolean canInteract(Char c){
@@ -467,7 +477,7 @@ public abstract class Char extends Actor {
 			
 			if (this instanceof Hero){
 				Hero h = (Hero)this;
-				if (h.belongings.attackingWeapon() instanceof MissileWeapon
+				if (h.belongings.attackingWeapon() instanceof MissileWeapon && !Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.HUNTRESS)
 						&& h.subClass.is(HeroSubClass.SNIPER)
 						&& !Dungeon.level.adjacent(h.pos, enemy.pos)){
 					dr = 0;
@@ -624,7 +634,7 @@ public abstract class Char extends Actor {
 				effectiveDamage = attackProc(enemy, effectiveDamage);
 			}
 			if (visibleFight) {
-				if (effectiveDamage > 0 || !enemy.blockSound(Random.Float(0.96f, 1.05f))) {
+				if (effectiveDamage > 0 && enemy.buff(WarriorParry.BlockTrock.class) == null || !enemy.blockSound(Random.Float(0.96f, 1.05f))) {
 					hitSound(Random.Float(0.87f, 1.15f));
 				}
 			}
@@ -635,7 +645,15 @@ public abstract class Char extends Actor {
 				return true;
 			}
 
-			enemy.damage( effectiveDamage, this );
+			if (enemy.buff(WarriorParry.BlockTrock.class) != null && effectiveDamage >= 0){
+				enemy.sprite.emitter().burst( Speck.factory( Speck.FORGE ), 15 );
+				SpellSprite.show(enemy, SpellSprite.BLOCK, 2f, 2f, 2f);
+				Buff.affect(enemy, Barrier.class).setShield(Math.round(effectiveDamage*1.25f));
+				hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(Math.round(effectiveDamage*1.25f)), FloatingText.SHIELDING );
+				enemy.buff(WarriorParry.BlockTrock.class).triggered = true;
+			} else {
+				enemy.damage(effectiveDamage, this);
+			}
 
 			if (buff(FireImbue.class) != null)  buff(FireImbue.class).proc(enemy);
 			if (buff(FrostImbue.class) != null) buff(FrostImbue.class).proc(enemy);
@@ -1104,6 +1122,13 @@ public abstract class Char extends Actor {
 			}
 			if (dmg < 0) dmg = 0;
 		}
+
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CAPITALISM)){
+			Gold gold = new Gold();
+			gold.quantity(Math.max(1, Random.Int(25, 500)*dmg/100));
+			gold.doPickUp(hero, pos);
+			hero.spendAndNext( -1F );
+		}
 		
 		if (buff( Paralysis.class ) != null) {
 			buff( Paralysis.class ).processDamage(dmg);
@@ -1208,7 +1233,18 @@ public abstract class Char extends Actor {
 		if (HP < 0) HP = 0;
 
 		if (!isAlive()) {
-			die( src );
+			if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALLIES) && Random.Int(3) == 0 && src instanceof Hero){
+				if (!isImmune(ScrollOfSirensSong.Enthralled.class)){
+					HP = HT;
+					AllyBuff.affectAndLoot((Mob) this, hero, ScrollOfSirensSong.Enthralled.class);
+				} else {
+					Buff.affect( this, Charm.class, Charm.DURATION ).object = hero.id();
+					die(src);
+				}
+				sprite.centerEmitter().burst( Speck.factory( Speck.HEART ), 10 );
+			} else {
+				die( src );
+			}
 		} else if (HP == 0 && buff(DeathMark.DeathMarkTracker.class) != null){
 			DeathMark.processFearTheReaper(this);
 		}

@@ -21,12 +21,15 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.utils.Point;
 
 public class SecretRunestoneRoom extends SecretRoom {
@@ -62,23 +65,27 @@ public class SecretRunestoneRoom extends SecretRoom {
 		}
 		
 		level.addItemToSpawn(new PotionOfLiquidFlame());
+
+		Heap.Type type = Heap.Type.HEAP;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CHESTS))
+			type = Heap.Type.CHEST;
 		
 		int dropPos;
 		
 		do{
 			dropPos = level.pointToCell(random());
 		} while (level.map[dropPos] != Terrain.EMPTY);
-		level.drop( Generator.randomUsingDefaults(Generator.Category.STONE), dropPos);
+		level.drop( Generator.randomUsingDefaults(Generator.Category.STONE), dropPos).type = type;
 		
 		do{
 			dropPos = level.pointToCell(random());
 		} while (level.map[dropPos] != Terrain.EMPTY || level.heaps.get(dropPos) != null);
-		level.drop( Generator.randomUsingDefaults(Generator.Category.STONE), dropPos);
+		level.drop( Generator.randomUsingDefaults(Generator.Category.STONE), dropPos).type = type;
 		
 		do{
 			dropPos = level.pointToCell(random());
 		} while (level.map[dropPos] != Terrain.EMPTY_SP);
-		level.drop( new StoneOfEnchantment(), dropPos);
+		level.drop( new StoneOfEnchantment(), dropPos).type	= type;
 		
 		entrance.set(Door.Type.HIDDEN);
 	}

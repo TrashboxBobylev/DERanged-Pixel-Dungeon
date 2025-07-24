@@ -21,8 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.utils.Point;
 import com.watabou.utils.Rect;
 
@@ -40,6 +43,12 @@ public abstract class Painter {
 	// Static methods
 
 	public static void set( Level level, int cell, int value ) {
+		if (value == Terrain.WALL && Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.NO_WALLS)){
+			value = Terrain.EMBERS;
+		}
+		if ((value == Terrain.BOOKSHELF || value == Terrain.DOOR) && Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.NO_WALLS)){
+			value = Terrain.CHASM;
+		}
 		level.map[cell] = value;
 	}
 	
@@ -52,6 +61,12 @@ public abstract class Painter {
 	}
 	
 	public static void fill( Level level, int x, int y, int w, int h, int value ) {
+		if (value == Terrain.WALL && Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.NO_WALLS)){
+			value = Terrain.EMBERS;
+		}
+		if ((value == Terrain.BOOKSHELF || value == Terrain.DOOR) && Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.NO_WALLS)){
+			value = Terrain.CHASM;
+		}
 		
 		int width = level.width();
 		
@@ -106,6 +121,12 @@ public abstract class Painter {
 	}
 	
 	public static void fillEllipse(Level level, int x, int y, int w, int h, int value){
+		if (value == Terrain.WALL && Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.NO_WALLS)){
+			value = Terrain.EMBERS;
+		}
+		if ((value == Terrain.BOOKSHELF || value == Terrain.DOOR) && Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.NO_WALLS)){
+			value = Terrain.CHASM;
+		}
 
 		//radii
 		double radH = h/2f;

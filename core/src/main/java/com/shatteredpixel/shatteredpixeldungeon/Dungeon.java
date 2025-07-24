@@ -90,6 +90,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BArray;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -260,6 +261,7 @@ public class Dungeon {
 			customSeedText = "";
 			seed = DungeonSeed.randomSeed();
 		}
+		Sample.INSTANCE.rMode = Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RLETTER);
 	}
 	
 	public static void init() {
@@ -315,6 +317,11 @@ public class Dungeon {
 
 		hero = new Hero();
 		hero.live();
+
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE)){
+			GamesInProgress.selectedClass = HeroClass.RAT_KING;
+		}
+
 		if (GamesInProgress.selectedClass == HeroClass.RAT_KING){
 			hero.HP = hero.HT = (int) (hero.HT * 0.4f);
 		}
@@ -330,6 +337,20 @@ public class Dungeon {
 
 	public static boolean levelHasBeenGenerated(int depth, int branch){
 		return generatedLevels.contains(depth + 1000*branch);
+	}
+
+	public static Level processReversedLevel(Level lvl){
+		if (lvl instanceof SewerLevel){
+			return new HallsLevel();
+		} else if (lvl instanceof PrisonLevel){
+			return new CityLevel();
+		} else if (lvl instanceof CityLevel){
+			return new PrisonLevel();
+		} else if (lvl instanceof HallsLevel){
+			return new SewerLevel();
+		} else {
+			return lvl;
+		}
 	}
 	
 	public static Level newLevel() {
@@ -432,6 +453,9 @@ public class Dungeon {
 		} else {
 			level = new DeadEndLevel();
 		}
+
+		if (specialSeeds.contains(DungeonSeed.SpecialSeed.REVERSE))
+			level = processReversedLevel(level);
 
 		//dead end levels get cleared, don't count as generated
 		if (!(level instanceof DeadEndLevel)){
@@ -828,6 +852,7 @@ public class Dungeon {
 
 			}
 		}
+		Sample.INSTANCE.rMode = Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RLETTER);
 
 		Actor.clear();
 		Actor.restoreNextID( bundle );

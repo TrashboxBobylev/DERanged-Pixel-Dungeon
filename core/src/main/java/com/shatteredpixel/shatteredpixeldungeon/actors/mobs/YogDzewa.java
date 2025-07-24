@@ -28,13 +28,19 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WarriorParry;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
@@ -220,19 +226,29 @@ public class YogDzewa extends Mob {
 					}
 
 					if (hit( this, ch, true )) {
+						int dmg;
 						if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES)) {
-							ch.damage(Random.NormalIntRange(30, 50), new Eye.DeathGaze());
+							dmg = Random.NormalIntRange(30, 50);
 						} else {
-							ch.damage(Random.NormalIntRange(20, 30), new Eye.DeathGaze());
+							dmg = Random.NormalIntRange(20, 30);
 						}
-						if (Dungeon.level.heroFOV[pos]) {
-							ch.sprite.flash();
-							CellEmitter.center(pos).burst(PurpleParticle.BURST, Random.IntRange(1, 2));
-						}
-						if (!ch.isAlive() && ch == Dungeon.hero) {
-							Badges.validateDeathFromEnemyMagic();
-							Dungeon.fail(this);
-							GLog.n(Messages.get(Char.class, "kill", name()));
+						if (ch.buff(WarriorParry.BlockTrock.class) != null){
+							ch.sprite.emitter().burst( Speck.factory( Speck.FORGE ), 15 );
+							SpellSprite.show(ch, SpellSprite.BLOCK, 2f, 2f, 2f);
+							Buff.affect(ch, Barrier.class).incShield(Math.round(dmg*1.25f));
+							ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(Math.round(dmg*1.25f)), FloatingText.SHIELDING );
+							ch.buff(WarriorParry.BlockTrock.class).triggered = true;
+						} else {
+							ch.damage(dmg, new Eye.DeathGaze());
+							if (Dungeon.level.heroFOV[pos]) {
+								ch.sprite.flash();
+								CellEmitter.center(pos).burst(PurpleParticle.BURST, Random.IntRange(1, 2));
+							}
+							if (!ch.isAlive() && ch == Dungeon.hero) {
+								Badges.validateDeathFromEnemyMagic();
+								Dungeon.fail(this);
+								GLog.n(Messages.get(Char.class, "kill", name()));
+							}
 						}
 					} else {
 						ch.sprite.showStatus( CharSprite.NEUTRAL,  ch.defenseVerb() );

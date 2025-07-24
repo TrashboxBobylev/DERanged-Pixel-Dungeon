@@ -26,11 +26,16 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WarriorParry;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
+import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -40,6 +45,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ShamanSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 
 public abstract class Shaman extends Mob {
 	
@@ -117,19 +124,27 @@ public abstract class Shaman extends Mob {
 		Char enemy = this.enemy;
 		if (hit( this, enemy, true )) {
 			
-			if (Random.Int( 2 ) == 0) {
+			if (Random.Int( 2 ) == 0 && enemy.buff(WarriorParry.BlockTrock.class) == null) {
 				debuff( enemy );
-				if (enemy == Dungeon.hero) Sample.INSTANCE.play( Assets.Sounds.DEBUFF );
+				if (enemy == hero) Sample.INSTANCE.play( Assets.Sounds.DEBUFF );
 			}
 			
 			int dmg = Random.NormalIntRange( 6, 15 );
 			dmg = Math.round(dmg * AscensionChallenge.statModifier(this));
-			enemy.damage( dmg, new EarthenBolt() );
-			
-			if (!enemy.isAlive() && enemy == Dungeon.hero) {
-				Badges.validateDeathFromEnemyMagic();
-				Dungeon.fail( this );
-				GLog.n( Messages.get(this, "bolt_kill") );
+			if (enemy.buff(WarriorParry.BlockTrock.class) != null){
+				enemy.sprite.emitter().burst( Speck.factory( Speck.FORGE ), 15 );
+				SpellSprite.show(enemy, SpellSprite.BLOCK, 2f, 2f, 2f);
+				Buff.affect(enemy, Barrier.class).incShield(Math.round(dmg*1.25f));
+				hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(Math.round(dmg*1.25f)), FloatingText.SHIELDING );
+				enemy.buff(WarriorParry.BlockTrock.class).triggered = true;
+			} else {
+				enemy.damage(dmg, new EarthenBolt());
+
+				if (!enemy.isAlive() && enemy == hero) {
+					Badges.validateDeathFromEnemyMagic();
+					Dungeon.fail(this);
+					GLog.n(Messages.get(this, "bolt_kill"));
+				}
 			}
 		} else {
 			enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );

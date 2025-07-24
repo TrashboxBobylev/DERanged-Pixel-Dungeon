@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Tilemap;
@@ -54,6 +55,9 @@ import com.watabou.utils.Rect;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Assets.Environment.TILES_PRISON;
+import static com.shatteredpixel.shatteredpixeldungeon.Assets.Environment.WATER_PRISON;
 
 public class CityBossLevel extends Level {
 
@@ -104,11 +108,15 @@ public class CityBossLevel extends Level {
 
 	@Override
 	public String tilesTex() {
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.REVERSE))
+			return TILES_PRISON;
 		return Assets.Environment.TILES_CITY;
 	}
 
 	@Override
 	public String waterTex() {
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.REVERSE))
+			return WATER_PRISON;
 		return Assets.Environment.WATER_CITY;
 	}
 

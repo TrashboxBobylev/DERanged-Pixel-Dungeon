@@ -64,6 +64,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
@@ -112,7 +113,7 @@ public class AscensionChallenge extends Buff {
 	}
 
 	public static float statModifier(Char ch){
-		if (Dungeon.hero == null || Dungeon.hero.buff(AscensionChallenge.class) == null){
+		if (Dungeon.hero == null || (Dungeon.hero.buff(AscensionChallenge.class) == null && !Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.EASY_MODE))){
 			return 1;
 		}
 
@@ -124,13 +125,21 @@ public class AscensionChallenge extends Buff {
 			return 1f;
 		}
 
-		for (Class<?extends Mob> cls : modifiers.keySet()){
-			if (cls.isAssignableFrom(ch.getClass())){
-				return modifiers.get(cls);
+		float mod = 1f;
+
+		if (!(Dungeon.hero == null || (Dungeon.hero.buff(AscensionChallenge.class) == null))) {
+			for (Class<? extends Mob> cls : modifiers.keySet()) {
+				if (cls.isAssignableFrom(ch.getClass())) {
+					mod = modifiers.get(cls);
+					break;
+				}
 			}
 		}
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.EASY_MODE)){
+			mod *= 0.67f;
+		}
 
-		return 1;
+		return mod;
 	}
 
 	//distant mobs get constantly beckoned to the hero at 2+ stacks

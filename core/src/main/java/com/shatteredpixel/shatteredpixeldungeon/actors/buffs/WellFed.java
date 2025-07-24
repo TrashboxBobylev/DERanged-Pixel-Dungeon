@@ -43,13 +43,14 @@ public class WellFed extends Buff {
 	@Override
 	public boolean act() {
 		left --;
+		final int regenSpeed = target instanceof Hero ? 18 : 3;
 		if (left < 0){
 			detach();
 			if (target instanceof Hero) {
 				((Hero) target).resting = false;
 			}
 			return true;
-		} else if (left % 18 == 0 && target.HP < target.HT){
+		} else if (left % regenSpeed == 0 && target.HP < target.HT){
 			target.HP += 1;
 			target.sprite.showStatusWithIcon(CharSprite.POSITIVE, "1", FloatingText.HEALING);
 
@@ -70,6 +71,9 @@ public class WellFed extends Buff {
 		if (Dungeon.isChallenged(Challenges.NO_FOOD)){
 			//150 turns if on diet is enabled
 			left /= 3;
+		}
+		if (!(target instanceof Hero)){
+			left = 999999;
 		}
 	}
 

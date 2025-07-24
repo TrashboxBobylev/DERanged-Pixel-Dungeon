@@ -50,7 +50,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
-import com.watabou.utils.BArray;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -58,6 +58,7 @@ import com.watabou.noosa.Tilemap;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
+import com.watabou.utils.BArray;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
@@ -67,6 +68,9 @@ import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
 
 import java.util.ArrayList;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Assets.Environment.TILES_CITY;
+import static com.shatteredpixel.shatteredpixeldungeon.Assets.Environment.WATER_CITY;
 
 public class PrisonBossLevel extends Level {
 	
@@ -103,14 +107,18 @@ public class PrisonBossLevel extends Level {
 	public State state(){
 		return state;
 	}
-	
+
 	@Override
 	public String tilesTex() {
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.REVERSE))
+			return TILES_CITY;
 		return Assets.Environment.TILES_PRISON;
 	}
-	
+
 	@Override
 	public String waterTex() {
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.REVERSE))
+			return WATER_CITY;
 		return Assets.Environment.WATER_PRISON;
 	}
 	

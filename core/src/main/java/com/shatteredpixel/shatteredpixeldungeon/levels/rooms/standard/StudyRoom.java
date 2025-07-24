@@ -21,11 +21,14 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -79,13 +82,17 @@ public class StudyRoom extends StandardRoom {
 		Painter.set( level, center, Terrain.PEDESTAL );
 		
 		Item prize = (Random.Int(2) == 0) ? level.findPrizeItem() : null;
+
+		Heap.Type type = Heap.Type.HEAP;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CHESTS))
+			type = Heap.Type.CHEST;
 		
 		if (prize != null) {
-			level.drop(prize, (center.x + center.y * level.width()));
+			level.drop(prize, (center.x + center.y * level.width())).type = type;
 		} else {
 			level.drop(Generator.random( Random.oneOf(
 					Generator.Category.POTION,
-					Generator.Category.SCROLL)), (center.x + center.y * level.width()));
+					Generator.Category.SCROLL)), (center.x + center.y * level.width())).type = type;
 		}
 	}
 }

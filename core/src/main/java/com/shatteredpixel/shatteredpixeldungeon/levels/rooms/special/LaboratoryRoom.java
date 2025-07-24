@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Alchemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.items.EnergyCrystal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.AlchemyPage;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
@@ -35,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -73,6 +75,10 @@ public class LaboratoryRoom extends SpecialRoom {
 						level.heaps.get( pos ) != null);
 		level.drop( new EnergyCrystal().quantity(5), pos );
 
+		Heap.Type type = Heap.Type.HEAP;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CHESTS))
+			type = Heap.Type.CHEST;
+
 		int n = Random.NormalIntRange( 1, 2 );
 		for (int i=0; i < n; i++) {
 			do {
@@ -80,7 +86,7 @@ public class LaboratoryRoom extends SpecialRoom {
 			} while (
 				level.map[pos] != Terrain.EMPTY_SP ||
 				level.heaps.get( pos ) != null);
-			level.drop( prize( level ), pos );
+			level.drop( prize( level ), pos ).type = type;
 		}
 		
 		//guide pages
@@ -113,7 +119,7 @@ public class LaboratoryRoom extends SpecialRoom {
 				} while (
 						level.map[pos] != Terrain.EMPTY_SP ||
 								level.heaps.get(pos) != null);
-				level.drop(p, pos);
+				level.drop(p, pos).type = type;
 			}
 		}
 

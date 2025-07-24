@@ -21,12 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.bags;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
-import com.shatteredpixel.shatteredpixeldungeon.items.spellbook.SpellBook;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 
 public class MagicalHolster extends Bag {
 
@@ -39,7 +40,7 @@ public class MagicalHolster extends Bag {
 	
 	@Override
 	public boolean canHold( Item item ) {
-		if (item instanceof Wand || item instanceof MissileWeapon || item instanceof Bomb){
+		if (item instanceof Wand || (item instanceof MissileWeapon && !Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.HUNTRESS)) || item instanceof Bomb){
 			return super.canHold(item);
 		} else {
 			return false;

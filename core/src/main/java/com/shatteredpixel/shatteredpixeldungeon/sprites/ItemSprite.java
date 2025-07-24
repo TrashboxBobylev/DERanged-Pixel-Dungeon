@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 import com.badlogic.gdx.graphics.Color;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
@@ -33,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Matrix;
@@ -42,6 +44,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.NoosaScript;
+import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.PointF;
@@ -240,6 +243,15 @@ public class ItemSprite extends MovieClip {
 	public ItemSprite view( int image, Glowing glowing ) {
 		if (this.emitter != null) this.emitter.killAndErase();
 		emitter = null;
+		try {
+			if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RANDOM_ITEMS)) {
+				Object o = Random.element(ItemSpriteSheet.class.getFields()).get(null);
+				if (!(o instanceof TextureFilm))
+					image = (int) o;
+			}
+		} catch (IllegalAccessException e) {
+			ShatteredPixelDungeon.reportException(e);
+		}
 		frame( image );
 		glow( glowing );
 		return this;

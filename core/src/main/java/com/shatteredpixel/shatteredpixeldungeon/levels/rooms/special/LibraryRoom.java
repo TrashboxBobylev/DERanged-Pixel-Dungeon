@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
@@ -32,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.utils.Random;
 
 public class LibraryRoom extends SpecialRoom {
@@ -45,6 +47,10 @@ public class LibraryRoom extends SpecialRoom {
 		
 		Painter.fill( level, left + 1, top+1, width() - 2, 1 , Terrain.BOOKSHELF );
 		Painter.drawInside(level, this, entrance, 1, Terrain.EMPTY_SP );
+
+		Heap.Type type = Heap.Type.HEAP;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CHESTS))
+			type = Heap.Type.CHEST;
 		
 		int n = Random.NormalIntRange( 1, 3 );
 		for (int i=0; i < n; i++) {
@@ -57,7 +63,7 @@ public class LibraryRoom extends SpecialRoom {
 				item = Random.Int(2) == 0 ? new ScrollOfIdentify() : new ScrollOfRemoveCurse();
 			else
 				item = prize( level );
-			level.drop( item, pos );
+			level.drop( item, pos ).type = type;
 		}
 		
 		entrance.set( Door.Type.LOCKED );

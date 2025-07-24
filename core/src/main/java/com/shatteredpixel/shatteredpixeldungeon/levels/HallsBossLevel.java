@@ -47,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -58,6 +59,9 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Assets.Environment.TILES_SEWERS;
+import static com.shatteredpixel.shatteredpixeldungeon.Assets.Environment.WATER_SEWERS;
 
 public class HallsBossLevel extends Level {
 
@@ -94,11 +98,15 @@ public class HallsBossLevel extends Level {
 
 	@Override
 	public String tilesTex() {
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.REVERSE))
+			return TILES_SEWERS;
 		return Assets.Environment.TILES_HALLS;
 	}
 
 	@Override
 	public String waterTex() {
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.REVERSE))
+			return WATER_SEWERS;
 		return Assets.Environment.WATER_HALLS;
 	}
 

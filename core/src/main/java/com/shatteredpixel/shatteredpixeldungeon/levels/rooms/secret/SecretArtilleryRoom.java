@@ -21,11 +21,14 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 
 public class SecretArtilleryRoom extends SecretRoom {
 	
@@ -35,6 +38,10 @@ public class SecretArtilleryRoom extends SecretRoom {
 		Painter.fill(level, this, 1, Terrain.EMPTY_SP);
 		
 		Painter.set(level, center(), Terrain.STATUE_SP);
+
+		Heap.Type type = Heap.Type.HEAP;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CHESTS))
+			type = Heap.Type.CHEST;
 		
 		for (int i = 0; i < 3; i++){
 			int itemPos;
@@ -44,9 +51,9 @@ public class SecretArtilleryRoom extends SecretRoom {
 					|| level.heaps.get(itemPos) != null);
 			
 			if( i == 0 ){
-				level.drop(new Bomb.DoubleBomb(), itemPos);
+				level.drop(new Bomb.DoubleBomb(), itemPos).type = type;
 			} else {
-				level.drop(Generator.randomMissile(true), itemPos);
+				level.drop(Generator.randomMissile(true), itemPos).type = type;
 			}
 		}
 		

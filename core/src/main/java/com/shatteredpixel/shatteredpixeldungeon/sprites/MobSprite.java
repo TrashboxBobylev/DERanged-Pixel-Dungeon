@@ -21,8 +21,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.noosa.tweeners.ScaleTweener;
@@ -33,11 +35,38 @@ public class MobSprite extends CharSprite {
 
 	private static final float FADE_TIME	= 3f;
 	private static final float FALL_TIME	= 1f;
-	
+
+	private float phase;
+	private boolean glowUp;
+
 	@Override
 	public void update() {
 		sleeping = ch != null && ch.isAlive() && ((Mob)ch).state == ((Mob)ch).SLEEPING;
 		super.update();
+		if (visible && ch != null && Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ENCHANTED_WORLD)){
+			if (((Mob)ch).uselessGlowy == null){
+				((Mob) ch).uselessGlowy = new ItemSprite.Glowing(Random.IntRange(0x000000, 0xFFFFFF));
+			}
+			ItemSprite.Glowing glowing = ((Mob) ch).uselessGlowy;
+			if (glowUp && (phase += Game.elapsed) > glowing.period) {
+
+				glowUp = false;
+				phase = glowing.period;
+
+			} else if (!glowUp && (phase -= Game.elapsed) < 0) {
+
+				glowUp = true;
+				phase = 0;
+
+			}
+
+			float value = phase / glowing.period * 0.575f;
+
+			rm = gm = bm = 1 - value;
+			ra = glowing.red * value;
+			ga = glowing.green * value;
+			ba = glowing.blue * value;
+		}
 	}
 	
 	@Override

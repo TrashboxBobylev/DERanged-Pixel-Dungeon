@@ -92,6 +92,8 @@ public class MeleeWeapon extends Weapon {
 	public static String AC_ABILITY = "ABILITY";
 	public static String AC_SCRAP = "SCRAP";
 
+	public boolean duelistStart = false;
+
 	@Override
 	public void activate(Char ch) {
 		super.activate(ch);
@@ -547,11 +549,13 @@ public class MeleeWeapon extends Weapon {
 
 
 	private static final String TIER = "tier";
+	private static final String DUELIST_START   = "dueliststart";
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
 		bundle.put(TIER, tier);
+		bundle.put(DUELIST_START, duelistStart);
 	}
 
 	@Override
@@ -559,6 +563,11 @@ public class MeleeWeapon extends Weapon {
 		super.restoreFromBundle(bundle);
 		if (bundle.getInt(TIER) != 0) {
 			tier = bundle.getInt(TIER);
+		}
+		if (bundle.contains(DUELIST_START)){
+			duelistStart = bundle.getBoolean(DUELIST_START);
+			if (duelistStart)
+				tier = 1;
 		}
 	}
 

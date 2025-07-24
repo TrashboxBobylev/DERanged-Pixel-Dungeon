@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon;
 
+import com.badlogic.gdx.utils.StringBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
@@ -30,6 +31,7 @@ import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.PlatformSupport;
+import com.watabou.utils.Random;
 
 public class ShatteredPixelDungeon extends Game {
 
@@ -179,5 +181,26 @@ public class ShatteredPixelDungeon extends Game {
 
 	public static void updateSystemUI() {
 		platform.updateSystemUI();
+	}
+
+	public static String turnIntoRrrr(String name){
+		com.badlogic.gdx.utils.StringBuilder superBuilder = new com.badlogic.gdx.utils.StringBuilder();
+		for (String word: Game.platform.splitforTextBlock(name, true)){
+			com.badlogic.gdx.utils.StringBuilder builder = new StringBuilder();
+			char[] letters = word.toCharArray();
+			for (int i = 0; i < letters.length; i++){
+				if (i == 0 && Character.isLetter(letters[i]) && letters[i] != 'x' && Random.Int(3) == 0){
+					builder.append(Character.isUpperCase(letters[i]) ? "R" : "r");
+					if ("AEIOUaeiou".indexOf(letters[i]) != -1){
+						builder.append(letters[i]);
+					}
+				} else {
+					builder.append(letters[i]);
+				}
+			}
+			superBuilder.append(builder.toString());
+		}
+		name = superBuilder.toString();
+		return name;
 	}
 }

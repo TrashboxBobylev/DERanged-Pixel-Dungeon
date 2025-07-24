@@ -34,8 +34,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WarriorParry;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
@@ -171,8 +174,13 @@ public abstract class Elemental extends Mob {
 		Invisibility.dispel(this);
 		Char enemy = this.enemy;
 		if (hit( this, enemy, true )) {
-			
-			rangedProc( enemy );
+			if (enemy.buff(WarriorParry.BlockTrock.class) != null){
+				enemy.sprite.emitter().burst( Speck.factory( Speck.FORGE ), 15 );
+				SpellSprite.show(enemy, SpellSprite.BLOCK, 2f, 2f, 2f);
+				enemy.buff(WarriorParry.BlockTrock.class).triggered = true;
+			} else {
+				rangedProc(enemy);
+			}
 			
 		} else {
 			enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );

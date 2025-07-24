@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
@@ -43,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -97,16 +99,20 @@ public class MagicalFireRoom extends SpecialRoom {
 
 		int n = Random.IntRange( 3, 4 );
 
+		Heap.Type type = Heap.Type.HEAP;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CHESTS))
+			type = Heap.Type.CHEST;
+
 		for (int i=0; i < n; i++) {
 			int pos;
 			do {
 				pos = level.pointToCell(behindFire.random(0));
 			} while (level.heaps.get(pos) != null);
 			if (honeyPot){
-				level.drop( new Honeypot(), pos);
+				level.drop( new Honeypot(), pos).type = type;
 				honeyPot = false;
 			} else
-				level.drop( prize( level ), pos );
+				level.drop( prize( level ), pos ).type = type;
 		}
 
 		level.addItemToSpawn(new PotionOfFrost());

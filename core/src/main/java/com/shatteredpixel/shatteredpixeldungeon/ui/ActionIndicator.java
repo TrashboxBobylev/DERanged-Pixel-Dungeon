@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SharpShooterBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SwordAura;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Tackle;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WarriorParry;
 import com.shatteredpixel.shatteredpixeldungeon.items.Sheath;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
@@ -222,7 +223,8 @@ public class ActionIndicator extends Tag {
 			Command.class,
 			BowMasterSkill.class,
 			Juggling.class,
-			SharpShooterBuff.class
+			SharpShooterBuff.class,
+			WarriorParry.class
 	};
 	private static boolean findAction(boolean cycle) {
 		if(Dungeon.hero == null) return false;

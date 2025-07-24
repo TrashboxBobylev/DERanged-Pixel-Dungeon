@@ -52,6 +52,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.gunner.ReinforcedArmor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpiritHawk;
@@ -107,6 +108,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -536,6 +538,9 @@ public abstract class Level implements Bundlable {
 		}
 
 		Mob m = Reflection.newInstance(mobsToSpawn.remove(0));
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RATS)){
+			m = new Ratmogrify.SummonedRat();
+		}
 		ChampionEnemy.rollForChampion(m);
 		return m;
 	}
@@ -975,6 +980,12 @@ public abstract class Level implements Bundlable {
 	}
 	
 	public static void set( int cell, int terrain, Level level ) {
+		if (terrain == Terrain.WALL && Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.NO_WALLS)){
+			terrain = Terrain.EMBERS;
+		}
+		if ((terrain == Terrain.BOOKSHELF || terrain == Terrain.DOOR) && Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.NO_WALLS)){
+			terrain = Terrain.CHASM;
+		}
 		Painter.set( level, cell, terrain );
 
 		if (terrain != Terrain.TRAP && terrain != Terrain.SECRET_TRAP && terrain != Terrain.INACTIVE_TRAP){
@@ -1057,6 +1068,10 @@ public abstract class Level implements Bundlable {
 		
 		if (Dungeon.level != null && ShatteredPixelDungeon.scene() instanceof GameScene) {
 			pressCell( cell );
+		}
+
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CAPITALISM)){
+			heap.type = Heap.Type.FOR_SALE;
 		}
 		
 		return heap;

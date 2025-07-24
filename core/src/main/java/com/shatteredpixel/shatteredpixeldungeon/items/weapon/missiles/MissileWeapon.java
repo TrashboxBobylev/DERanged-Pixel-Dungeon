@@ -50,6 +50,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -249,7 +250,7 @@ abstract public class MissileWeapon extends Weapon {
 				return 0.5f;
 			}
 		} else {
-			return 1.5f;
+			return !Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.HUNTRESS) ? 1.5f : 1f;
 		}
 	}
 
@@ -323,6 +324,9 @@ abstract public class MissileWeapon extends Weapon {
 				quantity++;
 			}
 		}
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ENCHANTED_WORLD)){
+			enchant();
+		}
 		return this;
 	}
 
@@ -384,7 +388,7 @@ abstract public class MissileWeapon extends Weapon {
 		if (Dungeon.hero != null) usages *= RingOfSharpshooting.durabilityMultiplier( Dungeon.hero );
 
 		//at 100 uses, items just last forever.
-		if (usages >= 100f) return 0;
+		if (usages >= 100f && !Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.HUNTRESS)) return 0;
 
 		if (rounded){
 			usages = Math.round(usages);

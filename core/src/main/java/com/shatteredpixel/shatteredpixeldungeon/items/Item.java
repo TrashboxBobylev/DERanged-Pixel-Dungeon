@@ -46,11 +46,13 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
@@ -504,8 +506,16 @@ public class Item implements Bundlable {
 	public int image() {
 		return image;
 	}
-	
+
+	ItemSprite.Glowing uselessGlowy;
+
 	public ItemSprite.Glowing glowing() {
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ENCHANTED_WORLD)){
+			if (uselessGlowy == null){
+				uselessGlowy = new ItemSprite.Glowing(Random.IntRange(0x000000, 0xFFFFFF));
+			}
+			return uselessGlowy;
+		}
 		return null;
 	}
 
@@ -582,6 +592,7 @@ public class Item implements Bundlable {
 	private static final String QUICKSLOT		= "quickslotpos";
 	private static final String KEPT_LOST       = "kept_lost";
 	private static final String CUSTOM_NOTE_ID = "custom_note_id";
+	private static final String USELESS_GLOWY   = "useless_glowy";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -595,6 +606,8 @@ public class Item implements Bundlable {
 		}
 		bundle.put( KEPT_LOST, keptThoughLostInvent );
 		if (customNoteID != -1)     bundle.put(CUSTOM_NOTE_ID, customNoteID);
+		if (uselessGlowy != null)
+			bundle.put( USELESS_GLOWY, uselessGlowy.color);
 	}
 	
 	@Override
@@ -621,6 +634,8 @@ public class Item implements Bundlable {
 
 		keptThoughLostInvent = bundle.getBoolean( KEPT_LOST );
 		if (bundle.contains(CUSTOM_NOTE_ID))    customNoteID = bundle.getInt(CUSTOM_NOTE_ID);
+		if (bundle.contains(USELESS_GLOWY))
+			uselessGlowy = new ItemSprite.Glowing(bundle.getInt(USELESS_GLOWY));
 	}
 
 	public int targetingPos( Hero user, int dst ){

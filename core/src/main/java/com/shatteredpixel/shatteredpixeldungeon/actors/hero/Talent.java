@@ -143,6 +143,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.watabou.noosa.Image;
@@ -160,6 +161,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Set;
 
 import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.level;
@@ -2276,7 +2278,7 @@ public enum Talent {
 		}
 
 		if (hero.hasTalent(Talent.FOLLOWUP_STRIKE, KINGS_WISDOM) && enemy.isAlive() && enemy.alignment == Char.Alignment.ENEMY) {
-			if (hero.belongings.attackingWeapon() instanceof MissileWeapon) {
+			if (hero.belongings.attackingWeapon() instanceof MissileWeapon && !Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.HUNTRESS)) {
 				Buff.prolong(hero, FollowupStrikeTracker.class, 5f).object = enemy.id();
 			} else if (hero.buff(FollowupStrikeTracker.class) != null
 					&& hero.buff(FollowupStrikeTracker.class).object == enemy.id()){
@@ -3112,6 +3114,69 @@ public enum Talent {
 			talents.get(3).put(t, 0);
 		}
 		return talents;
+	}
+
+	public static void shuffleTalents(Hero hero){
+		Random.pushGenerator();
+		for (LinkedHashMap<Talent, Integer> tier : hero.talents){
+			int tierNum = hero.talents.indexOf(tier);
+			LinkedHashMap<Talent, Integer> newTier = new LinkedHashMap<>();
+			for (Talent oldTalent : tier.keySet()){
+				ArrayList<Talent> options = new ArrayList<>();
+				Set<Talent> curTalentsAtTier = tier.keySet();
+				for (HeroClass cls : HeroClass.values()){
+
+					ArrayList<LinkedHashMap<Talent, Integer>> clsTalents = new ArrayList<>();
+					initClassTalents(cls, clsTalents);
+
+					Set<Talent> clsTalentsAtTier = clsTalents.get(tierNum).keySet();
+					boolean replacingIsInSet = false;
+					for (Talent talent : clsTalentsAtTier.toArray(new Talent[0])){
+						if (talent == oldTalent){
+							replacingIsInSet = true;
+							break;
+						} else {
+							if (curTalentsAtTier.contains(talent) || newTier.containsKey(talent)){
+								clsTalentsAtTier.remove(talent);
+							}
+							if (talent == STRONGMAN && hero.subClass == HeroSubClass.MONK) {
+								// avoid redundancy
+								clsTalentsAtTier.remove(talent);
+							}
+
+						}
+					}
+					if (!replacingIsInSet && !clsTalentsAtTier.isEmpty()) {
+						options.add(Random.element(clsTalentsAtTier));
+					}
+				}
+
+				Talent newTalent = Random.element(options);
+
+				newTier.put(newTalent, 0);
+
+				if (!hero.metamorphedTalents.containsValue(oldTalent)){
+					hero.metamorphedTalents.put(oldTalent, newTalent);
+
+					//if what we're replacing is already a value, we need to simplify the data structure
+				} else {
+					//a->b->a, we can just remove the entry entirely
+					if (hero.metamorphedTalents.get(newTalent) == oldTalent){
+						hero.metamorphedTalents.remove(newTalent);
+
+						//a->b->c, we need to simplify to a->c
+					} else {
+						for (Talent t2 : hero.metamorphedTalents.keySet()){
+							if (hero.metamorphedTalents.get(t2) == oldTalent){
+								hero.metamorphedTalents.put(t2, newTalent);
+							}
+						}
+					}
+				}
+			}
+			hero.talents.set(tierNum, newTier);
+		}
+		Random.popGenerator();
 	}
 
 	private static final String TALENT_TIER = "talents_tier_";

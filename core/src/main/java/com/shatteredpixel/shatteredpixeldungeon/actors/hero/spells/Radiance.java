@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.noosa.audio.Sample;
 
 public class Radiance extends ClericSpell {
@@ -52,7 +53,7 @@ public class Radiance extends ClericSpell {
 
 	@Override
 	public boolean canCast(Hero hero) {
-		return super.canCast(hero) && hero.subClass.is(HeroSubClass.PRIEST);
+		return super.canCast(hero) && (hero.subClass.is(HeroSubClass.PRIEST) || Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CLERIC));
 	}
 
 	@Override

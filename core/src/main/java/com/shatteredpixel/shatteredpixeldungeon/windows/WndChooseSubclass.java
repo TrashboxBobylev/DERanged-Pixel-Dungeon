@@ -36,12 +36,17 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
+import java.util.ArrayList;
+
 public class WndChooseSubclass extends Window {
 	
 	private static final int WIDTH		= 130;
 	private static final float GAP		= 2;
-	
-	public WndChooseSubclass(final TengusMask tome, final Hero hero ) {
+
+	public WndChooseSubclass(final TengusMask tome, final Hero hero) {
+		this(tome, hero, hero.heroClass.subClasses());
+	}
+	public WndChooseSubclass(final TengusMask tome, final Hero hero, final ArrayList<HeroSubClass> subClasses) {
 		
 		super();
 
@@ -58,7 +63,7 @@ public class WndChooseSubclass extends Window {
 
 		float pos = message.bottom() + 3*GAP;
 
-		for (HeroSubClass subCls : hero.heroClass.subClasses()){
+		for (HeroSubClass subCls : subClasses){
 			RedButton btnCls = new RedButton( subCls.shortDesc(), 6 ) {
 				@Override
 				protected void onClick() {

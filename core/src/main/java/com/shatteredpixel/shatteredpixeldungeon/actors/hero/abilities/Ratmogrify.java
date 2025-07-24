@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
@@ -44,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RatSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -306,7 +308,11 @@ public class Ratmogrify extends ArmorAbility {
 
 		@Override
 		public String name() {
-			return Messages.get(this, "name", original.name());
+			String name = Messages.get(this, "name", original.name());
+			if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RLETTER)) {
+				name = ShatteredPixelDungeon.turnIntoRrrr(name);
+			}
+			return name;
 		}
 
 		{
@@ -333,6 +339,31 @@ public class Ratmogrify extends ArmorAbility {
 
 			allied = bundle.getBoolean(ALLIED);
 			if (allied) alignment = Alignment.ALLY;
+		}
+	}
+
+	// summons.
+	private static float getModifier() { return Math.max(1, Dungeon.scalingDepth()/5f)*.8f; }
+
+	public interface Ratforcements { }
+
+	public static class SummonedRat extends Rat implements Ratforcements {
+		{
+			HP = HT *= getModifier();
+
+			damageRange[0] *= getModifier();
+			damageRange[1] *= getModifier();
+			armorRange[0] *= getModifier();
+			armorRange[1] *= getModifier();
+
+			defenseSkill *= getModifier()*3;
+
+			EXP = Math.round(EXP * getModifier());
+			maxLvl = 4 + Dungeon.scalingDepth();
+		}
+
+		@Override public int attackSkill(Char target) {
+			return (int)( super.attackSkill(target) * getModifier()*5 );
 		}
 	}
 }

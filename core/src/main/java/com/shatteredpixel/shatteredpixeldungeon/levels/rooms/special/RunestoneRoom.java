@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
@@ -30,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.utils.Random;
 
 public class RunestoneRoom extends SpecialRoom {
@@ -50,6 +52,10 @@ public class RunestoneRoom extends SpecialRoom {
 		
 		Painter.drawInside( level, this, entrance(), 2, Terrain.EMPTY_SP);
 		Painter.fill( level, this, 2, Terrain.EMPTY );
+
+		Heap.Type type = Heap.Type.HEAP;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CHESTS))
+			type = Heap.Type.CHEST;
 		
 		int n = Random.NormalIntRange(2, 3);
 		int dropPos;
@@ -57,7 +63,7 @@ public class RunestoneRoom extends SpecialRoom {
 			do {
 				dropPos = level.pointToCell(random());
 			} while (level.map[dropPos] != Terrain.EMPTY || level.heaps.get( dropPos ) != null);
-			level.drop(prize(level), dropPos);
+			level.drop(prize(level), dropPos).type = type;
 		}
 		
 		entrance().set( Door.Type.LOCKED );

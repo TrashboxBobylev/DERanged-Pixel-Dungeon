@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SacrificialFire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WellFed;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.EbonyMimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoldenMimic;
@@ -83,6 +84,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PitfallTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornDartTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.utils.BArray;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
@@ -137,11 +139,16 @@ public abstract class RegularLevel extends Level {
 		if (this instanceof TempleLevel) {
 			standards *= 3;
 		}
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BIGGER))
+			standards *= 2;
 		for (int i = 0; i < standards; i++) {
+			int sizeCat = standards-i;
+			if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BIGGER))
+				sizeCat = 1;
 			StandardRoom s;
 			do {
 				s = StandardRoom.createRoom();
-			} while (!s.setSizeCat( standards-i ));
+			} while (!s.setSizeCat( sizeCat ));
 			i += s.sizeFactor()-1;
 			initRooms.add(s);
 		}
@@ -154,6 +161,8 @@ public abstract class RegularLevel extends Level {
 		if (feeling == Feeling.LARGE){
 			specials++;
 		}
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BIGGER))
+			specials += 2;
 		SpecialRoom.initForFloor();
 		for (int i = 0; i < specials; i++) {
 			SpecialRoom s = SpecialRoom.createRoom();
@@ -230,6 +239,8 @@ public abstract class RegularLevel extends Level {
 	protected void createMobs() {
 		//on floor 1, 8 pre-set mobs are created so the player can get level 2.
 		int mobsToSpawn = Dungeon.scalingDepth() == 1 ? 8 : mobLimit();
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BIGGER))
+			mobsToSpawn *= 2;
 
 		ArrayList<Room> stdRooms = new ArrayList<>();
 		for (Room room : rooms) {
@@ -320,6 +331,8 @@ public abstract class RegularLevel extends Level {
 				map[m.pos] = Terrain.GRASS;
 				losBlocking[m.pos] = false;
 			}
+			if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.DUNGEONEER))
+				Buff.affect(m, WellFed.class).reset();
 
 		}
 
@@ -392,6 +405,8 @@ public abstract class RegularLevel extends Level {
 		if (feeling == Feeling.LARGE){
 			nItems += 2;
 		}
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BIGGER))
+			nItems *= 2;
 		
 		for (int i=0; i < nItems; i++) {
 
@@ -434,6 +449,9 @@ public abstract class RegularLevel extends Level {
 				break;
 			}
 
+			if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CHESTS))
+				type = Heap.Type.CHEST;
+
 			if ((toDrop instanceof Artifact && Random.Int(2) == 0) ||
 					(toDrop.isUpgradable() && Random.Int(4 - toDrop.level()) == 0)){
 
@@ -452,26 +470,40 @@ public abstract class RegularLevel extends Level {
 				if (toDrop instanceof MeleeWeapon && ((MeleeWeapon) toDrop).tier == 6){
 					type = Heap.Type.EBONY_CHEST;
 				}
+				if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.DUNGEONEER) && Random.Int(4) == 0)
+					dropped.items.add(Generator.random());
 				dropped.type = type;
 				if (type == Heap.Type.SKELETON){
 					dropped.setHauntedIfCursed();
+				}
+				if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CAPITALISM) && dropped.type == Heap.Type.HEAP){
+					dropped.type = Heap.Type.FOR_SALE;
 				}
 			}
 			
 		}
 
 		for (Item item : itemsToSpawn) {
+			Heap.Type type = Heap.Type.HEAP;
+			if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CHESTS))
+				type = Heap.Type.CHEST;
 			int cell = randomDropCell();
 			if (item instanceof TrinketCatalyst){
 				drop( item, cell ).type = Heap.Type.LOCKED_CHEST;
 				int keyCell = randomDropCell();
-				drop( new GoldenKey(Dungeon.depth), keyCell ).type = Heap.Type.HEAP;
+				drop( new GoldenKey(Dungeon.depth), keyCell ).type = type;
 				if (map[keyCell] == Terrain.HIGH_GRASS || map[keyCell] == Terrain.FURROWED_GRASS) {
 					map[keyCell] = Terrain.GRASS;
 					losBlocking[keyCell] = false;
 				}
 			} else {
-				drop( item, cell ).type = Heap.Type.HEAP;
+				Heap drop = drop(item, cell);
+				drop.type = type;
+				if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.DUNGEONEER) && Random.Int(4) == 0)
+					drop.items.add(Generator.random());
+				if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CAPITALISM) && drop.type == Heap.Type.HEAP){
+					drop.type = Heap.Type.FOR_SALE;
+				}
 			}
 			if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
 				map[cell] = Terrain.GRASS;
@@ -482,6 +514,10 @@ public abstract class RegularLevel extends Level {
 		//use separate generator(s) for this to prevent held items, meta progress, and talents from affecting levelgen
 		//we can use a random long for these as they will be the same longs every time
 
+		Heap.Type heaptype = Heap.Type.HEAP;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CHESTS))
+			heaptype = Heap.Type.CHEST;
+
 		Random.pushGenerator( Random.Long() );
 			if (Dungeon.isChallenged(Challenges.DARKNESS)){
 				int cell = randomDropCell();
@@ -489,7 +525,7 @@ public abstract class RegularLevel extends Level {
 					map[cell] = Terrain.GRASS;
 					losBlocking[cell] = false;
 				}
-				drop( new Torch(), cell );
+				drop( new Torch(), cell ).type = heaptype;
 				//add a second torch to help with the larger floor
 				if (feeling == Feeling.LARGE){
 					cell = randomDropCell();
@@ -497,7 +533,7 @@ public abstract class RegularLevel extends Level {
 						map[cell] = Terrain.GRASS;
 						losBlocking[cell] = false;
 					}
-					drop( new Torch(), cell );
+					drop( new Torch(), cell ).type = heaptype;
 				}
 			}
 		Random.popGenerator();
@@ -527,7 +563,13 @@ public abstract class RegularLevel extends Level {
 					if (rose.droppedPetals < 11) {
 						Item item = new DriedRose.Petal();
 						int cell = randomDropCell();
-						drop( item, cell ).type = Heap.Type.HEAP;
+						Heap drop = drop(item, cell);
+						drop.type = heaptype;
+						if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CAPITALISM) && drop.type == Heap.Type.HEAP){
+							drop.type = Heap.Type.FOR_SALE;
+						}
+						if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.DUNGEONEER) && Random.Int(4) == 0)
+							drop.items.add(Generator.random());
 						if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
 							map[cell] = Terrain.GRASS;
 							losBlocking[cell] = false;
@@ -592,7 +634,7 @@ public abstract class RegularLevel extends Level {
 					map[cell] = Terrain.GRASS;
 					losBlocking[cell] = false;
 				}
-				drop( p, cell );
+				drop( p, cell ).type = heaptype;
 			}
 		Random.popGenerator();
 
@@ -617,7 +659,7 @@ public abstract class RegularLevel extends Level {
 						map[cell] = Terrain.GRASS;
 						losBlocking[cell] = false;
 					}
-					drop(p, cell);
+					drop(p, cell).type = heaptype;
 				}
 			}
 			Random.popGenerator();
@@ -675,7 +717,7 @@ public abstract class RegularLevel extends Level {
 								map[cell] = Terrain.GRASS;
 								losBlocking[cell] = false;
 							}
-							drop(page, cell);
+							drop(page, cell).type = heaptype;
 							if (limit != null) limit.drop();
 						}
 

@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -31,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PoisonDartTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.RockfallTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
@@ -54,6 +56,10 @@ public class SecretHoardRoom extends SecretRoom {
 		int goldPos;
 		//half of the internal space of the room
 		int totalGold = ((width()-2)*(height()-2))/2;
+
+		Heap.Type type = Heap.Type.HEAP;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CHESTS))
+			type = Heap.Type.CHEST;
 		
 		//no matter how much gold it drops, roughly equals 8 gold stacks.
 		float goldRatio = 8 / (float)totalGold;
@@ -63,7 +69,7 @@ public class SecretHoardRoom extends SecretRoom {
 			} while (level.heaps.get(goldPos) != null);
 			Item gold = new Gold().random();
 			gold.quantity(Math.round(gold.quantity() * goldRatio));
-			level.drop(gold, goldPos);
+			level.drop(gold, goldPos).type = type;
 		}
 		
 		for (Point p : getPoints()){

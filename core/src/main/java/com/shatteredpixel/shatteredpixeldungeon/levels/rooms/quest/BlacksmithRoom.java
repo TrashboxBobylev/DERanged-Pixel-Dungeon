@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
@@ -33,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRo
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.noosa.Tilemap;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -60,6 +62,10 @@ public class BlacksmithRoom extends StandardRoom {
 		}
 
 		Painter.fill( level, this, 2, Terrain.EMPTY_SP );
+
+		Heap.Type type = Heap.Type.HEAP;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CHESTS))
+			type = Heap.Type.CHEST;
 		
 		for (int i=0; i < 2; i++) {
 			int pos;
@@ -71,7 +77,7 @@ public class BlacksmithRoom extends StandardRoom {
 					Generator.Category.ARMOR,
 					Generator.Category.WEAPON,
 					Generator.Category.MISSILE
-				) ), pos );
+				) ), pos ).type = type;
 		}
 		
 		Blacksmith npc = new Blacksmith();

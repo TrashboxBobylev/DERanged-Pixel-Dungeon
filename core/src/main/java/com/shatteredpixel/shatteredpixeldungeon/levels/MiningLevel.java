@@ -54,6 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BlacksmithSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.watabou.noosa.Game;
@@ -191,6 +192,10 @@ public class MiningLevel extends CavesLevel {
 			}
 		Random.popGenerator();
 
+		Heap.Type type = Heap.Type.HEAP;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CHESTS))
+			type = Heap.Type.CHEST;
+
 		int cell = randomDropCell();
 		if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
 			map[cell] = Terrain.GRASS;
@@ -204,7 +209,7 @@ public class MiningLevel extends CavesLevel {
 				map[cell] = Terrain.GRASS;
 				losBlocking[cell] = false;
 			}
-			drop( Generator.randomUsingDefaults(Generator.Category.FOOD), cell );
+			drop( Generator.randomUsingDefaults(Generator.Category.FOOD), cell ).type = type;
 		}
 
 		if (Dungeon.isChallenged(Challenges.DARKNESS)){
@@ -213,7 +218,7 @@ public class MiningLevel extends CavesLevel {
 				map[cell] = Terrain.GRASS;
 				losBlocking[cell] = false;
 			}
-			drop( new Torch(), cell );
+			drop( new Torch(), cell ).type = type;
 		}
 	}
 

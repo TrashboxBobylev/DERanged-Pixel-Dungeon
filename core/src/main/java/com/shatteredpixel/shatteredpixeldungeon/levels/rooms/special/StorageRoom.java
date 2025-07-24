@@ -21,13 +21,16 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.utils.Random;
 
 public class StorageRoom extends SpecialRoom {
@@ -36,6 +39,10 @@ public class StorageRoom extends SpecialRoom {
 		
 		Painter.fill( level, this, Terrain.WALL );
 		Painter.fill( level, this, 1, Terrain.EMPTY_SP );
+
+		Heap.Type type = Heap.Type.HEAP;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CHESTS))
+			type = Heap.Type.CHEST;
 
 		boolean honeyPot = Random.Int( 2 ) == 0;
 		
@@ -46,10 +53,10 @@ public class StorageRoom extends SpecialRoom {
 				pos = level.pointToCell(random());
 			} while (level.map[pos] != Terrain.EMPTY_SP || level.heaps.get(pos) != null);
 			if (honeyPot){
-				level.drop( new Honeypot(), pos);
+				level.drop( new Honeypot(), pos).type = type;
 				honeyPot = false;
 			} else {
-				level.drop( prize(level), pos);
+				level.drop( prize(level), pos).type = type;
 			}
 		}
 		

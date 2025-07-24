@@ -26,9 +26,15 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WarriorParry;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -45,6 +51,8 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 
 public class Eye extends Mob {
 	
@@ -203,18 +211,26 @@ public class Eye extends Mob {
 						dmg *= 0.5f;
 					}
 				}
+				if (ch.buff(WarriorParry.BlockTrock.class) != null){
+					ch.sprite.emitter().burst( Speck.factory( Speck.FORGE ), 15 );
+					SpellSprite.show(ch, SpellSprite.BLOCK, 2f, 2f, 2f);
+					Buff.affect(ch, Barrier.class).incShield(Math.round(dmg*1.25f));
+					hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(Math.round(dmg*1.25f)), FloatingText.SHIELDING );
+					Buff.detach(ch, WarriorParry.BlockTrock.class);
+				} else {
 
-				ch.damage( dmg, new DeathGaze() );
+					ch.damage(dmg, new DeathGaze());
 
-				if (Dungeon.level.heroFOV[pos]) {
-					ch.sprite.flash();
-					CellEmitter.center( pos ).burst( PurpleParticle.BURST, Random.IntRange( 1, 2 ) );
-				}
+					if (Dungeon.level.heroFOV[pos]) {
+						ch.sprite.flash();
+						CellEmitter.center(pos).burst(PurpleParticle.BURST, Random.IntRange(1, 2));
+					}
 
-				if (!ch.isAlive() && ch == Dungeon.hero) {
-					Badges.validateDeathFromEnemyMagic();
-					Dungeon.fail( this );
-					GLog.n( Messages.get(this, "deathgaze_kill") );
+					if (!ch.isAlive() && ch == hero) {
+						Badges.validateDeathFromEnemyMagic();
+						Dungeon.fail(this);
+						GLog.n(Messages.get(this, "deathgaze_kill"));
+					}
 				}
 			} else {
 				ch.sprite.showStatus( CharSprite.NEUTRAL,  ch.defenseVerb() );

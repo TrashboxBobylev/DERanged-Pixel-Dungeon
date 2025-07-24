@@ -2,12 +2,17 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Shrink;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.TimedShrink;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WarriorParry;
+import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfPrismaticLight;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
@@ -20,6 +25,8 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 
 public class FinalFroggit extends AbyssalMob implements Callback {
 
@@ -93,7 +100,7 @@ public class FinalFroggit extends AbyssalMob implements Callback {
 
             int dmg = Math.round(damage * multiplier);
 
-            /*if (enemy.buff(WarriorParry.BlockTrock.class) != null){
+            if (enemy.buff(WarriorParry.BlockTrock.class) != null){
                 enemy.sprite.emitter().burst( Speck.factory( Speck.FORGE ), 15 );
                 SpellSprite.show(enemy, SpellSprite.BLOCK, 2f, 2f, 2f);
                 Buff.affect(enemy, Barrier.class).incShield(Math.round(dmg*1.25f));
@@ -101,15 +108,15 @@ public class FinalFroggit extends AbyssalMob implements Callback {
                 enemy.buff(WarriorParry.BlockTrock.class).triggered = true;
             } else {
 
-                */Buff.prolong(enemy, Eradication.class, Eradication.DURATION).combo++;
+                Buff.prolong(enemy, Eradication.class, Eradication.DURATION).combo++;
 
                 enemy.damage(dmg, new Bolt());
 
-                if (!enemy.isAlive() && enemy == Dungeon.hero) {
+                if (!enemy.isAlive() && enemy == hero) {
                     Dungeon.fail(getClass());
                     GLog.n(Messages.get(this, "bolt_kill"));
                 }
-            /*}*/
+            }
         } else {
             enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
         }

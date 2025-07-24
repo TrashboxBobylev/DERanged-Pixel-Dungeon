@@ -25,9 +25,15 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Shrink;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.TimedShrink;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WarriorParry;
+import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -38,6 +44,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.DM100Sprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 
 public class DM100 extends Mob implements Callback {
 
@@ -100,21 +108,29 @@ public class DM100 extends Mob implements Callback {
 				int dmg = Random.NormalIntRange(3, 10);
 				if (buff(Shrink.class) != null|| enemy.buff(TimedShrink.class) != null) dmg *= 0.6f;
 				dmg = Math.round(dmg * AscensionChallenge.statModifier(this));
-				enemy.damage( dmg, new LightningBolt() );
+				if (enemy.buff(WarriorParry.BlockTrock.class) != null){
+					enemy.sprite.emitter().burst( Speck.factory( Speck.FORGE ), 15 );
+					SpellSprite.show(enemy, SpellSprite.BLOCK, 2f, 2f, 2f);
+					Buff.affect(enemy, Barrier.class).incShield(Math.round(dmg*1.25f));
+					hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(Math.round(dmg*1.25f)), FloatingText.SHIELDING );
+					enemy.buff(WarriorParry.BlockTrock.class).triggered = true;
+				} else {
+					enemy.damage(dmg, new LightningBolt());
 
-				if (enemy.sprite.visible) {
-					enemy.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);
-					enemy.sprite.flash();
-				}
-				
-				if (enemy == Dungeon.hero) {
-					
-					PixelScene.shake( 2, 0.3f );
-					
-					if (!enemy.isAlive()) {
-						Badges.validateDeathFromEnemyMagic();
-						Dungeon.fail( this );
-						GLog.n( Messages.get(this, "zap_kill") );
+					if (enemy.sprite.visible) {
+						enemy.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);
+						enemy.sprite.flash();
+					}
+
+					if (enemy == hero) {
+
+						PixelScene.shake(2, 0.3f);
+
+						if (!enemy.isAlive()) {
+							Badges.validateDeathFromEnemyMagic();
+							Dungeon.fail(this);
+							GLog.n(Messages.get(this, "zap_kill"));
+						}
 					}
 				}
 			} else {

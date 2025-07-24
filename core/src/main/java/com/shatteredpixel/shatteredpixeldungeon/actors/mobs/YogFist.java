@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StormCloud;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -42,9 +43,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WarriorParry;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -349,7 +352,13 @@ public abstract class YogFist extends Mob {
 			Char enemy = this.enemy;
 			if (hit( this, enemy, true )) {
 
-				Buff.affect( enemy, Roots.class, 3f );
+				if (enemy.buff(WarriorParry.BlockTrock.class) != null){
+					enemy.sprite.emitter().burst( Speck.factory( Speck.FORGE ), 15 );
+					SpellSprite.show(enemy, SpellSprite.BLOCK, 2f, 2f, 2f);
+					enemy.buff(WarriorParry.BlockTrock.class).triggered = true;
+				} else {
+					Buff.affect(enemy, Roots.class, 3f);
+				}
 
 			} else {
 
@@ -508,14 +517,21 @@ public abstract class YogFist extends Mob {
 			Invisibility.dispel(this);
 			Char enemy = this.enemy;
 			if (hit( this, enemy, true )) {
+				if (enemy.buff(WarriorParry.BlockTrock.class) != null){
+					enemy.sprite.emitter().burst( Speck.factory( Speck.FORGE ), 15 );
+					SpellSprite.show(enemy, SpellSprite.BLOCK, 2f, 2f, 2f);
+					Buff.affect(enemy, Barrier.class).incShield(Math.round(Random.NormalIntRange(7, 15)*1.25f));
+					enemy.buff(WarriorParry.BlockTrock.class).triggered = true;
+				} else {
 
-				enemy.damage( Random.NormalIntRange(10, 20), new LightBeam() );
-				Buff.prolong( enemy, Blindness.class, Blindness.DURATION/2f );
+					enemy.damage(Random.NormalIntRange(10, 20), new LightBeam());
+					Buff.prolong(enemy, Blindness.class, Blindness.DURATION / 2f);
 
-				if (!enemy.isAlive() && enemy == Dungeon.hero) {
-					Badges.validateDeathFromEnemyMagic();
-					Dungeon.fail( this );
-					GLog.n( Messages.get(Char.class, "kill", name()) );
+					if (!enemy.isAlive() && enemy == Dungeon.hero) {
+						Badges.validateDeathFromEnemyMagic();
+						Dungeon.fail(this);
+						GLog.n(Messages.get(Char.class, "kill", name()));
+					}
 				}
 
 			} else {
@@ -574,18 +590,24 @@ public abstract class YogFist extends Mob {
 			Invisibility.dispel(this);
 			Char enemy = this.enemy;
 			if (hit( this, enemy, true )) {
+				if (enemy.buff(WarriorParry.BlockTrock.class) != null){
+					enemy.sprite.emitter().burst( Speck.factory( Speck.FORGE ), 15 );
+					SpellSprite.show(enemy, SpellSprite.BLOCK, 2f, 2f, 2f);
+					Buff.affect(enemy, Barrier.class).incShield(Math.round(Random.NormalIntRange(7, 15)*1.25f));
+					enemy.buff(WarriorParry.BlockTrock.class).triggered = true;
+				} else {
+					enemy.damage(Random.NormalIntRange(10, 20), new DarkBolt());
 
-				enemy.damage( Random.NormalIntRange(10, 20), new DarkBolt() );
+					Light l = enemy.buff(Light.class);
+					if (l != null) {
+						l.weaken(50);
+					}
 
-				Light l = enemy.buff(Light.class);
-				if (l != null){
-					l.weaken(50);
-				}
-
-				if (!enemy.isAlive() && enemy == Dungeon.hero) {
-					Badges.validateDeathFromEnemyMagic();
-					Dungeon.fail( this );
-					GLog.n( Messages.get(Char.class, "kill", name()) );
+					if (!enemy.isAlive() && enemy == Dungeon.hero) {
+						Badges.validateDeathFromEnemyMagic();
+						Dungeon.fail(this);
+						GLog.n(Messages.get(Char.class, "kill", name()));
+					}
 				}
 
 			} else {

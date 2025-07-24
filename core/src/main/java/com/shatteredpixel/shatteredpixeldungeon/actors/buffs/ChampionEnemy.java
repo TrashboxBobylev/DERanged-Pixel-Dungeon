@@ -28,14 +28,18 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.SummonElemental;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.noosa.Image;
 import com.watabou.utils.BArray;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+
+import java.util.Arrays;
 
 public abstract class ChampionEnemy extends Buff {
 
@@ -84,7 +88,11 @@ public abstract class ChampionEnemy extends Buff {
 	}
 
 	{
-		immunities.add(AllyBuff.class);
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.EASY_MODE)){
+			immunities.addAll(Arrays.asList(new Class[]{Corruption.class, SummonElemental.InvisAlly.class}));
+		} else {
+			immunities.add(AllyBuff.class);
+		}
 	}
 
 	public static void rollForChampion(Mob m){
@@ -104,7 +112,7 @@ public abstract class ChampionEnemy extends Buff {
 			case 5:             buffCls = Growing.class;      break;
 		}
 
-		if (Dungeon.mobsToChampion <= 0 && Dungeon.isChallenged(Challenges.CHAMPION_ENEMIES)) {
+		if ((Dungeon.mobsToChampion <= 0 && Dungeon.isChallenged(Challenges.CHAMPION_ENEMIES)) || Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.EASY_MODE)) {
 			Buff.affect(m, buffCls);
 			if (m.state != m.PASSIVE) {
 				m.state = m.WANDERING;

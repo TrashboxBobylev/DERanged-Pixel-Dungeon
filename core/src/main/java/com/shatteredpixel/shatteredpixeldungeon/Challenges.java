@@ -61,6 +61,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Thief;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Warlock;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.DamageWand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 
 import java.util.ArrayList;
 
@@ -114,6 +121,11 @@ public class Challenges {
 	}
 
 	public static boolean isItemBlocked( Item item ){
+
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CORROSION) && (item instanceof MeleeWeapon || item instanceof MissileWeapon || item instanceof DamageWand
+				 || item instanceof RingOfForce || item instanceof Bomb || item instanceof StoneOfBlast)){
+			return true;
+		}
 
 		if (Dungeon.isChallenged(NO_HERBALISM) && item instanceof Dewdrop){
 			return true;

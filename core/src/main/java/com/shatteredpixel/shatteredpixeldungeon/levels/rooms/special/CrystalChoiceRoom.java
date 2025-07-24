@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -102,6 +103,10 @@ public class CrystalChoiceRoom extends SpecialRoom {
 			room2 = tmp;
 		}
 
+		Heap.Type type = Heap.Type.HEAP;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CHESTS))
+			type = Heap.Type.CHEST;
+
 		int n = Random.NormalIntRange(3, 4);
 		for (int i = 0; i < n; i++){
 			Item reward = Generator.random(Random.oneOf(
@@ -116,7 +121,7 @@ public class CrystalChoiceRoom extends SpecialRoom {
 					pos = level.pointToCell(room1.random(0));
 				}
 			} while (level.heaps.get(pos) != null);
-			level.drop(reward, pos);
+			level.drop(reward, pos).type = type;
 		}
 
 		Item hidden = Generator.random(Random.oneOf(

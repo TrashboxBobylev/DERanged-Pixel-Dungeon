@@ -77,7 +77,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Saddle;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
@@ -94,13 +93,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.bow.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Lucky;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.bow.Bow;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.bow.BowWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.bow.GreatBow;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.bow.LongBow;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.bow.ShortBow;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.bow.WornShortBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
@@ -113,6 +105,8 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -155,6 +149,7 @@ public abstract class Mob extends Char {
 	protected int enemyID = -1; //used for save/restore
 	protected boolean enemySeen;
 	protected boolean alerted = false;
+	public ItemSprite.Glowing uselessGlowy;
 
 	protected static final float TIME_TO_WAKE_UP = 1f;
 
@@ -175,6 +170,7 @@ public abstract class Mob extends Char {
 	private static final String MAX_LVL	= "max_lvl";
 
 	private static final String ENEMY_ID	= "enemy_id";
+	private static final String USELESS_GLOWY   = "useless_glowy";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -199,6 +195,9 @@ public abstract class Mob extends Char {
 		if (enemy != null) {
 			bundle.put(ENEMY_ID, enemy.id() );
 		}
+
+		if (uselessGlowy != null)
+			bundle.put( USELESS_GLOWY, uselessGlowy.color);
 	}
 	
 	@Override
@@ -231,6 +230,9 @@ public abstract class Mob extends Char {
 
 		//no need to actually save this, must be false
 		firstAdded = false;
+
+		if (bundle.contains(USELESS_GLOWY))
+			uselessGlowy = new ItemSprite.Glowing(bundle.getInt(USELESS_GLOWY));
 	}
 
 	//mobs need to remember their targets after every actor is added
@@ -884,7 +886,7 @@ public abstract class Mob extends Char {
 
 				AscensionChallenge.processEnemyKill(this);
 				
-				int exp = Dungeon.hero.lvl <= maxLvl ? EXP : 0;
+				int exp = Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.LEVELLING_DOWN) || Dungeon.hero.lvl <= maxLvl ? EXP : 0;
 
 				//during ascent, under-levelled enemies grant 10 xp each until level 30
 				// after this enemy kills which reduce the amulet curse still grant 10 effective xp
@@ -895,7 +897,10 @@ public abstract class Mob extends Char {
 				}
 
 				if (exp > 0) {
-					Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(exp), FloatingText.EXPERIENCE);
+					if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.LEVELLING_DOWN))
+						hero.sprite.showStatusWithIcon(CharSprite.NEGATIVE, Integer.toString(exp), FloatingText.EXPERIENCE);
+					else
+						hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(exp), FloatingText.EXPERIENCE);;
 				}
 				Dungeon.hero.earnExp(exp, getClass());
 
@@ -1069,7 +1074,7 @@ public abstract class Mob extends Char {
 	}
 	
 	public void rollToDropLoot(){
-		if (Dungeon.hero.lvl > maxLvl + 2) return;
+		if (Dungeon.hero.lvl > maxLvl + 2 || !Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.LEVELLING_DOWN)) return;
 
 		MasterThievesArmband.StolenTracker stolen = buff(MasterThievesArmband.StolenTracker.class);
 		if (stolen == null || !stolen.itemWasStolen()) {

@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.entrance;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.GuidePage;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
@@ -34,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit.CircleWallEntranceRoom;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
@@ -113,6 +115,10 @@ public class EntranceRoom extends StandardRoom {
 		//use a separate generator here so meta progression doesn't affect levelgen
 		Random.pushGenerator();
 
+		Heap.Type type = Heap.Type.HEAP;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CHESTS))
+			type = Heap.Type.CHEST;
+
 		//places the first guidebook page on floor 1
 		if (Dungeon.depth == 1 &&
 				(!Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_INTRO) || SPDSettings.intro() )){
@@ -122,7 +128,7 @@ public class EntranceRoom extends StandardRoom {
 				pos = level.pointToCell(new Point( Random.IntRange( r.left + 1, r.right - 1 ),
 						Random.IntRange( r.top + 1, r.bottom - 2 )));
 			} while (pos == level.entrance() || level.map[pos] == Terrain.REGION_DECO);
-			level.drop( new Guidebook(), pos );
+			level.drop( new Guidebook(), pos ).type = type;
 			Document.ADVENTURERS_GUIDE.deletePage(Document.GUIDE_INTRO);
 		}
 
@@ -136,7 +142,7 @@ public class EntranceRoom extends StandardRoom {
 			} while (pos == level.entrance() || level.map[pos] == Terrain.REGION_DECO);
 			GuidePage p = new GuidePage();
 			p.page(Document.GUIDE_SEARCHING);
-			level.drop( p, pos );
+			level.drop( p, pos ).type = type;
 		}
 
 		Random.popGenerator();
