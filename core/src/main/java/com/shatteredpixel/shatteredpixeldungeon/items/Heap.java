@@ -66,6 +66,7 @@ public class Heap implements Bundlable {
 		CHEST,
 		LOCKED_CHEST,
 		CRYSTAL_CHEST,
+		EBONY_CHEST,
 		TOMB,
 		SKELETON,
 		REMAINS,
@@ -265,7 +266,7 @@ public class Heap implements Bundlable {
 	public void explode() {
 
 		//breaks open most standard containers, mimics die.
-		if (type == Type.CHEST || type == Type.SKELETON) {
+		if (type == Type.CHEST || type == Type.EBONY_CHEST || type == Type.SKELETON) {
 			type = Type.HEAP;
 			sprite.link();
 			sprite.drop();
@@ -374,7 +375,7 @@ public class Heap implements Bundlable {
 				} else {
 					return i.title();
 				}
-			case CHEST:
+			case CHEST: case EBONY_CHEST:
 				return Messages.get(this, "chest");
 			case LOCKED_CHEST:
 				return Messages.get(this, "locked_chest");
@@ -397,7 +398,7 @@ public class Heap implements Bundlable {
 
 	public String info(){
 		switch(type){
-			case CHEST:
+			case CHEST:  case EBONY_CHEST:
 				return Messages.get(this, "chest_desc");
 			case LOCKED_CHEST:
 				return Messages.get(this, "locked_chest_desc");

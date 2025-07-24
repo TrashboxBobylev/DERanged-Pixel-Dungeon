@@ -98,6 +98,9 @@ public class ItemSlot extends Button {
 		public int image() { return ItemSpriteSheet.REMAINS; }
 		public String name() { return Messages.get(Heap.class, "remains"); }
 	};
+	public static final Item EBONY_CHEST = new Item() {
+		public int image() { return ItemSpriteSheet.EBONY_CHEST; }
+	};
 	
 	public ItemSlot() {
 		super();

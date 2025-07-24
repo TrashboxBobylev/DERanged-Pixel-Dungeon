@@ -888,12 +888,13 @@ public class Generator {
 	}
 
 	private static final float[][] floorSetTierProbs = new float[][] {
-			{0, 75, 20,  4,  1},
-			{0, 25, 50, 20,  5},
-			{0,  0, 40, 50, 10},
-			{0,  0, 20, 40, 40},
-			{0,  0,  0, 20, 80},
-			{0,  0,  0, 0, 100}
+			{0, 75, 20,  4,  1, 0},
+			{0, 25, 50, 20,  5, 0},
+			{0,  0, 40, 50, 10, 0},
+			{0,  0, 20, 40, 40, 0},
+			{0,  0,  0, 20, 80, 0},
+			{0,  0,  0, 0, 100, 0},
+			{0,  0,  0, 0,  9,  1}
 	};
 
 	private static boolean usingFirstDeck = false;
@@ -1068,7 +1069,8 @@ public class Generator {
 			Category.WEP_T2,
 			Category.WEP_T3,
 			Category.WEP_T4,
-			Category.WEP_T5
+			Category.WEP_T5,
+			Category.WEP_AL_T6
 	};
 
 	public static MeleeWeapon randomWeapon(){
@@ -1101,6 +1103,7 @@ public class Generator {
 			Category.MIS_T2,
 			Category.MIS_T3,
 			Category.MIS_T4,
+			Category.MIS_T5,
 			Category.MIS_T5
 	};
 	

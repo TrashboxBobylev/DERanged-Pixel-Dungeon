@@ -230,6 +230,8 @@ public class ItemSprite extends MovieClip {
 				return view( ItemSpriteSheet.BONES, null );
 			case REMAINS:
 				return view( ItemSpriteSheet.REMAINS, null );
+			case EBONY_CHEST:
+				return view( ItemSpriteSheet.EBONY_CHEST, null );
 			default:
 				return view( 0, null );
 		}

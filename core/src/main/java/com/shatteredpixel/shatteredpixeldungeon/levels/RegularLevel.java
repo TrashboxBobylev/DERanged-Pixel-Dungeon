@@ -53,6 +53,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MimicTooth;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrinketCatalyst;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
@@ -447,6 +448,9 @@ public abstract class RegularLevel extends Level {
 				}
 			} else {
 				Heap dropped = drop( toDrop, cell );
+				if (toDrop instanceof MeleeWeapon && ((MeleeWeapon) toDrop).tier == 6){
+					type = Heap.Type.EBONY_CHEST;
+				}
 				dropped.type = type;
 				if (type == Heap.Type.SKELETON){
 					dropped.setHauntedIfCursed();
