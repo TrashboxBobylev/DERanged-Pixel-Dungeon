@@ -782,6 +782,7 @@ public enum HeroClass {
 			unlockBadge = Badges.Badge.valueOf("UNLOCK_" + name());
 		} catch (IllegalArgumentException e) { return true; }
 		if (this != RAT_KING) Badges.unlock(unlockBadge);  // auto-unlock non-rat king
+		else unlockBadge = Badges.Badge.HIGH_SCORE_4;
 		//always unlock on debug builds
 		return DeviceCompat.isDebug() || Badges.isUnlocked(unlockBadge);
 	}
