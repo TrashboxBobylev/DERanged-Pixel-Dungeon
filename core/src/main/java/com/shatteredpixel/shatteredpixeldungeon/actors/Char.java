@@ -1143,6 +1143,10 @@ public abstract class Char extends Actor {
 			damage *= resist( srcClass );
 		}
 
+		if (this instanceof Hero && Dungeon.isChallenged(Challenges.UNSTABLE_DAMAGE)){
+			dmg *= Random.Float(0.5f, 2f);
+		}
+
 		dmg = Math.round(damage);
 
 		//we ceil these specifically to favor the player vs. champ dmg reduction
