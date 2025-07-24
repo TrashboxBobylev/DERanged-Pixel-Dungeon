@@ -231,7 +231,7 @@ public class Dungeon {
 	public static boolean dailyReplay;
 	public static String customSeedText = "";
 	public static long seed;
-	public static HashSet<DungeonSeed.SpecialSeed> specialSeeds;
+	public static HashSet<DungeonSeed.SpecialSeed> specialSeeds = new HashSet<>();
 
 	public static boolean isSpecialSeedEnabled(DungeonSeed.SpecialSeed seed){
 		if (specialSeeds != null && !specialSeeds.isEmpty())
