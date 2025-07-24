@@ -150,7 +150,7 @@ public abstract class Mob extends Char {
 	protected boolean enemySeen;
 	protected boolean alerted = false;
 	public ItemSprite.Glowing uselessGlowy;
-	public float scaleFactor;
+	public float scaleFactor = 1f;
 
 	protected static final float TIME_TO_WAKE_UP = 1f;
 
