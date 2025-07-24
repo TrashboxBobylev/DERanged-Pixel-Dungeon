@@ -946,6 +946,9 @@ public abstract class Mob extends Char {
 			if (EXP % 2 == 1) EXP += Random.Int(2);
 			EXP /= 2;
 		}
+		if (Dungeon.isChallenged(Challenges.NO_LEVELS)){
+			EXP = 0;
+		}
 
 		if (alignment == Alignment.ENEMY){
 			if (buff(Trap.HazardAssistTracker.class) != null){

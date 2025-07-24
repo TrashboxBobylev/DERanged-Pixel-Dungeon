@@ -95,8 +95,9 @@ public class Challenges {
 	public static final int UNSTABLE_DAMAGE     = 131072;
 	public static final int MANY_MOBS           = 262144;
 	public static final int NO_HP               = 524288;
+	public static final int NO_LEVELS           = 1048576;
 
-	public static final int MAX_VALUE           = 1048575;
+	public static final int MAX_VALUE           = 2097151;
 
 	public static final String[] NAME_IDS = {
 			"champion_enemies",
@@ -117,12 +118,14 @@ public class Challenges {
 			"no_accuracy",
 			"random_hp",
 			"unstable_damage",
-			"many_mobs"
+			"many_mobs",
+			"no_hp",
+			"no_levels"
 	};
 
 	public static final int[] MASKS = {
 			CHAMPION_ENEMIES, STRONGER_BOSSES, NO_FOOD, NO_ARMOR, NO_HEALING, NO_HERBALISM, SWARM_INTELLIGENCE, DARKNESS, NO_SCROLLS, SUPERMAN, PYRO, CURSED_DUNGEON, FATIGUE, MUTATION,
-			FORGET_PATH, NO_ACCURACY, RANDOM_HP, UNSTABLE_DAMAGE, MANY_MOBS
+			FORGET_PATH, NO_ACCURACY, RANDOM_HP, UNSTABLE_DAMAGE, MANY_MOBS, NO_HP, NO_LEVELS
 	};
 
 	public static int activeChallenges(){
