@@ -842,14 +842,16 @@ public class Dungeon {
 		customSeedText = bundle.getString( CUSTOM_SEED );
 		daily = bundle.getBoolean( DAILY );
 		dailyReplay = bundle.getBoolean( DAILY_REPLAY );
-		String[] bundly = bundle.getStringArray(SEED_ARRAY);
-		for (String key: bundly){
-			try {
-				DungeonSeed.SpecialSeed specialSeed =
-						Enum.valueOf(DungeonSeed.SpecialSeed.class, DungeonSeed.SpecialSeed.convert(key));
-				specialSeeds.add(specialSeed);
-			} catch (IllegalArgumentException ignored){
+		if (bundle.contains(SEED_ARRAY)) {
+			String[] bundly = bundle.getStringArray(SEED_ARRAY);
+			for (String key : bundly) {
+				try {
+					DungeonSeed.SpecialSeed specialSeed =
+							Enum.valueOf(DungeonSeed.SpecialSeed.class, DungeonSeed.SpecialSeed.convert(key));
+					specialSeeds.add(specialSeed);
+				} catch (IllegalArgumentException ignored) {
 
+				}
 			}
 		}
 		Sample.INSTANCE.rMode = Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RLETTER);
