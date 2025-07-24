@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.DeviceCompat;
@@ -45,7 +46,28 @@ public enum Document {
 	CAVES_EXPLORER(ItemSpriteSheet.CAVES_PAGE, true),
 	CITY_WARLOCK(ItemSpriteSheet.CITY_PAGE, true),
 	HALLS_KING(ItemSpriteSheet.HALLS_PAGE, true),
-	LABS_MEDIC(ItemSpriteSheet.LABS_PAGE, true);
+	LABS_MEDIC(ItemSpriteSheet.LABS_PAGE, true),
+
+	SPECIAL_SEEDS(ItemSpriteSheet.SEED_PAGE, false){
+		//as the name is just the seed
+		public String pageTitle( String page ){
+			return page;
+		}
+		@Override
+		public Image pageSprite(String page) {
+			long s = DungeonSeed.convertFromText(page);
+			for (DungeonSeed.SpecialSeed specialSeed : DungeonSeed.SpecialSeed.values()){
+				if (s == specialSeed.seed){
+					return specialSeed.getIcon();
+				}
+			}
+			return super.pageSprite(page);
+		}
+
+		public String pageBody( String page ){
+			return Messages.get( DungeonSeed.class, page + ".desc");
+		}
+	};;
 
 	Document( int sprite, boolean lore ){
 		pageIcon = null;
@@ -350,6 +372,10 @@ public enum Document {
 		LABS_MEDIC.pagesStates.put("truth",                  	debug ? READ : NOT_FOUND);
 		LABS_MEDIC.pagesStates.put("almighty_power",            debug ? READ : NOT_FOUND);
 		LABS_MEDIC.pagesStates.put("salvation", 				debug ? READ : NOT_FOUND);
+
+		for (DungeonSeed.SpecialSeed seed: DungeonSeed.SpecialSeed.values()){
+			SPECIAL_SEEDS.pagesStates.put(seed.fullSeed, debug ? READ : NOT_FOUND);
+		}
 
 	}
 	

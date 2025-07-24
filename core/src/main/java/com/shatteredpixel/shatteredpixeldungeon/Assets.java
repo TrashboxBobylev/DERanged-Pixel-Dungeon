@@ -428,5 +428,6 @@ public class Assets {
 		public static final String TRAPPET = "sprites/trappet.png";
 		public static final String ATTUNEMENT_SPIRIT = "sprites/attunement_spirit.png";
 		public static final String CHICKEN = "sprites/chicken.png";
+		public static final String ECH     = "sprites/ech.png";
 	}
 }

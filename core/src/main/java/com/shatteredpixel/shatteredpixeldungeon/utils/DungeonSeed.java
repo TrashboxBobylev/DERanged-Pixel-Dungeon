@@ -21,8 +21,27 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.utils;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WarriorParry;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.EchSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.RatSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIcon;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon;
+import com.watabou.noosa.Image;
 import com.watabou.utils.Random;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 
 //This class defines the parameters for seeds in ShatteredPD and contains a few convenience methods
@@ -144,6 +163,323 @@ public class DungeonSeed {
 		} catch (IllegalArgumentException e){
 			//otherwise just return the input text
 			return inputText;
+		}
+	}
+
+	public enum SpecialSeed {
+		RATS("RAT-RAT-RAT"){
+			@Override
+			public Image getIcon() {
+				return new RatSprite();
+			}
+		},
+		ROGUE("ROG-UEB-UFF"){
+			@Override
+			public Image getIcon() {
+				return new ItemSprite(ItemSpriteSheet.ARTIFACT_CLOAK);
+			}
+		},
+		REVERSE("REV-ERS-EED"){
+			@Override
+			public Image getIcon() {
+				Image icon = Icons.get(Icons.STAIRS);
+				icon.invert();
+				return icon;
+			}
+		},
+		NO_WALLS("NOW-ALL-SHE"){
+			@Override
+			public Image getIcon() {
+				return new Image(Assets.Environment.TILES_ABYSS, 128, 16, 16, 16);
+			}
+		},
+		RANDOM_ITEMS("RNG-ITE-MSS"){
+			@Override
+			public Image getIcon() {
+				ItemSprite sprite = new ItemSprite(ItemSpriteSheet.SOMETHING);
+				sprite.glow(new ItemSprite.Glowing());
+				return sprite;
+			}
+		},
+		CHESTS("ITE-MCH-EST"){
+			@Override
+			public Image getIcon() {
+				return new ItemSprite(ItemSpriteSheet.CHEST);
+			}
+		},
+		BIGGER("EXP-ANS-IVE"){
+			@Override
+			public Image getIcon() {
+				return Icons.get(Icons.STAIRS_LARGE);
+			}
+		},
+		ALLIES("BES-TFR-END"){
+			@Override
+			public Image getIcon() {
+				return new BuffIcon(BuffIndicator.HEART, true);
+			}
+		},
+		ECH("ECH-ECH-ECH"){
+			@Override
+			public Image getIcon() {
+				return new EchSprite();
+			}
+		},
+		EVERYTHING("BOB-PAL-KIA"){
+			@Override
+			public void addSeeds(HashSet<SpecialSeed> list) {
+				list.addAll(Arrays.asList(SpecialSeed.values()));
+			}
+		},
+//		NO_WARP("ROT-INM-IND"){
+//			@Override
+//			public Image getIcon() {
+//				Image sprite = new BuffIcon(BuffIndicator.WARP, true);
+//				sprite.hardlight(0x333333);
+//				return sprite;
+//			}
+//		},
+		CAPITALISM("IWA-NTM-ONY"){
+			@Override
+			public Image getIcon() {
+				return new ItemSprite(ItemSpriteSheet.GOLD);
+			}
+		},
+		CORROSION("COR-ROS-ION"){
+			@Override
+			public Image getIcon() {
+				return new ItemSprite(ItemSpriteSheet.WAND_CORROSION);
+			}
+		},
+		ENCHANTED_WORLD("GLO-WIN-GGG"){
+			@Override
+			public Image getIcon() {
+				return new ItemSprite(ItemSpriteSheet.STONE_ENCHANT);
+			}
+		},
+		EQUAL_RARITY("EQU-ALO-DDS"){
+			@Override
+			public Image getIcon() {
+				return new ItemSprite(ItemSpriteSheet.UNSTABLE_SPELL);
+			}
+		},
+		DUNGEONEER("WHO-LEP-ACK"){
+			@Override
+			public void addSeeds(HashSet<SpecialSeed> list) {
+				super.addSeeds(list);
+				list.add(CHESTS);
+				list.add(BIGGER);
+			}
+
+			@Override
+			public Image getIcon() {
+				return new ItemSprite(ItemSpriteSheet.LOCKED_CHEST);
+			}
+		},
+		RLETTER("RRR-RRR-RRR"){
+			@Override
+			public void addSeeds(HashSet<SpecialSeed> list) {
+				super.addSeeds(list);
+				list.add(RATS);
+				list.add(REVERSE);
+				list.add(ROGUE);
+			}
+
+			@Override
+			public Image getIcon() {
+				Image image = new Image(Assets.Interfaces.BANNERS, 0, 187, 40, 52);
+				image.scale.set(1/2.5f);
+				return image;
+			}
+		},
+		MAGE("AMA-GEN-ERF"){
+			@Override
+			public Image getIcon() {
+				return new ItemSprite().view(new MagesStaff());
+			}
+		},
+		WARRIOR("COL-LOS-EUM"){
+			@Override
+			public Image getIcon() {
+				return new HeroIcon(new WarriorParry());
+			}
+		},
+		HUNTRESS("BUF-HUN-TRS"){
+			@Override
+			public Image getIcon() {
+				Image sprite = new ItemSprite(ItemSpriteSheet.SPIRIT_BOW);
+				sprite.hardlight(0x444444);
+				return sprite;
+			}
+		},
+		DUELIST("BET-TER-WEP"){
+			@Override
+			public Image getIcon() {
+				ItemSprite sprite = new ItemSprite(ItemSpriteSheet.WEAPON_HOLDER);
+				sprite.glow(new ItemSprite.Glowing());
+				return sprite;
+			}
+		},
+		CLERIC("GOD-CHI-LDD"){
+			@Override
+			public Image getIcon() {
+				ItemSprite sprite = new ItemSprite(ItemSpriteSheet.ARTIFACT_TOME);
+				sprite.glow(new ItemSprite.Glowing(0xFFFF00, 0.85f));
+				return sprite;
+			}
+		},
+		RANDOM_TALENTS("RNG-SKI-LLS"){
+			@Override
+			public Image getIcon() {
+				ItemSprite sprite = new ItemSprite(ItemSpriteSheet.MASTERY);
+				sprite.glow(new ItemSprite.Glowing());
+				return sprite;
+			}
+		},
+		RANDOM_HERO("ROG-UEL-IKE"){
+			@Override
+			public void addSeeds(HashSet<SpecialSeed> list) {
+				super.addSeeds(list);
+				list.add(ROGUE);
+				list.add(MAGE);
+				list.add(DUELIST);
+				list.add(RANDOM_TALENTS);
+			}
+
+			@Override
+			public Image getIcon() {
+				ItemSprite sprite = new ItemSprite(ItemSpriteSheet.UNSTABLE_SPELL);
+				sprite.hardlight(0x2be538);
+				return sprite;
+			}
+		},
+		LEVELLING_DOWN("LEV-ELD-OWN"){
+			@Override
+			public Image getIcon() {
+				Image sprite = Icons.get(Icons.TALENT);
+				sprite.hardlight(0xFF0000);
+				return sprite;
+			}
+		},
+		ALL_TALENTS("ULT-IMA-TEE"){
+			@Override
+			public Image getIcon() {
+				Image sprite = new BuffIcon(BuffIndicator.INVISIBLE, true);
+				sprite.hardlight(0xfa00ff);
+				return sprite;
+			}
+		},
+		ALL_CLASSES("SUP-ERM-ANN"){
+			@Override
+			public Image getIcon() {
+				return new TalentIcon(Talent.KINGS_WISDOM);
+			}
+		},
+		ALL_SUBS("IRO-NMA-NNN"){
+			@Override
+			public Image getIcon() {
+				ItemSprite sprite = new ItemSprite(ItemSpriteSheet.MASK);
+				sprite.glow(new ItemSprite.Glowing());
+				return sprite;
+			}
+		},
+		ALL_POWERS("ASC-END-ANT"){
+			@Override
+			public void addSeeds(HashSet<SpecialSeed> list) {
+				super.addSeeds(list);
+				list.add(ALL_CLASSES);
+				list.add(ALL_TALENTS);
+				list.add(ALL_SUBS);
+			}
+
+			@Override
+			public Image getIcon() {
+				ItemSprite sprite = new ItemSprite(ItemSpriteSheet.AMULET);
+				sprite.glow(new ItemSprite.Glowing(0.1f));
+				return sprite;
+			}
+		},
+		EASY_MODE("FUN-FUN-FUN"){
+			@Override
+			public void addSeeds(HashSet<SpecialSeed> list) {
+				super.addSeeds(list);
+				list.add(ECH);
+				list.add(ALLIES);
+				list.add(ENCHANTED_WORLD);
+//				list.add(NO_WARP);
+			}
+
+			@Override
+			public Image getIcon() {
+				return new HeroIcon(new PowerOfMany());
+			}
+		},
+		BALANCE("VBA-LAN-CED"){
+			@Override
+			public void addSeeds(HashSet<SpecialSeed> list) {
+				super.addSeeds(list);
+				list.add(WARRIOR);
+				list.add(MAGE);
+				list.add(ROGUE);
+				list.add(HUNTRESS);
+			}
+
+			@Override
+			public Image getIcon() {
+				return new HeroIcon(HeroSubClass.KING);
+			}
+		};
+
+		public long seed;
+		public String fullSeed;
+		public boolean random;
+
+		SpecialSeed(long seed) {
+			this.seed = seed;
+			this.random = true;
+		}
+
+		SpecialSeed(long seed, boolean random) {
+			this.seed = seed;
+			this.random = random;
+		}
+
+		SpecialSeed(String seed){
+			this.seed = convertFromText(seed);
+			this.random = true;
+			this.fullSeed = seed;
+		}
+
+		SpecialSeed(String seed, boolean random){
+			this.seed = convertFromText(seed);
+			this.random = random;
+			this.fullSeed = seed;
+		}
+
+		public void addSeeds(HashSet<SpecialSeed> list){
+			list.add(this);
+		}
+
+		public Image getIcon(){
+			return new ItemSprite(ItemSpriteSheet.SEED_PAGE);
+		}
+
+		public static boolean interpret(HashSet<SpecialSeed> list, String seed){
+			long s = convertFromText(seed);
+			for (SpecialSeed specialSeed : SpecialSeed.values()){
+				if (s == specialSeed.seed) {
+					specialSeed.addSeeds(list);
+				}
+			}
+			return !list.isEmpty();
+		}
+
+		static final HashMap<String, String> conversions = new HashMap<>();
+
+		public static String convert(String legacyName){
+			if (conversions.containsKey(legacyName))
+				return conversions.get(legacyName);
+			return legacyName;
 		}
 	}
 

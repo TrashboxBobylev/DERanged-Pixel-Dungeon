@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -79,6 +80,7 @@ import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.Visual;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.RectF;
@@ -103,6 +105,7 @@ public class WndJournal extends WndTabbed {
 	private NotesTab notesTab;
 	private CatalogTab catalogTab;
 	private BadgesTab badgesTab;
+	private SpecialSeedsTab seedsTab;
 	
 	public static int last_index = 0;
 
@@ -148,6 +151,11 @@ public class WndJournal extends WndTabbed {
 		add(badgesTab);
 		badgesTab.setRect(0, 0, width, height);
 		badgesTab.updateList();
+
+		seedsTab = new SpecialSeedsTab();
+		add(seedsTab);
+		seedsTab.setRect(0, 0, width, height);
+		seedsTab.updateList();
 		
 		Tab[] tabs = {
 				new IconTab( Icons.JOURNAL.get() ) {
@@ -209,7 +217,19 @@ public class WndJournal extends WndTabbed {
 					protected String hoverText() {
 						return Messages.get(badgesTab, "title");
 					}
-				}
+				},
+				new IconTab( new ItemSprite(ItemSpriteSheet.SEED_SWIFTTHISTLE, null) ) {
+					protected void select( boolean value ) {
+						super.select( value );
+						seedsTab.active = seedsTab.visible = value;
+						if (value) last_index = 5;
+					}
+
+					@Override
+					protected String hoverText() {
+						return Messages.get(seedsTab, "title");
+					}
+				},
 		};
 
 		for (Tab tab : tabs) {
@@ -240,6 +260,7 @@ public class WndJournal extends WndTabbed {
 		alchemyTab.layout();
 		notesTab.layout();
 		catalogTab.layout();
+		seedsTab.layout();
 	}
 	
 	public static class GuideTab extends Component {
@@ -1170,6 +1191,71 @@ public class WndJournal extends WndTabbed {
 			} else {
 				badgesGlobal.visible = badgesGlobal.active = true;
 			}
+		}
+
+	}
+
+	public static class SpecialSeedsTab extends Component {
+
+		private ScrollingListPane list;
+
+		@Override
+		protected void createChildren() {
+			list = new ScrollingListPane();
+			add( list );
+		}
+
+		@Override
+		protected void layout() {
+			super.layout();
+			list.setRect( x, y, width, height);
+		}
+
+		public void updateList(){
+			list.addTitle(Document.SPECIAL_SEEDS.title());
+
+			for (String page : Document.SPECIAL_SEEDS.pageNames()){
+				boolean found = Document.SPECIAL_SEEDS.isPageFound(page);
+				ScrollingListPane.ListItem item = new ScrollingListPane.ListItem(
+						Document.SPECIAL_SEEDS.pageSprite(page),
+						null,
+						found ? Messages.titleCase(Document.SPECIAL_SEEDS.pageTitle(page)) : Messages.titleCase(Messages.get( GuideTab.class, "missing" ))
+				){
+					@Override
+					public boolean onClick(float x, float y) {
+						if (inside( x, y ) && found) {
+							ShatteredPixelDungeon.scene().addToFront( new WndTitledMessage( Document.SPECIAL_SEEDS.pageSprite(page),
+									Document.SPECIAL_SEEDS.pageTitle(page),
+									Document.SPECIAL_SEEDS.pageBody(page), 330 ){
+								{
+									addToBottom(new RedButton(Messages.get(SpecialSeedsTab.class, "set_seed")) {
+										@Override
+										protected void onClick() {
+											hide();
+											SPDSettings.customSeed(page);
+											Sample.INSTANCE.play(Assets.Sounds.LEVELUP);
+										}
+										{
+											setHeight(18);
+										}
+									});
+								}
+							});
+							Document.SPECIAL_SEEDS.readPage(page);
+							return true;
+						} else {
+							return false;
+						}
+					}
+				};
+				if (!found){
+					item.hardlight(0x999999);
+					item.hardlightIcon(0x999999);
+				}
+				list.addItem(item);
+			}
+
+			list.setRect(x, y, width, height);
 		}
 
 	}

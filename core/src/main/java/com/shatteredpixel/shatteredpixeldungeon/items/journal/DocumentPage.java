@@ -61,6 +61,8 @@ public abstract class DocumentPage extends Item {
 		} else if (document().isLoreDoc()){
 			WndJournal.last_index = 3;
 			WndJournal.CatalogTab.currentItemIdx = 3;
+		} else if (document() == Document.SPECIAL_SEEDS) {
+			WndJournal.last_index = 4;
 		}
 		document().findPage(page);
 		Sample.INSTANCE.play( Assets.Sounds.ITEM );

@@ -230,10 +230,18 @@ public class Dungeon {
 	public static boolean dailyReplay;
 	public static String customSeedText = "";
 	public static long seed;
+	public static HashSet<DungeonSeed.SpecialSeed> specialSeeds;
+
+	public static boolean isSpecialSeedEnabled(DungeonSeed.SpecialSeed seed){
+		if (specialSeeds != null && !specialSeeds.isEmpty())
+			return Dungeon.specialSeeds.contains(seed);
+		return false;
+	}
 	public static long lastPlayed;
 
 	//we initialize the seed separately so that things like interlevelscene can access it early
 	public static void initSeed(){
+		specialSeeds = new HashSet<>();
 		if (daily) {
 			//Ensures that daily seeds are not in the range of user-enterable seeds
 			seed = SPDSettings.lastDaily() + DungeonSeed.TOTAL_SEEDS;
@@ -243,6 +251,11 @@ public class Dungeon {
 		} else if (!SPDSettings.customSeed().isEmpty()){
 			customSeedText = SPDSettings.customSeed();
 			seed = DungeonSeed.convertFromText(customSeedText);
+			DungeonSeed.SpecialSeed.interpret(specialSeeds, customSeedText);
+			if (!specialSeeds.isEmpty()) {
+
+				seed = DungeonSeed.randomSeed();
+			}
 		} else {
 			customSeedText = "";
 			seed = DungeonSeed.randomSeed();
@@ -683,6 +696,7 @@ public class Dungeon {
 	private static final String CHAPTERS	= "chapters";
 	private static final String QUESTS		= "quests";
 	private static final String BADGES		= "badges";
+	private static final String SEED_ARRAY  = "specialSeedList";
 
 	public static void saveGame( int save ) {
 		try {
@@ -752,6 +766,14 @@ public class Dungeon {
 			Bundle badges = new Bundle();
 			Badges.saveLocal( badges );
 			bundle.put( BADGES, badges );
+			if (specialSeeds != null && !specialSeeds.isEmpty()){
+				ArrayList<String> nameArray = new ArrayList<>();
+				for (DungeonSeed.SpecialSeed specialSeed: specialSeeds){
+					nameArray.add(specialSeed.name());
+				}
+				String[] ech = nameArray.toArray(new String[0]);
+				bundle.put(SEED_ARRAY, ech);
+			}
 			
 			FileUtils.bundleToFile( GamesInProgress.gameFile(save), bundle);
 			
@@ -796,6 +818,16 @@ public class Dungeon {
 		customSeedText = bundle.getString( CUSTOM_SEED );
 		daily = bundle.getBoolean( DAILY );
 		dailyReplay = bundle.getBoolean( DAILY_REPLAY );
+		String[] bundly = bundle.getStringArray(SEED_ARRAY);
+		for (String key: bundly){
+			try {
+				DungeonSeed.SpecialSeed specialSeed =
+						Enum.valueOf(DungeonSeed.SpecialSeed.class, DungeonSeed.SpecialSeed.convert(key));
+				specialSeeds.add(specialSeed);
+			} catch (IllegalArgumentException ignored){
+
+			}
+		}
 
 		Actor.clear();
 		Actor.restoreNextID( bundle );

@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -32,6 +33,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
@@ -56,6 +59,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.PointerArea;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.Tweener;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.DeviceCompat;
@@ -65,6 +69,7 @@ import com.watabou.utils.PointF;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -650,7 +655,13 @@ public class HeroSelectScene extends PixelScene {
 								}
 
 								SPDSettings.customSeed(text);
-								icon.hardlight(1f, 1.5f, 0.67f);
+								if (DungeonSeed.SpecialSeed.interpret(new HashSet<>(), SPDSettings.customSeed())) {
+									icon.copy(new ItemSprite(ItemSpriteSheet.SEED_SWIFTTHISTLE));
+									Sample.INSTANCE.play(Assets.Sounds.LEVELUP);
+								} else {
+									icon.copy(Icons.get(Icons.SEED));
+									icon.hardlight(1f, 1.5f, 0.67f);
+								}
 							} else {
 								SPDSettings.customSeed("");
 								icon.resetColor();
@@ -662,7 +673,14 @@ public class HeroSelectScene extends PixelScene {
 			};
 			seedButton.leftJustify = true;
 			seedButton.icon(Icons.get(Icons.SEED));
-			if (!SPDSettings.customSeed().isEmpty()) seedButton.icon().hardlight(1f, 1.5f, 0.67f);;
+			if (!SPDSettings.customSeed().isEmpty()){
+				if (DungeonSeed.SpecialSeed.interpret(new HashSet<>(), SPDSettings.customSeed()))
+					seedButton.icon(new ItemSprite(ItemSpriteSheet.SEED_SWIFTTHISTLE));
+				else {
+					seedButton.icon(Icons.get(Icons.SEED));
+					seedButton.icon().hardlight(1f, 1.5f, 0.67f);
+				}
+			};
 			buttons.add(seedButton);
 			add(seedButton);
 

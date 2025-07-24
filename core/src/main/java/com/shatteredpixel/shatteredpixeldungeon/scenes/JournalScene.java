@@ -36,7 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.TerrainFeaturesTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
@@ -135,6 +134,15 @@ public class JournalScene extends PixelScene {
 						panel.width() - panel.marginHor(),
 						panel.height() - panel.marginVer());
 				break;
+			case 4:
+				WndJournal.SpecialSeedsTab seedsList = new WndJournal.SpecialSeedsTab();
+				add(seedsList);
+				seedsList.setRect(panel.x + panel.marginLeft(),
+						panel.y + panel.marginTop(),
+						panel.width() - panel.marginHor(),
+						panel.height() - panel.marginVer());
+				seedsList.updateList();
+				break;
 		}
 
 		StyledButton btnBadges =  new StyledButton(Chrome.Type.GREY_BUTTON_TR, ""){
@@ -153,7 +161,7 @@ public class JournalScene extends PixelScene {
 			}
 		};
 		btnBadges.icon(Icons.BADGES.get());
-		btnBadges.setRect(panel.x, panel.y + ph - 3, pw/4f + 1.5f, lastIDX == 0 ? 25 : 20);
+		btnBadges.setRect(panel.x, panel.y + ph - 3, pw/5f + 1.5f, lastIDX == 0 ? 25 : 20);
 		align(btnBadges);
 		if (lastIDX != 0) btnBadges.icon().brightness(0.6f);
 		addToBack(btnBadges);
@@ -173,7 +181,7 @@ public class JournalScene extends PixelScene {
 			}
 		};
 		btnCatalog.icon(Icons.CATALOG.get());
-		btnCatalog.setRect(btnBadges.right()-2, btnBadges.top(), pw/4f + 1.5f, lastIDX == 1 ? 25 : 20);
+		btnCatalog.setRect(btnBadges.right()-2, btnBadges.top(), pw/5f + 1.5f, lastIDX == 1 ? 25 : 20);
 		align(btnCatalog);
 		if (lastIDX != 1) btnCatalog.icon().brightness(0.6f);
 		addToBack(btnCatalog);
@@ -193,7 +201,7 @@ public class JournalScene extends PixelScene {
 			}
 		};
 		btnGuide.icon(new ItemSprite(ItemSpriteSheet.MASTERY));
-		btnGuide.setRect(btnCatalog.right()-2, btnBadges.top(), pw/4f + 1.5f, lastIDX == 2 ? 25 : 20);
+		btnGuide.setRect(btnCatalog.right()-2, btnBadges.top(), pw/5f + 1.5f, lastIDX == 2 ? 25 : 20);
 		align(btnGuide);
 		if (lastIDX != 2) btnGuide.icon().brightness(0.6f);
 		addToBack(btnGuide);
@@ -213,10 +221,30 @@ public class JournalScene extends PixelScene {
 			}
 		};
 		btnAlchemy.icon(Icons.ALCHEMY.get());
-		btnAlchemy.setRect(btnGuide.right()-2, btnBadges.top(), pw/4f + 1.5f, lastIDX == 3 ? 25 : 20);
+		btnAlchemy.setRect(btnGuide.right()-2, btnBadges.top(), pw/5f + 1.5f, lastIDX == 3 ? 25 : 20);
 		align(btnAlchemy);
 		if (lastIDX != 3) btnAlchemy.icon().brightness(0.6f);
 		addToBack(btnAlchemy);
+
+		StyledButton btnSeeds =  new StyledButton(Chrome.Type.GREY_BUTTON_TR, ""){
+			@Override
+			protected void onClick() {
+				if (lastIDX != 4) {
+					lastIDX = 4;
+				}
+				ShatteredPixelDungeon.seamlessResetScene();
+				super.onClick();
+			}
+			@Override
+			protected String hoverText() {
+				return Messages.get(WndJournal.SpecialSeedsTab.class, "title");
+			}
+		};
+		btnSeeds.icon(new ItemSprite(ItemSpriteSheet.SEED_SWIFTTHISTLE));
+		btnSeeds.setRect(btnAlchemy.right()-2, btnAlchemy.top(), pw/5f + 1.5f, lastIDX == 4 ? 25 : 20);
+		align(btnSeeds);
+		if (lastIDX != 4) btnSeeds.icon().brightness(0.6f);
+		addToBack(btnSeeds);
 
 		Archs archs = new Archs();
 		archs.setSize( w, h );
