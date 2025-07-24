@@ -88,8 +88,9 @@ public class Challenges {
 	public static final int CURSED_DUNGEON		= 2048;
 	public static final int FATIGUE				= 4096;
 	public static final int MUTATION			= 8192;
+	public static final int FORGET_PATH         = 16384;
 
-	public static final int MAX_VALUE           = 16383;
+	public static final int MAX_VALUE           = 32767;
 
 	public static final String[] NAME_IDS = {
 			"champion_enemies",
@@ -105,11 +106,12 @@ public class Challenges {
 			"pyro",
 			"cursed_dungeon",
 			"fatigue",
-			"mutation"
+			"mutation",
+			"forget_path"
 	};
 
 	public static final int[] MASKS = {
-			CHAMPION_ENEMIES, STRONGER_BOSSES, NO_FOOD, NO_ARMOR, NO_HEALING, NO_HERBALISM, SWARM_INTELLIGENCE, DARKNESS, NO_SCROLLS, SUPERMAN, PYRO, CURSED_DUNGEON, FATIGUE, MUTATION
+			CHAMPION_ENEMIES, STRONGER_BOSSES, NO_FOOD, NO_ARMOR, NO_HEALING, NO_HERBALISM, SWARM_INTELLIGENCE, DARKNESS, NO_SCROLLS, SUPERMAN, PYRO, CURSED_DUNGEON, FATIGUE, MUTATION, FORGET_PATH
 	};
 
 	public static int activeChallenges(){

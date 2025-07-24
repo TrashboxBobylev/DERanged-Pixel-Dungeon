@@ -793,7 +793,9 @@ public abstract class Mob extends Char {
 
 	@Override
 	public float speed() {
-		return super.speed() * AscensionChallenge.enemySpeedModifier(this);
+		float speed = super.speed() * AscensionChallenge.enemySpeedModifier(this);
+		if (Dungeon.isChallenged(Challenges.FORGET_PATH)) speed *= 1.25f;
+		return speed;
 	}
 
 	public final boolean surprisedBy( Char enemy ){

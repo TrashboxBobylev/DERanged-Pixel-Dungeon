@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SacrificialFire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AdrenalineSurge;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AmnesiaBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArmorEnhance;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
@@ -787,6 +788,9 @@ public class Hero extends Char {
 		Buff.affect( this, Hunger.class );
 		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ECH)){
 			Buff.affect(this, Ech.EchDied.class).depth = -1;
+		}
+		if (Dungeon.isChallenged(Challenges.FORGET_PATH)){
+			Buff.affect(this, AmnesiaBuff.class);
 		}
 	}
 
