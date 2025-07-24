@@ -290,39 +290,39 @@ public enum Document {
 	static {
 		boolean debug = DeviceCompat.isDebug();
 		//hero gets these when guidebook is collected
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_INTRO,          debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_EXAMINING,      debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_SURPRISE_ATKS,  debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_IDING,          debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_FOOD,           debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_ALCHEMY,        debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_DIEING,         debug ? READ : NOT_FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_INTRO,          READ);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_EXAMINING,      READ);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_SURPRISE_ATKS,  READ);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_IDING,          READ);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_FOOD,           READ);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_ALCHEMY,        READ);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_DIEING,         READ);
 		//given in sewers
-		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_SEARCHING,      debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put("Strength",           debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put("Upgrades",           debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put("Looting",            debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put("Levelling",          debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put("Positioning",        debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put("Magic",              debug ? READ : NOT_FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_SEARCHING,      READ);
+		ADVENTURERS_GUIDE.pagesStates.put("Strength",           READ);
+		ADVENTURERS_GUIDE.pagesStates.put("Upgrades",           READ);
+		ADVENTURERS_GUIDE.pagesStates.put("Looting",            READ);
+		ADVENTURERS_GUIDE.pagesStates.put("Levelling",          READ);
+		ADVENTURERS_GUIDE.pagesStates.put("Positioning",        READ);
+		ADVENTURERS_GUIDE.pagesStates.put("Magic",              READ);
 		//ReARranged Guide
-		ADVENTURERS_GUIDE.pagesStates.put("Gun",                debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put("GunSmithing",        debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put("Bow",                debug ? READ : NOT_FOUND);
-		ADVENTURERS_GUIDE.pagesStates.put("BluePrint",          debug ? READ : NOT_FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put("Gun",                READ);
+		ADVENTURERS_GUIDE.pagesStates.put("GunSmithing",        READ);
+		ADVENTURERS_GUIDE.pagesStates.put("Bow",                READ);
+		ADVENTURERS_GUIDE.pagesStates.put("BluePrint",          READ);
 
 		//given in sewers
-		ALCHEMY_GUIDE.pagesStates.put("Potions",                debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Stones",                 debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Energy_Food",            debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Exotic_Potions",         debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Exotic_Scrolls",         debug ? READ : NOT_FOUND);
+		ALCHEMY_GUIDE.pagesStates.put("Potions",                READ);
+		ALCHEMY_GUIDE.pagesStates.put("Stones",                 READ);
+		ALCHEMY_GUIDE.pagesStates.put("Energy_Food",            READ);
+		ALCHEMY_GUIDE.pagesStates.put("Exotic_Potions",         READ);
+		ALCHEMY_GUIDE.pagesStates.put("Exotic_Scrolls",         READ);
 		//given in prison
-		ALCHEMY_GUIDE.pagesStates.put("Bombs",                  debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Weapons",                debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Brews_Elixirs",          debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Spells",                 debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Pills",                  debug ? READ : NOT_FOUND);
+		ALCHEMY_GUIDE.pagesStates.put("Bombs",                  READ);
+		ALCHEMY_GUIDE.pagesStates.put("Weapons",                READ);
+		ALCHEMY_GUIDE.pagesStates.put("Brews_Elixirs",          READ);
+		ALCHEMY_GUIDE.pagesStates.put("Spells",                 READ);
+		ALCHEMY_GUIDE.pagesStates.put("Pills",                  READ);
 
 		INTROS.pagesStates.put("Dungeon",                       READ);
 		INTROS.pagesStates.put("Sewers",                        debug ? READ : NOT_FOUND);
