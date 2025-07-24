@@ -64,6 +64,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.FerretTuft;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.DamageWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -89,8 +90,9 @@ public class Challenges {
 	public static final int FATIGUE				= 4096;
 	public static final int MUTATION			= 8192;
 	public static final int FORGET_PATH         = 16384;
+	public static final int NO_ACCURACY         = 32768;
 
-	public static final int MAX_VALUE           = 32767;
+	public static final int MAX_VALUE           = 65535;
 
 	public static final String[] NAME_IDS = {
 			"champion_enemies",
@@ -107,11 +109,13 @@ public class Challenges {
 			"cursed_dungeon",
 			"fatigue",
 			"mutation",
-			"forget_path"
+			"forget_path",
+			"no_accuracy"
 	};
 
 	public static final int[] MASKS = {
-			CHAMPION_ENEMIES, STRONGER_BOSSES, NO_FOOD, NO_ARMOR, NO_HEALING, NO_HERBALISM, SWARM_INTELLIGENCE, DARKNESS, NO_SCROLLS, SUPERMAN, PYRO, CURSED_DUNGEON, FATIGUE, MUTATION, FORGET_PATH
+			CHAMPION_ENEMIES, STRONGER_BOSSES, NO_FOOD, NO_ARMOR, NO_HEALING, NO_HERBALISM, SWARM_INTELLIGENCE, DARKNESS, NO_SCROLLS, SUPERMAN, PYRO, CURSED_DUNGEON, FATIGUE, MUTATION,
+			FORGET_PATH, NO_ACCURACY
 	};
 
 	public static int activeChallenges(){
@@ -130,6 +134,10 @@ public class Challenges {
 		}
 
 		if (Dungeon.isChallenged(NO_HERBALISM) && item instanceof Dewdrop){
+			return true;
+		}
+
+		if (Dungeon.isChallenged(NO_ACCURACY) && item instanceof FerretTuft){
 			return true;
 		}
 

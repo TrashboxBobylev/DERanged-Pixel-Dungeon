@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
@@ -188,6 +189,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BArray;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -645,6 +647,12 @@ public abstract class Char extends Actor {
 				return true;
 			}
 
+			if (Dungeon.isChallenged(Challenges.NO_ACCURACY)){
+				effectiveDamage *= GameMath.gate(0.75f,
+						acuRoll(this, attackSkill( enemy ), accMulti)/
+								defRoll(this, enemy, enemy.defenseSkill(this), accMulti), 1.25f);
+			}
+
 			if (enemy.buff(WarriorParry.BlockTrock.class) != null && effectiveDamage >= 0){
 				enemy.sprite.emitter().burst( Speck.factory( Speck.FORGE ), 15 );
 				SpellSprite.show(enemy, SpellSprite.BLOCK, 2f, 2f, 2f);
@@ -801,6 +809,30 @@ public abstract class Char extends Actor {
 	public static int INFINITE_ACCURACY = 1_000_000;
 	public static int INFINITE_EVASION = 1_000_000;
 
+	public static float acuRoll(Char attacker, float acuStat, float accMulti){
+		float acuRoll = Random.Float( acuStat );
+		if (attacker.buff(Bless.class) != null) acuRoll *= 1.25f;
+		if (attacker.buff(  Hex.class) != null) acuRoll *= 0.8f;
+		if (attacker.buff( Daze.class) != null) acuRoll *= 0.5f;
+		if (attacker.buff(Shrink.class)!= null || attacker.buff(TimedShrink.class)!= null) acuRoll *= 0.6f;
+		for (ChampionEnemy buff : attacker.buffs(ChampionEnemy.class)){
+			acuRoll *= buff.evasionAndAccuracyFactor();
+		}
+		return acuRoll*accMulti;
+	}
+
+	public static float defRoll(Char attacker, Char defender, float defStat, float accMulti) {
+		float defRoll = Random.Float( defStat );
+		if (defender.buff(Bless.class) != null) defRoll *= 1.25f;
+		if (defender.buff(  Hex.class) != null) defRoll *= 0.8f;
+		if (defender.buff( Daze.class) != null) defRoll *= 0.5f;
+		if (defender.buff(Shrink.class)!= null || defender.buff(TimedShrink.class)!= null) defRoll *= 0.8f;
+		for (ChampionEnemy buff : defender.buffs(ChampionEnemy.class)){
+			defRoll *= buff.evasionAndAccuracyFactor();
+		}
+		return defRoll;
+	}
+
 	final public static boolean hit( Char attacker, Char defender, boolean magic ) {
 		return hit(attacker, defender, magic ? 2f : 1f, magic);
 	}
@@ -855,6 +887,11 @@ public abstract class Char extends Actor {
 		for (ChampionEnemy buff : defender.buffs(ChampionEnemy.class)){
 			defRoll *= buff.evasionAndAccuracyFactor();
 		}
+
+		if (Dungeon.isChallenged(Challenges.NO_ACCURACY)){
+			return true;
+		}
+
 		defRoll *= AscensionChallenge.statModifier(defender);
 		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
 				&& Dungeon.hero.hasTalent(Talent.BLESS, Talent.POWER_WITHIN)
