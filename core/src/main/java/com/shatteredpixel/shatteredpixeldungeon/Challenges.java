@@ -94,8 +94,9 @@ public class Challenges {
 	public static final int RANDOM_HP           = 65536;
 	public static final int UNSTABLE_DAMAGE     = 131072;
 	public static final int MANY_MOBS           = 262144;
+	public static final int NO_HP               = 524288;
 
-	public static final int MAX_VALUE           = 524288;
+	public static final int MAX_VALUE           = 1048575;
 
 	public static final String[] NAME_IDS = {
 			"champion_enemies",
