@@ -3076,7 +3076,7 @@ public class Hero extends Char {
 				&& (visibleEnemies.size() == 0 || cell == pos)
 				&& !Dungeon.level.locked
 				&& !Dungeon.level.plants.containsKey(cell)
-				&& ((Dungeon.depth < 31 || Dungeon.branch == AbyssLevel.BRANCH) && Dungeon.level.getTransition(cell).type == LevelTransition.Type.REGULAR_ENTRANCE) ) {
+				&& (Dungeon.depth < 31 || Dungeon.branch == AbyssLevel.BRANCH || Dungeon.level.getTransition(cell).type == LevelTransition.Type.REGULAR_ENTRANCE) ) {
 
 			curAction = new HeroAction.LvlTransition( cell );
 			
