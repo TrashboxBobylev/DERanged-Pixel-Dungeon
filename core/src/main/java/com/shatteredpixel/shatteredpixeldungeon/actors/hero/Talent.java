@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Build;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Command;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EnhancedRings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.GreaterHaste;
@@ -63,7 +64,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ScrollEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SharpShooterBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SwordAura;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WandEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WeaponEnhance;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
@@ -130,6 +130,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.bow.Bow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.bow.BowWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.bow.GreatBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.bow.LongBow;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.bow.ShortBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.Gun;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -473,7 +474,7 @@ public enum Talent {
 	GUNNERS_INTUITION			(1,  6),	//총기를 장착 시 감정/습득 시 저주 여부 감정
 	SPEEDY_MOVE					(2,  6),	//적을 처음 공격하면 초신속 2/3턴
 	SAFE_RELOAD					(3,  6),	//재장전 시 3/5의 방어막을 얻음
-	CLOSE_COMBAT				(4,  6),	//총기 근접 공격력이 0-4/0-6 증가
+	CLOSE_COMBAT				(4,  6),	//총기 근접 공격력이 0-2/0-4 증가
 	//Gunner T2
 	INFINITE_BULLET_MEAL		(5,  6),	//식사에 1턴만 소모하고, 식사 시 2/3턴의 무한 탄환을 얻음
 	INSCRIBED_BULLET			(6,  6),	//주문서 사용 시 5/10개의 탄환을 얻음
@@ -527,7 +528,7 @@ public enum Talent {
 	//Samurai T2
 	CRITICAL_MEAL				(5, 7),	//식사에 1턴만 소모, 식사 시 다음 1/2회의 물리 공격에 반드시 치명타 발생
 	INSCRIBED_LETHALITY			(6, 7),	//주문서 사용 시 다음 1/2회의 물리 공격에 반드시 치명타 발생
-	UNEXPECTED_SLASH			(7, 7),	//적을 처음 공격하면 치명 확률 +10/20% 증가
+	UNEXPECTED_SLASH			(7, 7),	//납도 중 치명 확률 +10%/20% 증가
 	DRAGONS_EYE					(8, 7),	//납도 중 주변 반경 3/4타일 이내의 적 위치를 파악할 수 있게 됨
 	WEAPON_MASTERY				(9, 7),	//무기의 힘 요구 수치를 넘은 힘 1당 치명 확률 +1/+2%
 	CRITICAL_THROW				(10, 7),	//투척 무기와 탄환의 치명 확률이 +25/50% 증가
@@ -723,7 +724,7 @@ public enum Talent {
 	//Archer T1
 	FORCE_SAVING				(0, 11),
 	ARCHERS_INTUITION			(1, 11),
-	SURPRISE_PANIC				(2, 11),
+	LEG_SWEEP					(2, 11),
 	SURVIVAL_TECHNIQUE			(3, 11),
 	DEXTERITY					(4, 11),
 
@@ -733,7 +734,7 @@ public enum Talent {
 	NATURE_FRIENDLY				(7, 11),
 	PUSHBACK					(8, 11),
 	ARCHERS_FORESIGHT			(9, 11),
-	ROOTS_ENTWINE				(10, 11),
+	POWERFUL_CRIT				(10, 11),
 
 	//Archer T3
 	MAKESHIFT_BOW				(11, 11, 3),
@@ -1241,8 +1242,6 @@ public enum Talent {
 
 	//Samurai 1-3 meta
 	public static class DrawEnhanceMetaTracker extends Buff {}
-	//Samurai 2-3
-	public static class UnexpectedSlashTracker extends Buff {}
 
 	//Knight 1-1
 	public static class ArmorEmpower extends Buff {
@@ -1816,6 +1815,17 @@ public enum Talent {
 				} else {
 					level.drop(bow, Dungeon.hero.pos).sprite.drop();
 				}
+			}
+		}
+
+		if (talent == ARCHERS_INTUITION && hero.heroClass == HeroClass.ARCHER && hero.pointsInTalent(ARCHERS_INTUITION) == 2) {
+			BowWeapon bow = new ShortBow();
+			bow.identify();
+			if (bow.doPickUp(Dungeon.hero)) {
+				GLog.i(Messages.get(Dungeon.hero, "you_now_have", bow.name()));
+				hero.spend(-1);
+			} else {
+				level.drop(bow, Dungeon.hero.pos).sprite.drop();
 			}
 		}
 	}
@@ -2627,7 +2637,7 @@ public enum Talent {
 			hero.buff(ForceSavingTracker.class).detach();
 		}
 
-		if (enemy instanceof Mob && enemy.buff(SurprisePanicTracker.class) == null && hero.hasTalent(Talent.SURPRISE_PANIC, AMBUSH)) {
+		if (enemy instanceof Mob && enemy.buff(SurprisePanicTracker.class) == null && hero.hasTalent(Talent.LEG_SWEEP, AMBUSH) && !enemy.flying) {
 			if (((Mob)enemy).surprisedBy(hero)) {
 				new FlavourBuff() {
 					{
@@ -2635,7 +2645,7 @@ public enum Talent {
 					}
 
 					public boolean act() {
-						Buff.affect(target, Terror.class, 1+2*hero.pointsInTalent(Talent.SURPRISE_PANIC, AMBUSH));
+						Buff.affect(target, Cripple.class, 1+hero.pointsInTalent(Talent.LEG_SWEEP));
 						return super.act();
 					}
 				}.attachTo(enemy);
@@ -2837,7 +2847,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, SCAR_ATTACK, DOCTORS_INTUITION, FINISH_ATTACK, FIRST_AID_TREAT, BREAKTHROUGH);
 				break;
 			case ARCHER:
-				Collections.addAll(tierTalents, FORCE_SAVING, ARCHERS_INTUITION, SURPRISE_PANIC, SURVIVAL_TECHNIQUE, DEXTERITY);
+				Collections.addAll(tierTalents, FORCE_SAVING, ARCHERS_INTUITION, LEG_SWEEP, SURVIVAL_TECHNIQUE, DEXTERITY);
 				break;
 			case RAT_KING:
 				Collections.addAll(tierTalents, ROYAL_PRIVILEGE, ROYAL_INTUITION, KINGS_WISDOM, NOBLE_CAUSE, EXTRA_BULK, ROYAL_FOCUS, ROYAL_PERCEPTIVITY, AMBUSH, WELL_PROTECTED, EXTRA_POWER);
@@ -2887,7 +2897,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, HEALING_MEAL, RECYCLING, HIGH_POWER, RADIATION, STRONG_HEALPOWER, DIET);
 				break;
 			case ARCHER:
-				Collections.addAll(tierTalents, FIGHTING_MEAL, FULLY_POTION, NATURE_FRIENDLY, PUSHBACK, ARCHERS_FORESIGHT, ROOTS_ENTWINE);
+				Collections.addAll(tierTalents, FIGHTING_MEAL, FULLY_POTION, NATURE_FRIENDLY, PUSHBACK, ARCHERS_FORESIGHT, POWERFUL_CRIT);
 				break;
 			case RAT_KING:
 				Collections.addAll(tierTalents, ROYAL_MEAL, RESTORATION, POWER_WITHIN, KINGS_VISION, PURSUIT, ENERGY_SURGE,

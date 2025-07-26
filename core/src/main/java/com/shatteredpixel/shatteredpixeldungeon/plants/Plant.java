@@ -82,10 +82,6 @@ public abstract class Plant implements Bundlable {
 			Barkskin.conditionallyAppend(Dungeon.hero, 2, 1 + 2*(Dungeon.hero.pointsInTalent(Talent.NATURES_AID, Talent.NOBLE_CAUSE)));
 		}
 
-		if (ch instanceof Mob && Dungeon.hero.hasTalent(Talent.ROOTS_ENTWINE, Talent.KINGS_WRATH)) {
-			Buff.affect(ch, Roots.class, 1+Dungeon.hero.pointsInTalent(Talent.ROOTS_ENTWINE, Talent.KINGS_WRATH));
-		}
-
 		wither();
 		activate( ch );
 

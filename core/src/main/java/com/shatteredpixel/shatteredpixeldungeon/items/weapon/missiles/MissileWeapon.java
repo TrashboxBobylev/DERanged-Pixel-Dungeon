@@ -303,9 +303,9 @@ abstract public class MissileWeapon extends Weapon {
 			}
 		}
 
-
-
 		SharpShooterBuff.SharpShootingCoolDown.missileHit(attacker);
+
+		SharpShooterBuff.channel(attacker, defender, damage);
 
 		return super.proc(attacker, defender, damage);
 	}
@@ -536,8 +536,8 @@ abstract public class MissileWeapon extends Weapon {
 			info += " " + Messages.get(this, "unlimited_uses");
 		}
 
-		if (hero != null && hero.critChance(null, this) > 0) {
-			info += "\n\n" + Messages.get(Weapon.class, "critchance", Messages.decimalFormat("#.##", 100*hero.critChance(null, this)));
+		if (hero != null && hero.critChance(this) > 0) {
+			info += "\n\n" + Messages.get(Weapon.class, "critchance", Messages.decimalFormat("#.##", 100*hero.critChance(this)));
 		}
 
 		return info;

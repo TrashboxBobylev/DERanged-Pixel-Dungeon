@@ -424,7 +424,7 @@ public class Hero extends Char {
 		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE)){
 			HP = HT = 5;
 		}
-		
+
 		belongings = new Belongings( this );
 		
 		visibleEnemies = new ArrayList<>();
@@ -1142,6 +1142,17 @@ public class Hero extends Char {
 
 		if (!RingOfForce.fightingUnarmed(this)) {
 			dmg = wep.damageRoll( this );
+
+			if (wep instanceof Weapon) {
+				float randomFloat = Random.Float();
+				if (randomFloat < hero.critChance((Weapon)wep)) {
+					dmg = hero.criticalDamage(dmg, (Weapon)wep);
+				} else {
+					if (Sheath.isFlashSlash()) {
+						Buff.prolong(hero, Sheath.FlashSlashCooldown.class, (30-5*hero.pointsInTalent(Talent.STATIC_PREPARATION))-1);
+					}
+				}
+			}
 
 			if (!(wep instanceof MissileWeapon)) dmg += RingOfForce.armedDamageBonus(this);
 		} else {
@@ -2081,7 +2092,7 @@ public class Hero extends Char {
 		resting = fullRest;
 	}
 
-	public float critChance(final Char enemy, final Weapon wep) {
+	public float critChance(final Weapon wep) {
 		float chance = 0;
 
 		if (heroClass.is(HeroClass.SAMURAI)) {
@@ -2114,14 +2125,11 @@ public class Hero extends Char {
 			if (hasTalent(Talent.ACCELERATED_LETHALITY, Talent.RK_SLAYER)) {
 				chance += 0.1f*pointsInTalent(Talent.ACCELERATED_LETHALITY, Talent.RK_SLAYER);
 			}
-			chance += Math.max(0, 0.01f*(defenseSkill(enemy) - (4 + lvl)));
+			chance += Math.max(0, 0.01f*(defenseSkill(null) - (4 + lvl)));
 		}
 
-		if (enemy != null) {
-			if (hasTalent(Talent.UNEXPECTED_SLASH, Talent.KINGS_WRATH) && enemy.buff(Talent.UnexpectedSlashTracker.class) == null) {
-				chance += 0.1f*pointsInTalent(Talent.UNEXPECTED_SLASH, Talent.KINGS_WRATH);
-				Buff.affect(enemy, Talent.UnexpectedSlashTracker.class);
-			}
+		if (hasTalent(Talent.UNEXPECTED_SLASH, Talent.KINGS_WRATH) && buff(Sheath.Sheathing.class) != null) {
+			chance += 0.1f*pointsInTalent(Talent.UNEXPECTED_SLASH, Talent.KINGS_WRATH);
 		}
 
 		if (buff(Sheath.Sheathing.class) != null) {
@@ -2152,17 +2160,43 @@ public class Hero extends Char {
 		return GameMath.gate(0, chance, 2);
 	}
 
-	public int criticalDamage(int damage, Weapon wep, Char enemy) {
+	public int criticalDamage(int damage, Weapon wep) {
 		int max = wep.max();
 		if (STR() > wep.STRReq() && !(wep instanceof Gun.Bullet)) {
 			max += STR()-wep.STRReq();
 		}
-		float multi = 1f+Math.max(0, critChance(enemy, wep)-1);
+		float multi = 1f+Math.max(0, critChance(wep)-1);
 		int bonusDamage = 0;
 
 		damage = (int)(max * 0.75f + damage * 0.25f);
 
 		multi += 0.05f * pointsInTalent(Talent.LETHAL_POWER, Talent.RK_SLASHER);
+
+		if (hasTalent(Talent.POWERFUL_CRIT) && wep instanceof MissileWeapon) {
+			multi += 0.1f * pointsInTalent(Talent.POWERFUL_CRIT);
+		}
+
+		if (Sheath.isFlashSlash()) {
+			multi += 0.15f * hero.pointsInTalent(Talent.POWERFUL_SLASH);
+		}
+
+		Buff.affect(hero, Sheath.CriticalAttacking.class);
+		Buff.affect(hero, Sheath.CriticalAttack.class);
+
+		Awakening awakening = hero.buff(Awakening.class);
+		if (awakening != null && awakening.isAwaken()) {
+			if (hero.hasTalent(Talent.STABLE_BARRIER)) {
+				int shield = 1;
+				int maxShield = Math.round(hero.HT * 0.2f * hero.pointsInTalent(Talent.STABLE_BARRIER));
+				int curShield = 0;
+				if (hero.buff(Barrier.class) != null) curShield = hero.buff(Barrier.class).shielding();
+				shield = Math.min(shield, maxShield-curShield);
+				if (shield > 0) {
+					Buff.affect(hero, Barrier.class).incShield(shield);
+					hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(Dewdrop.class, "shield", shield) );
+				}
+			}
+		}
 
 		return Math.round(damage * multi) + bonusDamage;
 	}
@@ -2454,39 +2488,6 @@ public class Hero extends Char {
 				Sample.INSTANCE.play(Assets.Sounds.PUFF);
 
 				Dungeon.level.occupyCell(newEnemy);
-			}
-		}
-
-		if (wep instanceof Weapon) {
-			float randomFloat = Random.Float();
-			if (randomFloat < hero.critChance(enemy, (Weapon)wep)) {
-				damage = hero.criticalDamage(damage, (Weapon)wep, enemy);
-
-				Buff.affect(hero, Sheath.CriticalAttacking.class);
-				Buff.affect(enemy, Sheath.CriticalAttack.class);
-
-				if (Sheath.isFlashSlash()) {
-					damage = Math.round(damage * (1 + 0.15f * hero.pointsInTalent(Talent.POWERFUL_SLASH, Talent.RK_MASTER)));
-				}
-
-				Awakening awakening = hero.buff(Awakening.class);
-				if (awakening != null && awakening.isAwaken()) {
-					if (hero.hasTalent(Talent.STABLE_BARRIER, Talent.RK_SLAYER)) {
-						int shield = 1;
-						int maxShield = Math.round(hero.HT * 0.2f * hero.pointsInTalent(Talent.STABLE_BARRIER, Talent.RK_SLAYER));
-						int curShield = 0;
-						if (hero.buff(Barrier.class) != null) curShield = hero.buff(Barrier.class).shielding();
-						shield = Math.min(shield, maxShield-curShield);
-						if (shield > 0) {
-							Buff.affect(hero, Barrier.class).incShield(shield);
-							hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(Dewdrop.class, "shield", shield) );
-						}
-					}
-				}
-			} else {
-				if (Sheath.isFlashSlash()) {
-					Buff.prolong(hero, Sheath.FlashSlashCooldown.class, (30-5*hero.pointsInTalent(Talent.STATIC_PREPARATION, Talent.RK_MASTER))-1);
-				}
 			}
 		}
 
