@@ -52,12 +52,6 @@ public class Journal {
 		
 		loaded = true;
 	}
-
-	public static void forceLoad(Bundle bundle) {
-		Catalog.restore( bundle );
-		Bestiary.restore( bundle );
-		Document.restore( bundle );
-	}
 	
 	//package-private
 	static boolean saveNeeded = false;
