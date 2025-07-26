@@ -1149,7 +1149,7 @@ public class Hero extends Char {
 					dmg = hero.criticalDamage(dmg, (Weapon)wep);
 				} else {
 					if (Sheath.isFlashSlash()) {
-						Buff.prolong(hero, Sheath.FlashSlashCooldown.class, (30-5*hero.pointsInTalent(Talent.STATIC_PREPARATION))-1);
+						Buff.prolong(hero, Sheath.FlashSlashCooldown.class, (30-5*hero.pointsInTalent(Talent.STATIC_PREPARATION, Talent.RK_MASTER))-1);
 					}
 				}
 			}
@@ -2172,12 +2172,12 @@ public class Hero extends Char {
 
 		multi += 0.05f * pointsInTalent(Talent.LETHAL_POWER, Talent.RK_SLASHER);
 
-		if (hasTalent(Talent.POWERFUL_CRIT) && wep instanceof MissileWeapon) {
-			multi += 0.1f * pointsInTalent(Talent.POWERFUL_CRIT);
+		if (hasTalent(Talent.POWERFUL_CRIT, Talent.NOBLE_CALL) && wep instanceof MissileWeapon) {
+			multi += 0.1f * pointsInTalent(Talent.POWERFUL_CRIT, Talent.NOBLE_CALL);
 		}
 
 		if (Sheath.isFlashSlash()) {
-			multi += 0.15f * hero.pointsInTalent(Talent.POWERFUL_SLASH);
+			multi += 0.15f * hero.pointsInTalent(Talent.POWERFUL_SLASH, Talent.RK_MASTER);
 		}
 
 		Buff.affect(hero, Sheath.CriticalAttacking.class);
@@ -2185,9 +2185,9 @@ public class Hero extends Char {
 
 		Awakening awakening = hero.buff(Awakening.class);
 		if (awakening != null && awakening.isAwaken()) {
-			if (hero.hasTalent(Talent.STABLE_BARRIER)) {
+			if (hero.hasTalent(Talent.STABLE_BARRIER, Talent.RK_SLAYER)) {
 				int shield = 1;
-				int maxShield = Math.round(hero.HT * 0.2f * hero.pointsInTalent(Talent.STABLE_BARRIER));
+				int maxShield = Math.round(hero.HT * 0.2f * hero.pointsInTalent(Talent.STABLE_BARRIER, Talent.RK_SLAYER));
 				int curShield = 0;
 				if (hero.buff(Barrier.class) != null) curShield = hero.buff(Barrier.class).shielding();
 				shield = Math.min(shield, maxShield-curShield);

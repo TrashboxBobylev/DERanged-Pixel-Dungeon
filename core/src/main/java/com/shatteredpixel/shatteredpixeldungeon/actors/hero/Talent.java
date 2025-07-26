@@ -2645,7 +2645,7 @@ public enum Talent {
 					}
 
 					public boolean act() {
-						Buff.affect(target, Cripple.class, 1+hero.pointsInTalent(Talent.LEG_SWEEP));
+						Buff.affect(target, Cripple.class, 1+hero.pointsInTalent(Talent.LEG_SWEEP, AMBUSH));
 						return super.act();
 					}
 				}.attachTo(enemy);
