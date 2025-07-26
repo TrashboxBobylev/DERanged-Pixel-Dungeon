@@ -25,7 +25,7 @@ import java.util.Locale;
 
 public enum Languages {
 	KOREAN("한국어",      	"ko", 	Status.O_COMPLETE, null, null),
-	ENGLISH("english",      "",   	Status.X_UNFINISH, new String[]{"Cocoa(Hoto-Mocha)"}, new String[]{"Cocoa(Hoto-Mocha)", "ChatGPT", "CykoRex, TrashboxBobylev"}),
+	ENGLISH("english",      "",   	Status.O_COMPLETE, new String[]{"Cocoa(Hoto-Mocha)"}, new String[]{"Cocoa(Hoto-Mocha)", "ChatGPT", "CykoRex, TrashboxBobylev"}),
 	RUSSIAN("русский",      "ru", 	Status.X_UNFINISH, new String[]{"Dominowood371", "Alexandr Klimov", "Abama Abama", "Aleksey Petrenko"}, new String[]{"SPD's translators credit"}),
 	CHI_SMPL("简体中文",     "zh", 	Status.X_UNFINISH, new String[]{"Bindweed", "Eygy6556", "fadedwater", "nupnuts", "wangsenxing"}, new String[]{"SPD's translators credit"}),
 	SPANISH("español",      "es", 	Status.X_UNFINISH, new String[]{""}, new String[]{"SPD's translators credit"}),
