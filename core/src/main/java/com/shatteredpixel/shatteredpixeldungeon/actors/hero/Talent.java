@@ -1964,10 +1964,10 @@ public enum Talent {
 			}
 		}
 		if (hero.hasTalent(Talent.TOUGH_MEAL, ROYAL_FOCUS)) {
-			Buff.affect(hero, ArmorEmpower.class).set(3, 1+hero.pointsInTalent(Talent.TOUGH_MEAL));
+			Buff.affect(hero, ArmorEmpower.class).set(3, 1+hero.pointsInTalent(Talent.TOUGH_MEAL, ROYAL_FEAST));
 		}
 		if (hero.hasTalent(Talent.IMPREGNABLE_MEAL, ROYAL_FEAST)) {
-			Buff.affect(hero, ArmorEnhance.class).set(hero.pointsInTalent(Talent.IMPREGNABLE_MEAL), 3);
+			Buff.affect(hero, ArmorEnhance.class).set(hero.pointsInTalent(Talent.IMPREGNABLE_MEAL, ROYAL_FEAST), 3);
 		}
 		if (hero.hasTalent(Talent.HEALING_MEAL, ROYAL_FEAST)) { // 식사 시 디버프 제거 / 디버프가 없을 경우 3의 체력을 회복
 			if (hero.isHeroDebuffed()) {
