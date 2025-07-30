@@ -171,7 +171,7 @@ public class AbyssLevel extends RegularLevel {
 
     @Override
     public boolean activateTransition(Hero hero, LevelTransition transition) {
-        if (transition.type == LevelTransition.Type.SURFACE){
+        if (transition.type == LevelTransition.Type.SURFACE || (transition.type == LevelTransition.Type.REGULAR_ENTRANCE && Dungeon.depth == 1)){
             Game.runOnRenderThread(new Callback() {
                 @Override
                 public void call() {
