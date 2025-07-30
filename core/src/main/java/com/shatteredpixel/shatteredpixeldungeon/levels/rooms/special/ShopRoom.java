@@ -54,6 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.spells.Alchemize;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.TippedDart;
+import com.shatteredpixel.shatteredpixeldungeon.levels.AbyssLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -224,40 +225,48 @@ public class ShopRoom extends SpecialRoom {
 		ArrayList<Item> itemsToSpawn = new ArrayList<>();
 
 		MeleeWeapon w;
-		switch (Dungeon.depth) {
-		case 6: default:
-			w = (MeleeWeapon) Generator.random(Generator.wepTiers[1]);
-			itemsToSpawn.add( Generator.random(Generator.misTiers[1]).quantity(2).identify(false) );
-			itemsToSpawn.add( new LeatherArmor().identify(false) );
-			break;
-			
-		case 11:
-			w = (MeleeWeapon) Generator.random(Generator.wepTiers[2]);
-			itemsToSpawn.add( Generator.random(Generator.misTiers[2]).quantity(2).identify(false) );
-			itemsToSpawn.add( new MailArmor().identify(false) );
-			break;
-			
-		case 16:
-			w = (MeleeWeapon) Generator.random(Generator.wepTiers[3]);
-			itemsToSpawn.add( Generator.random(Generator.misTiers[3]).quantity(2).identify(false) );
-			itemsToSpawn.add( new ScaleArmor().identify(false) );
-			break;
+        if (Dungeon.branch != AbyssLevel.BRANCH) {
+            switch (Dungeon.depth) {
+                case 6:
+                default:
+                    w = (MeleeWeapon) Generator.random(Generator.wepTiers[1]);
+                    itemsToSpawn.add(Generator.random(Generator.misTiers[1]).quantity(2).identify(false));
+                    itemsToSpawn.add(new LeatherArmor().identify(false));
+                    break;
 
-		case 20: case 21:
-			w = (MeleeWeapon) Generator.random(Generator.wepTiers[4]);
-			itemsToSpawn.add( Generator.random(Generator.misTiers[4]).quantity(2).identify(false) );
-			itemsToSpawn.add( new PlateArmor().identify(false) );
-			itemsToSpawn.add( new Torch() );
-			itemsToSpawn.add( new Torch() );
-			itemsToSpawn.add( new Torch() );
-			break;
+                case 11:
+                    w = (MeleeWeapon) Generator.random(Generator.wepTiers[2]);
+                    itemsToSpawn.add(Generator.random(Generator.misTiers[2]).quantity(2).identify(false));
+                    itemsToSpawn.add(new MailArmor().identify(false));
+                    break;
 
-		case 26:
-			w = (MeleeWeapon) Generator.random(Generator.wepTiers[4]);
-			itemsToSpawn.add( Generator.random(Generator.misTiers[4]).quantity(2).identify(false) );
-			itemsToSpawn.add( new PlateArmor().upgrade(1).identify(false) );
-			break;
-		}
+                case 16:
+                    w = (MeleeWeapon) Generator.random(Generator.wepTiers[3]);
+                    itemsToSpawn.add(Generator.random(Generator.misTiers[3]).quantity(2).identify(false));
+                    itemsToSpawn.add(new ScaleArmor().identify(false));
+                    break;
+
+                case 20:
+                case 21:
+                    w = (MeleeWeapon) Generator.random(Generator.wepTiers[4]);
+                    itemsToSpawn.add(Generator.random(Generator.misTiers[4]).quantity(2).identify(false));
+                    itemsToSpawn.add(new PlateArmor().identify(false));
+                    itemsToSpawn.add(new Torch());
+                    itemsToSpawn.add(new Torch());
+                    itemsToSpawn.add(new Torch());
+                    break;
+
+                case 26:
+                    w = (MeleeWeapon) Generator.random(Generator.wepTiers[4]);
+                    itemsToSpawn.add(Generator.random(Generator.misTiers[4]).quantity(2).identify(false));
+                    itemsToSpawn.add(new PlateArmor().upgrade(1).identify(false));
+                    break;
+            }
+        } else {
+            w = (MeleeWeapon) Generator.random(Generator.wepTiers[5]);
+            itemsToSpawn.add(Generator.random(Generator.misTiers[4]).quantity(6).identify(false));
+            itemsToSpawn.add(new PlateArmor().upgrade(Dungeon.depth % 5 + 2).identify(false));
+        }
 		w.enchant(null);
 		w.cursed = false;
 		w.level(0);
