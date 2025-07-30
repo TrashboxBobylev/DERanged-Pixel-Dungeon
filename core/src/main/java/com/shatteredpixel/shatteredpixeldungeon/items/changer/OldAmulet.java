@@ -135,6 +135,7 @@ public class OldAmulet extends Item {
                     Sample.INSTANCE.play(Assets.Sounds.HIT_CRUSH, 1f, 0.7f);
                     Sample.INSTANCE.play(Assets.Sounds.BOSS, 1f, 0.7f);
                     Splash.at( DungeonTilemap.tileCenterToWorld( hero.pos ), -PointF.PI/2, PointF.PI/2, 0xb06742, 50, 0.002f);
+                    detach(Dungeon.hero.belongings.backpack);
                 } else {
                     GameScene.selectItem( itemSelector );
                 }
