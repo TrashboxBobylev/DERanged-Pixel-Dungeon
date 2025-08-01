@@ -55,8 +55,8 @@ public class Statue extends Mob {
 	public Statue() {
 		super();
 		
-		HP = HT = 15 + Dungeon.depth * 5;
-		defenseSkill = 4 + Dungeon.depth;
+		HP = HT = 15 + Dungeon.scalingDepth() * 5;
+		defenseSkill = 4 + Dungeon.scalingDepth();
 	}
 
 	public void createWeapon( boolean useDecks ){
@@ -91,7 +91,7 @@ public class Statue extends Mob {
 	
 	@Override
 	public int attackSkill( Char target ) {
-		return (int)((9 + Dungeon.depth) * weapon.accuracyFactor( this, target ));
+		return (int)((9 + Dungeon.scalingDepth()) * weapon.accuracyFactor( this, target ));
 	}
 	
 	@Override
@@ -106,7 +106,7 @@ public class Statue extends Mob {
 
 	@Override
 	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, Dungeon.depth + weapon.defenseFactor(this));
+		return super.drRoll() + Random.NormalIntRange(0, Dungeon.scalingDepth() + weapon.defenseFactor(this));
 	}
 	
 	@Override
