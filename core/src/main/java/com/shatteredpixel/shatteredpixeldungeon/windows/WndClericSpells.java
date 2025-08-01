@@ -56,6 +56,8 @@ public class WndClericSpells extends Window {
 
 	public static int BTN_SIZE = 20;
 
+    private static final int SPELLS_PER_ROW = 5;
+
 	public WndClericSpells(HolyTome tome, Hero cleric, boolean info){
 
 		IconTitle title;
@@ -90,54 +92,47 @@ public class WndClericSpells extends Window {
 		msg.setPos(0, title.bottom()+4);
 		add(msg);
 
-		int top = (int)msg.bottom()+4;
+        int top = (int)msg.bottom()+4;
 
-		for (int i = 1; i <= Talent.MAX_TALENT_TIERS; i++) {
+        for (int i = 1; i <= Talent.MAX_TALENT_TIERS; i++) {
 
-			ArrayList<ClericSpell> spells = ClericSpell.getSpellList(cleric, i);
+            ArrayList<ClericSpell> spells = ClericSpell.getSpellList(cleric, i);
 
-			if (!spells.isEmpty() && i != 1){
-				top += BTN_SIZE + 2;
-				ColorBlock sep = new ColorBlock(WIDTH, 1, 0xFF000000);
-				sep.y = top;
-				add(sep);
-				top += 3;
-			}
+            if (!spells.isEmpty() && i != 1){
+                top += BTN_SIZE + 2;
+                ColorBlock sep = new ColorBlock(WIDTH, 1, 0xFF000000);
+                sep.y = top;
+                add(sep);
+                top += 3;
+            }
 
-			ArrayList<IconButton> spellBtns = new ArrayList<>();
+            ArrayList<IconButton> spellBtns = new ArrayList<>();
 
-			for (ClericSpell spell : spells) {
-				IconButton spellBtn = new SpellButton(spell, tome, info);
-				add(spellBtn);
-				spellBtns.add(spellBtn);
-			}
+            for (ClericSpell spell : spells) {
+                IconButton spellBtn = new SpellButton(spell, tome, info);
+                add(spellBtn);
+                spellBtns.add(spellBtn);
+            }
 
-			int btnNumber = spellBtns.size();
-			if (btnNumber > 5) {
-				int firstHalf = Math.round(btnNumber / 2f); //총 버튼 수의 절반. 홀수일 경우 윗 줄이 더 큰 값을 가짐.
-				int secondHalf = btnNumber - firstHalf; //총 버튼 수의 절반. 홀수일 경우 아랫 줄이 더 작은 값을 가짐.
-				int arrayedBtn = 0;
+            int left = 0;
 
-				int left = 2 + (WIDTH - firstHalf * (BTN_SIZE + 4)) / 2; //윗 줄의 왼쪽 좌표
-				for (IconButton btn : spellBtns) {
-					btn.setRect(left, top, BTN_SIZE, BTN_SIZE);
-					arrayedBtn++;
-					left += btn.width() + 4;
-					if (arrayedBtn == firstHalf) {
-						top += BTN_SIZE + 2;
-						left = 2 + (WIDTH - secondHalf * (BTN_SIZE + 4)) / 2; //아랫 줄의 왼쪽 좌표
-					}
-				}
-			} else {
-				int left = 2 + (WIDTH - spellBtns.size() * (BTN_SIZE + 4)) / 2;
-				for (IconButton btn : spellBtns) {
-					btn.setRect(left, top, BTN_SIZE, BTN_SIZE);
-					left += btn.width() + 4;
-				}
-			}
-		}
+            boolean firstRow = true;
+            int leftThisRow = 1;
+            int remaining = spellBtns.size();
+            for (IconButton btn : spellBtns) {
+                if (--leftThisRow == 0) {
+                    // don't bother splitting them up, just put the new one below
+                    remaining -= leftThisRow = Math.min(SPELLS_PER_ROW, remaining);
+                    left = 2 + (WIDTH - leftThisRow * (BTN_SIZE + 4)) / 2;
+                    if (firstRow) firstRow = false; else top += BTN_SIZE + 2;
+                }
+                btn.setRect(left, top, BTN_SIZE, BTN_SIZE);
+                left += BTN_SIZE + 4;
+            }
 
-		resize(WIDTH, top + BTN_SIZE);
+        }
+
+        resize(WIDTH, top + BTN_SIZE);
 
 		//if we are on mobile, offset the window down to just above the toolbar
 		if (SPDSettings.interfaceSize() != 2){
