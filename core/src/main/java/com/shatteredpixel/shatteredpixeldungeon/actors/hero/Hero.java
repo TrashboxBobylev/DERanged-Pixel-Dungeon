@@ -2592,7 +2592,7 @@ public class Hero extends Char {
 				&& buff(BodyForm.BodyFormBuff.class).glyph().getClass() == cls){
 			lvl = belongings.armor() != null ? belongings.armor.buffedLvl() : 0;
 		}
-        if (belongings.getItem(KnightsShield.class) != null){
+        if (belongings.getItem(KnightsShield.class) != null && belongings.getItem(KnightsShield.class).hasGlyph(cls, this)){
             lvl = Math.max(0, lvl);
             lvl += belongings.getItem(KnightsShield.class).buffedLvl();
         }
