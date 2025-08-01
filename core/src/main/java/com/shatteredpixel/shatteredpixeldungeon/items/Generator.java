@@ -738,6 +738,7 @@ public class Generator {
 					MailArmor.class,
 					ScaleArmor.class,
 					PlateArmor.class,
+                    PlateArmor.class,
 					WarriorArmor.class,
 					MageArmor.class,
 					RogueArmor.class,
