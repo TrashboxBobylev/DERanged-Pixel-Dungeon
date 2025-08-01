@@ -21,20 +21,16 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.depth;
-
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ResearcherSprite;
 import com.watabou.utils.Random;
-import com.watabou.utils.Reflection;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.depth;
 
 public class Researcher extends Mob {
 
@@ -46,7 +42,7 @@ public class Researcher extends Mob {
 		viewDistance = Light.DISTANCE;
 
 		EXP = 14;
-		maxLvl = 30;
+		maxLvl = 35;
 
 		loot = Generator.Category.POTION;
 		lootChance = 0.5f;
