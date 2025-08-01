@@ -2584,15 +2584,19 @@ public class Hero extends Char {
 
 	@Override
 	public int glyphLevel(Class<? extends Armor.Glyph> cls) {
+        int lvl = super.glyphLevel(cls);
 		if (belongings.armor() != null && belongings.armor().hasGlyph(cls, this)){
-			return Math.max(super.glyphLevel(cls), belongings.armor.buffedLvl());
+			lvl = Math.max(lvl, belongings.armor.buffedLvl());
 		} else if (buff(BodyForm.BodyFormBuff.class) != null
 				&& buff(BodyForm.BodyFormBuff.class).glyph() != null
 				&& buff(BodyForm.BodyFormBuff.class).glyph().getClass() == cls){
-			return belongings.armor() != null ? belongings.armor.buffedLvl() : 0;
-		} else {
-			return super.glyphLevel(cls);
+			lvl = belongings.armor() != null ? belongings.armor.buffedLvl() : 0;
 		}
+        if (belongings.getItem(KnightsShield.class) != null){
+            lvl = Math.max(0, lvl);
+            lvl += belongings.getItem(KnightsShield.class).buffedLvl();
+        }
+        return lvl;
 	}
 
 	@Override
