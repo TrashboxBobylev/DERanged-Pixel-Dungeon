@@ -3139,6 +3139,9 @@ public class Hero extends Char {
 					buff(HallowedGround.HallowedFurrowTracker.class).detach();
 				}
 			}
+            if (buff(Pray.class) != null && this.exp >= Pray.EXP_FOR_PRAY){
+                ActionIndicator.setAction(buff(Pray.class));
+            }
 		}
 		
 		boolean levelUp = false;
