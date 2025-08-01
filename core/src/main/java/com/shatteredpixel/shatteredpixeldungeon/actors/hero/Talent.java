@@ -57,6 +57,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PhysicalEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Pray;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RadioactiveMutation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
@@ -1646,6 +1647,10 @@ public enum Talent {
 		if (talent == PARRY || talent == NOBLE_CALL) {
 			Buff.affect(hero, ParryTracker.class);
 		}
+
+        if (talent == RK_ASSASSIN && hero.invisible > 0){
+            Buff.affect(hero, Preparation.class);
+        }
 
 		if (talent  == RK_ENGINEER) {
 			Buff.affect(hero, Build.class);

@@ -622,7 +622,7 @@ public class MeleeWeapon extends Weapon {
 				partialCharge = 0;
 			}
 
-			if (ActionIndicator.action != this && Dungeon.hero.subClass.is(HeroSubClass.CHAMPION) || Dungeon.hero.subClass.is(HeroSubClass.FENCER)) {
+			if (ActionIndicator.action != this && (Dungeon.hero.subClass.is(HeroSubClass.CHAMPION) || Dungeon.hero.subClass.is(HeroSubClass.FENCER))) {
 				ActionIndicator.setAction(this);
 			}
 
@@ -748,7 +748,7 @@ public class MeleeWeapon extends Weapon {
 
 		@Override
 		public boolean usable() {
-			return target == hero && hero.subClass.is(HeroSubClass.CHAMPION);
+			return target == hero && (hero.subClass.is(HeroSubClass.CHAMPION) || hero.subClass.is(HeroSubClass.FENCER));
 		}
 
 		@Override

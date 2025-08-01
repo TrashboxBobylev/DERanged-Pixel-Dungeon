@@ -236,6 +236,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
@@ -2245,114 +2246,112 @@ public class Hero extends Char {
 			Buff.affect(hero, Fatigue.class).hit(true);
 		}
 		
-		switch (subClass) {
-			case SNIPER:
-				if (wep instanceof MissileWeapon && !(wep instanceof SpiritBow.SpiritArrow) && enemy != this) {
-					Actor.add(new Actor() {
+		if (isSubclassedLoosely(HeroSubClass.SNIPER)) {
+            if (wep instanceof MissileWeapon && !(wep instanceof SpiritBow.SpiritArrow) && enemy != this) {
+                Actor.add(new Actor() {
 
-						{
-							actPriority = VFX_PRIO;
-						}
+                    {
+                        actPriority = VFX_PRIO;
+                    }
 
-						@Override
-						protected boolean act() {
-							if (enemy.isAlive()) {
-								if (hasTalent(Talent.SHARED_UPGRADES, Talent.RK_SNIPER)){
-								int bonusTurns = wep.buffedLvl();
-								// bonus dmg is 2.5% x talent lvl x weapon level x weapon tier
-								float bonusDmg = wep.buffedLvl() * ((MissileWeapon) wep).tier * pointsInTalent(Talent.SHARED_UPGRADES, Talent.RK_SNIPER) * 0.025f;
-									Buff.prolong(Hero.this, SnipersMark.class, SnipersMark.DURATION + bonusTurns).set(enemy.id(), bonusDmg);
-							} else {
-								Buff.prolong(Hero.this, SnipersMark.class, SnipersMark.DURATION).set(enemy.id(), 0);
-							}
-							}
-							Actor.remove(this);
-							return true;
-						}
-					});
-				}
-				if (hero.hasTalent(Talent.KICK, Talent.RK_SNIPER)
-						&& enemy.buff(PinCushion.class) != null
-						&& level.adjacent(hero.pos, enemy.pos)
-						&& hero.buff(Talent.KickCooldown.class) == null) {
-					Item item = enemy.buff(PinCushion.class).grabOne();
-					if (item.doPickUp(hero, enemy.pos)){
-						hero.spend(-1); //attacking enemy already takes a turn
-					} else {
-						GLog.w(Messages.get(this, "cant_grab"));
-						Dungeon.level.drop(item, enemy.pos).sprite.drop();
-					}
-					Ballistica trajectory = new Ballistica(hero.pos, enemy.pos, Ballistica.STOP_TARGET);
-					trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
-					int dist = hero.pointsInTalent(Talent.KICK, Talent.RK_SNIPER);
-					WandOfBlastWave.throwChar(enemy, trajectory, dist, true, false ,hero.getClass());
-					Buff.affect(hero, Talent.KickCooldown.class, 10f);
-				}
-				if (wep instanceof MissileWeapon
-						&& hero.hasTalent(Talent.SHOOTING_EYES, Talent.RK_SNIPER)
-						&& enemy.buff(Talent.ShootingEyesTracker.class) == null) {
-					if (Random.Float() < hero.pointsInTalent(Talent.SHOOTING_EYES, Talent.RK_SNIPER)/3f) {
-						Buff.affect(enemy, Blindness.class, 2f);
-					}
-					Buff.affect(enemy, Talent.ShootingEyesTracker.class);
-				}
-				if (wep instanceof MissileWeapon
-						&& hero.hasTalent(Talent.TARGET_SPOTTING, Talent.RK_SNIPER)
-						&& hero.buff(SnipersMark.class) != null
-						&& hero.buff(SnipersMark.class).object == enemy.id()) {
-					damage *= 1+0.1f*hero.pointsInTalent(Talent.TARGET_SPOTTING, Talent.RK_SNIPER);
-				}
-				break;
-			case FIGHTER:
-				if (wep == null && Random.Int(3) < hero.pointsInTalent(Talent.QUICK_STEP, Talent.RK_FIGHTER)) {
-					Buff.prolong(hero, Talent.QuickStep.class, 1.0001f);
-				}
-				if (wep == null && hero.hasTalent(Talent.RING_KNUCKLE, Talent.RK_FIGHTER) && hero.buff(RingOfForce.Force.class) == null) {
-					Buff.prolong(hero, EnhancedRingsCombo.class, (Dungeon.hero.pointsInTalent(Talent.RING_KNUCKLE, Talent.RK_FIGHTER) >= 2) ? 2f : 1f).hit();
-					hero.updateHT(false);
-					updateQuickslot();
-				}
-				if (wep == null && Random.Float() < hero.pointsInTalent(Talent.MYSTICAL_PUNCH, Talent.RK_FIGHTER)/3f) {
-					if (hero.belongings.ring != null) {
-						damage *= Ring.onHit(hero, enemy, damage, Ring.ringTypes.get(hero.belongings.ring.getClass()));
-					}
-					if (hero.belongings.misc instanceof Ring) {
-						damage *= Ring.onHit(hero, enemy, damage, Ring.ringTypes.get(hero.belongings.misc.getClass()));
-					}
-				}
-				break;
+                    @Override
+                    protected boolean act() {
+                        if (enemy.isAlive()) {
+                            if (hasTalent(Talent.SHARED_UPGRADES, Talent.RK_SNIPER)) {
+                                int bonusTurns = wep.buffedLvl();
+                                // bonus dmg is 2.5% x talent lvl x weapon level x weapon tier
+                                float bonusDmg = wep.buffedLvl() * ((MissileWeapon) wep).tier * pointsInTalent(Talent.SHARED_UPGRADES, Talent.RK_SNIPER) * 0.025f;
+                                Buff.prolong(Hero.this, SnipersMark.class, SnipersMark.DURATION + bonusTurns).set(enemy.id(), bonusDmg);
+                            } else {
+                                Buff.prolong(Hero.this, SnipersMark.class, SnipersMark.DURATION).set(enemy.id(), 0);
+                            }
+                        }
+                        Actor.remove(this);
+                        return true;
+                    }
+                });
+            }
+            if (hero.hasTalent(Talent.KICK, Talent.RK_SNIPER)
+                    && enemy.buff(PinCushion.class) != null
+                    && level.adjacent(hero.pos, enemy.pos)
+                    && hero.buff(Talent.KickCooldown.class) == null) {
+                Item item = enemy.buff(PinCushion.class).grabOne();
+                if (item.doPickUp(hero, enemy.pos)) {
+                    hero.spend(-1); //attacking enemy already takes a turn
+                } else {
+                    GLog.w(Messages.get(this, "cant_grab"));
+                    Dungeon.level.drop(item, enemy.pos).sprite.drop();
+                }
+                Ballistica trajectory = new Ballistica(hero.pos, enemy.pos, Ballistica.STOP_TARGET);
+                trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
+                int dist = hero.pointsInTalent(Talent.KICK, Talent.RK_SNIPER);
+                WandOfBlastWave.throwChar(enemy, trajectory, dist, true, false, hero.getClass());
+                Buff.affect(hero, Talent.KickCooldown.class, 10f);
+            }
+            if (wep instanceof MissileWeapon
+                    && hero.hasTalent(Talent.SHOOTING_EYES, Talent.RK_SNIPER)
+                    && enemy.buff(Talent.ShootingEyesTracker.class) == null) {
+                if (Random.Float() < hero.pointsInTalent(Talent.SHOOTING_EYES, Talent.RK_SNIPER) / 3f) {
+                    Buff.affect(enemy, Blindness.class, 2f);
+                }
+                Buff.affect(enemy, Talent.ShootingEyesTracker.class);
+            }
+            if (wep instanceof MissileWeapon
+                    && hero.hasTalent(Talent.TARGET_SPOTTING, Talent.RK_SNIPER)
+                    && hero.buff(SnipersMark.class) != null
+                    && hero.buff(SnipersMark.class).object == enemy.id()) {
+                damage *= 1 + 0.1f * hero.pointsInTalent(Talent.TARGET_SPOTTING, Talent.RK_SNIPER);
+            }
+        }
+		if (isSubclassedLoosely(HeroSubClass.FIGHTER)) {
+            if (wep == null && Random.Int(3) < hero.pointsInTalent(Talent.QUICK_STEP, Talent.RK_FIGHTER)) {
+                Buff.prolong(hero, Talent.QuickStep.class, 1.0001f);
+            }
+            if (wep == null && hero.hasTalent(Talent.RING_KNUCKLE, Talent.RK_FIGHTER) && hero.buff(RingOfForce.Force.class) == null) {
+                Buff.prolong(hero, EnhancedRingsCombo.class, (Dungeon.hero.pointsInTalent(Talent.RING_KNUCKLE, Talent.RK_FIGHTER) >= 2) ? 2f : 1f).hit();
+                hero.updateHT(false);
+                updateQuickslot();
+            }
+            if (wep == null && Random.Float() < hero.pointsInTalent(Talent.MYSTICAL_PUNCH, Talent.RK_FIGHTER) / 3f) {
+                if (hero.belongings.ring != null) {
+                    damage *= Ring.onHit(hero, enemy, damage, Ring.ringTypes.get(hero.belongings.ring.getClass()));
+                }
+                if (hero.belongings.misc instanceof Ring) {
+                    damage *= Ring.onHit(hero, enemy, damage, Ring.ringTypes.get(hero.belongings.misc.getClass()));
+                }
+            }
+        }
+        if (isSubclassedLoosely(HeroSubClass.CHAMPION)) {
+            if (hero.belongings.weapon != null && hero.belongings.secondWep != null
+                    && hero.pointsInTalent(Talent.TWIN_SWORD, Talent.RK_CHAMPION) > 1
+                    && hero.belongings.weapon.getClass() == hero.belongings.secondWep.getClass()) {
+                KindOfWeapon other = hero.belongings.secondWep;
+                if (hero.belongings.secondWep == wep) {
+                    other = hero.belongings.weapon;
+                }
+                damage = other.proc(this, enemy, damage);
+            }
+        }
+		if (isSubclassedLoosely(HeroSubClass.VETERAN)) {
+            if (level.adjacent(enemy.pos, pos) && hero.buff(Tackle.TackleTracker.class) == null) {
+                Actor.add(new Actor() {
 
-			case CHAMPION:
-				if (hero.belongings.weapon != null && hero.belongings.secondWep != null
-						&& hero.pointsInTalent(Talent.TWIN_SWORD, Talent.RK_CHAMPION) > 1
-						&& hero.belongings.weapon.getClass() == hero.belongings.secondWep.getClass()) {
-					KindOfWeapon other = hero.belongings.secondWep;
-					if (hero.belongings.secondWep == wep)  {
-						other = hero.belongings.weapon;
-					}
-					damage = other.proc( this, enemy, damage );
-				}
-				break;
-			case VETERAN:
-				if (level.adjacent(enemy.pos, pos) && hero.buff(Tackle.TackleTracker.class) == null) {
-					Actor.add(new Actor() {
+                    {
+                        actPriority = VFX_PRIO;
+                    }
 
-						{
-							actPriority = VFX_PRIO;
-						}
-
-						@Override
-						protected boolean act() {
-							if (enemy.isAlive()) {
-								Buff.prolong(Hero.this, Tackle.class, 1).set(enemy.id());
-							}
-							Actor.remove(this);
-							return true;
-						}
-					});
-				}
-				break;
-			case OUTLAW:
+                    @Override
+                    protected boolean act() {
+                        if (enemy.isAlive()) {
+                            Buff.prolong(Hero.this, Tackle.class, 1).set(enemy.id());
+                        }
+                        Actor.remove(this);
+                        return true;
+                    }
+                });
+            }
+        }
+		if (isSubclassedLoosely(HeroSubClass.OUTLAW)){
 				if (wep instanceof Gun.Bullet) {
 					if (hero.hasTalent(Talent.HEADSHOT, Talent.RK_OUTLAW) && Random.Float() < 0.01f*hero.pointsInTalent(Talent.HEADSHOT, Talent.RK_OUTLAW)) {
 						if (!Char.hasProp(enemy, Property.BOSS) && !Char.hasProp(enemy, Property.MINIBOSS) && enemy.alignment == Alignment.ENEMY) {
@@ -2396,8 +2395,6 @@ public class Hero extends Char {
 						hero.buff(RouletteOfDeath.class).detach();
 					}
 				}
-				break;
-			default:
 		}
 
 		if (Dungeon.isChallenged(Challenges.MUTATION) //돌연변이 챌린지 활성화 시

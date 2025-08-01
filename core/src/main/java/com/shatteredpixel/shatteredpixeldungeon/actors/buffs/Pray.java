@@ -55,7 +55,7 @@ public class Pray extends Buff implements ActionIndicator.Action {
 
     @Override
     public boolean usable() {
-        return hero != null && hero.exp >= 5;
+        return hero != null && hero.exp >= EXP_FOR_PRAY;
     }
 
     @Override
@@ -106,7 +106,7 @@ public class Pray extends Buff implements ActionIndicator.Action {
     public boolean attachTo(Char target) {
         if (super.attachTo(target)){
             if (hero != null) {
-                if (hero.subClass.is(HeroSubClass.CRUSADER)) {
+                if (hero.isSubclassedLoosely(HeroSubClass.CRUSADER)) {
                     ActionIndicator.setAction(this);
                 }
             }

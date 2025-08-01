@@ -747,7 +747,7 @@ public class Gun extends MeleeWeapon {
 
 		@Override
 		public float castDelay(Char user, int dst) {
-			if (hero.subClass == HeroSubClass.GUNSLINGER) {
+			if (hero.subClass.is(HeroSubClass.GUNSLINGER)) {
 				if (user instanceof Hero && ((Hero) user).justMoved)  return 0;
 				else                                                  return delayFactor( user );
 			} else {
