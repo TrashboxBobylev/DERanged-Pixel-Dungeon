@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -40,7 +41,7 @@ public class Cloaking extends Invisibility {
 	
 	@Override
 	public boolean attachTo( Char target ) {
-		if (Dungeon.hero.pointsInTalent(Talent.STEALTH_MASTER, Talent.RK_SPECIALIST) < 2 && Dungeon.level != null) {
+		if (target instanceof Hero && ((Hero) target).pointsInTalent(Talent.STEALTH_MASTER, Talent.RK_SPECIALIST) < 2 && Dungeon.level != null) {
 			for (Mob m : Dungeon.level.mobs) {
 				if (Dungeon.level.adjacent(m.pos, target.pos) && m.alignment != target.alignment) {
 					return false;

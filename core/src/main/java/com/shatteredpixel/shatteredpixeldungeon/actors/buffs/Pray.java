@@ -105,8 +105,8 @@ public class Pray extends Buff implements ActionIndicator.Action {
     @Override
     public boolean attachTo(Char target) {
         if (super.attachTo(target)){
-            if (hero != null) {
-                if (hero.isSubclassedLoosely(HeroSubClass.CRUSADER)) {
+            if (target instanceof Hero) {
+                if (((Hero) target).isSubclassedLoosely(HeroSubClass.CRUSADER)) {
                     ActionIndicator.setAction(this);
                 }
             }

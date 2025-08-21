@@ -4,6 +4,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.building.Barricade;
@@ -55,8 +56,8 @@ public class Build extends Buff implements ActionIndicator.Action {
     @Override
     public boolean attachTo(Char target) {
         if (super.attachTo(target)){
-            if (hero != null) {
-                if (hero.subClass.is(HeroSubClass.ENGINEER)) {
+            if (target instanceof Hero) {
+                if (((Hero) target).isSubclassedLoosely(HeroSubClass.ENGINEER)) {
                     ActionIndicator.setAction(this);
                 }
             }
