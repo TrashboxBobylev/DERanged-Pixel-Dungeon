@@ -228,45 +228,44 @@ public class ShopRoom extends SpecialRoom {
 		MeleeWeapon w;
 		MissileWeapon m;
         if (Dungeon.branch != AbyssLevel.BRANCH) {
-
             switch (Dungeon.depth) {
-		case 6: default:
-			w = (MeleeWeapon) Generator.random(Generator.wepTiers[1]);
-			m = (MissileWeapon) Generator.random(Generator.misTiers[1]);
-			itemsToSpawn.add( new LeatherArmor().identify(false) );
-			break;
+            case 6: default:
+                w = (MeleeWeapon) Generator.random(Generator.wepTiers[1]);
+                m = (MissileWeapon) Generator.random(Generator.misTiers[1]);
+                itemsToSpawn.add( new LeatherArmor().identify(false) );
+                break;
 
-		case 11:
-			w = (MeleeWeapon) Generator.random(Generator.wepTiers[2]);
-			m = (MissileWeapon) Generator.random(Generator.misTiers[2]);
-			itemsToSpawn.add( new MailArmor().identify(false) );
-			break;
+            case 11:
+                w = (MeleeWeapon) Generator.random(Generator.wepTiers[2]);
+                m = (MissileWeapon) Generator.random(Generator.misTiers[2]);
+                itemsToSpawn.add( new MailArmor().identify(false) );
+                break;
 
-		case 16:
-			w = (MeleeWeapon) Generator.random(Generator.wepTiers[3]);
-			m = (MissileWeapon) Generator.random(Generator.misTiers[3]);
-			itemsToSpawn.add( new ScaleArmor().identify(false) );
-			break;
+            case 16:
+                w = (MeleeWeapon) Generator.random(Generator.wepTiers[3]);
+                m = (MissileWeapon) Generator.random(Generator.misTiers[3]);
+                itemsToSpawn.add( new ScaleArmor().identify(false) );
+                break;
 
-                case 20:
-                case 21:
-                    w = (MeleeWeapon) Generator.random(Generator.wepTiers[4]);
-                    m = (MissileWeapon)Generator.random(Generator.misTiers[4]);
-                    itemsToSpawn.add(new PlateArmor().identify(false));
-                    itemsToSpawn.add(new Torch());
-                    itemsToSpawn.add(new Torch());
-                    itemsToSpawn.add(new Torch());
-                    break;
+            case 20:
+            case 21:
+                w = (MeleeWeapon) Generator.random(Generator.wepTiers[4]);
+                m = (MissileWeapon)Generator.random(Generator.misTiers[4]);
+                itemsToSpawn.add(new PlateArmor().identify(false));
+                itemsToSpawn.add(new Torch());
+                itemsToSpawn.add(new Torch());
+                itemsToSpawn.add(new Torch());
+                break;
 
-                case 26:
-                    w = (MeleeWeapon) Generator.random(Generator.wepTiers[4]);
-                    m = (MissileWeapon) Generator.random(Generator.misTiers[4]);itemsToSpawn.add(Generator.random(Generator.misTiers[4]).quantity(2).identify(false));
-                    itemsToSpawn.add(new PlateArmor().upgrade(1).identify(false));
-                    break;
+            case 26:
+                w = (MeleeWeapon) Generator.random(Generator.wepTiers[4]);
+                m = (MissileWeapon) Generator.random(Generator.misTiers[4]);
+                itemsToSpawn.add(new PlateArmor().upgrade(1).identify(false));
+                break;
             }
         } else {
             w = (MeleeWeapon) Generator.random(Generator.wepTiers[5]);
-            itemsToSpawn.add(Generator.random(Generator.misTiers[4]).quantity(6).identify(false));
+            m = (MissileWeapon) Generator.random(Generator.misTiers[5]);
             itemsToSpawn.add(new PlateArmor().upgrade(Dungeon.depth % 5 + 2).identify(false));
         }
 		w.enchant(null);
