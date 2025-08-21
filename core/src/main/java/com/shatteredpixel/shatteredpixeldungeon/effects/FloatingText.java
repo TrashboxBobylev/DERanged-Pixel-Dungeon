@@ -358,25 +358,25 @@ public class FloatingText extends RenderedTextBlock {
 		}
 		if (attacker.buff(Bless.class) != null) blessBoost *= 1.25f;
 		if (Dungeon.hero.heroClass != HeroClass.CLERIC
-				&& Dungeon.hero.hasTalent(Talent.BLESS)
+				&& Dungeon.hero.hasTalent(Talent.BLESS, Talent.POWER_WITHIN)
 				&& attacker.alignment == Char.Alignment.ALLY){
 			// + 3%/5%
-			blessBoost *= 1.01f + 0.02f*Dungeon.hero.pointsInTalent(Talent.BLESS);
+			blessBoost *= 1.01f + 0.02f*Dungeon.hero.pointsInTalent(Talent.BLESS, Talent.POWER_WITHIN);
 		}
 		if (blessBoost > 1f) hitReasons.put(HIT_BLS, blessBoost);
 		if (RingOfAccuracy.accuracyMultiplier(attacker) > 1)    hitReasons.put(HIT_ACC, RingOfAccuracy.accuracyMultiplier(attacker));
 		if (attacker.buff(Scimitar.SwordDance.class) != null)   hitReasons.put(HIT_DANCE, 1.5f);
 		if (!(wep instanceof MissileWeapon)) {
 			if (attacker.buff(Talent.PreciseAssaultTracker.class) != null){
-				hitReasons.put(HIT_PRES, Dungeon.hero.pointsInTalent(Talent.PRECISE_ASSAULT) == 2 ? 5f : 2f);
+				hitReasons.put(HIT_PRES, Dungeon.hero.pointsInTalent(Talent.PRECISE_ASSAULT, Talent.RK_CHAMPION) == 2 ? 5f : 2f);
 			} else if (attacker.buff(Talent.LiquidAgilACCTracker.class) != null) {
 				hitReasons.put(HIT_LIQ, 3f);
 			}
 		} else {
 			if (attacker.buff(Momentum.class) != null
 					&& attacker.buff(Momentum.class).freerunning()
-					&& ((Hero)attacker).hasTalent(Talent.PROJECTILE_MOMENTUM)) {
-				hitReasons.put(HIT_MOMEN, 1f + ((Hero) attacker).pointsInTalent(Talent.PROJECTILE_MOMENTUM) / 2f);
+					&& ((Hero)attacker).hasTalent(Talent.PROJECTILE_MOMENTUM, Talent.RK_FREERUNNER)) {
+				hitReasons.put(HIT_MOMEN, 1f + ((Hero) attacker).pointsInTalent(Talent.PROJECTILE_MOMENTUM, Talent.RK_FREERUNNER) / 2f);
 			}
 		}
 
@@ -449,10 +449,10 @@ public class FloatingText extends RenderedTextBlock {
 		}
 		if (defender.buff(Bless.class) != null) blessBoost *= 1.25f;
 		if (Dungeon.hero.heroClass != HeroClass.CLERIC
-				&& Dungeon.hero.hasTalent(Talent.BLESS)
+				&& Dungeon.hero.hasTalent(Talent.BLESS, Talent.POWER_WITHIN)
 				&& defender.alignment == Char.Alignment.ALLY){
 			// + 3%/5%
-			blessBoost *= 1.01f + 0.02f*Dungeon.hero.pointsInTalent(Talent.BLESS);
+			blessBoost *= 1.01f + 0.02f*Dungeon.hero.pointsInTalent(Talent.BLESS, Talent.POWER_WITHIN);
 		}
 		if (blessBoost > 1f)                                    missReasons.put(MISS_BLS, blessBoost);
 		if (FerretTuft.evasionMultiplier() > 1)                 missReasons.put(MISS_TUFT, FerretTuft.evasionMultiplier());
