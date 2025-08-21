@@ -105,81 +105,50 @@ public class Assets {
 		public static String BOSSHP   = "interfaces/boss_hp.png";
 		public static String TALENT_BUTTON    = "interfaces/talent_button.png";
 
+        static String DEFAULT_UI = "interfaces/";
+        static String SHPD_UI = "interfaces/alternative/shattered/";
+        static String BAPD_UI = "interfaces/alternative/bluearchive/";
+        static String RKA_UI  = "interfaces/alternative/rka/";
+
+        static String processUIType(String uiFile){
+            switch (SPDSettings.uiType()) {
+                case 0: default:
+                    return DEFAULT_UI + uiFile + ".png";
+                case 1: //shattered pd ui
+                    return SHPD_UI + uiFile + ".png";
+                case 2: //blue archive pd ui
+                    return BAPD_UI + uiFile + ".png";
+                case 3: //rka ui
+                    return RKA_UI + uiFile + ".png";
+            }
+        }
+
 		public static String getChrome() {
-			switch (SPDSettings.uiType()) {
-				case 0: default:
-					return CHROME;
-				case 1: //shattered pd ui
-					return "interfaces/alternative/shattered/chrome.png";
-				case 2: //blue archive pd ui
-					return "interfaces/alternative/bluearchive/chrome.png";
-			}
+			return processUIType("chrome");
 		}
 
 		public static String getToolBar() {
-			switch (SPDSettings.uiType()) {
-				case 0: default:
-					return TOOLBAR;
-				case 1: //shattered pd ui
-					return "interfaces/alternative/shattered/toolbar.png";
-				case 2: //blue archive pd ui
-					return "interfaces/alternative/bluearchive/toolbar.png";
-			}
+            return processUIType("toolbar");
 		}
 
 		public static String getStatus() {
-			switch (SPDSettings.uiType()) {
-				case 0: default:
-					return STATUS;
-				case 1: //shattered pd ui
-					return "interfaces/alternative/shattered/status_pane.png";
-				case 2: //blue archive pd ui
-					return "interfaces/alternative/bluearchive/status_pane.png";
-			}
+			return processUIType("status_pane");
 		}
 
 		public static String getMenu() {
-			switch (SPDSettings.uiType()) {
-				case 0: default:
-					return MENU;
-				case 1: //shattered pd ui
-					return "interfaces/alternative/shattered/menu_pane.png";
-				case 2: //blue archive pd ui
-					return "interfaces/alternative/bluearchive/menu_pane.png";
-			}
+			return processUIType("menu_pane");
 		}
 
 		public static String getMenuBtn() {
-			switch (SPDSettings.uiType()) {
-				case 0: default:
-					return MENU_BTN;
-				case 1: //shattered pd ui
-					return "interfaces/alternative/shattered/menu_button.png";
-				case 2: //blue archive pd ui
-					return "interfaces/alternative/bluearchive/menu_button.png";
-			}
+			return processUIType("menu_button");
 		}
 
 		public static String getBossHP() {
-			switch (SPDSettings.uiType()) {
-				case 0: default:
-					return BOSSHP;
-				case 1: //shattered pd ui
-					return "interfaces/alternative/shattered/boss_hp.png";
-				case 2: //blue archive pd ui
-					return "interfaces/alternative/bluearchive/boss_hp.png";
-			}
+			return processUIType("boss_hp");
 		}
 
 		public static String getTalentBtn() {
-			switch (SPDSettings.uiType()) {
-				case 0: default:
-					return TALENT_BUTTON;
-				case 1: //shattered pd ui
-					return "interfaces/alternative/shattered/talent_button.png";
-				case 2: //blue archive pd ui
-					return "interfaces/alternative/bluearchive/talent_button.png";
-			}
+			return processUIType("talent_button");
 		}
 	}
 
