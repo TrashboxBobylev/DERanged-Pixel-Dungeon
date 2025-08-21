@@ -15,10 +15,10 @@ allprojects {
         appName = 'DERanged Pixel Dungeon'
         appPackageName = 'com.trashboxbobylev.derangedpixeldungeon'
 
-        appVersionCode = 850
-        appVersionName = '1.0.5'
+        appVersionCode = 859
+        appVersionName = '1.0.7'
         appVersionCode += 62
-        appVersionName += '_based_on_3.37.0'
+        appVersionName += '_based_on_3.39.0'
 
         appJavaCompatibility = JavaVersion.VERSION_1_8
 
@@ -29,8 +29,8 @@ allprojects {
         appAndroidTargetSDK = 34    //Android 14
 
         gdxVersion = '1.12.1'
-        gdxControllersVersion = '2.2.4-SNAPSHOT'
-        robovmVersion = '2.3.21'
+        gdxControllersVersion = '2.2.4'
+        robovmVersion = '2.3.23'
     }
     version = appVersionName
 

@@ -2001,11 +2001,9 @@ public enum Talent {
 		// 1.75x/2.5x speed with Huntress talent
 		float factor = 1f;
 
-		factor = 1f + 0.75f*hero.pointsInTalent(SURVIVALISTS_INTUITION);
-
 		// all royal intuition is now handled here.
 		factor *= 1 + hero.pointsInTalent(ROYAL_INTUITION) * (0.75f + (
-				item instanceof MeleeWeapon || item instanceof Armor ? 2 // armsmaster
+				item instanceof Weapon || item instanceof Armor ? 2 // armsmaster
 						: item instanceof Ring ? 2 // thief's intuition
 						: item instanceof Wand ? 3 // scholar's intuition
 						: 0));
@@ -2023,6 +2021,10 @@ public enum Talent {
 		// 3x/instant for Mage (see Wand.wandUsed())
 		if (item instanceof Wand){
 			factor *= 1f + 2.0f*hero.pointsInTalent(SCHOLARS_INTUITION);
+		}
+		// 3x/instant speed with Huntress talent (see MissileWeapon.proc)
+		if (item instanceof MissileWeapon){
+			factor *= 1f + 2.0f*hero.pointsInTalent(SURVIVALISTS_INTUITION);
 		}
 		// 2x/instant for Rogue (see onItemEqupped), also id's type on equip/on pickup
 		if (item instanceof Ring){
@@ -2523,10 +2525,6 @@ public enum Talent {
 				Splash.at( enemy.sprite.center(), -PointF.PI / 2, PointF.PI / 6,
 						enemy.sprite.blood(), Math.min( 10 * Random.NormalIntRange(1, 3) / enemy.HT, 10 ) );
 			}
-		}
-
-		if (hero.buff(Awakening.class) != null && hero.buff(Awakening.class).isAwaken()) {
-			damage = Math.round(damage * 0.5f);
 		}
 
 		if (hero.buff(ShadowBlade.shadowBladeTracker.class) != null) {
@@ -3221,15 +3219,12 @@ public enum Talent {
 
 	private static final HashSet<String> removedTalents = new HashSet<>();
 	static{
-		//v2.4.0
-		removedTalents.add("TEST_SUBJECT");
-		removedTalents.add("TESTED_HYPOTHESIS");
+		//nothing atm
 	}
 
 	private static final HashMap<String, String> renamedTalents = new HashMap<>();
 	static{
-		//v2.4.0
-		renamedTalents.put("SECONDARY_CHARGE",          "VARIED_CHARGE");
+		//nothing atm
 	}
 
 	public static void restoreTalentsFromBundle( Bundle bundle, Hero hero ){

@@ -71,7 +71,8 @@ public class ScrollOfEnchantment extends ExoticScroll {
 	}
 
 	public static boolean enchantable( Item item ){
-		return (item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Armor) ||
+		return (item instanceof Weapon || item instanceof Armor)
+				&& (item.isUpgradable() || item instanceof SpiritBow) ||
 				(Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ENCHANTED_WORLD) && item instanceof MissileWeapon);
 	}
 

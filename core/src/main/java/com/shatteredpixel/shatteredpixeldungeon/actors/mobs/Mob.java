@@ -41,6 +41,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FirstAidBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.GreaterHaste;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HorseRiding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.InfiniteBullet;
@@ -48,6 +51,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Juggling;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SharpShooterBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
@@ -55,6 +59,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulCollect;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.StimPack;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.chargearea.ArtifactRechargeArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.chargearea.BarrierRechargeArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.chargearea.WandRechargeArea;
@@ -173,7 +178,7 @@ public abstract class Mob extends Char {
 	private static final String ENEMY_ID	= "enemy_id";
 	private static final String USELESS_GLOWY   = "useless_glowy";
 	private static final String SCALE    = "scale_factor";
-	
+
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		
@@ -267,7 +272,7 @@ public abstract class Mob extends Char {
 			}
 			sprite.linkVisuals(this);
 		}
-		
+
 		boolean justAlerted = alerted;
 		alerted = false;
 		
@@ -704,7 +709,7 @@ public abstract class Mob extends Char {
 	public int attackProc(Char enemy, int damage) {
 		return super.attackProc(enemy, (int) (damage*((Dungeon.isChallenged(Challenges.RANDOM_HP) && scaleFactor != 1) ? (1.4f * scaleFactor) : 1)));
 	}
-	
+
 	protected boolean doAttack( Char enemy ) {
 		sprite.attackAcceleration( buff(StimPack.class) != null ? 1.5f : 1f );
 
@@ -776,6 +781,50 @@ public abstract class Mob extends Char {
 				Wound.hit(this);
 			} else {
 				Surprise.hit(this);
+			}
+
+			if (enemy instanceof Hero) {
+				if (hero.subClass == HeroSubClass.CHASER
+						&& hero.hasTalent(Talent.CHAIN_CLOCK)
+						&& hero.buff(Talent.ChainCooldown.class) == null){
+					new FlavourBuff() {
+						{
+							actPriority = VFX_PRIO;
+						}
+
+						public boolean act() {
+							Buff.affect( hero, Invisibility.class, 1f * hero.pointsInTalent(Talent.CHAIN_CLOCK));
+							return super.act();
+						}
+					}.attachTo(hero);
+					Buff.affect( hero, Haste.class, 1f * hero.pointsInTalent(Talent.CHAIN_CLOCK));
+					Buff.affect( hero, Talent.ChainCooldown.class, 10f);
+					Sample.INSTANCE.play( Assets.Sounds.MELD );
+				}
+
+				if (hero.subClass == HeroSubClass.CHASER
+						&& hero.hasTalent(Talent.LETHAL_SURPRISE)
+						&& !this.isAlive()
+						&& hero.buff(Talent.LethalCooldown.class) == null) {
+					if (hero.pointsInTalent(Talent.LETHAL_SURPRISE) >= 1) {
+						for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+							if (mob.alignment == Alignment.ENEMY && Dungeon.level.heroFOV[mob.pos] && mob.state != mob.SLEEPING) {
+								Buff.affect( mob, Vulnerable.class, 1f);
+							}
+						}
+						Buff.affect(hero, Talent.LethalCooldown.class, 5f);
+					}
+					if (hero.pointsInTalent(Talent.LETHAL_SURPRISE) >= 2) {
+						for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+							if (mob.alignment == Alignment.ENEMY && Dungeon.level.heroFOV[mob.pos] && mob.state != mob.SLEEPING) {
+								Buff.affect( mob, Paralysis.class, 1f);
+							}
+						}
+					}
+					if (hero.pointsInTalent(Talent.LETHAL_SURPRISE) == 3) {
+						Buff.affect(hero, Swiftthistle.TimeBubble.class).twoTurns();
+					}
+				}
 			}
 		}
 
