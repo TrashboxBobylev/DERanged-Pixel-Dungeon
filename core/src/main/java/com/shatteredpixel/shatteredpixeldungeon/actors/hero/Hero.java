@@ -91,8 +91,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Tackle;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.TimeStasis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Undead;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.chargearea.MutationBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WarriorParry;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.chargearea.MutationBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.AscendedForm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Challenge;
@@ -253,7 +253,6 @@ import com.watabou.noosa.tweeners.Delayer;
 import com.watabou.utils.BArray;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
-import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
@@ -905,7 +904,7 @@ public class Hero extends Char {
 			}
 		} else {
 			if (buff(Momentum.class) != null && buff(Momentum.class).freerunning()){
-				accuracy *= 1f + pointsInTalent(Talent.PROJECTILE_MOMENTUM)/2f;
+				accuracy *= 1f + pointsInTalent(Talent.PROJECTILE_MOMENTUM, Talent.RK_FREERUNNER)/2f;
 			}
 		}
 
@@ -2252,10 +2251,10 @@ public class Hero extends Char {
                     protected boolean act() {
                         if (enemy.isAlive()) {
                             if (hasTalent(Talent.SHARED_UPGRADES, Talent.RK_SNIPER)) {
-                                int bonusTurns = wep.buffedLvl();
-                                // bonus dmg is 2.5% x talent lvl x weapon level x weapon tier
-                                float bonusDmg = wep.buffedLvl() * ((MissileWeapon) wep).tier * pointsInTalent(Talent.SHARED_UPGRADES, Talent.RK_SNIPER) * 0.025f;
-                                Buff.prolong(Hero.this, SnipersMark.class, SnipersMark.DURATION + bonusTurns).set(enemy.id(), bonusDmg);
+                                int levelBonus = Math.min( 2*pointsInTalent(Talent.SHARED_UPGRADES, Talent.RK_SNIPER), wep.buffedLvl() );
+                                // bonus dmg is 16.67% x weapon level, max of 2/4/6
+                                float bonusDmg = levelBonus/6f;
+                                Buff.prolong(Hero.this, SnipersMark.class, SnipersMark.DURATION + levelBonus).set(enemy.id(), bonusDmg);
                             } else {
                                 Buff.prolong(Hero.this, SnipersMark.class, SnipersMark.DURATION).set(enemy.id(), 0);
                             }
