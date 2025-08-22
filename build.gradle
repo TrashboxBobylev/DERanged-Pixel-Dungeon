@@ -16,8 +16,8 @@ allprojects {
         appPackageName = 'com.trashboxbobylev.derangedpixeldungeon'
 
         appVersionCode = 859
-        appVersionName = '1.0.6'
-        appVersionCode += 62
+        appVersionName = '1.0.7'
+        appVersionCode += 63
         appVersionName += '_based_on_3.39.0'
 
         appJavaCompatibility = JavaVersion.VERSION_1_8
