@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.GreaterHaste;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
@@ -270,9 +271,118 @@ public class MeleeWeapon extends Weapon {
 		return dst; //weapon abilities do not use projectile logic, no autoaim
 	}
 
-	protected void duelistAbility( Hero hero, Integer target ){
-		//do nothing by default
-	}
+    protected void duelistAbility( Hero hero, Integer target ){
+        DuelistAbility ability = duelistAbility();
+        if (ability != null) ability.execute(hero, target, this);
+    }
+
+    protected DuelistAbility duelistAbility() { return null; };
+
+    // I really hope this works!
+    public static DuelistAbility activeAbility;
+    public static void markAbilityUsed() {
+        if (activeAbility instanceof MeleeAbility) ((MeleeAbility)activeAbility).afterAbilityUsed();
+    }
+
+
+    protected interface DuelistAbility {
+        /** @return whether the ability was used **/
+        boolean execute(Hero hero, Integer target, MeleeWeapon weapon);
+    }
+
+    /** This removes basically all the duplication. anything implementing this will work with Elite Dexterity **/
+    public static class MeleeAbility implements DuelistAbility {
+
+        protected float delayMulti;
+
+        @Override
+        public boolean execute(Hero hero, Integer target, MeleeWeapon wep) {
+            if (target == null) return false;
+
+            Char enemy = Actor.findChar(target);
+
+            if (enemy == null || enemy == hero || hero.isCharmedBy(enemy) || !Dungeon.level.heroFOV[target]) {
+                GLog.w(Messages.get(wep, "ability_no_target"));
+                return false;
+            }
+
+            hero.belongings.abilityWeapon = this.abilityWeapon = wep;
+//            if (!(wep instanceof ExoKnife))
+//                hero.belongings.abilityWeapon = null;
+
+            hero.sprite.attack(enemy.pos, () -> {
+                beforeAbilityUsed(hero, enemy);
+                AttackIndicator.target(enemy);
+                boolean hit = hero.attack(enemy, dmgMulti(enemy), dmgBoost, accMulti());
+                if (hit) {
+                    onHit(hero, enemy);
+                }
+                afterHit(enemy, hit);
+                afterAbilityUsed();
+                Invisibility.dispel();
+                if (delayMulti == 0) {
+                    hero.next();
+                } else hero.spendAndNext(hero.attackDelay() * delayMulti);
+            });
+            return true;
+        }
+
+        public int dmgBoost;
+        protected float dmgMulti = 1f;
+
+        public MeleeAbility(int dmgBoost) {
+            this.dmgBoost = dmgBoost;
+        }
+
+        public MeleeAbility() {
+            this(0);
+        }
+
+        /** damage multiplier passed to Hero.attack **/
+        public float dmgMulti(Char enemy) { return dmgMulti; }
+
+        /** acc modifier passed to Hero.attack **/
+        public float accMulti() { return Char.INFINITE_ACCURACY; }
+
+        public final void onHit(Hero hero, Char enemy) {
+            playSFX();
+            if (!enemy.isAlive()) {
+                onKill(hero);
+                abilityWeapon.onAbilityKill(hero, enemy);
+            } else proc(hero, enemy);
+        }
+
+        private MeleeWeapon abilityWeapon;
+        public MeleeWeapon weapon() {
+            return abilityWeapon;
+        }
+
+        public void afterAbilityUsed() {
+            abilityWeapon.afterAbilityUsed(hero);
+            activeAbility = null;
+//            if ((abilityWeapon instanceof ExoKnife))
+//                hero.belongings.abilityWeapon = null;
+        }
+
+        protected boolean canAttack(Hero hero, Char enemy) {
+            return hero.canAttack(enemy) && !hero.isCharmedBy(enemy);
+        }
+
+        protected void beforeAbilityUsed(Hero hero, Char target) {
+            activeAbility = this;
+            abilityWeapon.beforeAbilityUsed(hero, target);
+        }
+
+        protected void playSFX() {
+            Sample.INSTANCE.play(Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG));
+        }
+
+        /** effect applied when the enemy survives a hit **/
+        protected void proc(Hero hero, Char enemy) {/* nothing by default */}
+
+        protected void onKill(Hero hero) {/* nothing by default */}
+        public void afterHit(Char enemy, boolean hit) {/* nothing by default */}
+    }
 
 	public void beforeAbilityUsed(Hero hero, Char target){
 		hero.belongings.abilityWeapon = this;
