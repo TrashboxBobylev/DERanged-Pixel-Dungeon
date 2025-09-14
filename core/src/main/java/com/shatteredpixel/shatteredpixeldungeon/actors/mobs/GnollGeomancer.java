@@ -211,7 +211,8 @@ public class GnollGeomancer extends Mob {
 					//ensure we don't do enough damage to break the armor at the start
 					if (wasSleeping) dmg = Math.min(dmg, 15);
 
-					dmg = Math.min(dmg, buff(RockArmor.class).shielding());
+                    RockArmor buff = buff(RockArmor.class);
+                    dmg = Math.min(dmg, buff != null ? buff.shielding() : dmg);
 
 					damage(dmg, p);
 					sprite.bloodBurstA(Dungeon.hero.sprite.center(), dmg);
