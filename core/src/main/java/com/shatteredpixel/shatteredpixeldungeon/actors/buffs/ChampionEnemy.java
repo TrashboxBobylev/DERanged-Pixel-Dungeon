@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.SummonElemental;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.BloomingPick;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -89,7 +90,7 @@ public abstract class ChampionEnemy extends Buff {
 
 	{
 		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.EASY_MODE)){
-			immunities.addAll(Arrays.asList(new Class[]{Corruption.class, SummonElemental.InvisAlly.class}));
+			immunities.addAll(Arrays.asList(new Class[]{Corruption.class, SummonElemental.InvisAlly.class, BloomingPick.PlaceVineHolder.class, BloomingPick.VineCovered.class}));
 		} else {
 			immunities.add(AllyBuff.class);
 		}

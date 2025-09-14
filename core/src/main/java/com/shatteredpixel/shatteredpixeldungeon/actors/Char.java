@@ -168,6 +168,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sickle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.bow.BowWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.Gun;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.BloomingPick;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.NuclearHatchet;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.ShockingDart;
@@ -1120,6 +1121,9 @@ public abstract class Char extends Actor {
         if (this.buff(NuclearHatchet.Exposed.class) != null && src instanceof DamageOverTimeEffect){
             damage *= 2.5f;
         }
+        if (this.buff(BloomingPick.VineCovered.class) != null){
+            damage *= 0.25f;
+        }
 
 		if (buff(Sickle.HarvestBleedTracker.class) != null){
 			buff(Sickle.HarvestBleedTracker.class).detach();
@@ -1378,7 +1382,7 @@ public abstract class Char extends Actor {
 	}
 
 	@Override
-	protected void spendConstant(float time) {
+    public void spendConstant(float time) {
 		TimekeepersHourglass.timeFreeze freeze = buff(TimekeepersHourglass.timeFreeze.class);
 		if (freeze != null) {
 			freeze.processTime(time);
@@ -1657,6 +1661,9 @@ public abstract class Char extends Actor {
 		if (buff(ChampionEnemy.Giant.class) != null) {
 			props.add(Property.LARGE);
 		}
+        for (Buff b : buffs()){
+            props.addAll(b.properties());
+        }
 		return props;
 	}
 

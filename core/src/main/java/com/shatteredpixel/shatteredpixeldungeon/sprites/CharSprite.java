@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LightParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SnowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.VineParticle;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -89,7 +90,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected float shadowOffset    = 0.25f;
 
 	public enum State {
-		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, HEARTS, GLOWING, AURA, JUDGED, ELECTRIC, SHRUNK, FROSTBURNING, SPIRIT
+		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, HEARTS, GLOWING, AURA, JUDGED, ELECTRIC,
+        SHRUNK, FROSTBURNING, SPIRIT, VINECOVERED
 	}
 	
 	protected Animation idle;
@@ -113,6 +115,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected Emitter electric;
 	protected Emitter frostburning;
 	protected Emitter spirit;
+    protected Emitter vines;
 
 	protected IceBlock iceBlock;
 	protected DarkBlock darkBlock;
@@ -518,6 +521,11 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 					Sample.INSTANCE.play( Assets.Sounds.BURNING );
 				}
 				break;
+            case VINECOVERED:
+                paused = true;
+                vines = emitter();
+                vines.start(VineParticle.FACTORY, 0.05f, 0 );
+                break;
 		}
 	}
 
@@ -646,6 +654,13 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 					spirit = null;
 				}
 				break;
+            case VINECOVERED:
+                paused = false;
+                if (vines != null) {
+                    vines.on = false;
+                    vines = null;
+                }
+                break;
 		}
 	}
 
