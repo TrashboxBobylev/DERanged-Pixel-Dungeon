@@ -20,8 +20,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.UnstableBrew;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.Evolution;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.AssassinsBlade;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.alchemy.AlchemyWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -29,7 +33,10 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
-public class ElementalDirk extends AssassinsBlade {
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class ElementalDirk extends AssassinsBlade implements AlchemyWeapon {
     {
         image = ItemSpriteSheet.ELEMENTAL_DIRK;
         tier = 6;
@@ -166,5 +173,24 @@ public class ElementalDirk extends AssassinsBlade {
                     hero.spendAndNext(delayFactor(hero));
                     afterAbilityUsed(hero);
                 });
+    }
+
+    @Override
+    public ArrayList<Class<?extends Item>> weaponRecipe() {
+        return new ArrayList<>(Arrays.asList(AssassinsBlade.class, UnstableBrew.class, Evolution.class));
+    }
+
+    @Override
+    public String discoverHint() {
+        return AlchemyWeapon.hintString(weaponRecipe());
+    }
+
+    @Override
+    public String desc() {
+        String info = super.desc();
+
+        info += "\n\n" + AlchemyWeapon.hintString(weaponRecipe());
+
+        return info;
     }
 }

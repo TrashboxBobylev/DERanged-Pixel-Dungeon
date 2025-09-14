@@ -12,7 +12,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfToxicEssence;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.Evolution;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HandAxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.alchemy.AlchemyWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -24,7 +29,10 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 
-public class NuclearHatchet extends MeleeWeapon {
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class NuclearHatchet extends MeleeWeapon implements AlchemyWeapon {
 
     {
         image = ItemSpriteSheet.NUCLEAR_HATCHET;
@@ -55,6 +63,25 @@ public class NuclearHatchet extends MeleeWeapon {
     @Override
     protected DuelistAbility duelistAbility() {
         return new Irradiate();
+    }
+
+    @Override
+    public ArrayList<Class<?extends Item>> weaponRecipe() {
+        return new ArrayList<>(Arrays.asList(HandAxe.class, ElixirOfToxicEssence.class, Evolution.class));
+    }
+
+    @Override
+    public String discoverHint() {
+        return AlchemyWeapon.hintString(weaponRecipe());
+    }
+
+    @Override
+    public String desc() {
+        String info = super.desc();
+
+        info += "\n\n" + AlchemyWeapon.hintString(weaponRecipe());
+
+        return info;
     }
 
     public static class Irradiate extends MeleeAbility {

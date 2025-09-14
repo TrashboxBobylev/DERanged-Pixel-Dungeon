@@ -16,7 +16,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Enchanting;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.Evolution;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.alchemy.AlchemyWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -27,8 +32,9 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class ConstructWand extends MeleeWeapon {
+public class ConstructWand extends MeleeWeapon implements AlchemyWeapon {
 
     {
         image = ItemSpriteSheet.CONSTRUCT_WAND;
@@ -140,6 +146,25 @@ public class ConstructWand extends MeleeWeapon {
             hero.next();
             afterAbilityUsed(hero);
         });
+    }
+
+    @Override
+    public ArrayList<Class<?extends Item>> weaponRecipe() {
+        return new ArrayList<>(Arrays.asList(WandOfWarding.class, WandOfLivingEarth.class, Evolution.class));
+    }
+
+    @Override
+    public String discoverHint() {
+        return AlchemyWeapon.hintString(weaponRecipe());
+    }
+
+    @Override
+    public String desc() {
+        String info = super.desc();
+
+        info += "\n\n" + AlchemyWeapon.hintString(weaponRecipe());
+
+        return info;
     }
 
     public static class ConstructStasis extends FlavourBuff {

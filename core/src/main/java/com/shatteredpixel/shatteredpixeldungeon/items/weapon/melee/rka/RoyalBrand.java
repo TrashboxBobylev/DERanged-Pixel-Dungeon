@@ -17,6 +17,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Spinner;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Swarm;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfTalent;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.Evolution;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
@@ -27,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sai;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sickle;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.alchemy.AlchemyWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -41,8 +45,9 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class RoyalBrand extends Crossbow implements Talent.SpellbladeForgeryWeapon {
+public class RoyalBrand extends Crossbow implements Talent.SpellbladeForgeryWeapon, AlchemyWeapon {
     {
         image = ItemSpriteSheet.ROYAL_SWORD;
         hitSound = Assets.Sounds.HIT_STRONG;
@@ -466,5 +471,24 @@ public class RoyalBrand extends Crossbow implements Talent.SpellbladeForgeryWeap
     @Override
     protected int baseChargeUse(Hero hero, Char target) {
         return Math.max(1, hero.buff(Charger.class).charges);
+    }
+
+    @Override
+    public ArrayList<Class<?extends Item>> weaponRecipe() {
+        return new ArrayList<>(Arrays.asList(AluminumSword.class, ElixirOfTalent.class, Evolution.class));
+    }
+
+    @Override
+    public String discoverHint() {
+        return AlchemyWeapon.hintString(weaponRecipe());
+    }
+
+    @Override
+    public String desc() {
+        String info = super.desc();
+
+        info += "\n\n" + AlchemyWeapon.hintString(weaponRecipe());
+
+        return info;
     }
 }

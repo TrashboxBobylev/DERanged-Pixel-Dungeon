@@ -36,6 +36,20 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.alchemy.TrueR
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.alchemy.UnformedBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.alchemy.UnholyBible;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.Gun;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.AluminumSword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.BloomingPick;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.ConstructWand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.DreadSlicer;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.ElementalDirk;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.ExoKnife;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.LuminousCutlass;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.MoltenStrife;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.NuclearHatchet;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.RoyalBrand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.RunicBladeMkII;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.SharksTooth;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.Starsmasher;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.TheReaper;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -293,6 +307,20 @@ public class BluePrint extends Item {
             validIngredients.add( new SharpKatana().weaponRecipe() );
             validIngredients.add( new GL_T6().weaponRecipe() );
             validIngredients.add( new RL_T6().weaponRecipe() );
+            validIngredients.add( new AluminumSword().weaponRecipe());
+            validIngredients.add( new NuclearHatchet().weaponRecipe());
+            validIngredients.add( new RunicBladeMkII().weaponRecipe());
+            validIngredients.add( new ConstructWand().weaponRecipe());
+            validIngredients.add( new BloomingPick().weaponRecipe());
+            validIngredients.add( new LuminousCutlass().weaponRecipe());
+            validIngredients.add( new MoltenStrife().weaponRecipe());
+            validIngredients.add( new ElementalDirk().weaponRecipe());
+            validIngredients.add( new DreadSlicer().weaponRecipe());
+            validIngredients.add( new SharksTooth().weaponRecipe());
+            validIngredients.add( new ExoKnife().weaponRecipe());
+            validIngredients.add( new TheReaper().weaponRecipe());
+            validIngredients.add( new Starsmasher().weaponRecipe());
+            validIngredients.add( new RoyalBrand().weaponRecipe());
         }
 
         public static final LinkedHashMap<Integer, Class<?extends MeleeWeapon>> indexToOutput = new LinkedHashMap<>(); //validIngredients 배열의 인덱스를 넣으면 근접 무기를 반환한다.
@@ -320,6 +348,20 @@ public class BluePrint extends Item {
             indexToOutput.put( 20, SharpKatana.class );
             indexToOutput.put( 21, GL_T6.class );
             indexToOutput.put( 22, RL_T6.class );
+            indexToOutput.put( 23, AluminumSword.class);
+            indexToOutput.put( 24, NuclearHatchet.class);
+            indexToOutput.put( 25, RunicBladeMkII.class);
+            indexToOutput.put( 26, ConstructWand.class);
+            indexToOutput.put( 27, BloomingPick.class);
+            indexToOutput.put( 28, LuminousCutlass.class);
+            indexToOutput.put( 29, MoltenStrife.class);
+            indexToOutput.put( 30, ElementalDirk.class);
+            indexToOutput.put( 31, DreadSlicer.class);
+            indexToOutput.put( 32, SharksTooth.class);
+            indexToOutput.put( 33, ExoKnife.class);
+            indexToOutput.put( 34, TheReaper.class);
+            indexToOutput.put( 35, Starsmasher.class);
+            indexToOutput.put( 36, RoyalBrand.class);
         }
 
         public static final LinkedHashMap<Integer, Integer> costs = new LinkedHashMap<>(); //validIngredients 배열의 인덱스를 넣으면 연금술 에너지 필요량을 반환한다.
@@ -347,6 +389,20 @@ public class BluePrint extends Item {
             costs.put( 20, 0 );
             costs.put( 21, 0 );
             costs.put( 22, 0 );
+            costs.put( 23, 10);
+            costs.put( 24, 10);
+            costs.put( 25, 10);
+            costs.put( 26, 10);
+            costs.put( 27, 10);
+            costs.put( 28, 10);
+            costs.put( 29, 10);
+            costs.put( 30, 10);
+            costs.put( 31, 10);
+            costs.put( 32, 10);
+            costs.put( 33, 15);
+            costs.put( 34, 10);
+            costs.put( 35, 10);
+            costs.put( 36, 15);
         }
 
         public ArrayList<Class<?extends Item>> ingredientToArray(ArrayList<Item> ingredients) { //연금술 솥에 넣은 아이템들의 '클래스'를 배열로 만든다.

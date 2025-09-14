@@ -12,7 +12,11 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.ShieldHalo;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ExoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfDivineInspiration;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.Evolution;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shortsword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.alchemy.AlchemyWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -21,9 +25,12 @@ import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.BArray;
 import com.watabou.utils.PathFinder;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 
-public class ExoKnife extends MeleeWeapon {
+public class ExoKnife extends MeleeWeapon implements AlchemyWeapon {
     {
         image = ItemSpriteSheet.EXO_KNIFE;
         tier = 6;
@@ -145,6 +152,25 @@ public class ExoKnife extends MeleeWeapon {
     @Override
     protected DuelistAbility duelistAbility() {
         return new ExoEffect();
+    }
+
+    @Override
+    public ArrayList<Class<?extends Item>> weaponRecipe() {
+        return new ArrayList<>(Arrays.asList(Shortsword.class, PotionOfDivineInspiration.class, Evolution.class));
+    }
+
+    @Override
+    public String discoverHint() {
+        return AlchemyWeapon.hintString(weaponRecipe());
+    }
+
+    @Override
+    public String desc() {
+        String info = super.desc();
+
+        info += "\n\n" + AlchemyWeapon.hintString(weaponRecipe());
+
+        return info;
     }
 
     public static class ExoEffect extends MeleeAbility {
