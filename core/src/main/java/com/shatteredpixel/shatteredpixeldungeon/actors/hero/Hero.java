@@ -214,6 +214,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.alchemy.Obsid
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.alchemy.UnholyBible;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.bow.BowWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.Gun;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.NuclearHatchet;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.DisposableMissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
@@ -1508,6 +1509,10 @@ public class Hero extends Char {
 		if (buff(Undead.class) != null) {
 			HP = 0;
 		}
+
+        if (belongings.weapon instanceof NuclearHatchet){
+            Buff.affect(this, NuclearHatchet.Effect.class).set(1.1f);
+        }
 
 		return actResult;
 	}

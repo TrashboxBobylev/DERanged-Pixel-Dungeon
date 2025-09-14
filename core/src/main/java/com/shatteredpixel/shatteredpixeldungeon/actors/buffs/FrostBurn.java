@@ -26,7 +26,7 @@ import com.watabou.utils.Random;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class FrostBurn extends Buff implements Hero.Doom {
+public class FrostBurn extends Buff implements Hero.Doom, DamageOverTimeEffect {
 
     private static final float DURATION = 8f;
 

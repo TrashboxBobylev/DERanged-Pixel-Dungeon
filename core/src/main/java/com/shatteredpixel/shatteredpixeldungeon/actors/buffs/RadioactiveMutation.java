@@ -10,7 +10,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 
-public class RadioactiveMutation extends Buff implements Hero.Doom {
+public class RadioactiveMutation extends Buff implements Hero.Doom, DamageOverTimeEffect {
 	
 	protected float time;
 	protected int maxTime;

@@ -48,7 +48,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class Burning extends Buff implements Hero.Doom {
+public class Burning extends Buff implements Hero.Doom, DamageOverTimeEffect {
 	
 	private static final float DURATION = 8f;
 	

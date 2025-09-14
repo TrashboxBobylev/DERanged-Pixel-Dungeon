@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 
-public class Poison extends Buff implements Hero.Doom {
+public class Poison extends Buff implements Hero.Doom, DamageOverTimeEffect {
 	
 	protected float left;
 	

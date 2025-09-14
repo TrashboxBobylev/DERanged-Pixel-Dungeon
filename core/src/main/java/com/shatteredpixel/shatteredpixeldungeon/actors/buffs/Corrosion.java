@@ -31,7 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 
-public class Corrosion extends Buff implements Hero.Doom {
+public class Corrosion extends Buff implements Hero.Doom, DamageOverTimeEffect {
 
 	private float damage = 1;
 	protected float left;

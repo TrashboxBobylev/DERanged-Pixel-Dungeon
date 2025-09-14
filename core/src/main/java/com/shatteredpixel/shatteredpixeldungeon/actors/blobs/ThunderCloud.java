@@ -4,6 +4,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.DamageOverTimeEffect;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -15,7 +16,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class ThunderCloud extends Blob {
+public class ThunderCloud extends Blob implements DamageOverTimeEffect {
 
     @Override
     protected void evolve() {

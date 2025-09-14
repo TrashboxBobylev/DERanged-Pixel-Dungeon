@@ -35,7 +35,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
-public class Bleeding extends Buff {
+public class Bleeding extends Buff implements DamageOverTimeEffect {
 
 	{
 		type = buffType.NEGATIVE;

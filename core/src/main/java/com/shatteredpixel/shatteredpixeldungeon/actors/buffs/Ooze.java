@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-public class Ooze extends Buff {
+public class Ooze extends Buff implements DamageOverTimeEffect {
 
 	public static final float DURATION = 20f;
 
