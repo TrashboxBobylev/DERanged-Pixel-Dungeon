@@ -1033,6 +1033,57 @@ public class ItemSpriteSheet {
 //	private static final int NEW_WEP_TIER_6	=			xy(9, 47);  //8 slots
 //	static{
 //	}
+    private static final int WEP_TIER6     =                                xy(1, 33);
+
+    public static final int ROYAL_SWORD     = WEP_TIER6+0;
+    public static final int NUCLEAR_HATCHET = WEP_TIER6+1;
+    public static final int ALUMINUM_SWORD  = WEP_TIER6+2;
+    public static final int RUNIC_BLADE_MK2 = WEP_TIER6+3;
+    public static final int CONSTRUCT_WAND  = WEP_TIER6+4;
+    public static final int MOLTEN_STRIFE   = WEP_TIER6+5;
+    public static final int LUMINOUS_CUTLASS= WEP_TIER6+6;
+    public static final int BLOOMING_PICK   = WEP_TIER6+7;
+    public static final int ELEMENTAL_DIRK  = WEP_TIER6+8;
+    public static final int EXO_KNIFE       = WEP_TIER6+9;
+    public static final int TERMINUS        = WEP_TIER6+10;
+    public static final int DREAD_SWORD     = WEP_TIER6+11;
+    public static final int SHARKS_TOOTH    = WEP_TIER6+12;
+    public static final int REAPER          = WEP_TIER6+13;
+    public static final int STARHAMMER      = WEP_TIER6+14;
+    public static final int TRUE_TERMINUS   = WEP_TIER6+15;
+
+    private static final int WEP_TIER6_THROW=                                xy(1, 34);
+
+    public static final int STEEL_AXE       = WEP_TIER6_THROW+0;
+    public static final int HOMING_BOOMERANG= WEP_TIER6_THROW+1;
+    public static final int PHANTOM_SPEAR   = WEP_TIER6_THROW+2;
+    public static final int RED_KUNAI       = WEP_TIER6_THROW+3;
+    public static final int STAR_PIECES     = WEP_TIER6_THROW+4;
+
+    static {
+        assignItemRect(ROYAL_SWORD, 14, 14);
+        assignItemRect(NUCLEAR_HATCHET,12, 15);
+        assignItemRect(ALUMINUM_SWORD,  16, 16);
+        assignItemRect(RUNIC_BLADE_MK2,     14, 14);
+        assignItemRect(CONSTRUCT_WAND, 16, 16);
+        assignItemRect(MOLTEN_STRIFE, 14, 14);
+        assignItemRect(LUMINOUS_CUTLASS, 16, 16);
+        assignItemRect(BLOOMING_PICK, 14, 14);
+        assignItemRect(ELEMENTAL_DIRK, 14, 15);
+        assignItemRect(EXO_KNIFE, 11, 12);
+        assignItemRect(TERMINUS, 15, 16);
+        assignItemRect(DREAD_SWORD, 13, 16);
+        assignItemRect(SHARKS_TOOTH, 15, 16);
+        assignItemRect(REAPER, 15, 16);
+        assignItemRect(STARHAMMER, 16, 16);
+        assignItemRect(TRUE_TERMINUS, 16, 16);
+
+        assignItemRect(STEEL_AXE, 16, 14);
+        assignItemRect(HOMING_BOOMERANG, 14, 14);
+        assignItemRect(PHANTOM_SPEAR, 16, 16);
+        assignItemRect(RED_KUNAI, 15, 15);
+        assignItemRect(STAR_PIECES, 15, 15);
+    }
 
 	private static final int HG	  	=			xy(1, 48);  //8 slots
 	public static final int HG_T1		= HG+0;
