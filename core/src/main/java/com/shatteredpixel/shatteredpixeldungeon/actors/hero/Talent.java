@@ -84,6 +84,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.TalentSprite;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
@@ -147,6 +148,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
+import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -1462,6 +1464,26 @@ public enum Talent {
 
 	public static class SurprisePanicTracker extends Buff {}
     public interface SpellbladeForgeryWeapon {};
+
+    public static class SpellbladeForgeryWound extends Wound {
+        int color;
+
+        @Override
+        public void update() {
+            super.update();
+
+            hardlight(color);
+        }
+
+        public static void hit(int pos, float angle, int color ) {
+            Group parent = Dungeon.hero.sprite.parent;
+            SpellbladeForgeryWound w = parent.recycle( SpellbladeForgeryWound.class );
+            parent.bringToFront( w );
+            w.reset( pos );
+            w.angle = angle;
+            w.color = color;
+        }
+    }
 
 	int icon;
 	int maxPoints;

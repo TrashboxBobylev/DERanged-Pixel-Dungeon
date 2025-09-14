@@ -24,6 +24,8 @@ package com.shatteredpixel.shatteredpixeldungeon.mechanics;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.PrismaticImage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,12 +45,17 @@ public class Ballistica {
 	public static final int STOP_CHARS = 2;     //ballistica will stop on first char hit
 	public static final int STOP_SOLID = 4;     //ballistica will stop on solid terrain
 	public static final int IGNORE_SOFT_SOLID = 8; //ballistica will ignore soft solid terrain, such as doors and webs
+    public static final int IGNORE_PRISGUARD = 16;
 
 	public static final int PROJECTILE =  	STOP_TARGET	| STOP_CHARS	| STOP_SOLID;
 
 	public static final int DASH =  		STOP_TARGET	| STOP_SOLID;
 
 	public static final int MAGIC_BOLT =    STOP_CHARS  | STOP_SOLID;
+
+    public static final int FRIENDLY_PROJECTILE =  	PROJECTILE | IGNORE_PRISGUARD;
+
+    public static final int FRIENDLY_MAGIC_BOLT =   MAGIC_BOLT | IGNORE_PRISGUARD;
 
 	public static final int WONT_STOP =     0;
 
@@ -60,7 +67,8 @@ public class Ballistica {
 				(params & STOP_TARGET) > 0,
 				(params & STOP_CHARS) > 0,
 				(params & STOP_SOLID) > 0,
-				(params & IGNORE_SOFT_SOLID) > 0);
+				(params & IGNORE_SOFT_SOLID) > 0,
+                (params & IGNORE_PRISGUARD) > 0);
 
 		if (collisionPos != null) {
 			dist = path.indexOf(collisionPos);
@@ -73,7 +81,7 @@ public class Ballistica {
 		}
 	}
 
-	private void build( int from, int to, boolean stopTarget, boolean stopChars, boolean stopTerrain, boolean ignoreSoftSolid ) {
+	private void build( int from, int to, boolean stopTarget, boolean stopChars, boolean stopTerrain, boolean ignoreSoftSolid, boolean ignorePrisGuard ) {
 		int w = Dungeon.level.width();
 
 		int x0 = from % w;
@@ -136,9 +144,17 @@ public class Ballistica {
 					collide(cell);
 				}
 			}
-			if (collisionPos == null && cell != sourcePos && stopChars && Actor.findChar( cell ) != null) {
-				collide(cell);
-			}
+            if (collisionPos == null && cell != sourcePos && stopChars && (Actor.findChar( cell ) != null)) {
+                if (ignorePrisGuard && Actor.findChar(cell) instanceof PrismaticImage){
+                    if (cell == to && stopTarget) {
+                        collide(cell);
+                    }
+                } else {
+                    if (!(Actor.findChar(cell) instanceof MirrorImage)) {
+                        collide(cell);
+                    }
+                }
+            }
 			if (collisionPos == null && cell == to && stopTarget){
 				collide(cell);
 			}
