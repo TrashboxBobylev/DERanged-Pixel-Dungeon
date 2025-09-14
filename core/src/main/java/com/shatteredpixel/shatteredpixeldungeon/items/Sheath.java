@@ -105,7 +105,6 @@ public class Sheath extends Item {
         public boolean attachTo(Char target) {
             if (super.attachTo(target)){
                 if (target instanceof Hero) {
-                    Dungeon.observe();
                     if (((Hero) target).isSubclassedLoosely(HeroSubClass.MASTER) && target.buff(DashAttackCooldown.class) == null) {
                         ActionIndicator.setAction(this);
                     }
