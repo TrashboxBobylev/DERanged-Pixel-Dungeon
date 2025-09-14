@@ -139,6 +139,8 @@ public class Bomb extends Item {
 		return super.doPickUp(hero, pos);
 	}
 
+    public static boolean doNotDamageHero = false;
+
 	public void explode(int cell){
 		//We're blowing up, so no need for a fuse anymore.
 		this.fuse = null;
@@ -198,6 +200,9 @@ public class Bomb extends Item {
 				dmg -= ch.drRoll();
 
 				if (dmg > 0) {
+                    if (doNotDamageHero && ch instanceof Hero) {
+                        continue;
+                    }
 					ch.damage(dmg, this);
 				}
 				
