@@ -308,7 +308,7 @@ public enum HeroClass {
 
 		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.DUELIST)){
 			MeleeWeapon weapon = (MeleeWeapon) Generator.randomUsingDefaults(Random.oneOf(Generator.Category.WEP_T1, Generator.Category.WEP_T2, Generator.Category.WEP_T3, Generator.Category.WEP_T4, Generator.Category.WEP_T5));
-			if (Random.Int(22) == 0){
+			if (Random.Int(11) == 0){
 				weapon = (MeleeWeapon) Generator.randomUsingDefaults(Generator.Category.WEP_AL_T6);
 			}
 			if (weapon != null){
