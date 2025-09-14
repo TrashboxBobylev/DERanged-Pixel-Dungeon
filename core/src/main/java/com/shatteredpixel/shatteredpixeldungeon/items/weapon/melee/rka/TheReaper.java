@@ -102,7 +102,7 @@ public class TheReaper extends MeleeWeapon implements AlchemyWeapon {
 */
     @Override
     protected int baseChargeUse(Hero hero, Char target) {
-        return super.baseChargeUse(hero, target)*10;
+        return super.baseChargeUse(hero, target)*5;
     }
 
     @Override

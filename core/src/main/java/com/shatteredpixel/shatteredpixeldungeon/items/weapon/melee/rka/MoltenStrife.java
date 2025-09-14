@@ -72,7 +72,7 @@ public class MoltenStrife extends MeleeWeapon implements Talent.SpellbladeForger
 
     @Override
     protected int baseChargeUse(Hero hero, Char target){
-        return 4;
+        return 3;
     }
 
     @Override

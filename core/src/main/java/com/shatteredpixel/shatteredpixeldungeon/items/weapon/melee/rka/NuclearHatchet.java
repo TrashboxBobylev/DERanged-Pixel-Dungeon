@@ -127,7 +127,7 @@ public class NuclearHatchet extends MeleeWeapon implements AlchemyWeapon {
 
     @Override
     protected int baseChargeUse(Hero hero, Char target) {
-        return 3;
+        return 2;
     }
 
     public static class Effect extends Buff {

@@ -69,7 +69,7 @@ public class AluminumSword extends MeleeWeapon implements Talent.SpellbladeForge
 
     @Override
     protected int baseChargeUse(Hero hero, Char target) {
-        return 10;
+        return 6;
     }
 
     @Override

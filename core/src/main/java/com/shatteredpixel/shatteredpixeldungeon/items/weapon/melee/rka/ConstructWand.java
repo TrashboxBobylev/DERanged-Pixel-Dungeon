@@ -101,7 +101,7 @@ public class ConstructWand extends MeleeWeapon implements AlchemyWeapon {
 
     @Override
     protected int baseChargeUse(Hero hero, Char target){
-        return 5;
+        return 3;
     }
 
     @Override

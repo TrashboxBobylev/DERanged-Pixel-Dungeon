@@ -150,7 +150,7 @@ public class SharksTooth extends MeleeWeapon implements AlchemyWeapon {
         if (Dungeon.hero.buff(Flail.SpinAbilityTracker.class) != null){
             return 0;
         } else {
-            return 3;
+            return 2;
         }
     }
 
