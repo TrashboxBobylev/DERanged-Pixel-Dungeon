@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HeroDisguise;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.ExoKnife;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
@@ -163,6 +164,49 @@ public class HeroSprite extends CharSprite {
 		
 		super.update();
 	}
+
+    private int cellToAttack;
+
+    @Override
+    public void attack( int cell ) {
+        cellToAttack = cell;
+        super.attack( cell );
+    }
+
+    @Override
+    public void attack(int cell, Callback callback) {
+        cellToAttack = cell;
+        super.attack(cell, callback);
+    }
+
+    @Override
+    public void onComplete(Animation anim) {
+        if (ch instanceof Hero && anim == attack){
+            if (((Hero) ch).belongings.weapon instanceof ExoKnife) {
+                /*if ((ch.buff(BrawlerBuff.BrawlingTracker.class) != null)){
+                    super.onComplete(anim);
+                    return;
+                }*/
+                parent.recycle(MissileSprite.class).
+                        reset(this, cellToAttack, new ExoKnife.RunicMissile(), new Callback() {
+                            @Override
+                            public void call() {
+                                if (animCallback != null) {
+                                    Callback executing = animCallback;
+                                    animCallback = null;
+                                    executing.call();
+                                    return;
+                                }
+                                ch.onAttackComplete();
+                            }
+                        });
+            } else {
+                super.onComplete(anim);
+            }
+        } else {
+            super.onComplete( anim );
+        }
+    }
 	
 	public void sprint( float speed ) {
 		run.delay = 1f / speed / RUN_FRAMERATE;

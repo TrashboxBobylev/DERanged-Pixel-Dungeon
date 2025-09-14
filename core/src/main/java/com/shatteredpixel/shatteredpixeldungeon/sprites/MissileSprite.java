@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.FT.FT;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.GL.GL;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.Gun;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.LG.LG;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.ExoKnife;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Bolas;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.FishingSpear;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.HeavyBoomerang;
@@ -200,7 +201,8 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 				|| item instanceof TankSprite.TankShot
 				|| item instanceof SWATSprite.SWATShot
 				|| item instanceof RebelSprite.RebelShot
-				|| item instanceof TenguSprite.TenguShuriken){
+				|| item instanceof TenguSprite.TenguShuriken
+                || item instanceof ExoKnife.RunicMissile){
 			speed *= 1.5f;
 		} else if (item instanceof Gun.Bullet || item instanceof BowWeapon.Arrow || item instanceof Snipe.SnipeArrow) {
 			if (item instanceof FT.FTBullet ||

@@ -55,6 +55,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.bow.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.bow.BowWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.Gun;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.ExoKnife;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
@@ -307,8 +308,8 @@ public class MeleeWeapon extends Weapon {
             }
 
             hero.belongings.abilityWeapon = this.abilityWeapon = wep;
-//            if (!(wep instanceof ExoKnife))
-//                hero.belongings.abilityWeapon = null;
+            if (!(wep instanceof ExoKnife))
+                hero.belongings.abilityWeapon = null;
 
             hero.sprite.attack(enemy.pos, () -> {
                 beforeAbilityUsed(hero, enemy);
@@ -360,8 +361,8 @@ public class MeleeWeapon extends Weapon {
         public void afterAbilityUsed() {
             abilityWeapon.afterAbilityUsed(hero);
             activeAbility = null;
-//            if ((abilityWeapon instanceof ExoKnife))
-//                hero.belongings.abilityWeapon = null;
+            if ((abilityWeapon instanceof ExoKnife))
+                hero.belongings.abilityWeapon = null;
         }
 
         protected boolean canAttack(Hero hero, Char enemy) {
