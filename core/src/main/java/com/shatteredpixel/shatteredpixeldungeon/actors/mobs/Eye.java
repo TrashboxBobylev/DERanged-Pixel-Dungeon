@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WarriorParry;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -99,7 +100,7 @@ public class Eye extends Mob {
 	@Override
 	protected boolean canAttack( Char enemy ) {
 
-		if (beamCooldown == 0) {
+		if (beamCooldown == 0 && buff(Talent.AntiMagicBuff.class) == null) {
 			Ballistica aim = new Ballistica(pos, enemy.pos, Ballistica.STOP_SOLID);
 
 			if (enemy.invisible == 0 && !isCharmedBy(enemy) && fieldOfView[enemy.pos]

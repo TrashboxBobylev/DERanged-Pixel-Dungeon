@@ -16,6 +16,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.TimedShrink;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WarriorParry;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
@@ -76,10 +77,16 @@ public class SpectreRat extends AbyssalMob implements Callback {
 
     @Override
     public boolean canAttack(Char enemy) {
+        if (buff(Talent.AntiMagicBuff.class) != null){
+            return super.canAttack(enemy);
+        }
         return super.canAttack(enemy) || new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
     }
 
     protected boolean doAttack( Char enemy ) {
+        if (buff(Talent.AntiMagicBuff.class) != null){
+            return super.doAttack(enemy);
+        }
        if (Dungeon.level.adjacent( pos, enemy.pos )
                 || new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos != enemy.pos) {
 

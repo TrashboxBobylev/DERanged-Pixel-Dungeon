@@ -1484,6 +1484,7 @@ public enum Talent {
             w.color = color;
         }
     }
+    public static class AntiMagicBuff extends FlavourBuff{};
 
 	int icon;
 	int maxPoints;

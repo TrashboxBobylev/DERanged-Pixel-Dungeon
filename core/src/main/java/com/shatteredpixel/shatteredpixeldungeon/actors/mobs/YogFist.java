@@ -44,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WarriorParry;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -105,7 +106,7 @@ public abstract class YogFist extends Mob {
 
 	@Override
 	protected boolean canAttack(Char enemy) {
-		if (rangedCooldown <= 0){
+		if (rangedCooldown <= 0 && buff(Talent.AntiMagicBuff.class) == null){
 			return new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
 		} else {
 			return super.canAttack(enemy);
@@ -131,7 +132,7 @@ public abstract class YogFist extends Mob {
 	@Override
 	protected boolean doAttack( Char enemy ) {
 
-		if (Dungeon.level.adjacent( pos, enemy.pos ) && (!canRangedInMelee || rangedCooldown > 0)) {
+		if (Dungeon.level.adjacent( pos, enemy.pos ) && (!canRangedInMelee || rangedCooldown > 0 || buff(Talent.AntiMagicBuff.class) != null)) {
 
 			return super.doAttack( enemy );
 

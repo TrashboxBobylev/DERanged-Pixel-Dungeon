@@ -9,6 +9,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FrostBurn;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WarriorParry;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
@@ -94,7 +95,7 @@ public class Dragon extends AbyssalMob {
 
     @Override
     public boolean canAttack(Char enemy) {
-        if (rangedCooldown <= 0) {
+        if (rangedCooldown <= 0 && buff(Talent.AntiMagicBuff.class) == null) {
             return super.canAttack(enemy) || new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT ).collisionPos == enemy.pos;
         } else {
             return super.canAttack( enemy );
@@ -103,7 +104,7 @@ public class Dragon extends AbyssalMob {
 
     protected boolean doAttack( Char enemy ) {
 
-        if ((Dungeon.level.adjacent( pos, enemy.pos ) || new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT ).collisionPos != enemy.pos)) {
+        if ((Dungeon.level.adjacent( pos, enemy.pos ) || new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT ).collisionPos != enemy.pos) || buff(Talent.AntiMagicBuff.class) != null) {
 
             return super.doAttack( enemy );
 

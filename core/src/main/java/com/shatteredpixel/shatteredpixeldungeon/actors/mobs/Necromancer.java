@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
@@ -286,7 +287,7 @@ public class Necromancer extends Mob {
 			}
 			
 			//if enemy is seen, and enemy is within range, and we have no skeleton, summon a skeleton!
-			if (enemySeen && Dungeon.level.distance(pos, enemy.pos) <= 4 && mySkeleton == null){
+			if (enemySeen && Dungeon.level.distance(pos, enemy.pos) <= 4 && mySkeleton == null && buff(Talent.AntiMagicBuff.class) == null){
 				
 				summoningPos = -1;
 
@@ -323,7 +324,7 @@ public class Necromancer extends Mob {
 				
 				return true;
 			//otherwise, if enemy is seen, and we have a skeleton...
-			} else if (enemySeen && mySkeleton != null){
+			} else if (enemySeen && mySkeleton != null && buff(Talent.AntiMagicBuff.class) == null){
 				
 				spend(TICK);
 				

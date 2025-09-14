@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -192,7 +193,7 @@ public class Golem extends Mob {
 			if (target != -1 && getCloser( target )) {
 				spend( 1 / speed() );
 				return moveSprite( oldPos, pos );
-			} else if (!Dungeon.bossLevel() && target != -1 && target != pos && selfTeleCooldown <= 0) {
+			} else if (!Dungeon.bossLevel() && target != -1 && target != pos && selfTeleCooldown <= 0 && buff(Talent.AntiMagicBuff.class) == null) {
 				((GolemSprite)sprite).teleParticles(true);
 				teleporting = true;
 				spend( 2*TICK );

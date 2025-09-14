@@ -8,6 +8,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
@@ -252,7 +253,7 @@ public class DarkestElf extends AbyssalMob {
             }
 
             //if enemy is seen, and enemy is within range, and we haven no skeleton, summon a skeleton!
-            if (enemySeen && Dungeon.level.distance(pos, enemy.pos) <= 4 && mySkeleton == null){
+            if (enemySeen && Dungeon.level.distance(pos, enemy.pos) <= 4 && mySkeleton == null && buff(Talent.AntiMagicBuff.class) == null){
 
                 summoningPos = -1;
                 for (int c : PathFinder.NEIGHBOURS8){
@@ -280,7 +281,7 @@ public class DarkestElf extends AbyssalMob {
 
                 return true;
                 //otherwise, if enemy is seen, and we have a skeleton...
-            } else if (enemySeen && mySkeleton != null){
+            } else if (enemySeen && mySkeleton != null && buff(Talent.AntiMagicBuff.class) == null){
 
                 target = enemy.pos;
                 spend(TICK);
