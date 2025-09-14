@@ -281,6 +281,20 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SMG.SMG_T
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SMG.SMG_T5;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SR.SR_T3;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SR.SR_T5;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.AluminumSword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.BloomingPick;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.ConstructWand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.DreadSlicer;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.ElementalDirk;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.ExoKnife;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.LuminousCutlass;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.MoltenStrife;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.NuclearHatchet;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.RoyalBrand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.RunicBladeMkII;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.SharksTooth;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.Starsmasher;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.TheReaper;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Bolas;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.FishingSpear;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ForceCube;
@@ -710,9 +724,23 @@ public class Generator {
 					MeisterHammer.class,
 					BeamSaber.class,
 					SharpKatana.class,
-					AssassinsSpear.class
+					AssassinsSpear.class,
+                    AluminumSword.class,
+                    NuclearHatchet.class,
+                    RunicBladeMkII.class,
+                    ConstructWand.class,
+                    BloomingPick.class,
+                    LuminousCutlass.class,
+                    MoltenStrife.class,
+                    ElementalDirk.class,
+                    DreadSlicer.class,
+                    SharksTooth.class,
+                    ExoKnife.class,
+                    TheReaper.class,
+                    RoyalBrand.class,
+                    Starsmasher.class
 			};
-			WEP_AL_T6.defaultProbs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+			WEP_AL_T6.defaultProbs = new float[]{ 8, 8, 8, 8, 8, 6, 6, 6, 5, 5, 5, 4, 4, 4, 4, 9, 8, 7, 7, 7, 6, 6, 6, 6, 6, 5, 5, 3, 3 };
 			WEP_AL_T6.probs = WEP_AL_T6.defaultProbs.clone();
 
 			WEP_AL_T7.classes = new Class<?>[]{
