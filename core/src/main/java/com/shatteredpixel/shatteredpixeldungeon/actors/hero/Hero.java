@@ -2039,6 +2039,9 @@ public class Hero extends Char {
 		if (hasTalent(Talent.PATIENT_STRIKE, Talent.KINGS_WISDOM)){
 			Buff.affect(Dungeon.hero, Talent.PatientStrikeTracker.class).pos = Dungeon.hero.pos;
 		}
+        if (hasTalent(Talent.JUSTICES_REVENGEANCE) && buff(Talent.JusticeRevengeanceCooldown.class) == null){
+            Buff.affect(Dungeon.hero, Talent.JusticeRevengeanceTracker.class).pos = Dungeon.hero.pos;
+        }
 		if (!fullRest) {
 			if (sprite != null) {
 				sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "wait"));
@@ -2111,6 +2114,9 @@ public class Hero extends Char {
 		if (buff(Sheath.CertainCrit.class) != null) {
 			chance += 1f;
 		}
+        if (buff(Talent.JusticeRevengeanceTracker.class) != null && wep instanceof Gun.Bullet){
+            chance += 1f;
+        }
 
 		if (hasTalent(Talent.BASIC_PRACTICE, Talent.ROYAL_FOCUS)) {
 			chance += 0.02f * pointsInTalent(Talent.BASIC_PRACTICE, Talent.ROYAL_FOCUS);

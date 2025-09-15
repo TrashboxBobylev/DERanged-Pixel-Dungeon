@@ -486,6 +486,7 @@ public enum Talent {
 	CAMOUFLAGE					(8,  6),	//길게 자란 풀을 밟으면 2/3턴의 투명화를 얻음
 	LARGER_MAGAZINE				(9,  6),	//총기의 최대 탄약 수 1/2 증가
 	BULLET_COLLECT				(10, 6),	//적을 처치하면 1/2개의 탄환을 드랍함
+    JUSTICES_REVENGEANCE        (22, 12),
 	//Gunner T3
 	STREET_BATTLE				(11, 6, 3),	//탄환이 플레이어 주변 반경 2/3/4타일의 벽을 관통함
 	FAST_RELOAD					(12, 6, 3),	//재장전에 필요한 턴이 1/2/3턴 감소
@@ -1487,6 +1488,37 @@ public enum Talent {
         }
     }
     public static class AntiMagicBuff extends FlavourBuff{};
+    public static class JusticeRevengeanceTracker extends Buff {
+        public int pos;
+        { type = buffType.POSITIVE; }
+        public int icon() { return BuffIndicator.TIME; }
+        public void tintIcon(Image icon) { icon.hardlight(0xFFFF00); }
+        @Override
+        public boolean act() {
+            if (pos != target.pos) {
+                detach();
+            } else {
+                spend(TICK);
+            }
+            return true;
+        }
+        private static final String POS = "pos";
+        @Override
+        public void storeInBundle(Bundle bundle) {
+            super.storeInBundle(bundle);
+            bundle.put(POS, pos);
+        }
+        @Override
+        public void restoreFromBundle(Bundle bundle) {
+            super.restoreFromBundle(bundle);
+            pos = bundle.getInt(POS);
+        }
+    };
+    public static class JusticeRevengeanceCooldown extends FlavourBuff {
+        public int icon() { return BuffIndicator.TIME; }
+        public void tintIcon(Image icon) { icon.hardlight(0xAAAA00); }
+        public float iconFadePercent() { return Math.max(0, visualcooldown() / 35); }
+    }
 
 	int icon;
 	int maxPoints;
@@ -2915,7 +2947,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, ENLIGHTENING_MEAL, RECALL_INSCRIPTION, SUNRAY, DIVINE_SENSE, BLESS, DIVINE_BLAST);
 				break;
 			case GUNNER:
-				Collections.addAll(tierTalents, INFINITE_BULLET_MEAL, INSCRIBED_BULLET, MIND_VISION, CAMOUFLAGE, LARGER_MAGAZINE, BULLET_COLLECT);
+				Collections.addAll(tierTalents, INFINITE_BULLET_MEAL, INSCRIBED_BULLET, MIND_VISION, CAMOUFLAGE, JUSTICES_REVENGEANCE, BULLET_COLLECT);
 				break;
 			case SAMURAI:
 				Collections.addAll(tierTalents, CRITICAL_MEAL, INSCRIBED_LETHALITY, UNEXPECTED_SLASH, DRAGONS_EYE, WEAPON_MASTERY, CRITICAL_THROW);
@@ -3254,7 +3286,7 @@ public enum Talent {
 
 	private static final HashMap<String, String> renamedTalents = new HashMap<>();
 	static{
-		//nothing atm
+        renamedTalents.put("LARGER_MAGAZINE", "JUSTICES_REVENGEANCE");
 	}
 
 	public static void restoreTalentsFromBundle( Bundle bundle, Hero hero ){

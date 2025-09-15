@@ -23,6 +23,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.gunner.Rio
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EnergyParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SmokeParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.GunSmithingTool;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
@@ -34,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -783,11 +785,17 @@ public class Gun extends MeleeWeapon {
 						break;
 				}
 			}
+            if (owner.buff(Talent.JusticeRevengeanceTracker.class) != null){
+                return Hero.INFINITE_ACCURACY;
+            }
 			return ACC;
 		}
 
 		@Override
 		protected float adjacentAccFactor(Char owner, Char target) {
+            if (owner.buff(Talent.JusticeRevengeanceTracker.class) != null){
+                return Hero.INFINITE_ACCURACY;
+            }
 			return adjacentShootingAccuracy;
 		}
 
@@ -859,6 +867,12 @@ public class Gun extends MeleeWeapon {
 				SharpShooterBuff.rangedLethal(enemy, isBurst, this);
 			}
 
+            if (curUser.buff(Talent.JusticeRevengeanceTracker.class) != null){
+                CellEmitter.get(cell).burst(EnergyParticle.FACTORY, 25);
+                Buff.detach(curUser, Talent.JusticeRevengeanceTracker.class);
+                Buff.affect(curUser, Talent.JusticeRevengeanceCooldown.class, 45 - curUser.pointsInTalent(Talent.JUSTICES_REVENGEANCE)*10);
+            }
+
 			onShoot();
 		}
 
@@ -915,6 +929,19 @@ public class Gun extends MeleeWeapon {
 		public void cast(final Hero user, int dst) {
 			super.cast(user, dst);
 		}
+
+        @Override
+        public Emitter emitter() {
+            if (hero.buff(Talent.JusticeRevengeanceTracker.class) != null) {
+                Emitter e = new Emitter();
+                e.pos(7.5f, 7.5f);
+                e.fillTarget = true;
+                e.autoKill = false;
+                e.pour(EnergyParticle.FACTORY, 0.001f);
+                return e;
+            }
+            return super.emitter();
+        }
 	}
 
 	private CellSelector.Listener shooter = new CellSelector.Listener() {
