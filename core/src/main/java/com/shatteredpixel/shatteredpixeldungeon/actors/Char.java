@@ -652,6 +652,9 @@ public abstract class Char extends Actor {
 						acuRoll(this, attackSkill( enemy ), accMulti)/
 								defRoll(this, enemy, enemy.defenseSkill(this), accMulti), 1.25f);
 			}
+            if (this instanceof Hero && ((Hero) this).belongings.attackingWeapon() instanceof Gun && ((Hero) this).hasTalent(Talent.CLOSE_COMBAT)){
+                effectiveDamage += Hero.heroDamageIntRange(0, ((Hero) this).pointsInTalent(Talent.CLOSE_COMBAT)*2);
+            }
 
 			if (enemy.buff(WarriorParry.BlockTrock.class) != null && effectiveDamage >= 0){
 				enemy.sprite.emitter().burst( Speck.factory( Speck.FORGE ), 15 );

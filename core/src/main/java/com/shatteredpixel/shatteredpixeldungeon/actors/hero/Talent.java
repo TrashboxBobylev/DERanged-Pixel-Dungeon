@@ -137,6 +137,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWea
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -1953,11 +1954,11 @@ public enum Talent {
 			SpellSprite.show(hero, SpellSprite.CHARGE, 0, 1, 1);
 		}
 
-        if (hero.hasTalent(Talent.RELOADING_MEAL, ROYAL_FOCUS)) {
+        if (hero.canHaveTalent(Talent.RELOADING_MEAL)) {
             if (hero.belongings.weapon instanceof Gun) {
                 ((Gun)hero.belongings.weapon).quickReload();
-                if (hero.pointsInTalent(Talent.RELOADING_MEAL, ROYAL_FOCUS) > 1) {
-                    ((Gun)hero.belongings.weapon).manualReload(1, true);
+                if (hero.shiftedPoints(Talent.RELOADING_MEAL) > 1) {
+                    ((Gun)hero.belongings.weapon).manualReload(Math.min(0, hero.shiftedPoints(RELOADING_MEAL) - 1), true);
                 }
             }
         }
@@ -2247,7 +2248,7 @@ public enum Talent {
 		if (identify && !ShardOfOblivion.passiveIDDisabled()){
 			item.identify();
 		}
-		if (hero.hasTalent(GUNNERS_INTUITION) && item instanceof Gun) {
+		if (hero.canHaveTalent(GUNNERS_INTUITION) && item instanceof Gun) {
 			item.identify();
 		}
 		if (hero.hasTalent(MASTERS_INTUITION) && item instanceof MeleeWeapon && !(item instanceof Gun)) {
@@ -2268,8 +2269,10 @@ public enum Talent {
 		if (hero.pointsInTalent(THIEFS_INTUITION, ROYAL_INTUITION) == 2){
 			if (item instanceof Ring) ((Ring) item).setKnown();
 		}
-		if (hero.pointsInTalent(GUNNERS_INTUITION) == 2 && item instanceof Gun) {
+		if (hero.pointsInTalent(GUNNERS_INTUITION) >= 1 && item instanceof Gun) {
 			item.cursedKnown = true;
+            if (hero.pointsInTalent(GUNNERS_INTUITION) > 1)
+                item.identify();
 		}
 		if (hero.pointsInTalent(MASTERS_INTUITION) == 2 && item instanceof MeleeWeapon && !(item instanceof Gun)) {
 			item.cursedKnown = true;
@@ -2402,7 +2405,10 @@ public enum Talent {
 		//attacking procs
 		if (hero.hasTalent(SPEEDY_MOVE, AMBUSH) && enemy instanceof Mob && enemy.buff(SpeedyMoveTracker.class) == null){
 			Buff.affect(enemy, SpeedyMoveTracker.class);
-			Buff.affect(hero, GreaterHaste.class).set(2 + hero.pointsInTalent(SPEEDY_MOVE, AMBUSH));
+            if (hero.canHaveTalent(SPEEDY_MOVE))
+                Buff.affect(hero, Swiftthistle.TimeBubble.class).set(2 + hero.pointsInTalent(SPEEDY_MOVE, AMBUSH));
+            else
+			    Buff.affect(hero, GreaterHaste.class).set(2 + hero.pointsInTalent(SPEEDY_MOVE, AMBUSH));
 		}
 
 		if (enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)) {

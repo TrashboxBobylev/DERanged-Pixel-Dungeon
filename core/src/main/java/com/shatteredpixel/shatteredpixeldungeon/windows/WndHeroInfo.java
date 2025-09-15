@@ -232,6 +232,8 @@ public class WndHeroInfo extends WndTabbed {
 					icons = new Image[]{ new ItemSprite(ItemSpriteSheet.SR_T5),
 							new ItemSprite(ItemSpriteSheet.BULLET),
 							new ItemSprite(ItemSpriteSheet.BULLET_BELT),
+                            new TalentIcon(Talent.RELOADING_MEAL),
+                            new TalentIcon(Talent.GUNNERS_INTUITION),
 							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
 					break;
 				case SAMURAI:

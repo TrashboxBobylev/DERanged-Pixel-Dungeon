@@ -330,7 +330,7 @@ public class Gun extends MeleeWeapon {
 		Buff.detach(hero, ElectroBullet.class);
 
 		if (hero.hasTalent(Talent.SAFE_RELOAD, Talent.WELL_PROTECTED)) {
-			Buff.affect(hero, Barrier.class).setShield( 1 + 2 * hero.pointsInTalent(Talent.SAFE_RELOAD, Talent.WELL_PROTECTED));
+			Buff.affect(hero, Barrier.class).setShield((int) (1 + hero.byTalent(Talent.SAFE_RELOAD, 3, Talent.WELL_PROTECTED, 2)));
 		}
 
 		if (hero.hasTalent(Talent.ELEMENTAL_BULLET, Talent.RK_GUNSLINGER) && round == 0) {
@@ -459,8 +459,8 @@ public class Gun extends MeleeWeapon {
 	public int max(int lvl) {
 		int damage;
 		int talentBonus = 0;
-		if (Dungeon.hero != null && hero.hasTalent(Talent.CLOSE_COMBAT, Talent.EXTRA_POWER)) {
-			talentBonus += 2*hero.pointsInTalent(Talent.CLOSE_COMBAT, Talent.EXTRA_POWER);
+		if (Dungeon.hero != null && hero.hasTalent(Talent.EXTRA_POWER)) {
+			talentBonus += 2*hero.pointsInTalent(Talent.EXTRA_POWER);
 		}
 		if (Dungeon.hero != null) {
 			damage = 3*(tier()+1) +
