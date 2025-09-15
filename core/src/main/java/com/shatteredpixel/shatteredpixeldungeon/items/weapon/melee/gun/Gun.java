@@ -396,7 +396,10 @@ public class Gun extends MeleeWeapon {
 		amount = this.magazineMod.magazineFactor(amount);
 
 		if (hero != null) {
-			amount += hero.pointsInTalent(Talent.LARGER_MAGAZINE, Talent.PERFECT_COLLECTION);
+			amount += hero.pointsInTalent(Talent.PERFECT_COLLECTION);
+            if (hero.isClassed(HeroClass.GUNNER)){
+                amount *= 1.5f;
+            }
 		}
 
 		return amount;
