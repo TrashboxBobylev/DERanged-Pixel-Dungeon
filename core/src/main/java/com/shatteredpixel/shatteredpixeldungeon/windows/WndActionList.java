@@ -62,7 +62,7 @@ public class WndActionList extends Window {
 
         for (ActionIndicator.Action possibleAction : possibleActions) {
             ActionButton actionBtn = new ActionButton(Messages.titleCase(possibleAction.actionName()), 6, possibleAction);
-            actionBtn.icon(new Image(Assets.Sprites.ITEMS, 0, 528, 16, 16));
+            actionBtn.icon(new Image(Assets.Sprites.ITEMS, 240, 16, 16, 16));
             actionBtn.leftJustify = true;
             actionBtn.multiline = true;
             actionBtn.hardlight(possibleAction.indicatorColor());
