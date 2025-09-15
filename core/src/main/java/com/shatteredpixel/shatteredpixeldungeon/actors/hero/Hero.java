@@ -2977,8 +2977,8 @@ public class Hero extends Char {
 				((Gun)belongings.weapon).manualReload();
 			}
 
-			if (hasTalent(Talent.MIND_VISION, Talent.THE_PROTECTOR) && Random.Float() < 0.01f*pointsInTalent(Talent.MIND_VISION, Talent.THE_PROTECTOR)) {
-				Buff.affect(this, MindVision.class, 1f);
+			if (hasTalent(Talent.MIND_VISION, Talent.THE_PROTECTOR) && Random.Float() < byTalent(Talent.MIND_VISION, 0.02f, Talent.THE_PROTECTOR, 0.01f)) {
+				Buff.affect(this, MindVision.class, hasTalent(Talent.MIND_VISION) ? 2f : 1f);
 			}
 
 			BowMasterSkill.move();

@@ -1965,7 +1965,7 @@ public enum Talent {
         }
 
 		if (hero.hasTalent(Talent.INFINITE_BULLET_MEAL, ROYAL_FEAST)) {
-			Buff.affect(hero, InfiniteBullet.class, 1+hero.pointsInTalent(Talent.INFINITE_BULLET_MEAL, ROYAL_FEAST));
+			Buff.affect(hero, InfiniteBullet.class, 1+hero.byTalent(Talent.INFINITE_BULLET_MEAL, 1.5f, ROYAL_FEAST, 1.0f));
 		}
 		if (hero.hasTalent(Talent.CRITICAL_MEAL, ROYAL_FEAST)) {
 			Buff.affect(hero, Sheath.CertainCrit.class).set(hero.pointsInTalent(Talent.CRITICAL_MEAL, ROYAL_FEAST));
@@ -2158,7 +2158,7 @@ public enum Talent {
 		if (hero.hasTalent(Talent.INSCRIBED_BULLET, TEMPORARY_DRAUGHT)) {
 			//collects 5/10 bullet
 			BulletItem bulletItem = new BulletItem();
-			bulletItem.quantity((int)(factor * 5 * hero.pointsInTalent(Talent.INSCRIBED_BULLET, TEMPORARY_DRAUGHT)));
+			bulletItem.quantity((int)(factor * hero.byTalent(Talent.INSCRIBED_BULLET, 8, TEMPORARY_DRAUGHT, 5)));
 			bulletItem.doPickUp(hero);
 		}
 		if (hero.hasTalent(Talent.INSCRIBED_LETHALITY, TEMPORARY_DRAUGHT)) {
@@ -2632,7 +2632,7 @@ public enum Talent {
 		}
 
 		if (wep instanceof Gun && hero.hasTalent(Talent.BULLET_COLLECT, PERFECT_COLLECTION)) {
-			if (Random.Float() < 0.05f * hero.pointsInTalent(Talent.BULLET_COLLECT, PERFECT_COLLECTION)) {
+			if (Random.Float() < hero.byTalent(Talent.BULLET_COLLECT, 0.1f, PERFECT_COLLECTION, 0.05f)) {
 				((Gun)wep).manualReload(1, true);
 			}
 		}
