@@ -793,6 +793,7 @@ public enum Talent {
 	ACC_ENHANCE					(1, 12, 4),
 	EVA_ENHANCE					(2, 12, 4),
 	BETTER_CHOICE				(3, 12, 3),
+    BETTERER_CHOICE				(3, 12, 3),
 
 	ROYAL_PRIVILEGE(0, 13), // food related talents
 	ROYAL_FOCUS(0, 14),  // food-ish related talents (arranged)
@@ -3006,7 +3007,7 @@ public enum Talent {
 		ArrayList<Talent> tierTalents = new ArrayList<>();
 
 		if (cls != HeroSubClass.KING)
-			Collections.addAll(tierTalents, ATK_SPEED_ENHANCE, ACC_ENHANCE, EVA_ENHANCE, BETTER_CHOICE );
+			Collections.addAll(tierTalents, ATK_SPEED_ENHANCE, ACC_ENHANCE, EVA_ENHANCE, BETTERER_CHOICE );
 		//tier 3
 		switch (cls){
 			case BERSERKER: default:
@@ -3248,7 +3249,8 @@ public enum Talent {
 
 	private static final HashMap<String, String> renamedTalents = new HashMap<>();
 	static{
-		//nothing atm
+        renamedTalents.put("LARGER_MAGAZINE", "JUSTICES_REVENGEANCE");
+        renamedTalents.put("BETTER_CHOICE", "BETTERER_CHOICE");
 	}
 
 	public static void restoreTalentsFromBundle( Bundle bundle, Hero hero ){

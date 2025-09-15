@@ -22,8 +22,10 @@
 package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
@@ -31,9 +33,12 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.remains.RemainsItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfMetamorphosis;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
@@ -53,6 +58,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.level;
 
 public class Badges {
 
@@ -1034,6 +1041,28 @@ public class Badges {
 				badge = Badge.BOSS_CHALLENGE_5;
 				break;
 		}
+        Hero hero = Dungeon.hero;
+        if (hero.hasTalent(Talent.BETTERER_CHOICE)){
+            ArrayList<Item> rewards = new ArrayList<>();
+            int points = hero.pointsInTalent(Talent.BETTERER_CHOICE);
+            if (points > 0){
+                rewards.add(new StoneOfEnchantment().quantity(2));
+            }
+            if (points > 1){
+                rewards.add(new ElixirOfMight());
+            }
+            if (points > 2){
+                rewards.add(new ScrollOfMetamorphosis().quantity(2));
+            }
+            for (Item reward: rewards){
+                if (reward.doPickUp( Dungeon.hero )) {
+                    GLog.i( Messages.get(Dungeon.hero, "you_now_have", reward.name() ));
+                    hero.spend(-1);
+                } else {
+                    level.drop( reward, Dungeon.hero.pos ).sprite.drop();
+                }
+            }
+        }
 
 		if (badge != null) {
 			local.add(badge);
