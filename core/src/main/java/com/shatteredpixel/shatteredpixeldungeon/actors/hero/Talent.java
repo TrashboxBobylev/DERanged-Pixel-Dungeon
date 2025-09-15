@@ -478,6 +478,7 @@ public enum Talent {
 	SPEEDY_MOVE					(2,  6),	//적을 처음 공격하면 초신속 2/3턴
 	SAFE_RELOAD					(3,  6),	//재장전 시 3/5의 방어막을 얻음
 	CLOSE_COMBAT				(4,  6),	//총기 근접 공격력이 0-2/0-4 증가
+    CRAFTMANSHIP                (10, 12),
 	//Gunner T2
 	INFINITE_BULLET_MEAL		(5,  6),	//식사에 1턴만 소모하고, 식사 시 2/3턴의 무한 탄환을 얻음
 	INSCRIBED_BULLET			(6,  6),	//주문서 사용 시 5/10개의 탄환을 얻음
@@ -2864,7 +2865,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, SATIATED_SPELLS, HOLY_INTUITION, SEARING_LIGHT, SHIELD_OF_LIGHT, WARDING_LIGHT);
 				break;
 			case GUNNER:
-				Collections.addAll(tierTalents, RELOADING_MEAL, GUNNERS_INTUITION, SPEEDY_MOVE, SAFE_RELOAD, CLOSE_COMBAT);
+				Collections.addAll(tierTalents, RELOADING_MEAL, GUNNERS_INTUITION, SPEEDY_MOVE, SAFE_RELOAD, CLOSE_COMBAT, CRAFTMANSHIP);
 				break;
 			case SAMURAI:
 				Collections.addAll(tierTalents, BASIC_PRACTICE, MASTERS_INTUITION, DRAWING_ENHANCE, PARRING, ADRENALINE_SURGE);
