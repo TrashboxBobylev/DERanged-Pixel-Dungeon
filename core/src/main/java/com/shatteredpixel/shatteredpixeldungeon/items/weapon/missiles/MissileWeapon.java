@@ -21,8 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -58,9 +56,9 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.ui.InventoryPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
@@ -232,7 +230,7 @@ abstract public class MissileWeapon extends Weapon {
 		}
 
 		if ((this instanceof Gun.Bullet && (Dungeon.level.passable[dst] || Dungeon.level.avoid[dst])
-                && Dungeon.level.distance(user.pos, dst) <= 1+Dungeon.hero.pointsInTalent(Talent.STREET_BATTLE, Talent.RK_OUTLAW))
+                && Dungeon.level.distance(user.pos, dst) <= 1+Dungeon.hero.pointsInTalent(Talent.STREET_BATTLE, Talent.RK_OUTLAW) + (hero.hasTalent(Talent.STREET_BATTLE) ? 1 : 0))
                 || (projecting > 0
 				&& (Dungeon.level.passable[dst] || Dungeon.level.avoid[dst] || Actor.findChar(dst) != null)
 				&& Dungeon.level.distance(user.pos, dst) <= Math.round(projecting * Enchantment.genericProcChanceMultiplier(user)))){
