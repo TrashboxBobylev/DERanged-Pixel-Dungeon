@@ -1816,7 +1816,7 @@ public enum Talent {
 		}
 
 		//medic
-		if (talent == DOCTORS_INTUITION || talent == ROYAL_INTUITION) {
+		if (talent == DOCTORS_INTUITION || talent == ROYAL_PERCEPTIVITY) {
 			identifyPotions(1+2*hero.pointsInTalent(talent));
 		}
 
