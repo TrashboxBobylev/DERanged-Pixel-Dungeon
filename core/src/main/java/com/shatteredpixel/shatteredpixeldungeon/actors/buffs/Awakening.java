@@ -147,7 +147,7 @@ public class Awakening extends Buff implements ActionIndicator.Action {
 
     @Override
     public boolean usable() {
-        return !isAwaken() && target != null && target.buff(AwakeningCooldown.class) == null;
+        return target != null && target.buff(AwakeningCooldown.class) == null;
     }
 
     @Override
