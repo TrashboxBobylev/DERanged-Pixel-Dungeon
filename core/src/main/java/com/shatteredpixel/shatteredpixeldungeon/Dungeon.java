@@ -1024,7 +1024,7 @@ public class Dungeon {
 	public static void observe(){
 		int dist = Math.max(Dungeon.hero.viewDistance, 8);
 		dist *= 1f + 0.25f*Dungeon.hero.pointsInTalent(Talent.FARSIGHT, Talent.RK_SNIPER);
-		dist *= 1f + 0.25f*Dungeon.hero.pointsInTalent(Talent.TELESCOPE, Talent.RK_SPECIALIST);
+		dist *= 1f + Dungeon.hero.byTalent(Talent.TELESCOPE, 1/3f, Talent.RK_SPECIALIST, 1/4f);
 
 		if (Dungeon.hero.buff(MagicalSight.class) != null){
 			dist = Math.max( dist, MagicalSight.DISTANCE );

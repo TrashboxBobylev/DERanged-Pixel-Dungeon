@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SacrificialFire;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SmokeScreen;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AdrenalineSurge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AmnesiaBuff;
@@ -1515,6 +1516,10 @@ public class Hero extends Char {
             Buff.affect(this, NuclearHatchet.Effect.class).set(1.1f);
         }
 
+        if (shiftedPoints(Talent.STEALTH_MASTER, Talent.RK_SPECIALIST) > 3 && (buff(Invisibility.class) != null || buff(Cloaking.class) != null)){
+            GameScene.add(Blob.seed(pos, 90, SmokeScreen.class));
+        }
+
 		return actResult;
 	}
 	
@@ -2080,12 +2085,12 @@ public class Hero extends Char {
 						break;
 					}
 				}
-				if (pointsInTalent(Talent.STEALTH_MASTER, Talent.RK_SPECIALIST) > 1) {
+				if (shiftedPoints(Talent.STEALTH_MASTER, Talent.RK_SPECIALIST) > 1) {
 					adjacentMob = false;
 				}
 				if (!adjacentMob) {
 					if (hasTalent(Talent.INTO_THE_SHADOW, Talent.RK_SPECIALIST) && buff(Talent.IntoTheShadowCooldown.class) == null) {
-						Buff.affect(this, Invisibility.class, 3f*pointsInTalent(Talent.INTO_THE_SHADOW));
+						Buff.affect(this, Invisibility.class, byTalent(Talent.INTO_THE_SHADOW, 4.5f, Talent.RK_SPECIALIST, 3f));
 						Buff.affect(this, Talent.IntoTheShadowCooldown.class, 15);
 					} else {
 						Buff.affect(this, Cloaking.class);
@@ -3306,7 +3311,7 @@ public class Hero extends Char {
 	public float stealth() {
 		float stealth = super.stealth();
 
-		stealth += pointsInTalent(Talent.STEALTH, Talent.RK_SPECIALIST);
+		stealth += shiftedPoints(Talent.STEALTH, Talent.RK_SPECIALIST);
 
 		KindOfWeapon wep = belongings.weapon;
 		if (wep instanceof Gun) {

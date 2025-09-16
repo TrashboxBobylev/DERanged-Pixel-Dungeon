@@ -41,7 +41,7 @@ public class Cloaking extends Invisibility {
 	
 	@Override
 	public boolean attachTo( Char target ) {
-		if (target instanceof Hero && ((Hero) target).pointsInTalent(Talent.STEALTH_MASTER, Talent.RK_SPECIALIST) < 2 && Dungeon.level != null) {
+		if (target instanceof Hero && ((Hero) target).shiftedPoints(Talent.STEALTH_MASTER, Talent.RK_SPECIALIST) < 2 && Dungeon.level != null) {
 			for (Mob m : Dungeon.level.mobs) {
 				if (Dungeon.level.adjacent(m.pos, target.pos) && m.alignment != target.alignment) {
 					return false;
@@ -63,7 +63,7 @@ public class Cloaking extends Invisibility {
 	public void detach() {
 		super.detach();
 		if (Dungeon.hero.hasTalent(Talent.SKILLFUL_RUNNER, Talent.RK_SPECIALIST) && Dungeon.hero.buff(Talent.SkillfulRunnerCooldown.class) == null) {
-			Buff.prolong(target, Haste.class, 2f*Dungeon.hero.pointsInTalent(Talent.SKILLFUL_RUNNER, Talent.RK_SPECIALIST));
+			Buff.prolong(target, Haste.class, Dungeon.hero.byTalent(Talent.SKILLFUL_RUNNER, 3f, Talent.RK_SPECIALIST, 2f));
 			Buff.affect(target, Talent.SkillfulRunnerCooldown.class, 30f);
 		}
 		Dungeon.observe();
