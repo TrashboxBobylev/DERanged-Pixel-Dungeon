@@ -6,12 +6,15 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.TrinityStorage;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Trinity;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Transmuting;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.watabou.noosa.Image;
+import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -27,7 +30,7 @@ import java.util.Set;
 
 import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 
-public class OmniAbility extends ArmorAbility {
+public class OmniAbility extends ArmorAbility implements TrinityStorage {
 
     private ArmorAbility armorAbility = null;
 
@@ -205,5 +208,31 @@ public class OmniAbility extends ArmorAbility {
         }
         abilities.remove(new OmniAbility());
         //abilities.add(new Ratmogrify());
+    }
+
+    // trinity compat
+
+    public Bundlable bodyForm() {
+        return ((Trinity)armorAbility).bodyForm();
+    }
+
+    public void bodyForm(Bundlable bodyForm) {
+        ((Trinity)armorAbility).bodyForm(bodyForm);
+    }
+
+    public Bundlable mindForm() {
+        return ((Trinity)armorAbility).mindForm();
+    }
+
+    public void mindForm(Bundlable bodyForm) {
+        ((Trinity)armorAbility).mindForm(bodyForm);
+    }
+
+    public Bundlable spiritForm() {
+        return ((Trinity)armorAbility).spiritForm();
+    }
+
+    public void spiritForm(Bundlable bodyForm) {
+        ((Trinity)armorAbility).spiritForm(bodyForm);
     }
 }
