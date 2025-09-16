@@ -311,6 +311,8 @@ public class HolyTome extends Artifact {
 				while (partialCharge >= 1) {
 					charge++;
 					partialCharge -= 1;
+                    if (quickSpell != null && quickSpell.chargeUse((Hero) target) >= charge)
+                        ActionIndicator.setAction(this);
 					if (charge == chargeCap){
 						partialCharge = 0;
 					}
