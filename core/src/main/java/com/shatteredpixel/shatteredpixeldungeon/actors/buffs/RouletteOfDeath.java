@@ -18,7 +18,7 @@ public class RouletteOfDeath extends Buff {
     private int count = 0;
 
     public void hit() {
-        maxDuration = 6 + 2 * Dungeon.hero.pointsInTalent(Talent.PERFECT_FOCUSING, Talent.RK_OUTLAW);
+        maxDuration = (int) (6 + Dungeon.hero.byTalent(Talent.PERFECT_FOCUSING, 3, Talent.RK_OUTLAW, 2));
         duration = maxDuration;
         count ++;
     }

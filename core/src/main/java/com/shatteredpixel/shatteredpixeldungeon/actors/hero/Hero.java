@@ -59,6 +59,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EnhancedRingsCombo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EvasiveMove;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fatigue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FirstAidBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Foresight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.GreaterHaste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HPDebuff;
@@ -2357,7 +2358,7 @@ public class Hero extends Char {
         }
 		if (isSubclassedLoosely(HeroSubClass.OUTLAW)){
 				if (wep instanceof Gun.Bullet) {
-					if (hasTalent(Talent.HEADSHOT, Talent.RK_OUTLAW) && Random.Float() < 0.01f*pointsInTalent(Talent.HEADSHOT, Talent.RK_OUTLAW)) {
+					if (hasTalent(Talent.HEADSHOT, Talent.RK_OUTLAW) && Random.Float() < byTalent(Talent.HEADSHOT, 0.015f, Talent.RK_OUTLAW, 0.01f)) {
 						if (!Char.hasProp(enemy, Property.BOSS) && !Char.hasProp(enemy, Property.MINIBOSS) && enemy.alignment == Alignment.ENEMY) {
 							damage = enemy.HP;
 						} else {
@@ -2367,7 +2368,7 @@ public class Hero extends Char {
 					}
 
 					if (buff(Talent.HonorableShotTracker.class) != null
-							&& (enemy.HP/(float)enemy.HT) <= 0.4f*pointsInTalent(Talent.HONORABLE_SHOT, Talent.RK_OUTLAW)/3f) {
+							&& (enemy.HP/(float)enemy.HT) <= 0.4f*byTalent(Talent.HONORABLE_SHOT, 1/2f, Talent.RK_OUTLAW, 1/3f)) {
 						if (!Char.hasProp(enemy, Property.BOSS) && !Char.hasProp(enemy, Property.MINIBOSS)) {
 							damage = enemy.HP;
 						} else {
@@ -2388,7 +2389,7 @@ public class Hero extends Char {
 							if (hasTalent(Talent.BULLET_TIME, Talent.RK_OUTLAW)) {
 								for (Char ch : Actor.chars()) {
 									if (level.heroFOV[ch.pos] && ch != this && ch.alignment == Alignment.ENEMY) {
-										Buff.affect(ch, Slow.class, 4*pointsInTalent(Talent.BULLET_TIME, Talent.RK_OUTLAW));
+										Buff.affect(ch, (Class<? extends FlavourBuff>)(hasTalent(Talent.BULLET_TIME) ? Paralysis.class : Slow.class), byTalent(Talent.BULLET_TIME, 2.5f, Talent.RK_OUTLAW, 4.0f));
 									}
 								}
 							}
