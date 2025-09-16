@@ -1249,7 +1249,7 @@ public class Hero extends Char {
 		}
 
 		if (buff(Riot.RiotTracker.class) != null && hasTalent(Talent.HASTE_MOVE)) {
-			speed *= 1f + 0.25f * pointsInTalent(Talent.HASTE_MOVE);
+			speed *= 1f + 1/3f * pointsInTalent(Talent.HASTE_MOVE);
 		}
 
 		if (level.map[pos] == Terrain.FURROWED_GRASS && hasTalent(Talent.JUNGLE_EXPLORE, Talent.RK_EXPLORER)) {

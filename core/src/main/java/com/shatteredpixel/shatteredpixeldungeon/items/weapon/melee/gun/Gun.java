@@ -890,7 +890,7 @@ public class Gun extends MeleeWeapon {
 			boolean willUseRound = true;
 
 			if (curUser.buff(InfiniteBullet.class) != null ||
-					(curUser.buff(Riot.RiotTracker.class) != null && Random.Float() < 0.1f*curUser.pointsInTalent(Talent.ROUND_PRESERVE))) {
+					(curUser.buff(Riot.RiotTracker.class) != null && Random.Float() < 0.15f*curUser.pointsInTalent(Talent.ROUND_PRESERVE))) {
 				willUseRound = false;
 			}
 

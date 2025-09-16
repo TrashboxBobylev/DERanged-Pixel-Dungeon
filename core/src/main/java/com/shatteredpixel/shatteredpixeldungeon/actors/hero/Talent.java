@@ -2622,7 +2622,7 @@ public enum Talent {
 
 		if (hero.hasTalent(Talent.BAYONET) && hero.buff(ReinforcedArmor.ReinforcedArmorTracker.class) != null){
 			if (hero.belongings.attackingWeapon() instanceof Gun) {
-				Buff.affect( enemy, Bleeding.class ).set( 4 + hero.pointsInTalent(Talent.BAYONET));
+				Buff.affect( enemy, Bleeding.class ).set( 4 + hero.pointsInTalent(Talent.BAYONET)*2);
 			}
 		}
 

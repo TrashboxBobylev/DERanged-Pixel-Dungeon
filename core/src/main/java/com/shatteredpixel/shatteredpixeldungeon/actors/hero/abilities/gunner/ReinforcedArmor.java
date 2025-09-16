@@ -86,7 +86,7 @@ public class ReinforcedArmor extends ArmorAbility {
         }
 
         public int blockingRoll(){
-            return Random.NormalIntRange(5 + 5 * Dungeon.hero.pointsInTalent(Talent.PLATE_ADD), 20 + 5 * Dungeon.hero.pointsInTalent(Talent.PLATE_ADD));
+            return Random.NormalIntRange(5 + 8 * Dungeon.hero.pointsInTalent(Talent.PLATE_ADD), 20 + 10 * Dungeon.hero.pointsInTalent(Talent.PLATE_ADD));
         }
 
         @Override
