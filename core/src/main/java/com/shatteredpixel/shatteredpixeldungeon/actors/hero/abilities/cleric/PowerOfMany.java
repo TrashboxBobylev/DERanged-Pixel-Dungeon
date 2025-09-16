@@ -167,8 +167,7 @@ public class PowerOfMany extends ArmorAbility {
 			Buff.affect(ch, PowerBuff.class, 100f);
 			Buff.affect(ch, Barrier.class).setShield(25);
 
-			armor.charge -= chargeUse;
-			armor.updateQuickslot();
+            armor.useCharge(hero, this);
 
 			hero.sprite.zap(target);
 			Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);

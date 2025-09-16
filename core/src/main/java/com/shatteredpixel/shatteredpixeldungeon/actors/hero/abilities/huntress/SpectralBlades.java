@@ -103,8 +103,7 @@ public class SpectralBlades extends ArmorAbility {
 			}
 		}
 
-		armor.charge -= chargeUse(hero);
-		Item.updateQuickslot();
+        armor.useCharge(hero, this, false);
 
 		Item proto = new Shuriken();
 
