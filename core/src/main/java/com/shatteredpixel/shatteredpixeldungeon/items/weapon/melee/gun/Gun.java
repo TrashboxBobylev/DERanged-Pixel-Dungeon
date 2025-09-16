@@ -44,6 +44,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.ELEMENTAL_BULLET;
 
 public class Gun extends MeleeWeapon {
 	public static final String AC_SHOOT		= "SHOOT";
@@ -335,9 +336,9 @@ public class Gun extends MeleeWeapon {
 			Buff.affect(hero, Barrier.class).setShield((int) (1 + hero.byTalent(Talent.SAFE_RELOAD, 3, Talent.WELL_PROTECTED, 2)));
 		}
 
-		if (hero.hasTalent(Talent.ELEMENTAL_BULLET, Talent.RK_GUNSLINGER) && round == 0) {
-			int chance = Random.Int(6);
-			int point = Dungeon.hero.pointsInTalent(Talent.ELEMENTAL_BULLET, Talent.RK_GUNSLINGER);
+		if (hero.hasTalent(ELEMENTAL_BULLET, Talent.RK_GUNSLINGER) && round == 0) {
+			int chance = Random.Int(hero.hasTalent(ELEMENTAL_BULLET) ? 4 : 6);
+			int point = Dungeon.hero.pointsInTalent(ELEMENTAL_BULLET, Talent.RK_GUNSLINGER);
 			switch (chance) {
 				default:
 					break;
@@ -897,7 +898,7 @@ public class Gun extends MeleeWeapon {
 			}
 
 			if (round == 0 && curUser.hasTalent(Talent.IMPROVISATION, Talent.RK_GUNSLINGER)) {
-				Buff.affect(curUser, Barrier.class).setShield(8*curUser.pointsInTalent(Talent.IMPROVISATION, Talent.RK_GUNSLINGER));
+				Buff.affect(curUser, Barrier.class).setShield((int) curUser.byTalent(Talent.IMPROVISATION, 12, Talent.RK_GUNSLINGER, 8));
 			}
 
 			boolean willAggroEnemy = true;
