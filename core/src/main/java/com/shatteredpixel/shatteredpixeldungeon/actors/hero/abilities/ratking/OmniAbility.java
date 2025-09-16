@@ -61,6 +61,9 @@ public class OmniAbility extends ArmorAbility {
                 new HeroIcon(armorAbility = Objects.requireNonNull(Random.element(pool)))
         ).show(hero);
         Item.updateQuickslot();
+        if(hero.talents.size() >= 4) {
+            hero.talents.set(3, transferTalents(armorAbility));
+        }
     }
 
     @Override
