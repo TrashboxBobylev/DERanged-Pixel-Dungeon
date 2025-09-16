@@ -349,7 +349,7 @@ abstract public class ClassArmor extends Armor {
 				/*usesTargeting = false;
 				GLog.w( Messages.get(this, "low_charge") );*/
 				GLog.n("Rat King: I don't have time for this nonsense! I have a kingdom to run! CLASS ARMOR SUPERCHAARGE!!");
-				charge += 60;
+				charge += Math.max(60, armorAbility.chargeUse(hero));
 				hero.HP = Math.max( Math.min(hero.HP,1), hero.HP*2/3 );
 				updateQuickslot();
 				ScrollOfRecharging.charge(hero);
