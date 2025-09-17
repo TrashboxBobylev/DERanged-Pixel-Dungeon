@@ -161,7 +161,7 @@ public class HighGrass {
 			if (ch instanceof Hero && Dungeon.hero.hasTalent(Talent.CAMOUFLAGE, Talent.KINGS_WRATH)) {
 				Buff.prolong(Dungeon.hero, Invisibility.class, 1+Dungeon.hero.pointsInTalent(Talent.CAMOUFLAGE, Talent.KINGS_WRATH));
                 if (hero.hasTalent(Talent.CAMOUFLAGE))
-                    Buff.affect(hero, GreaterHaste.class).set(1);
+                    Buff.affect(hero, GreaterHaste.class).set(2);
 				Sample.INSTANCE.play( Assets.Sounds.MELD );
 			}
 
