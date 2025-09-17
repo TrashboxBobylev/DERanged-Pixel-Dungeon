@@ -2282,7 +2282,7 @@ public enum Talent {
 		if (identify && !ShardOfOblivion.passiveIDDisabled()){
 			item.identify();
 		}
-		if (hero.shiftedPoints(GUNNERS_INTUITION) > 0 && item instanceof Gun) {
+		if (hero.canHaveTalent(GUNNERS_INTUITION) && item instanceof Gun) {
 			item.identify();
 		}
 		if (hero.hasTalent(MASTERS_INTUITION) && item instanceof MeleeWeapon && !(item instanceof Gun)) {
