@@ -2442,7 +2442,17 @@ public enum Talent {
 		if (hero.hasTalent(SPEEDY_MOVE, AMBUSH) && enemy instanceof Mob && enemy.buff(SpeedyMoveTracker.class) == null){
 			Buff.affect(enemy, SpeedyMoveTracker.class);
             if (hero.canHaveTalent(SPEEDY_MOVE))
-                Buff.affect(hero, Swiftthistle.TimeBubble.class).set(2 + hero.pointsInTalent(SPEEDY_MOVE, AMBUSH));
+                new FlavourBuff() {
+                    {
+                        actPriority = VFX_PRIO;
+                    }
+
+                    @Override
+                    public boolean act() {
+                        Buff.affect(hero, Swiftthistle.TimeBubble.class).set(1 + hero.pointsInTalent(SPEEDY_MOVE));
+                        return super.act();
+                    }
+                }.attachTo(hero);
             else
 			    Buff.affect(hero, GreaterHaste.class).set(2 + hero.pointsInTalent(SPEEDY_MOVE, AMBUSH));
 		}
