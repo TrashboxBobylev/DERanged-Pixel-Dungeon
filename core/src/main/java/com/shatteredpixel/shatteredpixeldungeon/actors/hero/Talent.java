@@ -1988,10 +1988,10 @@ public enum Talent {
 			SpellSprite.show(hero, SpellSprite.CHARGE, 0, 1, 1);
 		}
 
-        if (hero.canHaveTalent(Talent.RELOADING_MEAL)) {
+        if (hero.shiftedPoints(Talent.RELOADING_MEAL, ROYAL_FOCUS) > 0) {
             if (hero.belongings.weapon instanceof Gun) {
                 ((Gun)hero.belongings.weapon).quickReload();
-                if (hero.shiftedPoints(Talent.RELOADING_MEAL) > 1) {
+                if (hero.shiftedPoints(Talent.RELOADING_MEAL, ROYAL_FOCUS) > 1) {
                     ((Gun)hero.belongings.weapon).manualReload(Math.min(0, hero.shiftedPoints(RELOADING_MEAL) - 1), true);
                 }
             }
