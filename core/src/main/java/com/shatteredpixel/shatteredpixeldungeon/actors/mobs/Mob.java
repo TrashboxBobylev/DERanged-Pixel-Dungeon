@@ -1066,7 +1066,7 @@ public abstract class Mob extends Char {
 			}
 
 			if (hero.hasTalent(Talent.ADRENALINE_SURGE)) {
-				Buff.prolong(hero, Adrenaline.class, 1+2*hero.pointsInTalent(Talent.ADRENALINE_SURGE));
+				Buff.prolong(hero, Adrenaline.class, 1+3*hero.pointsInTalent(Talent.ADRENALINE_SURGE));
 			}
 
 			if (hero.hasTalent(Talent.PRAY_FOR_DEAD, Talent.RK_CRUSADER)) {

@@ -1143,7 +1143,7 @@ public class Hero extends Char {
 		}
 
 		if (hasTalent(Talent.PARRING, Talent.WELL_PROTECTED)) {
-			dr += Random.NormalIntRange(0, 1+pointsInTalent(Talent.PARRING, Talent.WELL_PROTECTED));
+			dr += Random.NormalIntRange(hasTalent(Talent.PARRING) ? pointsInTalent(Talent.PARRING) : 0, 1+pointsInTalent(Talent.PARRING, Talent.WELL_PROTECTED));
 		}
 
 		ReinforcedArmor.ReinforcedArmorTracker reArmor = buff(ReinforcedArmor.ReinforcedArmorTracker.class);
@@ -2125,7 +2125,7 @@ public class Hero extends Char {
         }
 
 		if (hasTalent(Talent.BASIC_PRACTICE, Talent.ROYAL_FOCUS)) {
-			chance += 0.02f * pointsInTalent(Talent.BASIC_PRACTICE, Talent.ROYAL_FOCUS);
+			chance += 0.02f * shiftedPoints(Talent.BASIC_PRACTICE, Talent.ROYAL_FOCUS);
 		}
 
 		if (wep instanceof MissileWeapon && hasTalent(Talent.CRITICAL_THROW, Talent.NOBLE_CALL)) {

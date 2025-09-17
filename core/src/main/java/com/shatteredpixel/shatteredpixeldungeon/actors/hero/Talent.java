@@ -2285,7 +2285,7 @@ public enum Talent {
 		if (hero.canHaveTalent(GUNNERS_INTUITION) && item instanceof Gun) {
 			item.identify();
 		}
-		if (hero.hasTalent(MASTERS_INTUITION) && item instanceof MeleeWeapon && !(item instanceof Gun)) {
+		if (hero.canHaveTalent(MASTERS_INTUITION) && item instanceof MeleeWeapon && !(item instanceof Gun)) {
 			item.identify();
 		}
 		if (hero.hasTalent(KNIGHTS_INTUITION) && item instanceof Armor) {
@@ -2308,8 +2308,10 @@ public enum Talent {
             if (hero.pointsInTalent(GUNNERS_INTUITION) > 1)
                 item.identify();
 		}
-		if (hero.pointsInTalent(MASTERS_INTUITION) == 2 && item instanceof MeleeWeapon && !(item instanceof Gun)) {
-			item.cursedKnown = true;
+		if (hero.pointsInTalent(MASTERS_INTUITION) >= 1 && item instanceof MeleeWeapon && !(item instanceof Gun)) {
+            item.cursedKnown = true;
+            if (hero.pointsInTalent(MASTERS_INTUITION) > 1)
+                item.identify();
 		}
 		if (hero.pointsInTalent(KNIGHTS_INTUITION) == 2 && item instanceof Armor) {
 			item.cursedKnown = true;
@@ -2403,7 +2405,7 @@ public enum Talent {
 		}
 
 		if (hero.hasTalent(DRAWING_ENHANCE, AMBUSH) && hero.buff(Sheath.Sheathing.class) != null) {
-			damage += 1+hero.pointsInTalent(DRAWING_ENHANCE, AMBUSH);
+			damage += (int) (1+hero.byTalent(DRAWING_ENHANCE, 2, AMBUSH, 1));
 		}
 
 		if (!hero.heroClass.is(HeroClass.SAMURAI) && hero.hasTalent(DRAWING_ENHANCE, AMBUSH) && enemy.buff(DrawEnhanceMetaTracker.class) == null ) {
