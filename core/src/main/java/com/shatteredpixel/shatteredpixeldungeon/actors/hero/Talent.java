@@ -85,6 +85,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.TalentSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
@@ -97,6 +98,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.pills.Pill;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
@@ -152,6 +154,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.BArray;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.GameMath;
@@ -538,6 +541,7 @@ public enum Talent {
 	DRAGONS_EYE					(8, 7),	//납도 중 주변 반경 3/4타일 이내의 적 위치를 파악할 수 있게 됨
 	WEAPON_MASTERY				(9, 7),	//무기의 힘 요구 수치를 넘은 힘 1당 치명 확률 +1/+2%
 	CRITICAL_THROW				(10, 7),	//투척 무기와 탄환의 치명 확률이 +25/50% 증가
+    ENTROPY_CHARGE              (23, 12),
 	//Samurai T3
 	QUICK_SHEATHING				(11, 7, 3),
 	LETHAL_POWER				(12, 7, 3),
@@ -2739,6 +2743,28 @@ public enum Talent {
 			}
 		}
 
+        if (hero.hasTalent(ENTROPY_CHARGE) && hero.buff(Sheath.Sheathing.class) != null && hero.buff(Sheath.CriticalAttack.class) != null){
+            PathFinder.buildDistanceMap( enemy.pos, BArray.not( Dungeon.level.solid, null ), 2 );
+            Sample.INSTANCE.play(Assets.Sounds.BLAST);
+            ArrayList<Char> affected = new ArrayList<>();
+            for (int i = 0; i < PathFinder.distance.length; i++) {
+                if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+                    if (Dungeon.level.heroFOV[i]) {
+                        CellEmitter.get(i).burst(BlastParticle.FACTORY, 10);
+                    }
+                    Char ch = Actor.findChar(i);
+                    if (ch != null && ch.alignment != Char.Alignment.ALLY){
+                        affected.add(ch);
+                    }
+                }
+            }
+            for (Char ch : affected){
+                //pierces armor, and damage in 5x5 instead of 3x3
+                int dmg = Math.round(Random.NormalIntRange( 4 + Dungeon.scalingDepth(), 12 + 3*Dungeon.scalingDepth() )*0.25f*hero.pointsInTalent(ENTROPY_CHARGE));
+                ch.damage(dmg, new Bomb.ConjuredBomb());
+            }
+        }
+
 		return damage;
 	}
 
@@ -2964,7 +2990,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, INFINITE_BULLET_MEAL, INSCRIBED_BULLET, MIND_VISION, CAMOUFLAGE, JUSTICES_REVENGEANCE, BULLET_COLLECT);
 				break;
 			case SAMURAI:
-				Collections.addAll(tierTalents, CRITICAL_MEAL, INSCRIBED_LETHALITY, UNEXPECTED_SLASH, DRAGONS_EYE, WEAPON_MASTERY, CRITICAL_THROW);
+				Collections.addAll(tierTalents, CRITICAL_MEAL, INSCRIBED_LETHALITY, ENTROPY_CHARGE, DRAGONS_EYE, WEAPON_MASTERY, CRITICAL_THROW);
 				break;
 			case ADVENTURER:
 				Collections.addAll(tierTalents, NATURES_MEAL, PHARMACEUTICS, HERB_EXTRACTION, FIREWATCH, ROPE_REBOUND, WEAKENING_POISON);
