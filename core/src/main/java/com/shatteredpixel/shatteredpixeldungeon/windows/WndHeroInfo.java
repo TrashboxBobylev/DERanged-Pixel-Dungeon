@@ -240,6 +240,8 @@ public class WndHeroInfo extends WndTabbed {
 					icons = new Image[]{ new TalentIcon(Talent.BASIC_PRACTICE),
 							new ItemSprite(ItemSpriteSheet.SHEATH),
 							new ItemSprite(ItemSpriteSheet.WORN_KATANA),
+                            new TalentIcon(Talent.CRITICAL_MEAL),
+                            new TalentIcon(Talent.MASTERS_INTUITION),
 							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
 					break;
 				case ADVENTURER:
