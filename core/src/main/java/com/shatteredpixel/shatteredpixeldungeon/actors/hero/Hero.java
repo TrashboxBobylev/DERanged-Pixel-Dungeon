@@ -2166,7 +2166,7 @@ public class Hero extends Char {
 			} else {
 				chance *= 1.2f;
 			}
-			chance += 0.05f;
+			chance += 0.05f + (isClassed(HeroClass.SAMURAI) ? 0.1f : 0f);
 		}
 
 		return GameMath.gate(0, chance, 2);
