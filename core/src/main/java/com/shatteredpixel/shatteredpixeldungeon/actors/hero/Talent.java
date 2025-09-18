@@ -530,6 +530,7 @@ public enum Talent {
 	DRAWING_ENHANCE				(2, 7),	//발도술 공격이 2/3의 추가 피해를 입힘
 	PARRING						(3, 7),	//방어력 0-2/0-3 증가
 	ADRENALINE_SURGE			(4, 7),	//적 처치 시 3/5턴의 아드레날린 획득
+    PRECISE_RESTORATION         (11, 12),
 	//Samurai T2
 	CRITICAL_MEAL				(5, 7),	//식사에 1턴만 소모, 식사 시 다음 1/2회의 물리 공격에 반드시 치명타 발생
 	INSCRIBED_LETHALITY			(6, 7),	//주문서 사용 시 다음 1/2회의 물리 공격에 반드시 치명타 발생
@@ -2913,7 +2914,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, RELOADING_MEAL, GUNNERS_INTUITION, SPEEDY_MOVE, SAFE_RELOAD, CLOSE_COMBAT, CRAFTMANSHIP);
 				break;
 			case SAMURAI:
-				Collections.addAll(tierTalents, BASIC_PRACTICE, MASTERS_INTUITION, DRAWING_ENHANCE, PARRING, ADRENALINE_SURGE);
+				Collections.addAll(tierTalents, BASIC_PRACTICE, MASTERS_INTUITION, DRAWING_ENHANCE, PARRING, ADRENALINE_SURGE, PRECISE_RESTORATION);
 				break;
 			case ADVENTURER:
 				Collections.addAll(tierTalents, HARVEST_BERRY, SAFE_POTION, ROOT, PROTECTIVE_SLASH, KINETIC_ATTACK);
