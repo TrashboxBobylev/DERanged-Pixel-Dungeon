@@ -233,6 +233,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.AlchemyScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -2182,7 +2183,7 @@ public class Hero extends Char {
 
 		damage = (int)(max * 0.75f + damage * 0.25f);
 
-		multi += 0.05f * pointsInTalent(Talent.LETHAL_POWER, Talent.RK_SLASHER);
+		multi += byTalent(Talent.LETHAL_POWER, 0.075f, Talent.RK_SLASHER, 0.05f);
 
 		if (hasTalent(Talent.POWERFUL_CRIT, Talent.NOBLE_CALL) && wep instanceof MissileWeapon) {
 			multi += 0.1f * pointsInTalent(Talent.POWERFUL_CRIT, Talent.NOBLE_CALL);
@@ -3611,8 +3612,21 @@ public class Hero extends Char {
 
 		if (buff(Sheath.Sheathing.class) != null) {
 			buff(Sheath.Sheathing.class).detach();
-			if (!attackTarget.isAlive() && Random.Float() < pointsInTalent(Talent.QUICK_SHEATHING, Talent.RK_MASTER)/3f) {
+			if (!attackTarget.isAlive() && hasTalent(Talent.QUICK_SHEATHING, Talent.RK_MASTER) && Random.Float() < shiftedPoints(Talent.QUICK_SHEATHING, Talent.RK_MASTER)/3f) {
 				Buff.affect(this, Sheath.Sheathing.class);
+                if (shiftedPoints(Talent.QUICK_SHEATHING) > 3){
+                    new FlavourBuff() {
+                        {
+                            actPriority = VFX_PRIO;
+                        }
+
+                        @Override
+                        public boolean act() {
+                            Buff.affect(hero, Swiftthistle.TimeBubble.class).set(2);
+                            return super.act();
+                        }
+                    }.attachTo(hero);
+                }
 			}
 		}
 		curAction = null;
