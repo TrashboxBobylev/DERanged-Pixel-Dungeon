@@ -2001,8 +2001,8 @@ public enum Talent {
 		if (hero.hasTalent(Talent.INFINITE_BULLET_MEAL, ROYAL_FEAST)) {
 			Buff.affect(hero, InfiniteBullet.class, 1+hero.byTalent(Talent.INFINITE_BULLET_MEAL, 1.5f, ROYAL_FEAST, 1.0f));
 		}
-		if (hero.hasTalent(Talent.CRITICAL_MEAL, ROYAL_FEAST)) {
-			Buff.affect(hero, Sheath.CertainCrit.class).set(hero.pointsInTalent(Talent.CRITICAL_MEAL, ROYAL_FEAST));
+		if (hero.shiftedPoints(Talent.CRITICAL_MEAL, ROYAL_FEAST) > 0) {
+			Buff.affect(hero, Sheath.CertainCrit.class).set(hero.shiftedPoints(Talent.CRITICAL_MEAL, ROYAL_FEAST));
 		}
 		if (hero.hasTalent(Talent.NATURES_MEAL, ROYAL_FEAST)) {
 			if (hero.pointsInTalent(Talent.NATURES_MEAL, ROYAL_FEAST) == 1) {
@@ -2196,7 +2196,7 @@ public enum Talent {
 			bulletItem.doPickUp(hero);
 		}
 		if (hero.hasTalent(Talent.INSCRIBED_LETHALITY, TEMPORARY_DRAUGHT)) {
-			Buff.affect(hero, Sheath.CertainCrit.class).set((int)(factor * hero.pointsInTalent(Talent.INSCRIBED_LETHALITY, TEMPORARY_DRAUGHT)));
+			Buff.affect(hero, Sheath.CertainCrit.class).set((int)(factor * hero.byTalent(Talent.INSCRIBED_LETHALITY, 1.5f, TEMPORARY_DRAUGHT, 1f)));
 		}
 		if (hero.hasTalent(Talent.SMITHING_SPELL, TEMPORARY_DRAUGHT)) {
 			Buff.affect(hero, WeaponEnhance.class).set(hero.pointsInTalent(Talent.SMITHING_SPELL, TEMPORARY_DRAUGHT), Math.round(10*factor));

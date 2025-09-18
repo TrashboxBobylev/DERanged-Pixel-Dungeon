@@ -2107,7 +2107,7 @@ public class Hero extends Char {
 		if (heroClass.is(HeroClass.SAMURAI)) {
 			chance = 0.01f;
 			chance += 0.01f * (lvl - 1);
-			chance += Math.max(0, (0.02f + 0.005f*pointsInTalent(Talent.WEAPON_MASTERY, Talent.KINGS_WRATH)) * (STR() - wep.STRReq()));
+			chance += Math.max(0, (0.02f + byTalent(Talent.WEAPON_MASTERY, 0.0075f, Talent.KINGS_WRATH, 0.005f)) * (STR() - wep.STRReq()));
 		}
 
 		if (heroClass.is(HeroClass.ARCHER) && wep instanceof MissileWeapon) {
@@ -2129,7 +2129,7 @@ public class Hero extends Char {
 		}
 
 		if (wep instanceof MissileWeapon && hasTalent(Talent.CRITICAL_THROW, Talent.NOBLE_CALL)) {
-			chance += 0.125f * pointsInTalent(Talent.CRITICAL_THROW, Talent.NOBLE_CALL);
+			chance += byTalent(Talent.CRITICAL_THROW, 0.1875f, Talent.NOBLE_CALL, 0.125f);
 		}
 
 		Awakening awakening = buff(Awakening.class);
