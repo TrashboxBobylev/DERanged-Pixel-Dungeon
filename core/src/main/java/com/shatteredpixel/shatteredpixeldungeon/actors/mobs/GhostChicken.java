@@ -54,11 +54,10 @@ public class GhostChicken extends AbyssalMob {
     }
 
     @Override
-    public boolean isInvulnerable(Class effect) {
-        HP--;
-        if (HP <= 0) die(Dungeon.hero);
+    public void damage(int dmg, Object src) {
+        dmg = 1;
+        super.damage(dmg, src);
         aggro(Dungeon.hero);
-        return true;
     }
 
     @Override
