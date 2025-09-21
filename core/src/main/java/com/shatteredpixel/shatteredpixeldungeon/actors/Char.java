@@ -412,7 +412,7 @@ public abstract class Char extends Actor {
 
 	final public boolean attack( Char enemy ){
 		if (hero.buff(Awake.awakeTracker.class) != null && (this instanceof Hero || enemy instanceof Hero)) {
-			return attack(enemy, 1.2f+0.2f*hero.pointsInTalent(Talent.AWAKE_LIMIT), 0f, 1f);
+			return attack(enemy, 1.2f+0.3f*hero.pointsInTalent(Talent.AWAKE_LIMIT), 0f, 1f);
 		} else {
 			return attack(enemy, 1f, 0f, 1f);
 		}
@@ -497,10 +497,10 @@ public abstract class Char extends Actor {
 
 				if (hero.buff(ShadowBlade.shadowBladeTracker.class) != null && Random.Int(2) == 0) {
 					if (hero.hasTalent(Talent.CRITICAL_SHADOW)) {
-						dmgBonus += Random.NormalIntRange(0, 5*hero.pointsInTalent(Talent.CRITICAL_SHADOW));
+						dmgBonus += Random.NormalIntRange(0, 8*hero.pointsInTalent(Talent.CRITICAL_SHADOW));
 					}
 					if (hero.hasTalent(Talent.HERBAL_SHADOW)) {
-						hero.heal(hero.pointsInTalent(Talent.HERBAL_SHADOW));
+						hero.heal(hero.pointsInTalent(Talent.HERBAL_SHADOW)*2);
 					}
 					dr = 0;
 				}

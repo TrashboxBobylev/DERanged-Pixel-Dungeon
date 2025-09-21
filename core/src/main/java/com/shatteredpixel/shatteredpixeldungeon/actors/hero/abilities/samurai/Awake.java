@@ -47,9 +47,9 @@ public class Awake extends ArmorAbility {
 	@Override
 	protected void activate(ClassArmor armor, Hero hero, Integer target) {
 
-		Buff.prolong(hero, awakeTracker.class, 10f + 5f * hero.pointsInTalent(Talent.AWAKE_DURATION));
+		Buff.prolong(hero, awakeTracker.class, 10f + 8f * hero.pointsInTalent(Talent.AWAKE_DURATION));
 		if (hero.hasTalent(Talent.INSURANCE)) {
-			Buff.affect(hero, Barrier.class).setShield(10*hero.pointsInTalent(Talent.INSURANCE));
+			Buff.affect(hero, Barrier.class).setShield(15*hero.pointsInTalent(Talent.INSURANCE));
 		}
 		SpellSprite.show(hero, SpellSprite.BERSERK);
 		Sample.INSTANCE.play( Assets.Sounds.CHALLENGE );

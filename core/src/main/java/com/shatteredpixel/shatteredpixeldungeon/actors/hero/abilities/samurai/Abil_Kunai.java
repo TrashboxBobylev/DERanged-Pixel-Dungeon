@@ -106,22 +106,22 @@ public class Abil_Kunai extends ArmorAbility {
 				@Override
 				public void call() {
 					float dmgMulti = ch == enemy ? 1f : 0.5f;
-					float accmulti = 1f + 0.25f*hero.pointsInTalent(Talent.MYSTICAL_KUNAI);
+					float accmulti = 1f + hero.pointsInTalent(Talent.MYSTICAL_KUNAI)/3f;
 					hero.attack( ch, dmgMulti, 0, accmulti );
 					Buff.affect(enemy, Vulnerable.class, 20f);
-					if (hero.hasTalent(Talent.KUNAI_OF_DOOM) && Random.Int(20) < hero.pointsInTalent(Talent.KUNAI_OF_DOOM)) {
+					if (hero.hasTalent(Talent.KUNAI_OF_DOOM) && Random.Int(15) < hero.pointsInTalent(Talent.KUNAI_OF_DOOM)) {
 						Buff.affect(enemy, Doom.class);
 					}
 					if (hero.hasTalent(Talent.CORROSIVE_KUNAI)) {
 						if (enemy.properties().contains(Char.Property.BOSS)
 								|| enemy.properties().contains(Char.Property.MINIBOSS)){
-							Buff.affect(enemy, Corrosion.class).set(3f, 2*hero.pointsInTalent(Talent.CORROSIVE_KUNAI));
+							Buff.affect(enemy, Corrosion.class).set(3f, 3*hero.pointsInTalent(Talent.CORROSIVE_KUNAI));
 						} else{
-							Buff.affect(enemy, Corrosion.class).set(5f, 2*hero.pointsInTalent(Talent.CORROSIVE_KUNAI));
+							Buff.affect(enemy, Corrosion.class).set(5f, 3*hero.pointsInTalent(Talent.CORROSIVE_KUNAI));
 						}
 					}
 					if (hero.hasTalent(Talent.MYSTICAL_KUNAI)) {
-						int dur = 5 + 5*Dungeon.hero.pointsInTalent(Talent.MYSTICAL_KUNAI);
+						int dur = 5 + 7*Dungeon.hero.pointsInTalent(Talent.MYSTICAL_KUNAI);
 						Buff.append(Dungeon.hero, TalismanOfForesight.CharAwareness.class, dur).charID = ch.id();
 					}
 					callbacks.remove( this );

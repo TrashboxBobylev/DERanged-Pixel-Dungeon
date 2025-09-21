@@ -1363,7 +1363,7 @@ public class Hero extends Char {
 			}
 
 			if (buff(ShadowBlade.shadowBladeTracker.class) != null) {
-				speed *= 2f + 0.05f * pointsInTalent(Talent.DOUBLE_BLADE_PRACTICE);
+				speed *= 2f + 0.075f * pointsInTalent(Talent.DOUBLE_BLADE_PRACTICE);
 			}
 
 			//ditto for furor + sword dance!
