@@ -45,13 +45,13 @@ public class SwordAura extends Buff implements ActionIndicator.Action {
 
     private float storeMulti() {
         float multi = 1f;
-        multi *= 1+hero.pointsInTalent(Talent.MIND_FOCUSING, Talent.RK_SLASHER)/3f;
+        multi *= 1+hero.byTalent(Talent.MIND_FOCUSING, 1/2f, Talent.RK_SLASHER, 1/3f);
         return multi;
     }
 
     private int maxDamage() {
         int maxDamage = 60;
-        maxDamage += 30 * hero.pointsInTalent(Talent.STORED_POWER, Talent.RK_SLASHER);
+        maxDamage += hero.byTalent(Talent.STORED_POWER, 45, Talent.RK_SLASHER, 30);
         return maxDamage;
     }
 
@@ -67,7 +67,9 @@ public class SwordAura extends Buff implements ActionIndicator.Action {
     }
 
     public void use(int recoverAmt) {
-        this.damage -= Math.round(damageUse()*(1-0.1f*(1+hero.pointsInTalent(Talent.ENERGY_SAVING, Talent.RK_SLASHER)))) - recoverAmt;
+        this.damage -= Math.round(damageUse()*(1-
+                (hero.hasTalent(Talent.ENERGY_SAVING) ? 0.15f : 0.1f)
+                *(1+hero.pointsInTalent(Talent.ENERGY_SAVING, Talent.RK_SLASHER)))) - recoverAmt;
         if (damage <= 0) {
             detach();
             ActionIndicator.clearAction();
@@ -200,8 +202,11 @@ public class SwordAura extends Buff implements ActionIndicator.Action {
         @Override
         public int proc(Char attacker, Char defender, int damage) {
             int dmg = super.proc(attacker, defender, damage);
-            if (Random.Float() < hero.pointsInTalent(Talent.ARCANE_POWER, Talent.RK_SLASHER)/3f && hero.belongings.weapon != null) {
+            if (Random.Float() < hero.shiftedPoints(Talent.ARCANE_POWER, Talent.RK_SLASHER)/3f && hero.belongings.weapon != null) {
                 dmg = hero.belongings.weapon.proc(attacker, defender, dmg);
+                if (Random.Float() < 0.5f && hero.shiftedPoints(Talent.ARCANE_POWER, Talent.RK_SLASHER) > 3){
+                    dmg = hero.belongings.weapon.proc(attacker, defender, dmg);
+                }
             }
             return dmg;
         }
@@ -223,13 +228,13 @@ public class SwordAura extends Buff implements ActionIndicator.Action {
                         hitChar++;
 
                         if (hero.hasTalent(Talent.WIND_BLAST, Talent.RK_SLASHER)) {
-                            ch.damage(5*hero.pointsInTalent(Talent.WIND_BLAST, Talent.RK_SLASHER), new SwordAuraMagicDamage());
+                            ch.damage((int) hero.byTalent(Talent.WIND_BLAST, 7.5f, Talent.RK_SLASHER, 5), new SwordAuraMagicDamage());
                         }
                     }
                 }
             }
             if (hero.hasTalent(Talent.ENERGY_COLLECT, Talent.RK_SLASHER)) {
-                SwordAura.this.use(hitChar * Math.round(damageUse()/(float)(7-hero.pointsInTalent(Talent.ENERGY_COLLECT, Talent.RK_SLASHER))));
+                SwordAura.this.use(hitChar * Math.round(damageUse()/(float)(7-hero.shiftedPoints(Talent.ENERGY_COLLECT, Talent.RK_SLASHER))));
             } else {
                 SwordAura.this.use();
             }
