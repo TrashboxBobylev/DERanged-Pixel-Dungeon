@@ -1154,7 +1154,7 @@ public abstract class Char extends Actor {
 		}
 
 		if (this instanceof Hero && Dungeon.isChallenged(Challenges.UNSTABLE_DAMAGE)){
-			dmg *= Random.Float(0.5f, 2f);
+			damage *= Random.Float(0.5f, 2f);
 		}
 
 		dmg = Math.round(damage);
