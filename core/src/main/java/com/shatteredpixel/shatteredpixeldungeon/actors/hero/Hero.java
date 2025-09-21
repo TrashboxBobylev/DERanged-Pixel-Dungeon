@@ -1167,7 +1167,7 @@ public class Hero extends Char {
 					dmg = criticalDamage(dmg, (Weapon)wep);
 				} else {
 					if (Sheath.isFlashSlash()) {
-						Buff.prolong(this, Sheath.FlashSlashCooldown.class, (30-5*pointsInTalent(Talent.STATIC_PREPARATION, Talent.RK_MASTER))-1);
+						Buff.prolong(this, Sheath.FlashSlashCooldown.class, (30-byTalent(Talent.STATIC_PREPARATION, 8, Talent.RK_MASTER, 5))-1);
 					}
 				}
 			}
@@ -2150,7 +2150,7 @@ public class Hero extends Char {
 					buff(Sheath.FlashSlashCooldown.class) == null &&
 					buff(Sheath.DashAttackTracker.class) == null &&
 					this.belongings.attackingWeapon() instanceof MeleeWeapon) {
-				switch (pointsInTalent(Talent.ENHANCED_CRIT, Talent.RK_MASTER)) {
+				switch (shiftedPoints(Talent.ENHANCED_CRIT, Talent.RK_MASTER)) {
 					case 0: default:
 						chance *= 1.5f;
 						break;
@@ -2163,6 +2163,9 @@ public class Hero extends Char {
 					case 3:
 						chance *= 2f;
 						break;
+                    case 4:
+                        chance *= 2.33f;
+                        break;
 				}
 			} else {
 				chance *= 1.2f;
@@ -2190,7 +2193,7 @@ public class Hero extends Char {
 		}
 
 		if (Sheath.isFlashSlash()) {
-			multi += 0.15f * pointsInTalent(Talent.POWERFUL_SLASH, Talent.RK_MASTER);
+			multi += byTalent(Talent.POWERFUL_SLASH, 0.225f, Talent.RK_MASTER, 0.15f);
 		}
 
 		Buff.affect(this, Sheath.CriticalAttack.class);

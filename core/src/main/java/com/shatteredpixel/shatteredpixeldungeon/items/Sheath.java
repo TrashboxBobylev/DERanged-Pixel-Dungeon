@@ -245,7 +245,7 @@ public class Sheath extends Item {
 
                         Buff.affect(hero, DashAttackTracker.class);
                         if (hero.hasTalent(Talent.INNER_EYE, Talent.RK_MASTER)) {
-                            Buff.affect(hero, DashAttackVision.class, 2f);
+                            Buff.affect(hero, DashAttackVision.class, hero.hasTalent(Talent.INNER_EYE) ? 4 : 2);
                         }
 
                         Dungeon.hero.pos = dest;
@@ -293,7 +293,7 @@ public class Sheath extends Item {
                     Dungeon.hero.spendAndNext(Actor.TICK);
 
                     GLog.w(Messages.get(Sheathing.class, "no_target"));
-                    Buff.prolong(hero, DashAttackCooldown.class, (100-10*hero.pointsInTalent(Talent.DYNAMIC_PREPARATION, Talent.RK_MASTER)));
+                    Buff.prolong(hero, DashAttackCooldown.class, (100-hero.byTalent(Talent.DYNAMIC_PREPARATION, 15, Talent.RK_MASTER, 10)));
                     if (hero.buff(DashAttackAcceleration.class) != null) {
                         hero.buff(DashAttackAcceleration.class).detach();
                     }
@@ -394,8 +394,8 @@ public class Sheath extends Item {
         float dmgMulti = 1;
 
         public void hit() {
-            dmgMulti += 0.05f;
-            dmgMulti = Math.min(dmgMulti, 1+0.25f*hero.pointsInTalent(Talent.ACCELERATION, Talent.RK_MASTER));
+            dmgMulti += hero.hasTalent(Talent.ACCELERATION) ? 0.075f : 0.05f;
+            dmgMulti = Math.min(dmgMulti, 1+hero.byTalent(Talent.ACCELERATION, 1/3f, Talent.RK_MASTER, 1/4f));
         }
 
         public float getDmgMulti() {
