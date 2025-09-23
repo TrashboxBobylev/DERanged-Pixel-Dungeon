@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
@@ -76,7 +75,7 @@ public class LiquidMetal extends Item {
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		actions.add( AC_APPLY );
-		if (hero.heroClass.is(HeroClass.GUNNER) || hero.hasTalent(Talent.CRAFTMANSHIP)) {
+		if (hero.heroClass.is(HeroClass.GUNNER)) {
 			actions.add( AC_MAKE );
 		}
 		return actions;
@@ -126,18 +125,9 @@ public class LiquidMetal extends Item {
 										MeleeWeapon item = null;
 										switch (index) {
 											case 0:
-												while (!(item instanceof Gun &&
-                                                        (!Dungeon.hero.hasTalent(Talent.CRAFTMANSHIP) || item.STRReq() <= Dungeon.hero.STR() + 2))) {
+												while (!(item instanceof Gun)) {
 													item = Generator.randomWeapon();
 												}
-                                                if (Dungeon.hero.pointsInTalent(Talent.CRAFTMANSHIP) > 1){
-                                                    MeleeWeapon item2 = null;
-                                                    while (!(item2 instanceof Gun && item2.STRReq() <= Dungeon.hero.STR() + 2)) {
-                                                        item2 = Generator.randomWeapon();
-                                                    }
-                                                    if (item2.value() > item.value())
-                                                        item = item2;
-                                                }
 												if (!item.doPickUp(hero)) {
 													Dungeon.level.drop( item, hero.pos ).sprite.drop();
 												}
@@ -149,18 +139,9 @@ public class LiquidMetal extends Item {
 												CellEmitter.center( hero.pos ).burst( Speck.factory( Speck.STAR ), 7 );
 												break;
 											case 1:
-												while (!(item instanceof Gun && !item.cursed &&
-                                                        (!Dungeon.hero.hasTalent(Talent.CRAFTMANSHIP) || item.STRReq() <= Dungeon.hero.STR() + 2))) {
+												while (!(item instanceof Gun && !item.cursed)) {
                                                    item = Generator.randomWeapon(Dungeon.depth / 5 + 1);
 												}
-                                                if (Dungeon.hero.pointsInTalent(Talent.CRAFTMANSHIP) > 1){
-                                                    MeleeWeapon item2 = null;
-                                                    while (!(item2 instanceof Gun && !item2.cursed && item2.STRReq() <= Dungeon.hero.STR() + 2)) {
-                                                        item2 = Generator.randomWeapon(Dungeon.depth / 5 + 1);
-                                                    }
-                                                    if (item2.value() > item.value())
-                                                        item = item2;
-                                                }
 												item.cursedKnown = true;
 												if (Random.Float() < 0.33f) { //33% 확률로 추가 강화수치와 무작위 마법을 부여함
 													item.upgrade(true);

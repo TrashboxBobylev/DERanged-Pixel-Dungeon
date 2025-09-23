@@ -1284,14 +1284,6 @@ public abstract class Char extends Actor {
 			String dmgText = Integer.toString(dmg + shielded);
 			if (src == hero && hero.buff(Sheath.CriticalAttack.class) != null) {
 				dmgText += "!";
-                if (hero.hasTalent(Talent.PRECISE_RESTORATION)){
-                    int heal = 1 + hero.pointsInTalent(Talent.PRECISE_RESTORATION);
-                    if (hero.HP < hero.HT) {
-                        hero.HP = Math.min(hero.HT, hero.HP + heal);
-                    }
-
-                    hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(heal), FloatingText.HEALING);
-                }
 			}
 
 			sprite.showStatusWithIcon(CharSprite.NEGATIVE, dmgText, icon);
